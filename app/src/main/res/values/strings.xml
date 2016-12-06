@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">DevahoyLogin</string>
+    <string name="login_title">Devahoy</string>
+    <string name="username_title">Username</string>
+    <string name="password_title">Password</string>
+    <string name="password_confirm_title">Confirm Password</string>
+    <string name="button_login">Login</string>
+    <string name="button_register">Register</string>
+    <string name="register">New User? Register here</string>
+
+    <string name="login_error_message">Username or Password is incorrect.</string>
+    <string name="register_error_message">Register failed, Try again!</string>
+    <string name="register_password_error">Password does not match</string>
+    <string name="register_success">Register Successful</string>
+
+    <string name="welcome_message">Welcome to Devahoy</string>
+    <string name="say_hi">Hi\ </string>
+
+    <string name="change_password">Change Password</string>
+    <string name="welcome_error_message">User not found, try to login again!</string>
+    <string name="new_password">New Password</string>
+    <string name="change_password_message">Password has been changed</string>
+
+
+</resources>
