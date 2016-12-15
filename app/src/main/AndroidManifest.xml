@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.devahoy.sample.login" >
+    package="com.devahoy.sample.login">
 
     <application
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
         android:label="Faff"
-        android:theme="@style/AppTheme" >
+        android:theme="@style/AppTheme">
         <activity
             android:name=".LoginActivity"
             android:label="Faff">
@@ -16,12 +16,18 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
-        <activity android:name=".RegisterActivity"
-                  android:label="@string/app_name"/>
-
-        <activity android:name=".MainActivity"
-                  android:label="@string/app_name" />
+        <activity
+            android:name=".RegisterActivity"
+            android:label="@string/app_name" />
+        <activity
+            android:name=".MainActivity"
+            android:label="@string/app_name" />
+        <activity android:name=".Home">
+            <!--for debugging-->
+           <!-- <intent-filter>
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>-->
+        </activity>
     </application>
 
 </manifest>

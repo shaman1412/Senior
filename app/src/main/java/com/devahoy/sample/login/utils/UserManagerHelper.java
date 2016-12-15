@@ -30,5 +30,4 @@ public interface UserManagerHelper {
      * @return - ส่งค่า จำนวนแถวที่มีการ update
      */
     public int changePassword(User user);
-
 }
