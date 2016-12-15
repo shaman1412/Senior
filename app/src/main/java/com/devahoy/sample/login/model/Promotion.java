@@ -14,8 +14,8 @@ public class Promotion {
         public static final String ID = BaseColumns._ID;
         public static final String Title = "title";
         public static final String TitlePicture = "title picture link";
-        public static final String StartDate = "YYYY-MM-DD HH:MM:SS.SSS";
-        public static final String EndDate = "YYYY-MM-DD HH:MM:SS.SSS";
+        public static final String StartDate = "start date";
+        public static final String EndDate = "end date";
         public static final String PromotionDetail = "detail";
         public static final String Location = "google map link";
     }

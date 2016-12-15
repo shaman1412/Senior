@@ -10,11 +10,13 @@
         <activity
             android:name=".LoginActivity"
             android:label="Faff">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
+            <!-- <intent-filter> -->
+            <!-- <action android:name="android.intent.action.MAIN" /> -->
+
+
+            <!-- <category android:name="android.intent.category.LAUNCHER" /> -->
+            <!-- </intent-filter> -->
         </activity>
         <activity
             android:name=".RegisterActivity"
@@ -22,11 +24,13 @@
         <activity
             android:name=".MainActivity"
             android:label="@string/app_name" />
-        <activity android:name=".Home">
-            <!--for debugging-->
-           <!-- <intent-filter>
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>-->
+        <activity android:name=".HomeActivity">
+             <intent-filter>
+             <action android:name="android.intent.action.MAIN" />
+
+
+             <category android:name="android.intent.category.LAUNCHER" />
+             </intent-filter>
         </activity>
     </application>
 

@@ -6,6 +6,7 @@ package com.devahoy.sample.login.utils;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
@@ -20,11 +21,15 @@ public class PromotionManager extends SQLiteOpenHelper {
     private SQLiteDatabase mDatabase;
 
     public PromotionManager(Context context) {
-        super(context, UserManagerHelper.DATABASE_NAME, null, UserManagerHelper.DATABASE_VERSION);
+        super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
+
+
 
     @Override
     public void onCreate(SQLiteDatabase db) {
+
+
         String CREATE_TABLE_PROMOTION = String.format("CREATE TABLE %s " +
                         "(%s INTEGER PRIMARY KEY AUTOINCREMENT, %s TEXT, %s TEXT, %s TEXT, %s TEXT, %s TEXT, %s TEXT)" ,
                 Promotion.TABLE,
@@ -37,14 +42,20 @@ public class PromotionManager extends SQLiteOpenHelper {
                 Promotion.Column.Location
         );
 
-        db.execSQL(CREATE_TABLE_PROMOTION);
+        try{
+            db.execSQL(CREATE_TABLE_PROMOTION);
 
-        Log.i(TAG, CREATE_TABLE_PROMOTION);
+            Log.i(TAG, CREATE_TABLE_PROMOTION);
+        }
+        catch (SQLException e){
+            e.printStackTrace();
+        }
+
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        String DROP_PROMOTION = "DROP TABLE IF EXISTS " + UserManagerHelper.DATABASE_VERSION;
+        String DROP_PROMOTION = "DROP TABLE IF EXISTS " + DATABASE_VERSION;
 
         db.execSQL(DROP_PROMOTION);
 
