@@ -1,8 +1,8 @@
 package com.devahoy.sample.login;
 
 import android.content.Context;
-import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.support.v7.app.ActionBarActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -11,7 +11,7 @@ import android.widget.Toast;
 import com.devahoy.sample.login.model.Promotion;
 import com.devahoy.sample.login.utils.PromotionManager;
 
-public class HomeActivity extends ActionBarActivity {
+public class PromotionActivity extends ActionBarActivity {
 
     private Button addPromotion;
     private EditText Title;
@@ -22,12 +22,12 @@ public class HomeActivity extends ActionBarActivity {
     private EditText Location;
     private Context mContext;
 
-    private PromotionManager mManager;
+    PromotionManager mManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_home);
+        setContentView(R.layout.activity_promotion);
 
         mManager = new PromotionManager(this);
 
@@ -62,10 +62,10 @@ public class HomeActivity extends ActionBarActivity {
         long rowId = mManager.addPromotion(promotion);
 
         if (rowId == -1) {
-            String message = getString(R.string.register_error_message);
+            String message = "Add promotion failed try again";
             Toast.makeText(mContext, message, Toast.LENGTH_SHORT).show();
         } else {
-            String message = getString(R.string.register_success);
+            String message = "Add promotion successful";
             Toast.makeText(mContext, message, Toast.LENGTH_SHORT).show();
             finish();
         }

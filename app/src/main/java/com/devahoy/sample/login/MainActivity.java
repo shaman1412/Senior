@@ -1,6 +1,7 @@
 package com.devahoy.sample.login;
 
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -13,15 +14,18 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.devahoy.sample.login.model.Promotion;
 import com.devahoy.sample.login.model.User;
 import com.devahoy.sample.login.utils.UserManager;
 
 public class MainActivity extends ActionBarActivity {
 
     Button mChangePassword;
+    Button mAddPromotion;
     TextView mUsername;
     private UserManager mManager;
     User mUser;
+    Context mContext;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,10 +33,12 @@ public class MainActivity extends ActionBarActivity {
         setContentView(R.layout.activity_main);
 
         mManager = new UserManager(this);
+        mContext = this;
         mUser = new User();
 
         mChangePassword = (Button) findViewById(R.id.change_password);
         mUsername = (TextView) findViewById(R.id.say_hi);
+        mAddPromotion = (Button) findViewById(R.id.add_promotion);
 
         Bundle args = getIntent().getExtras();
 
@@ -52,6 +58,14 @@ public class MainActivity extends ActionBarActivity {
             @Override
             public void onClick(View v) {
                 showDialogPassword();
+            }
+        });
+
+        mAddPromotion.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(mContext, PromotionActivity.class);
+                startActivity(intent);
             }
         });
     }

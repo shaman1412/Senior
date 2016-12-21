@@ -12,12 +12,12 @@ public class Promotion {
 
     public class Column {
         public static final String ID = BaseColumns._ID;
-        public static final String Title = "title";
-        public static final String TitlePicture = "title picture link";
-        public static final String StartDate = "start date";
-        public static final String EndDate = "end date";
-        public static final String PromotionDetail = "detail";
-        public static final String Location = "google map link";
+        public static final String Title = "Title";
+        public static final String TitlePicture = "TitlePicture";
+        public static final String StartDate = "StartDate";
+        public static final String EndDate = "EndDate";
+        public static final String PromotionDetail = "PromotionDetail";
+        public static final String Location = "Location";
     }
 
     private int id;
