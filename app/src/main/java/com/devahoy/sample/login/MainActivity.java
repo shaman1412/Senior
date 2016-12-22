@@ -14,17 +14,17 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.devahoy.sample.login.model.Promotion;
-import com.devahoy.sample.login.model.User;
+import com.devahoy.sample.login.model.UserAuthen;
 import com.devahoy.sample.login.utils.UserManager;
 
 public class MainActivity extends ActionBarActivity {
 
     Button mChangePassword;
     Button mAddPromotion;
+    Button mLogout;
     TextView mUsername;
     private UserManager mManager;
-    User mUser;
+    UserAuthen mUserAuthen;
     Context mContext;
 
     @Override
@@ -34,11 +34,12 @@ public class MainActivity extends ActionBarActivity {
 
         mManager = new UserManager(this);
         mContext = this;
-        mUser = new User();
+        mUserAuthen = new UserAuthen();
 
         mChangePassword = (Button) findViewById(R.id.change_password);
         mUsername = (TextView) findViewById(R.id.say_hi);
         mAddPromotion = (Button) findViewById(R.id.add_promotion);
+        mLogout = (Button) findViewById(R.id.logout);
 
         Bundle args = getIntent().getExtras();
 
@@ -48,10 +49,10 @@ public class MainActivity extends ActionBarActivity {
             finish();
         } else {
             mUsername.setText(getString(R.string.say_hi) + " " +
-                    args.getString(User.Column.USERNAME));
+                    args.getString(UserAuthen.Column.USERNAME));
 
-            mUser.setId(args.getInt(User.Column.ID));
-            mUser.setUsername(args.getString(User.Column.USERNAME));
+            mUserAuthen.setId(args.getInt(UserAuthen.Column.ID));
+            mUserAuthen.setUsername(args.getString(UserAuthen.Column.USERNAME));
         }
 
         mChangePassword.setOnClickListener(new View.OnClickListener() {
@@ -65,6 +66,14 @@ public class MainActivity extends ActionBarActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(mContext, PromotionActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        mLogout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(mContext, LoginActivity.class);
                 startActivity(intent);
             }
         });
@@ -85,8 +94,8 @@ public class MainActivity extends ActionBarActivity {
             public void onClick(DialogInterface dialog, int which) {
                 String password = newPassword.getText().toString();
                 if(!TextUtils.isEmpty(password)) {
-                    mUser.setPassword(password);
-                    mManager.changePassword(mUser);
+                    mUserAuthen.setPassword(password);
+                    mManager.changePassword(mUserAuthen);
                     Toast.makeText(getApplicationContext(),
                             getString(R.string.change_password_message),
                             Toast.LENGTH_SHORT).show();

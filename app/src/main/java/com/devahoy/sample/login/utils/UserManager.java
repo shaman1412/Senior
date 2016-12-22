@@ -7,7 +7,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
-import com.devahoy.sample.login.model.User;
+import com.devahoy.sample.login.model.UserAuthen;
 
 public class UserManager extends SQLiteOpenHelper implements UserManagerHelper {
     public static final String TAG = UserManager.class.getSimpleName();
@@ -21,10 +21,10 @@ public class UserManager extends SQLiteOpenHelper implements UserManagerHelper {
     public void onCreate(SQLiteDatabase db) {
         String CREATE_TABLE_USER = String.format("CREATE TABLE %s " +
                         "(%s INTEGER PRIMARY KEY AUTOINCREMENT, %s TEXT, %s TEXT)" ,
-                User.TABLE,
-                User.Column.ID,
-                User.Column.USERNAME,
-                User.Column.PASSWORD
+                UserAuthen.TABLE,
+                UserAuthen.Column.ID,
+                UserAuthen.Column.USERNAME,
+                UserAuthen.Column.PASSWORD
         );
 
         db.execSQL(CREATE_TABLE_USER);
@@ -43,43 +43,43 @@ public class UserManager extends SQLiteOpenHelper implements UserManagerHelper {
     }
 
     @Override
-    public long registerUser(User user) {
+    public long registerUser(UserAuthen userAuthen) {
 
         mDatabase = this.getWritableDatabase();
 
         ContentValues values = new ContentValues();
-        values.put(User.Column.USERNAME, user.getUsername());
-        values.put(User.Column.PASSWORD, user.getPassword());
+        values.put(UserAuthen.Column.USERNAME, userAuthen.getUsername());
+        values.put(UserAuthen.Column.PASSWORD, userAuthen.getPassword());
 
-        long result = mDatabase.insert(User.TABLE, null, values);
+        long result = mDatabase.insert(UserAuthen.TABLE, null, values);
         mDatabase.close();
 
         return result;
     }
 
     @Override
-    public User checkUserLogin(User user) {
+    public UserAuthen checkUserLogin(UserAuthen userAuthen) {
 
         mDatabase = this.getReadableDatabase();
 
-        Cursor cursor = mDatabase.query(User.TABLE,
+        Cursor cursor = mDatabase.query(UserAuthen.TABLE,
                 null,
-                User.Column.USERNAME + " = ? AND " +
-                        User.Column.PASSWORD + " = ?",
-                new String[]{user.getUsername(), user.getPassword()},
+                UserAuthen.Column.USERNAME + " = ? AND " +
+                        UserAuthen.Column.PASSWORD + " = ?",
+                new String[]{userAuthen.getUsername(), userAuthen.getPassword()},
                 null,
                 null,
                 null);
 
-        User currentUser = new User();
+        UserAuthen currentUserAuthen = new UserAuthen();
 
         if (cursor != null) {
             if (cursor.moveToFirst()) {
-                currentUser.setId((int) cursor.getLong(0));
-                currentUser.setUsername(cursor.getString(1));
-                currentUser.setPassword(cursor.getString(2));
+                currentUserAuthen.setId((int) cursor.getLong(0));
+                currentUserAuthen.setUsername(cursor.getString(1));
+                currentUserAuthen.setPassword(cursor.getString(2));
                 mDatabase.close();
-                return currentUser;
+                return currentUserAuthen;
             }
         }
 
@@ -87,18 +87,18 @@ public class UserManager extends SQLiteOpenHelper implements UserManagerHelper {
     }
 
     @Override
-    public int changePassword(User user) {
+    public int changePassword(UserAuthen userAuthen) {
 
         mDatabase = this.getWritableDatabase();
 
         ContentValues values = new ContentValues();
-        values.put(User.Column.USERNAME, user.getUsername());
-        values.put(User.Column.PASSWORD, user.getPassword());
+        values.put(UserAuthen.Column.USERNAME, userAuthen.getUsername());
+        values.put(UserAuthen.Column.PASSWORD, userAuthen.getPassword());
 
-        int row = mDatabase.update(User.TABLE,
+        int row = mDatabase.update(UserAuthen.TABLE,
                 values,
-                User.Column.ID + " = ?",
-                new String[] {String.valueOf(user.getId())});
+                UserAuthen.Column.ID + " = ?",
+                new String[] {String.valueOf(userAuthen.getId())});
 
         mDatabase.close();
         return row;

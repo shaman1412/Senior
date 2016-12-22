@@ -8,7 +8,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.devahoy.sample.login.model.User;
+import com.devahoy.sample.login.model.UserAuthen;
 import com.devahoy.sample.login.utils.UserManager;
 
 public class RegisterActivity extends ActionBarActivity {
@@ -43,8 +43,8 @@ public class RegisterActivity extends ActionBarActivity {
                 String confirmPassword = mConfirmPassword.getText().toString();
 
                 if (password.equals(confirmPassword)) {
-                    User user = new User(username, password);
-                    long rowId = mManager.registerUser(user);
+                    UserAuthen userAuthen = new UserAuthen(username, password);
+                    long rowId = mManager.registerUser(userAuthen);
 
                     if (rowId == -1) {
                         String message = getString(R.string.register_error_message);

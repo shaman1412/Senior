@@ -2,7 +2,7 @@ package com.devahoy.sample.login.model;
 
 import android.provider.BaseColumns;
 
-public class User {
+public class UserAuthen {
 
     public static final String TABLE = "user";
 
@@ -17,12 +17,12 @@ public class User {
     private String password;
 
     // Constructor
-    public User(String username, String password) {
+    public UserAuthen(String username, String password) {
         this.username = username;
         this.password = password;
     }
 
-    public User() {
+    public UserAuthen() {
 
     }
 
