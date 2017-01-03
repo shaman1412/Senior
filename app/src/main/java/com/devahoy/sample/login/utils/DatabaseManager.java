@@ -7,18 +7,24 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
+import com.devahoy.sample.login.model.Bookmark;
+import com.devahoy.sample.login.model.BookmarkList;
+import com.devahoy.sample.login.model.Promotion;
 import com.devahoy.sample.login.model.UserAuthen;
 
-public class UserManager extends SQLiteOpenHelper implements UserManagerHelper {
-    public static final String TAG = UserManager.class.getSimpleName();
+public class DatabaseManager extends SQLiteOpenHelper implements DatabaseManagerHelper {
+    public static final String TAG = DatabaseManager.class.getSimpleName();
     private SQLiteDatabase mDatabase;
 
-    public UserManager(Context context) {
-        super(context, UserManagerHelper.DATABASE_NAME, null, UserManagerHelper.DATABASE_VERSION);
+    public DatabaseManager(Context context) {
+        super(context, DatabaseManagerHelper.DATABASE_NAME, null, DatabaseManagerHelper.DATABASE_VERSION);
     }
 
     @Override
     public void onCreate(SQLiteDatabase db) {
+
+        //region create table string
+
         String CREATE_TABLE_USER = String.format("CREATE TABLE %s " +
                         "(%s INTEGER PRIMARY KEY AUTOINCREMENT, %s TEXT, %s TEXT)" ,
                 UserAuthen.TABLE,
@@ -27,21 +33,46 @@ public class UserManager extends SQLiteOpenHelper implements UserManagerHelper {
                 UserAuthen.Column.PASSWORD
         );
 
-        db.execSQL(CREATE_TABLE_USER);
+        String CREATE_TABLE_PROMOTION = String.format("CREATE TABLE IF NOT EXISTS %s (%s INTEGER PRIMARY KEY AUTOINCREMENT, %s TEXT not null, %s TEXT not null, %s TEXT not null, %s TEXT not null, %s TEXT not null, %s TEXT not null);" ,
+                Promotion.TABLE,
+                Promotion.Column.ID,
+                Promotion.Column.Title,
+                Promotion.Column.TitlePicture,
+                Promotion.Column.StartDate,
+                Promotion.Column.EndDate,
+                Promotion.Column.PromotionDetail,
+                Promotion.Column.Location
+        );
 
-        Log.i(TAG, CREATE_TABLE_USER);
+        String CREATE_TABLE_BOOKMARK = String.format("create table if not exists %s (%s integer primary key autoincrement, %s integer not null, %s integer not null);",
+                Bookmark.TABLE,
+                Bookmark.Column.ID,
+                Bookmark.Column.FoodID,
+                Bookmark.Column.RestaurantID
+        );
+
+        String CEATE_TABLE_BOOKMARKLIST = String.format("create table if not exists %s (%s integer primary key autoincrement, %s integer not null, %s integer not null);",
+                BookmarkList.TABLE,
+                BookmarkList.Column.ID,
+                BookmarkList.Column.BookmarkID,
+                BookmarkList.Column.UserID
+        );
+
+        //endregion
+
+        db.execSQL(CREATE_TABLE_USER);
+        db.execSQL(CREATE_TABLE_PROMOTION);
+        db.execSQL(CREATE_TABLE_BOOKMARK);
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        String DROP_USER = "DROP TABLE IF EXISTS " + UserManagerHelper.DATABASE_VERSION;
-
+        String DROP_USER = "DROP TABLE IF EXISTS " + DatabaseManagerHelper.DATABASE_VERSION;
         db.execSQL(DROP_USER);
-
-        Log.i(TAG, DROP_USER);
         onCreate(mDatabase);
     }
 
+    //region UserAuthen
     @Override
     public long registerUser(UserAuthen userAuthen) {
 
@@ -103,4 +134,25 @@ public class UserManager extends SQLiteOpenHelper implements UserManagerHelper {
         mDatabase.close();
         return row;
     }
+    //endregion
+
+    //region Promotion
+    public long addPromotion(Promotion promotion) {
+
+        mDatabase = this.getWritableDatabase();
+
+        ContentValues values = new ContentValues();
+        values.put(Promotion.Column.Title, promotion.getTitle());
+        values.put(Promotion.Column.TitlePicture, promotion.getTitlePictureLink());
+        values.put(Promotion.Column.StartDate, promotion.getStartDate());
+        values.put(Promotion.Column.EndDate, promotion.getEndDate());
+        values.put(Promotion.Column.PromotionDetail, promotion.getPromotionDetail());
+        values.put(Promotion.Column.Location, promotion.getGoogleMapLink());
+
+        long result = mDatabase.insert(Promotion.TABLE, null, values);
+        mDatabase.close();
+
+        return result;
+    }
+    //endregion
 }

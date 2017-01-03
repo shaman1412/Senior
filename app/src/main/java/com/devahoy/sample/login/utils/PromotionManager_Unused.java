@@ -6,21 +6,19 @@ package com.devahoy.sample.login.utils;
 
 import android.content.ContentValues;
 import android.content.Context;
-import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.nfc.Tag;
 import android.util.Log;
 
 import com.devahoy.sample.login.model.Promotion;
 
-public class PromotionManager {
+public class PromotionManager_Unused {
 
     public static final String DATABASE_NAME = "promotion";
     public static final String DATABASE_TABLE = "promotion";
     public static final int DATABASE_VERSION = 1;
-    public static final String TAG = PromotionManager.class.getSimpleName();
+    public static final String TAG = PromotionManager_Unused.class.getSimpleName();
 
     static final String DATABASE_CREATE = String.format("CREATE TABLE IF NOT EXISTS %s " +
                     "(%s INTEGER PRIMARY KEY AUTOINCREMENT, %s TEXT not null, %s TEXT not null, %s TEXT not null, %s TEXT not null, %s TEXT not null, %s TEXT not null);" ,
@@ -38,7 +36,7 @@ public class PromotionManager {
     DatabaseHelper DBHelper;
     SQLiteDatabase mDatabase;
 
-    public PromotionManager(Context ctx)
+    public PromotionManager_Unused(Context ctx)
     {
         this.context = ctx;
         DBHelper = new DatabaseHelper(context);
@@ -91,4 +89,5 @@ public class PromotionManager {
 
         return result;
     }
+
 }

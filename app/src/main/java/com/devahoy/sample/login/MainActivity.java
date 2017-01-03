@@ -15,7 +15,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.devahoy.sample.login.model.UserAuthen;
-import com.devahoy.sample.login.utils.UserManager;
+import com.devahoy.sample.login.utils.DatabaseManager;
 
 public class MainActivity extends ActionBarActivity {
 
@@ -23,7 +23,7 @@ public class MainActivity extends ActionBarActivity {
     Button mAddPromotion;
     Button mLogout;
     TextView mUsername;
-    private UserManager mManager;
+    private DatabaseManager mManager;
     UserAuthen mUserAuthen;
     Context mContext;
 
@@ -32,7 +32,7 @@ public class MainActivity extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        mManager = new UserManager(this);
+        mManager = new DatabaseManager(this);
         mContext = this;
         mUserAuthen = new UserAuthen();
 

@@ -11,7 +11,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.devahoy.sample.login.model.UserAuthen;
-import com.devahoy.sample.login.utils.UserManager;
+import com.devahoy.sample.login.utils.DatabaseManager;
 
 
 public class LoginActivity extends ActionBarActivity {
@@ -22,7 +22,7 @@ public class LoginActivity extends ActionBarActivity {
     private TextView mRegister;
     private Context mContext;
 
-    private UserManager mManager;
+    private DatabaseManager mManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,7 +30,7 @@ public class LoginActivity extends ActionBarActivity {
 
         setContentView(R.layout.activity_login);
 
-        mManager = new UserManager(this);
+        mManager = new DatabaseManager(this);
 
         mContext = this;
 

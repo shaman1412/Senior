@@ -9,7 +9,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.devahoy.sample.login.model.Promotion;
-import com.devahoy.sample.login.utils.PromotionManager;
+import com.devahoy.sample.login.utils.DatabaseManager;
 
 public class PromotionActivity extends ActionBarActivity {
 
@@ -22,14 +22,14 @@ public class PromotionActivity extends ActionBarActivity {
     private EditText Location;
     private Context mContext;
 
-    PromotionManager mManager;
+    DatabaseManager mManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_promotion);
 
-        mManager = new PromotionManager(this);
+        mManager = new DatabaseManager(this);
 
         mContext = this;
 

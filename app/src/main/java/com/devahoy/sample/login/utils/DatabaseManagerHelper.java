@@ -2,9 +2,9 @@ package com.devahoy.sample.login.utils;
 
 import com.devahoy.sample.login.model.UserAuthen;
 
-public interface UserManagerHelper {
+public interface DatabaseManagerHelper {
 
-    public static final String DATABASE_NAME = "ahoy_login";
+    public static final String DATABASE_NAME = "Faff_DB";
     public static final int DATABASE_VERSION = 1;
 
     /**
