@@ -51,7 +51,7 @@ public class DatabaseManager extends SQLiteOpenHelper implements DatabaseManager
                 Bookmark.Column.RestaurantID
         );
 
-        String CEATE_TABLE_BOOKMARKLIST = String.format("create table if not exists %s (%s integer primary key autoincrement, %s integer not null, %s integer not null);",
+        String CREATE_TABLE_BOOKMARKLIST = String.format("create table if not exists %s (%s integer primary key autoincrement, %s integer not null, %s integer not null);",
                 BookmarkList.TABLE,
                 BookmarkList.Column.ID,
                 BookmarkList.Column.BookmarkID,
@@ -63,6 +63,7 @@ public class DatabaseManager extends SQLiteOpenHelper implements DatabaseManager
         db.execSQL(CREATE_TABLE_USER);
         db.execSQL(CREATE_TABLE_PROMOTION);
         db.execSQL(CREATE_TABLE_BOOKMARK);
+        db.execSQL(CREATE_TABLE_BOOKMARKLIST);
     }
 
     @Override
