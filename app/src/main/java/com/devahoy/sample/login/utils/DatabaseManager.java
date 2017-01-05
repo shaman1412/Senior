@@ -208,7 +208,7 @@ public class DatabaseManager extends SQLiteOpenHelper implements DatabaseManager
                 UserProfile.Column.Picture
         );
 
-        String CREATE_TABLE_COMMENT = String.format("create table if not exists %s (%s integer primary key autoincrement, %s integer not null, %s integer not null, %s text not null, %s text not null);",
+        String CREATE_TABLE_COMMENT = String.format("create table if not exists %s (%s integer primary key autoincrement, %s integer not null, %s text not null, %s text not null);",
                 Comment.TABLE,
                 Comment.Column.ID,
                 Comment.Column.UserID,
