@@ -1,5 +1,7 @@
 package com.devahoy.sample.login.utils;
 
+//***** in CREATE_TABLE_USERPROFILE {gender type = string but in database type = char}
+
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
@@ -9,8 +11,26 @@ import android.util.Log;
 
 import com.devahoy.sample.login.model.Bookmark;
 import com.devahoy.sample.login.model.BookmarkList;
+import com.devahoy.sample.login.model.Comment;
+import com.devahoy.sample.login.model.CommentListResteraunt;
+import com.devahoy.sample.login.model.FoodProfile;
+import com.devahoy.sample.login.model.History;
+import com.devahoy.sample.login.model.Party;
+import com.devahoy.sample.login.model.PartyList;
 import com.devahoy.sample.login.model.Promotion;
+import com.devahoy.sample.login.model.PromotionList;
+import com.devahoy.sample.login.model.Report;
+import com.devahoy.sample.login.model.ReportList;
+import com.devahoy.sample.login.model.Restaurant;
+import com.devahoy.sample.login.model.RestaurantList;
+import com.devahoy.sample.login.model.Review;
+import com.devahoy.sample.login.model.ReviewList;
+import com.devahoy.sample.login.model.Room;
+import com.devahoy.sample.login.model.RoomList;
+import com.devahoy.sample.login.model.Score;
+import com.devahoy.sample.login.model.TypeFood;
 import com.devahoy.sample.login.model.UserAuthen;
+import com.devahoy.sample.login.model.UserProfile;
 
 public class DatabaseManager extends SQLiteOpenHelper implements DatabaseManagerHelper {
     public static final String TAG = DatabaseManager.class.getSimpleName();
@@ -58,12 +78,176 @@ public class DatabaseManager extends SQLiteOpenHelper implements DatabaseManager
                 BookmarkList.Column.UserID
         );
 
+        String CREATE_TABLE_FOODPROFILE = String.format("create table if not exists %s (%s integer primary key autoincrement, %s integer not null, %s text not null, %s text not null, %s text not null);",
+                FoodProfile.TABLE,
+                FoodProfile.Column.ID,
+                FoodProfile.Column.restaurantID,
+                FoodProfile.Column.Name,
+                FoodProfile.Column.FoodPicture,
+                FoodProfile.Column.FoodDetail
+        );
+
+        String CREATE_TABLE_HISTORY = String.format("create table if not exists %s (%s integer primary key autoincrement, %s integer not null, %s integer not null);",
+                History.TABLE,
+                History.Column.ID,
+                History.Column.UserID,
+                History.Column.PartyID
+        );
+
+        String CREATE_TABLE_PARTY = String.format("create table if not exists %s (%s integer primary key autoincrement, %s text not null, %s integer not null, %s text not null);",
+                Party.TABLE,
+                Party.Column.ID,
+                Party.Column.Name,
+                Party.Column.RoomID,
+                Party.Column.Appointment
+        );
+
+        String CREATE_TALBLE_PARTYLIST = String.format("create table if not exists %s (%s integer primary key autoincrement, %s integer not null, %s integer not null);",
+                PartyList.TABLE,
+                PartyList.Column.ID,
+                PartyList.Column.PartyID,
+                PartyList.Column.UserID
+        );
+
+        String CREATE_TABLE_PROMOTIONLIST = String.format("create table if not exists %s (%s integer primary key autoincrement, %s integer not null, %s integer not null);",
+                PromotionList.TABLE,
+                PromotionList.Column.ID,
+                PromotionList.Column.PromotionID,
+                PromotionList.Column.UserID
+        );
+
+        String CREATE_TABLE_REPORT = String.format("create table if not exists %s (%s integer primary key autoincrement, %s integer not null, %s integer not null, %s text not null, %s text not null);",
+                Report.TABLE,
+                Report.Column.ID,
+                Report.Column.RestaurantID,
+                Report.Column.FoodID,
+                Report.Column.Date,
+                Report.Column.Detail
+        );
+
+        String CREATE_TABLE_REPORTLIST = String.format("create table if not exists %s (%s integer primary key autoincrement, %s integer not null, %s integer not null);",
+                ReportList.TABLE,
+                ReportList.Column.ID,
+                ReportList.Column.ReportID,
+                ReportList.Column.UserID
+        );
+
+        String CREATE_TABLE_RESTERAUNT = String.format("create table if not exists %s (%s integer primary key autoincrement, %s text not null, %s text not null, %s text not null, %s text not null, %s integer not null, %s integer not null, %s integer not null);",
+                Restaurant.TABLE,
+                Restaurant.Column.ID,
+                Restaurant.Column.RestaurantName,
+                Restaurant.Column.RestaurantPicture,
+                Restaurant.Column.Location,
+                Restaurant.Column.RestaurantDetail,
+                Restaurant.Column.Score,
+                Restaurant.Column.UserID,
+                Restaurant.Column.TypeID
+        );
+
+        String CREATE_TABLE_RESTERRAUNTLIST = String.format("create table if not exists %s (%s integer primary key autoincrement, %s integer not null, %s integer not null);",
+                RestaurantList.TABLE,
+                RestaurantList.Column.ID,
+                RestaurantList.Column.RestaurantID,
+                RestaurantList.Column.UserID
+        );
+
+        String CREATE_TABLE_REVIEW = String.format("create table if not exists %s (%s integer primary key autoincrement, %s integer not null, %s integer not null, %s text not null, %s text not null, %s integer not null);",
+                Review.TABLE,
+                Review.Column.ID,
+                Review.Column.RestaurantID,
+                Review.Column.FoodID,
+                Review.Column.Date,
+                Review.Column.Detail,
+                Review.Column.Score
+        );
+
+        String CREATE_TABLE_REVIEWLIST = String.format("create table if not exists %s (%s integer primary key autoincrement, %s integer not null, %s integer not null);",
+                ReviewList.TABLE,
+                ReviewList.Column.ID,
+                ReviewList.Column.ReviewID,
+                ReviewList.Column.UserID
+        );
+
+        String CREATE_TABLE_ROOM = String.format("create table if not exists %s (%s integer primary key autoincrement, %s integer not null, %s text not null);",
+                Room.TABLE,
+                Room.Column.ID,
+                Room.Column.RoomID,
+                Room.Column.Message
+        );
+
+        String CREATE_TABLE_ROOMLIST = String.format("create table if not exists %s (%s integer primary key autoincrement, %s integer not null);",
+                RoomList.TABLE,
+                RoomList.Column.ID,
+                RoomList.Column.UserID
+        );
+
+        String CREATE_TABLE_SCORE = String.format("create table if not exists %s (%s integer primary key autoincrement, %s integer not null, %s integer not null, %s integer not null);",
+                Score.TABLE,
+                Score.Column.ID,
+                Score.Column.UserID,
+                Score.Column.RestaurantID,
+                Score.Column.Score
+        );
+
+        String CREATE_TABLE_TYPEFOOD = String.format("create table if not exists %s (%s integer primary key autoincrement, %s integer not null);",
+                TypeFood.TABLE,
+                TypeFood.Column.ID,
+                TypeFood.Column.Type
+        );
+
+        String CREATE_TABLE_USERPROFILE = String.format("create table if not exists %s (%s integer primary key autoincrement, %s text not null, %s text not null, %s text not null, %s integer not null, %s text not null, %s text not null, %s integer not null, %s text not null);",
+                UserProfile.TABLE,
+                UserProfile.Column.ID,
+                UserProfile.Column.Name,
+                UserProfile.Column.Address,
+                UserProfile.Column.Email,
+                UserProfile.Column.Telephone,
+                UserProfile.Column.DateOfBirth,
+                UserProfile.Column.Gender,
+                UserProfile.Column.Age,
+                UserProfile.Column.Picture
+        );
+
+        String CREATE_TABLE_COMMENT = String.format("create table if not exists %s (%s integer primary key autoincrement, %s integer not null, %s text not null, %s text not null);",
+                Comment.TABLE,
+                Comment.Column.ID,
+                Comment.Column.UserID,
+                Comment.Column.Comment,
+                Comment.Column.Datetime
+        );
+
+        String CREATE_TABLE_COMMENTLISTRESTERAUNT = String.format("create table if not exists %s (%s integer primary key autoincrement, %s integer not null, %s integer not null",
+                CommentListResteraunt.TABLE,
+                CommentListResteraunt.Column.ID,
+                CommentListResteraunt.Column.CommentID,
+                CommentListResteraunt.Column.ResterauntID
+        );
+
         //endregion
 
         db.execSQL(CREATE_TABLE_USER);
         db.execSQL(CREATE_TABLE_PROMOTION);
-        db.execSQL(CREATE_TABLE_BOOKMARK);
-        db.execSQL(CREATE_TABLE_BOOKMARKLIST);
+//        db.execSQL(CREATE_TABLE_BOOKMARK);
+//        db.execSQL(CREATE_TABLE_BOOKMARKLIST);
+//        db.execSQL(CREATE_TABLE_FOODPROFILE);
+//        db.execSQL(CREATE_TABLE_HISTORY);
+//        db.execSQL(CREATE_TABLE_PARTY);
+//        db.execSQL(CREATE_TALBLE_PARTYLIST);
+//        db.execSQL(CREATE_TABLE_PROMOTIONLIST);
+//        db.execSQL(CREATE_TABLE_REPORT);
+//        db.execSQL(CREATE_TABLE_REPORTLIST);
+//        db.execSQL(CREATE_TABLE_RESTERAUNT);
+//        db.execSQL(CREATE_TABLE_RESTERRAUNTLIST);
+//        db.execSQL(CREATE_TABLE_REVIEW);
+//        db.execSQL(CREATE_TABLE_REVIEWLIST);
+//        db.execSQL(CREATE_TABLE_ROOM);
+//        db.execSQL(CREATE_TABLE_ROOMLIST);
+//        db.execSQL(CREATE_TABLE_SCORE);
+//        db.execSQL(CREATE_TABLE_TYPEFOOD);
+//        db.execSQL(CREATE_TABLE_USERPROFILE);
+//        db.execSQL(CREATE_TABLE_COMMENT);
+//        db.execSQL(CREATE_TABLE_COMMENTLISTRESTERAUNT);
+
     }
 
     @Override

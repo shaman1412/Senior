@@ -15,7 +15,6 @@ public class FoodProfile {
         public static final String Name = "Name";
         public static final String FoodPicture = "FoodPicture";
         public static final String FoodDetail = "FoodDetail";
-        public static final String TypeID = "TypeID";
     }
 
     private int id;
@@ -23,14 +22,12 @@ public class FoodProfile {
     private String name;
     private String foodPicture;
     private String foodDetail;
-    private int typeID;
 
-    public FoodProfile(int restaurantID, String name, String foodPicture, String foodDetail, int typeID){
+    public FoodProfile(int restaurantID, String name, String foodPicture, String foodDetail){
         this.restaurantID = restaurantID;
         this.name = name;
         this.foodPicture = foodPicture;
         this.foodDetail = foodDetail;
-        this.typeID = typeID;
     }
 
     public FoodProfile(){
@@ -77,14 +74,6 @@ public class FoodProfile {
 
     public void setFoodDetail(String foodDetail) {
         this.foodDetail = foodDetail;
-    }
-
-    public int getTypeID() {
-        return typeID;
-    }
-
-    public void setTypeID(int typeID) {
-        this.typeID = typeID;
     }
 
     //endregion

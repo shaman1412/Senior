@@ -18,6 +18,7 @@ public class Restaurant {
         public static final String RestaurantDetail = "RestaurantDetail";
         public static final String Score = "Score";
         public static final String UserID = "UserID";
+        public static final String TypeID = "TypeID";
     }
 
     private int id;
@@ -27,15 +28,17 @@ public class Restaurant {
     private String restaurantDetail;
     private int score;
     private int userID;
+    private int typeID;
 
     // Constructor
-    public Restaurant(String restaurantName, String restaurantPicture, String location, String restaurantDetail, int score, int userID) {
+    public Restaurant(String restaurantName, String restaurantPicture, String location, String restaurantDetail, int score, int userID, int typeID) {
         this.restaurantName = restaurantName;
         this.restaurantPicture = restaurantPicture;
         this.location = location;
         this.restaurantDetail = restaurantDetail;
         this.score = score;
         this.userID = userID;
+        this.typeID = typeID;
     }
 
     public  Restaurant(){
@@ -98,6 +101,14 @@ public class Restaurant {
 
     public void setUserID(int userID) {
         this.userID = userID;
+    }
+
+    public int getTypeID() {
+        return typeID;
+    }
+
+    public void setTypeID(int typeID) {
+        this.typeID = typeID;
     }
 
     //endregion
