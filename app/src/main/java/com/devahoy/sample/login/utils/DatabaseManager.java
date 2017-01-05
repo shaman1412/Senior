@@ -208,7 +208,7 @@ public class DatabaseManager extends SQLiteOpenHelper implements DatabaseManager
                 UserProfile.Column.Picture
         );
 
-        String CREATE_TABLE_COMMENT = String.format("create table if not exists %s (%s integer primary key autoincrement, %s integer not null, %s text not null, %s text not null);",
+        String CREATE_TABLE_COMMENT = String.format("create table if not exists %s (%s integer primary key autoincrement, %s integer not null, %s integer not null, %s text not null, %s text not null);",
                 Comment.TABLE,
                 Comment.Column.ID,
                 Comment.Column.UserID,
@@ -227,26 +227,26 @@ public class DatabaseManager extends SQLiteOpenHelper implements DatabaseManager
 
         db.execSQL(CREATE_TABLE_USER);
         db.execSQL(CREATE_TABLE_PROMOTION);
-//        db.execSQL(CREATE_TABLE_BOOKMARK);
-//        db.execSQL(CREATE_TABLE_BOOKMARKLIST);
-//        db.execSQL(CREATE_TABLE_FOODPROFILE);
-//        db.execSQL(CREATE_TABLE_HISTORY);
-//        db.execSQL(CREATE_TABLE_PARTY);
-//        db.execSQL(CREATE_TALBLE_PARTYLIST);
-//        db.execSQL(CREATE_TABLE_PROMOTIONLIST);
-//        db.execSQL(CREATE_TABLE_REPORT);
-//        db.execSQL(CREATE_TABLE_REPORTLIST);
-//        db.execSQL(CREATE_TABLE_RESTERAUNT);
-//        db.execSQL(CREATE_TABLE_RESTERRAUNTLIST);
-//        db.execSQL(CREATE_TABLE_REVIEW);
-//        db.execSQL(CREATE_TABLE_REVIEWLIST);
-//        db.execSQL(CREATE_TABLE_ROOM);
-//        db.execSQL(CREATE_TABLE_ROOMLIST);
-//        db.execSQL(CREATE_TABLE_SCORE);
-//        db.execSQL(CREATE_TABLE_TYPEFOOD);
-//        db.execSQL(CREATE_TABLE_USERPROFILE);
-//        db.execSQL(CREATE_TABLE_COMMENT);
-//        db.execSQL(CREATE_TABLE_COMMENTLISTRESTERAUNT);
+        db.execSQL(CREATE_TABLE_BOOKMARK);
+        db.execSQL(CREATE_TABLE_BOOKMARKLIST);
+        db.execSQL(CREATE_TABLE_FOODPROFILE);
+        db.execSQL(CREATE_TABLE_HISTORY);
+        db.execSQL(CREATE_TABLE_PARTY);
+        db.execSQL(CREATE_TALBLE_PARTYLIST);
+        db.execSQL(CREATE_TABLE_PROMOTIONLIST);
+        db.execSQL(CREATE_TABLE_REPORT);
+        db.execSQL(CREATE_TABLE_REPORTLIST);
+        db.execSQL(CREATE_TABLE_RESTERAUNT);
+        db.execSQL(CREATE_TABLE_RESTERRAUNTLIST);
+        db.execSQL(CREATE_TABLE_REVIEW);
+        db.execSQL(CREATE_TABLE_REVIEWLIST);
+        db.execSQL(CREATE_TABLE_ROOM);
+        db.execSQL(CREATE_TABLE_ROOMLIST);
+        db.execSQL(CREATE_TABLE_SCORE);
+        db.execSQL(CREATE_TABLE_TYPEFOOD);
+        db.execSQL(CREATE_TABLE_USERPROFILE);
+        db.execSQL(CREATE_TABLE_COMMENT);
+        db.execSQL(CREATE_TABLE_COMMENTLISTRESTERAUNT);
 
     }
 
