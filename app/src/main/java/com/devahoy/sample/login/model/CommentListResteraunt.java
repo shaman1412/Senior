@@ -8,7 +8,7 @@ import android.provider.BaseColumns;
 
 public class CommentListResteraunt {
 
-    public static final String TABLE = "comment";
+    public static final String TABLE = "comment_list_resteraunt";
 
     public class Column{
         public static final String ID = BaseColumns._ID;
