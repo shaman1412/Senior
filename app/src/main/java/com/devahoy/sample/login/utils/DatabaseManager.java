@@ -216,7 +216,7 @@ public class DatabaseManager extends SQLiteOpenHelper implements DatabaseManager
                 Comment.Column.Datetime
         );
 
-        String CREATE_TABLE_COMMENTLISTRESTERAUNT = String.format("create table if not exists %s (%s integer primary key autoincrement, %s integer not null, %s integer not null",
+        String CREATE_TABLE_COMMENTLISTRESTERAUNT = String.format("create table if not exists %s (%s integer primary key autoincrement, %s integer not null, %s integer not null);",
                 CommentListResteraunt.TABLE,
                 CommentListResteraunt.Column.ID,
                 CommentListResteraunt.Column.CommentID,
