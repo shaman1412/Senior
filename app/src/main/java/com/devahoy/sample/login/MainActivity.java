@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.text.TextUtils;
@@ -14,6 +15,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.devahoy.sample.login.model.Promotion;
 import com.devahoy.sample.login.model.UserAuthen;
 import com.devahoy.sample.login.utils.DatabaseManager;
 
@@ -22,6 +24,7 @@ public class MainActivity extends ActionBarActivity {
     Button mChangePassword;
     Button mAddPromotion;
     Button mLogout;
+    Button mShowPromotion;
     TextView mUsername;
     private DatabaseManager mManager;
     UserAuthen mUserAuthen;
@@ -40,6 +43,7 @@ public class MainActivity extends ActionBarActivity {
         mUsername = (TextView) findViewById(R.id.say_hi);
         mAddPromotion = (Button) findViewById(R.id.add_promotion);
         mLogout = (Button) findViewById(R.id.logout);
+        mShowPromotion = (Button) findViewById(R.id.show_promotion);
 
         Bundle args = getIntent().getExtras();
 
@@ -74,6 +78,14 @@ public class MainActivity extends ActionBarActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(mContext, LoginActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        mShowPromotion.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(mContext, PromotionView.class);
                 startActivity(intent);
             }
         });

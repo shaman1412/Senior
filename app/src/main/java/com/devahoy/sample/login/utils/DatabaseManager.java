@@ -339,5 +339,15 @@ public class DatabaseManager extends SQLiteOpenHelper implements DatabaseManager
 
         return result;
     }
+
+    public Cursor getAllPromotion()
+    {
+        mDatabase = this.getWritableDatabase();
+        return mDatabase.query(Promotion.TABLE, new String[] {Promotion.Column.ID, Promotion.Column.Title, Promotion.Column.TitlePicture, Promotion.Column.StartDate, Promotion.Column.EndDate, Promotion.Column.PromotionDetail, Promotion.Column.Location}, null, null, null, null, null);
+    }
+
+    public void close(){
+        mDatabase.close();
+    }
     //endregion
 }
