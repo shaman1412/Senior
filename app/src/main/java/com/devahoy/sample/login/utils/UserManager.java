@@ -7,6 +7,8 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
+import com.devahoy.sample.login.model.Marker;
+import com.devahoy.sample.login.model.Promotion;
 import com.devahoy.sample.login.model.User;
 
 public class UserManager extends SQLiteOpenHelper implements UserManagerHelper {
@@ -26,10 +28,32 @@ public class UserManager extends SQLiteOpenHelper implements UserManagerHelper {
                 User.Column.USERNAME,
                 User.Column.PASSWORD
         );
+        String CREATE_TABLE_MARKER = String.format("CREATE TABLE %s" +
+                        "(%s INTEGER PRIMARY KEY AUTOINCREMENT, %s TEXT, %s TEXT, %s TEXT)",
+                Marker.TABLE,
+                Marker.column.ID,
+                Marker.column.TITLE,
+                Marker.column.SNIPPET,
+                Marker.column.POSITION
+        );
+        String CREATE_TABLE_PROMOTION = String.format("CREATE TABLE %s " +
+                        "(%s INTEGER PRIMARY KEY AUTOINCREMENT, %s TEXT, %s TEXT, %s TEXT, %s TEXT, %s TEXT, %s TEXT)" ,
+                Promotion.TABLE,
+                Promotion.Column.ID,
+                Promotion.Column.Title,
+                Promotion.Column.TitlePicture,
+                Promotion.Column.StartDate,
+                Promotion.Column.EndDate,
+                Promotion.Column.PromotionDetail,
+                Promotion.Column.Location
+        );
 
+        db.execSQL(CREATE_TABLE_PROMOTION);
+        db.execSQL(CREATE_TABLE_MARKER);
         db.execSQL(CREATE_TABLE_USER);
 
         Log.i(TAG, CREATE_TABLE_USER);
+
     }
 
     @Override

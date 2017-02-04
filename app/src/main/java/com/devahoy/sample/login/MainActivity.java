@@ -18,7 +18,7 @@ import com.devahoy.sample.login.utils.UserManager;
 
 public class MainActivity extends ActionBarActivity {
 
-    Button mChangePassword;
+    Button mChangePassword,Go_to_map,Go_to_promotion,Go_to_provider;
     TextView mUsername;
     private UserManager mManager;
     User mUser;
@@ -33,7 +33,9 @@ public class MainActivity extends ActionBarActivity {
 
         mChangePassword = (Button) findViewById(R.id.change_password);
         mUsername = (TextView) findViewById(R.id.say_hi);
-
+        Go_to_map = (Button)findViewById(R.id.go_to_map);
+        Go_to_promotion = (Button)findViewById(R.id.go_to_pro);
+        Go_to_provider = (Button)findViewById(R.id.go_to_p);
         Bundle args = getIntent().getExtras();
 
         if (null == args) {
@@ -52,6 +54,27 @@ public class MainActivity extends ActionBarActivity {
             @Override
             public void onClick(View v) {
                 showDialogPassword();
+            }
+        });
+
+        Go_to_map.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v){
+                goToMap();
+            }
+        });
+
+        Go_to_promotion.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                goToPro();
+            }
+        });
+
+        Go_to_provider.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                gotTop();
             }
         });
     }
@@ -88,5 +111,17 @@ public class MainActivity extends ActionBarActivity {
         Intent intent = new Intent(this, LoginActivity.class);
         startActivity(intent);
         finish();
+    }
+    private  void goToMap(){
+        Intent intent = new Intent(this,MapsActivity.class);
+        startActivity(intent);
+    }
+    private  void goToPro(){
+        Intent intent = new Intent(this,HomeActivity.class);
+        startActivity(intent);
+    }
+    private  void gotTop(){
+        Intent intent = new Intent(this,LocationProvider.class);
+        startActivity(intent);
     }
 }

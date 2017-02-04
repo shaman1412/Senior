@@ -11,6 +11,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
+import com.devahoy.sample.login.LoginActivity;
 import com.devahoy.sample.login.model.Promotion;
 
 public class PromotionManager extends SQLiteOpenHelper {
@@ -42,14 +43,8 @@ public class PromotionManager extends SQLiteOpenHelper {
                 Promotion.Column.Location
         );
 
-        try{
             db.execSQL(CREATE_TABLE_PROMOTION);
-
             Log.i(TAG, CREATE_TABLE_PROMOTION);
-        }
-        catch (SQLException e){
-            e.printStackTrace();
-        }
 
     }
 
