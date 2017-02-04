@@ -31,27 +31,35 @@
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/change_password"
-        android:id="@+id/change_password"
+        android:text="Add Promotion"
+        android:id="@+id/add_promotion"
         android:layout_marginTop="32dp"
         android:layout_gravity="center"/>
 
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/Go_Map"
-        android:id="@+id/go_to_map"
-        />
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Go to promo"
-        android:id="@+id/go_to_pro"/>
+        android:text="@string/change_password"
+        android:id="@+id/change_password"
+        android:layout_marginTop="16dp"
+        android:layout_gravity="center"/>
 
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Go to provider"
+        android:text="Logout"
+        android:id="@+id/logout"
+        android:layout_marginTop="16dp"
+        android:layout_gravity="center"/>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="List Promotion"
+        android:id="@+id/show_promotion"
+        android:layout_marginTop="16dp"
+        android:layout_gravity="center"/>
+
         android:id="@+id/go_to_p"/>
 
 

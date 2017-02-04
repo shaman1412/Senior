@@ -8,8 +8,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.devahoy.sample.login.model.User;
-import com.devahoy.sample.login.utils.UserManager;
+import com.devahoy.sample.login.model.UserAuthen;
+import com.devahoy.sample.login.utils.DatabaseManager;
 
 public class RegisterActivity extends ActionBarActivity {
 
@@ -19,14 +19,14 @@ public class RegisterActivity extends ActionBarActivity {
     private Button mRegister;
 
     private Context mContext;
-    private UserManager mManager;
+    private DatabaseManager mManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
 
-        mManager = new UserManager(this);
+        mManager = new DatabaseManager(this);
         mContext = this;
 
         mUsername = (EditText) findViewById(R.id.username);
@@ -43,8 +43,8 @@ public class RegisterActivity extends ActionBarActivity {
                 String confirmPassword = mConfirmPassword.getText().toString();
 
                 if (password.equals(confirmPassword)) {
-                    User user = new User(username, password);
-                    long rowId = mManager.registerUser(user);
+                    UserAuthen userAuthen = new UserAuthen(username, password);
+                    long rowId = mManager.registerUser(userAuthen);
 
                     if (rowId == -1) {
                         String message = getString(R.string.register_error_message);

@@ -1,8 +1,10 @@
 package com.devahoy.sample.login;
 
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.text.TextUtils;
@@ -13,29 +15,36 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.devahoy.sample.login.model.User;
-import com.devahoy.sample.login.utils.UserManager;
+import com.devahoy.sample.login.model.Promotion;
+import com.devahoy.sample.login.model.UserAuthen;
+import com.devahoy.sample.login.utils.DatabaseManager;
 
 public class MainActivity extends ActionBarActivity {
 
     Button mChangePassword,Go_to_map,Go_to_promotion,Go_to_provider;
+    Button mAddPromotion;
+    Button mLogout;
+    Button mShowPromotion;
     TextView mUsername;
-    private UserManager mManager;
-    User mUser;
+    private DatabaseManager mManager;
+    UserAuthen mUserAuthen;
+    Context mContext;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        mManager = new UserManager(this);
-        mUser = new User();
+        mManager = new DatabaseManager(this);
+        mContext = this;
+        mUserAuthen = new UserAuthen();
 
         mChangePassword = (Button) findViewById(R.id.change_password);
         mUsername = (TextView) findViewById(R.id.say_hi);
-        Go_to_map = (Button)findViewById(R.id.go_to_map);
-        Go_to_promotion = (Button)findViewById(R.id.go_to_pro);
-        Go_to_provider = (Button)findViewById(R.id.go_to_p);
+        mAddPromotion = (Button) findViewById(R.id.add_promotion);
+        mLogout = (Button) findViewById(R.id.logout);
+        mShowPromotion = (Button) findViewById(R.id.show_promotion);
+
         Bundle args = getIntent().getExtras();
 
         if (null == args) {
@@ -44,10 +53,10 @@ public class MainActivity extends ActionBarActivity {
             finish();
         } else {
             mUsername.setText(getString(R.string.say_hi) + " " +
-                    args.getString(User.Column.USERNAME));
+                    args.getString(UserAuthen.Column.USERNAME));
 
-            mUser.setId(args.getInt(User.Column.ID));
-            mUser.setUsername(args.getString(User.Column.USERNAME));
+            mUserAuthen.setId(args.getInt(UserAuthen.Column.ID));
+            mUserAuthen.setUsername(args.getString(UserAuthen.Column.USERNAME));
         }
 
         mChangePassword.setOnClickListener(new View.OnClickListener() {
@@ -57,24 +66,27 @@ public class MainActivity extends ActionBarActivity {
             }
         });
 
-        Go_to_map.setOnClickListener(new View.OnClickListener(){
+        mAddPromotion.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v){
-                goToMap();
+            public void onClick(View v) {
+                Intent intent = new Intent(mContext, PromotionActivity.class);
+                startActivity(intent);
             }
         });
 
-        Go_to_promotion.setOnClickListener(new View.OnClickListener() {
+        mLogout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                goToPro();
+                Intent intent = new Intent(mContext, LoginActivity.class);
+                startActivity(intent);
             }
         });
 
-        Go_to_provider.setOnClickListener(new View.OnClickListener() {
+        mShowPromotion.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
-                gotTop();
+                Intent intent = new Intent(mContext, PromotionView.class);
+                startActivity(intent);
             }
         });
     }
@@ -94,8 +106,8 @@ public class MainActivity extends ActionBarActivity {
             public void onClick(DialogInterface dialog, int which) {
                 String password = newPassword.getText().toString();
                 if(!TextUtils.isEmpty(password)) {
-                    mUser.setPassword(password);
-                    mManager.changePassword(mUser);
+                    mUserAuthen.setPassword(password);
+                    mManager.changePassword(mUserAuthen);
                     Toast.makeText(getApplicationContext(),
                             getString(R.string.change_password_message),
                             Toast.LENGTH_SHORT).show();

@@ -12,12 +12,12 @@ public class Promotion {
 
     public class Column {
         public static final String ID = BaseColumns._ID;
-        public static final String Title = "title";
-        public static final String TitlePicture = "title_picture_link";
-        public static final String StartDate = "start_date";
-        public static final String EndDate = "end_date";
-        public static final String PromotionDetail = "detail";
-        public static final String Location = "google_map_link";
+        public static final String Title = "Title";
+        public static final String TitlePicture = "TitlePicture";
+        public static final String StartDate = "StartDate";
+        public static final String EndDate = "EndDate";
+        public static final String PromotionDetail = "PromotionDetail";
+        public static final String Location = "Location";
     }
 
     private int id;
@@ -43,6 +43,15 @@ public class Promotion {
     }
 
     //region getter setter
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
     public String getTitle() {
         return title;
     }

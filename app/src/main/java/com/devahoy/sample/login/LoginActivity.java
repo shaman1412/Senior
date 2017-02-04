@@ -10,8 +10,8 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.devahoy.sample.login.model.User;
-import com.devahoy.sample.login.utils.UserManager;
+import com.devahoy.sample.login.model.UserAuthen;
+import com.devahoy.sample.login.utils.DatabaseManager;
 
 
 public class LoginActivity extends ActionBarActivity {
@@ -22,7 +22,7 @@ public class LoginActivity extends ActionBarActivity {
     private TextView mRegister;
     private Context mContext;
 
-    private UserManager mManager;
+    private DatabaseManager mManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,7 +30,7 @@ public class LoginActivity extends ActionBarActivity {
 
         setContentView(R.layout.activity_login);
 
-        mManager = new UserManager(this);
+        mManager = new DatabaseManager(this);
 
         mContext = this;
 
@@ -59,17 +59,17 @@ public class LoginActivity extends ActionBarActivity {
         String username = mUsername.getText().toString().trim().toLowerCase();
         String password = mPassword.getText().toString().trim();
 
-        User user = new User(username, password);
+        UserAuthen userAuthen = new UserAuthen(username, password);
 
-        User validateUser = mManager.checkUserLogin(user);
+        UserAuthen validateUserAuthen = mManager.checkUserLogin(userAuthen);
 
-        if (null == validateUser) {
+        if (null == validateUserAuthen) {
             String message = getString(R.string.login_error_message);
             Toast.makeText(mContext, message, Toast.LENGTH_SHORT).show();
         } else {
             Intent intent = new Intent(mContext, MainActivity.class);
-            intent.putExtra(User.Column.USERNAME, validateUser.getUsername());
-            intent.putExtra(User.Column.ID, validateUser.getId());
+            intent.putExtra(UserAuthen.Column.USERNAME, validateUserAuthen.getUsername());
+            intent.putExtra(UserAuthen.Column.ID, validateUserAuthen.getId());
             startActivity(intent);
             finish();
         }
