@@ -42,7 +42,7 @@ public class MainActivity extends ActionBarActivity {
         mAddPromotion = (Button) findViewById(R.id.add_promotion);
         mLogout = (Button) findViewById(R.id.logout);
         mShowPromotion = (Button) findViewById(R.id.show_promotion);
-
+        Go_to_provider = (Button)findViewById(R.id.lopro);
         Go_to_map = (Button)findViewById(R.id.goTomap);
 
         Bundle args = getIntent().getExtras();
@@ -93,6 +93,13 @@ public class MainActivity extends ActionBarActivity {
             @Override
             public void onClick(View v){
                 Intent intent = new Intent(mContext,MapsActivity.class);
+                startActivity(intent);
+            }
+        });
+        Go_to_provider.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(mContext,TestActivity.class);
                 startActivity(intent);
             }
         });

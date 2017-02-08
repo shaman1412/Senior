@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.devahoy.sample.Faff">
+    package="com.devahoy.sample.login">
 
     <!--
          The ACCESS_COARSE/FINE_LOCATION permissions are not required to use
@@ -9,14 +9,13 @@
     -->
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
-    <uses-permission android:name="com.google.android.providers.gsf.permission.READ_GSERVICES" />
-    <uses-permission android:name="android.permission.INTERNET" />
-
+    <uses-permission android:name="com.google.android.providers.gsf.permission.READ_GSERVICES"/>
+    <uses-permission android:name="android.permission.INTERNET"/>
     <application
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
         android:label="Faff"
-        android:theme="@style/my1">
+        android:theme="@style/AppTheme">
         <activity
             android:name=".LoginActivity"
             android:label="Faff">
@@ -26,19 +25,24 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".RegisterActivity" />
-        <activity android:name=".MainActivity" />
-        <activity android:name=".PromotionActivity" />
-        <activity android:name=".PromotionView" />
+        <activity
+            android:name=".RegisterActivity"
+            android:label="@string/app_name" />
+        <activity
+            android:name=".MainActivity"
+            android:label="@string/app_name" />
+<<<<<<< HEAD
+        <activity android:name=".HomeActivity">
 
-        <!--
+            <!--
                  <intent-filter>
              <action android:name="android.intent.action.MAIN" />
 
 
              <category android:name="android.intent.category.LAUNCHER" />
              </intent-filter>
-        -->
+            -->
+        </activity>
         <!--
              The API key for Google Maps-based APIs is defined as a string resource.
              (See the file "res/values/google_maps_api.xml").
@@ -55,7 +59,13 @@
             android:name=".MapsActivity"
             android:label="@string/title_activity_maps" />
         <activity android:name=".LocationProvider" />
-        <activity android:name=".TestActivity"></activity>
+        <activity android:name=".Main2Activity"></activity>
+=======
+        <activity
+            android:name=".PromotionActivity"
+            android:label="promotion" />
+        <activity android:name=".PromotionView"></activity>
+>>>>>>> c13c4ff7a8679a24357ea2a64ad61d8c737c3119
     </application>
 
 </manifest>

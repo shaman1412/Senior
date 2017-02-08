@@ -15,11 +15,12 @@ import com.devahoy.sample.Faff.model.Marker;
 
 import java.util.ArrayList;
 
-import static com.google.android.gms.wearable.DataMap.TAG;
+
+
 
 public class MapManager extends SQLiteOpenHelper {
 
-    public static final String DATABASE_NAME = "ahoy_login";
+    public static final String DATABASE_NAME = "Faff_DB";
 
     private SQLiteDatabase mdatabase;
 
@@ -39,7 +40,7 @@ public class MapManager extends SQLiteOpenHelper {
         );
 
             db.execSQL(CREATE_TABLE_MARKER);
-            Log.i(TAG, CREATE_TABLE_MARKER);
+
 
     }
     @Override
