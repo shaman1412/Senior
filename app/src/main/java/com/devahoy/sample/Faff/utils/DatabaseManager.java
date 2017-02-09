@@ -6,6 +6,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteException;
 import android.database.sqlite.SQLiteOpenHelper;
 
 import com.devahoy.sample.Faff.model.Bookmark;
@@ -53,7 +54,7 @@ public class DatabaseManager extends SQLiteOpenHelper implements DatabaseManager
                 UserAuthen.Column.PASSWORD
         );
 
-        String CREATE_TABLE_PROMOTION = String.format("CREATE TABLE IF NOT EXISTS %s (%s INTEGER PRIMARY KEY AUTOINCREMENT, %s TEXT not null, %s TEXT not null, %s TEXT not null, %s TEXT not null, %s TEXT not null, %s TEXT not null);" ,
+        String CREATE_TABLE_PROMOTION = String.format("CREATE TABLE IF NOT EXISTS %s (%s INTEGER PRIMARY KEY AUTOINCREMENT, %s TEXT not null, %s BLOB not null, %s TEXT not null, %s TEXT not null, %s TEXT not null, %s TEXT not null);" ,
                 Promotion.TABLE,
                 Promotion.Column.ID,
                 Promotion.Column.Title,

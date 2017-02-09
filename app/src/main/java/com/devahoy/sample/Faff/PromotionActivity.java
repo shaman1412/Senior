@@ -2,28 +2,44 @@ package com.devahoy.sample.Faff;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
+import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.support.v7.app.ActionBarActivity;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.devahoy.sample.Faff.model.Promotion;
 import com.devahoy.sample.Faff.utils.DatabaseManager;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+
 public class PromotionActivity extends Activity {
 
     private Button addPromotion;
     private EditText Title;
-    private EditText TitlePicture;
+    private ImageView img;
+    private Button uploadPicture;
+    private EditText TitlePictureName;
     private EditText StartDate;
     private EditText EndDate;
     private EditText PromotionDetail;
     private EditText Location;
     private Context mContext;
+
+    private static final int request_code = 1;
+    private String imgPath;
+
 
     DatabaseManager mManager;
 
@@ -41,39 +57,85 @@ public class PromotionActivity extends Activity {
 
         addPromotion = (Button) findViewById(R.id.addPromotion);
         Title = (EditText) findViewById(R.id.title);
-        TitlePicture = (EditText) findViewById(R.id.titlePicture);
+        img = (ImageView) findViewById(R.id.image);
+        uploadPicture = (Button) findViewById(R.id.titlePicture);
+        TitlePictureName = (EditText) findViewById(R.id.titlePictureName);
         StartDate = (EditText) findViewById(R.id.startDate);
         EndDate = (EditText) findViewById(R.id.endDate);
         PromotionDetail = (EditText) findViewById(R.id.promotionDetail);
         Location = (EditText) findViewById(R.id.location);
 
-        addPromotion.setOnClickListener(new View.OnClickListener() {
+        uploadPicture.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                AddPromotion();
+                Intent sdintent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                //sdintent.setType("image/*");
+                startActivityForResult(sdintent, request_code);
             }
         });
+
+//        addPromotion.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                AddPromotion();
+//            }
+//        });
     }
 
-    private void AddPromotion() {
-        String title = Title.getText().toString();
-        String titlePicture = TitlePicture.getText().toString();
-        String startDate = StartDate.getText().toString();
-        String endDate = EndDate.getText().toString();
-        String promotionDetail = PromotionDetail.getText().toString();
-        String location = Location.getText().toString();
-
-        Promotion promotion = new Promotion(title, titlePicture, startDate, endDate, promotionDetail,location);
-
-        long rowId = mManager.addPromotion(promotion);
-
-        if (rowId == -1) {
-            String message = "Add promotion failed try again";
-            Toast.makeText(mContext, message, Toast.LENGTH_SHORT).show();
-        } else {
-            String message = "Add promotion successful";
-            Toast.makeText(mContext, message, Toast.LENGTH_SHORT).show();
-            finish();
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data)
+    {
+        super.onActivityResult(requestCode,resultCode,data);
+        if(resultCode==RESULT_OK)
+        {
+            if(requestCode == request_code && data != null)
+            {
+                Uri selectedImg = data.getData();
+                String[] filePathColumn = {MediaStore.Images.Media.DATA};
+                Cursor cur = getContentResolver().query(selectedImg,filePathColumn,null,null,null);
+                if(cur==null) imgPath=null;
+                else
+                {
+                    int column_index = cur.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
+                    cur.moveToFirst();
+                    imgPath = cur.getString(column_index);
+                    cur.close();
+                }
+                img.setImageURI(selectedImg);
+                Bitmap bitSelectedImg = BitmapFactory.decodeFile(imgPath);
+                img.setImageBitmap(bitSelectedImg);
+                ByteArrayOutputStream stream = new ByteArrayOutputStream();
+                bitSelectedImg.compress(Bitmap.CompressFormat.PNG, 100, stream);
+                byte[] byteImg = stream.toByteArray();
+            }
         }
+
+
     }
+
+//    private void AddPromotion() {
+//        String title = Title.getText().toString();
+//        String titlePictureName = TitlePictureName
+//
+//        //get img from url
+//        //byte[] titlePicture = TitlePicture.get;
+//
+//        String startDate = StartDate.getText().toString();
+//        String endDate = EndDate.getText().toString();
+//        String promotionDetail = PromotionDetail.getText().toString();
+//        String location = Location.getText().toString();
+//
+//        Promotion promotion = new Promotion(title, titlePicture, startDate, endDate, promotionDetail,location);
+//
+//        long rowId = mManager.addPromotion(promotion);
+//
+//        if (rowId == -1) {
+//            String message = "Add promotion failed try again";
+//            Toast.makeText(mContext, message, Toast.LENGTH_SHORT).show();
+//        } else {
+//            String message = "Add promotion successful";
+//            Toast.makeText(mContext, message, Toast.LENGTH_SHORT).show();
+//            finish();
+//        }
+//    }
 }

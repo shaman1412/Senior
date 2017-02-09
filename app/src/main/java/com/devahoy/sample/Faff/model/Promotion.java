@@ -14,6 +14,7 @@ public class Promotion {
         public static final String ID = BaseColumns._ID;
         public static final String Title = "Title";
         public static final String TitlePicture = "TitlePicture";
+        public static final String TitlePictureName = "TitlePictureName";
         public static final String StartDate = "StartDate";
         public static final String EndDate = "EndDate";
         public static final String PromotionDetail = "PromotionDetail";
@@ -22,16 +23,18 @@ public class Promotion {
 
     private int id;
     private String title;
-    private String titlePictureLink;
+    private byte[] titlePictureLink;
+    private String titlePictureName;
     private String startDate;
     private String endDate;
     private String promotionDetail;
     private String googleMapLink;
 
     // Constructor
-    public Promotion(String title, String titlePictureLink, String startDate, String endDate, String promotionDetail, String googleMapLink) {
+    public Promotion(String title, byte[] titlePictureLink, String titlePictureName, String startDate, String endDate, String promotionDetail, String googleMapLink) {
         this.title = title;
         this.titlePictureLink = titlePictureLink;
+        this.titlePictureName = titlePictureName;
         this.startDate = startDate;
         this.endDate = endDate;
         this.promotionDetail = promotionDetail;
@@ -60,12 +63,20 @@ public class Promotion {
         this.title = title;
     }
 
-    public String getTitlePictureLink() {
+    public byte[] getTitlePictureLink() {
         return titlePictureLink;
     }
 
-    public void setTitlePictureLink(String titlePictureLink) {
+    public void setTitlePictureLink(byte[] titlePictureLink) {
         this.titlePictureLink = titlePictureLink;
+    }
+
+    public String getTitlePictureName() {
+        return titlePictureName;
+    }
+
+    public void setTitlePictureName(String titlePictureName) {
+        this.titlePictureName = titlePictureName;
     }
 
     public String getStartDate() {
