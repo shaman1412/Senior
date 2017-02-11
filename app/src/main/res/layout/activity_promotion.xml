@@ -12,80 +12,83 @@
     tools:context="com.devahoy.sample.Faff.PromotionActivity">
 
     <ScrollView
-        xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="fill_parent"
-        android:layout_height="fill_parent">
+        android:layout_height="wrap_content"
+        android:fillViewport="true">
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="480dp"
-            android:orientation="vertical"
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="16dp"
+        android:gravity="center"
+        android:layout_centerInParent="true"
+        android:background="#ffffffff">
+
+        <EditText android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:padding="16dp"
-            android:gravity="center"
-            android:layout_centerInParent="true"
-            android:background="#ffffffff">
+            android:id="@+id/title"
+            android:hint="title"
+            android:layout_alignParentTop="true"/>
 
-            <EditText android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:padding="16dp"
-                android:id="@+id/title"
-                android:hint="title"/>
+        <ListView
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/android:list"/>
 
-            <ImageView android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:padding="16dp"
-                android:id="@+id/image"
-                android:hint="image"/>
 
-            <Button android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:padding="16dp"
-                android:id="@+id/titlePicture"
-                android:hint="titlePictureLink"/>
+        <Button android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/titlePicture"
+            android:hint="titlePicture"/>
 
-            <EditText android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:padding="16dp"
-                android:id="@+id/titlePictureName"
-                android:hint="titlePictureName"/>
+        <EditText android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="16dp"
+            android:id="@+id/titlePictureName"
+            android:hint="titlePictureName"/>
 
-            <EditText android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:padding="16dp"
-                android:id="@+id/startDate"
-                android:hint="startDate"/>
+        <EditText android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="16dp"
+            android:id="@+id/startDate"
+            android:hint="startDate"
+            android:layout_below="@id/titlePictureName"/>
 
-            <EditText android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:padding="16dp"
-                android:id="@+id/endDate"
-                android:hint="endDate"/>
+        <EditText android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="16dp"
+            android:id="@+id/endDate"
+            android:hint="endDate"
+            android:layout_below="@id/startDate"/>
 
-            <EditText android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:padding="16dp"
-                android:id="@+id/promotionDetail"
-                android:hint="promotionDetail"/>
+        <EditText android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="16dp"
+            android:id="@+id/promotionDetail"
+            android:hint="promotionDetail"
+            android:layout_below="@id/endDate"/>
 
-            <EditText android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:padding="16dp"
-                android:id="@+id/location"
-                android:hint="googleMapLink"/>
+        <EditText android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="16dp"
+            android:id="@+id/location"
+            android:hint="googleMapLink"
+            android:layout_below="@id/promotionDetail"/>
 
-            <Button android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/addPromotion"
-                android:background="#ff3eaff9"
-                android:textColor="#ffffff"
-                android:text="addPromotion"
-                android:textSize="18sp"
-                android:layout_marginTop="16dp"/>
+        <Button android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/addPromotion"
+            android:background="#ff3eaff9"
+            android:textColor="#ffffff"
+            android:text="addPromotion"
+            android:textSize="18sp"
+            android:layout_marginTop="16dp"
+            android:layout_below="@id/location"/>
 
-        </LinearLayout>
-
+    </LinearLayout>
     </ScrollView>
-
 </RelativeLayout>
 
 

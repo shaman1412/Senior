@@ -33,6 +33,8 @@ import com.devahoy.sample.Faff.model.TypeFood;
 import com.devahoy.sample.Faff.model.UserAuthen;
 import com.devahoy.sample.Faff.model.UserProfile;
 
+import java.util.Arrays;
+
 public class DatabaseManager extends SQLiteOpenHelper implements DatabaseManagerHelper {
     public static final String TAG = DatabaseManager.class.getSimpleName();
     private SQLiteDatabase mDatabase;
@@ -340,7 +342,13 @@ public class DatabaseManager extends SQLiteOpenHelper implements DatabaseManager
 
         ContentValues values = new ContentValues();
         values.put(Promotion.Column.Title, promotion.getTitle());
-        values.put(Promotion.Column.TitlePicture, promotion.getTitlePictureLink());
+
+        //for debug;
+        int[] temp = promotion.getPicID();
+        Arrays.sort(temp);
+        String tmp = Arrays.toString(temp);
+
+        values.put(Promotion.Column.TitlePicture, tmp);
         values.put(Promotion.Column.StartDate, promotion.getStartDate());
         values.put(Promotion.Column.EndDate, promotion.getEndDate());
         values.put(Promotion.Column.PromotionDetail, promotion.getPromotionDetail());
