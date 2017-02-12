@@ -11,6 +11,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.v7.app.ActionBarActivity;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
@@ -22,6 +23,7 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import com.devahoy.sample.Faff.model.Promotion;
+import com.devahoy.sample.Faff.model.PromotionPicture;
 import com.devahoy.sample.Faff.utils.DatabaseManager;
 import com.devahoy.sample.Faff.utils.PromotionArrayAdapter;
 
@@ -33,10 +35,11 @@ import static android.R.id.list;
 
 public class PromotionActivity extends ListActivity {
 
+    public static final String TAG = PromotionActivity.class.getSimpleName();
+
     private Button addPromotion;
     private EditText Title;
     private Button uploadPicture;
-    //private Button cancel;
     private EditText TitlePictureName;
     private EditText StartDate;
     private EditText EndDate;
@@ -44,11 +47,13 @@ public class PromotionActivity extends ListActivity {
     private EditText Location;
     private Context mContext;
 
-    private static final int request_code = 1;
+    private static final int request_code = 1;                          //request code for OnClick result
 
-    public static ArrayList<Bitmap> bmap = new ArrayList<>();
-    public static ArrayList<String> imgPath = new ArrayList<>();
-    public static int image_count=0;
+    public static ArrayList<Bitmap> bmap = new ArrayList<>();           //keep bitmap data
+    public static ArrayList<String> imgPath = new ArrayList<>();        //keep uri
+    public static ArrayList<byte[]> imgByte = new ArrayList<>();        //keep byte data
+
+    public static int image_count=0;                                    //number of images
 
     DatabaseManager mManager;
     public static PromotionArrayAdapter adapter;
@@ -68,17 +73,13 @@ public class PromotionActivity extends ListActivity {
         addPromotion = (Button) findViewById(R.id.addPromotion);
         Title = (EditText) findViewById(R.id.title);
         uploadPicture = (Button) findViewById(R.id.titlePicture);
-
-        //cancel = (Button) findViewById(R.id.cancelUpload);
-
         TitlePictureName = (EditText) findViewById(R.id.titlePictureName);
         StartDate = (EditText) findViewById(R.id.startDate);
         EndDate = (EditText) findViewById(R.id.endDate);
         PromotionDetail = (EditText) findViewById(R.id.promotionDetail);
         Location = (EditText) findViewById(R.id.location);
 
-        //cancel.setVisibility(View.GONE);
-
+        //Need edition for more folder gallery to select
         uploadPicture.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -88,22 +89,17 @@ public class PromotionActivity extends ListActivity {
             }
         });
 
-//        cancel.setOnClickListener(new View.OnClickListener(){
-//            @Override
-//            public void onClick(View v){
-//                img.setImageDrawable(null);
-//                cancel.setVisibility(View.GONE);
-//                image_count--;
-//            }
-//        });
 
-
-//        addPromotion.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                AddPromotion();
-//            }
-//        });
+        addPromotion.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AddPromotion();
+                bmap.clear();
+                imgPath.clear();
+                imgByte.clear();
+                image_count = 0;
+            }
+        });
     }
 
     @Override
@@ -125,9 +121,11 @@ public class PromotionActivity extends ListActivity {
                     imgPath.add(cur.getString(column_index));
                     cur.close();
                 }
-
-                //img.setImageURI(selectedImg);
                 bmap.add(BitmapFactory.decodeFile(imgPath.get(image_count)));
+                //convert to byte
+                ByteArrayOutputStream stream = new ByteArrayOutputStream();
+                bmap.get(image_count).compress(Bitmap.CompressFormat.PNG, 100, stream);
+                imgByte.add(stream.toByteArray());
                 image_count++;
 
                 adapter = new PromotionArrayAdapter(this, bmap, bmap);
@@ -154,42 +152,43 @@ public class PromotionActivity extends ListActivity {
                     }
                 });
 
-
                 //img.setImageBitmap(bitSelectedImg);
-
-                //convert to bynary
-//                ByteArrayOutputStream stream = new ByteArrayOutputStream();
-//                bitSelectedImg.compress(Bitmap.CompressFormat.PNG, 100, stream);
-//                byte[] byteImg = stream.toByteArray();
             }
-
-            //cancel.setVisibility(View.VISIBLE);
         }
     }
 
-//    private void AddPromotion() {
-//        String title = Title.getText().toString();
-//        String titlePictureName = TitlePictureName
-//
-//        //get img from url
-//        //byte[] titlePicture = TitlePicture.get;
-//
-//        String startDate = StartDate.getText().toString();
-//        String endDate = EndDate.getText().toString();
-//        String promotionDetail = PromotionDetail.getText().toString();
-//        String location = Location.getText().toString();
-//
-//        Promotion promotion = new Promotion(title, titlePicture, startDate, endDate, promotionDetail,location);
-//
-//        long rowId = mManager.addPromotion(promotion);
-//
-//        if (rowId == -1) {
-//            String message = "Add promotion failed try again";
-//            Toast.makeText(mContext, message, Toast.LENGTH_SHORT).show();
-//        } else {
-//            String message = "Add promotion successful";
-//            Toast.makeText(mContext, message, Toast.LENGTH_SHORT).show();
-//            finish();
-//        }
-//    }
+    private void AddPromotion() {
+        String title = Title.getText().toString();
+        String startDate = StartDate.getText().toString();
+        String endDate = EndDate.getText().toString();
+        String promotionDetail = PromotionDetail.getText().toString();
+        String location = Location.getText().toString();
+
+        Promotion promotion = new Promotion(title, startDate, endDate, promotionDetail,location);
+        int proID = (int)mManager.getCurrentPromotionID()+1;
+        for (byte[] b:imgByte) {
+            PromotionPicture pro_pic = new PromotionPicture(proID,b);
+            long rowID = mManager.addPromotionPicture(pro_pic);
+            if(rowID == -1)
+            {
+                Log.i(TAG,"add pro_pic " + proID + " fail");
+            }
+            else
+            {
+                Log.i(TAG,"add pro_pic " + proID + " success");
+            }
+        }
+
+        long rowId = mManager.addPromotion(promotion);
+
+        if (rowId == -1) {
+            String message = "Add promotion failed try again";
+            Toast.makeText(mContext, message, Toast.LENGTH_SHORT).show();
+        } else {
+            String message = "Add promotion successful";
+            Toast.makeText(mContext, message, Toast.LENGTH_SHORT).show();
+            finish();
+        }
+    }
+
 }

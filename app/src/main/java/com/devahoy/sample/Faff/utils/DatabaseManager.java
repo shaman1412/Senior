@@ -5,10 +5,13 @@ package com.devahoy.sample.Faff.utils;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
+import android.database.DatabaseUtils;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
 
+import com.devahoy.sample.Faff.PromotionActivity;
 import com.devahoy.sample.Faff.model.Bookmark;
 import com.devahoy.sample.Faff.model.BookmarkList;
 import com.devahoy.sample.Faff.model.Comment;
@@ -20,6 +23,7 @@ import com.devahoy.sample.Faff.model.Party;
 import com.devahoy.sample.Faff.model.PartyList;
 import com.devahoy.sample.Faff.model.Promotion;
 import com.devahoy.sample.Faff.model.PromotionList;
+import com.devahoy.sample.Faff.model.PromotionPicture;
 import com.devahoy.sample.Faff.model.Report;
 import com.devahoy.sample.Faff.model.ReportList;
 import com.devahoy.sample.Faff.model.Restaurant;
@@ -56,11 +60,10 @@ public class DatabaseManager extends SQLiteOpenHelper implements DatabaseManager
                 UserAuthen.Column.PASSWORD
         );
 
-        String CREATE_TABLE_PROMOTION = String.format("CREATE TABLE IF NOT EXISTS %s (%s INTEGER PRIMARY KEY AUTOINCREMENT, %s TEXT not null, %s BLOB not null, %s TEXT not null, %s TEXT not null, %s TEXT not null, %s TEXT not null);" ,
+        String CREATE_TABLE_PROMOTION = String.format("CREATE TABLE IF NOT EXISTS %s (%s INTEGER PRIMARY KEY AUTOINCREMENT, %s TEXT not null, %s TEXT not null, %s TEXT not null, %s TEXT not null, %s TEXT not null);" ,
                 Promotion.TABLE,
                 Promotion.Column.ID,
                 Promotion.Column.Title,
-                Promotion.Column.TitlePicture,
                 Promotion.Column.StartDate,
                 Promotion.Column.EndDate,
                 Promotion.Column.PromotionDetail,
@@ -235,7 +238,13 @@ public class DatabaseManager extends SQLiteOpenHelper implements DatabaseManager
                 Marker.column.POSITION
         );
 
-
+        String CREATE_TABLE_PROMOTIONPICTURE = String.format("CREATE TABLE %s" +
+                        "(%s INTEGER PRIMARY KEY AUTOINCREMENT, %s integer, %s BLOB)",
+                PromotionPicture.TABLE,
+                PromotionPicture.Column.ID,
+                PromotionPicture.Column.PromotionID,
+                PromotionPicture.Column.PictureData
+        );
 
         //endregion
 
@@ -262,6 +271,7 @@ public class DatabaseManager extends SQLiteOpenHelper implements DatabaseManager
         db.execSQL(CREATE_TABLE_COMMENT);
         db.execSQL(CREATE_TABLE_COMMENTLISTRESTERAUNT);
         db.execSQL(CREATE_TABLE_MARKER); // สร้าง map database
+        db.execSQL(CREATE_TABLE_PROMOTIONPICTURE);
     }
 
     @Override
@@ -342,13 +352,6 @@ public class DatabaseManager extends SQLiteOpenHelper implements DatabaseManager
 
         ContentValues values = new ContentValues();
         values.put(Promotion.Column.Title, promotion.getTitle());
-
-        //for debug;
-        int[] temp = promotion.getPicID();
-        Arrays.sort(temp);
-        String tmp = Arrays.toString(temp);
-
-        values.put(Promotion.Column.TitlePicture, tmp);
         values.put(Promotion.Column.StartDate, promotion.getStartDate());
         values.put(Promotion.Column.EndDate, promotion.getEndDate());
         values.put(Promotion.Column.PromotionDetail, promotion.getPromotionDetail());
@@ -360,10 +363,41 @@ public class DatabaseManager extends SQLiteOpenHelper implements DatabaseManager
         return result;
     }
 
+    public long addPromotionPicture(PromotionPicture promotionPicture){
+
+        mDatabase = this.getWritableDatabase();
+
+        ContentValues values = new ContentValues();
+        values.put(PromotionPicture.Column.PromotionID, promotionPicture.getProid());
+        values.put(PromotionPicture.Column.PictureData, promotionPicture.getPictureData());
+
+        long result = mDatabase.insert(PromotionPicture.TABLE, null, values);
+        mDatabase.close();
+
+        return result;
+    }
+
     public Cursor getAllPromotion()
     {
         mDatabase = this.getWritableDatabase();
-        return mDatabase.query(Promotion.TABLE, new String[] {Promotion.Column.ID, Promotion.Column.Title, Promotion.Column.TitlePicture, Promotion.Column.StartDate, Promotion.Column.EndDate, Promotion.Column.PromotionDetail, Promotion.Column.Location}, null, null, null, null, null);
+        String tb1 = Promotion.TABLE;
+        String tb2 = PromotionPicture.TABLE;
+        Cursor qry = null;
+        try{
+            qry =  mDatabase.rawQuery("select "+tb1+"."+Promotion.Column.ID+", "+tb1+"."+Promotion.Column.Title+", "+tb2+"."+PromotionPicture.Column.PictureData+", "+tb1+"."+Promotion.Column.StartDate+", "+tb1+"."+Promotion.Column.EndDate+", "+tb1+"."+Promotion.Column.PromotionDetail+", "+tb1+"."+Promotion.Column.Location+" from "+tb1+", "+tb2+" WHERE "+tb1+"."+Promotion.Column.ID+" = "+tb2+"."+PromotionPicture.Column.PromotionID+" group by "+tb2+"."+Promotion.Column.ID+" order by "+tb2+"."+PromotionPicture.Column.ID+" asc",null);
+
+        }
+        catch (Exception ex){
+            Log.i(TAG, ex.toString());
+        }
+        return qry;
+    }
+
+    public long getCurrentPromotionID(){
+        mDatabase = this.getWritableDatabase();
+        long count = DatabaseUtils.queryNumEntries(mDatabase, Promotion.TABLE);
+        mDatabase.close();
+        return count;
     }
 
     public void close(){
