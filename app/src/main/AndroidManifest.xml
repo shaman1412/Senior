@@ -15,8 +15,7 @@
     <application
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
-        android:label="Faff"
-        android:theme="@style/my1">
+        android:theme="@style/AppTheme">
         <activity
             android:name=".LoginActivity"
             android:label="Faff">
@@ -55,7 +54,8 @@
             android:name=".MapsActivity"
             android:label="@string/title_activity_maps" />
         <activity android:name=".LocationProvider" />
-        <activity android:name=".TestActivity"></activity>
+        <activity android:name=".TestActivity" />
+        <activity android:name=".Main2Activity"></activity>
     </application>
 
 </manifest>

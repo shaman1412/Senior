@@ -118,6 +118,7 @@ public class MapsActivity extends AppCompatActivity implements  OnMyLocationButt
             );
             mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(location,10.0f));
 
+
         }
 
 
@@ -224,16 +225,26 @@ public class MapsActivity extends AppCompatActivity implements  OnMyLocationButt
             LocationAvailability locationAvailability = LocationServices.FusedLocationApi.getLocationAvailability(googleApiClient);
             if (locationAvailability != null) {
 
-                mLastLocation = LocationServices.FusedLocationApi.getLastLocation(
-                        googleApiClient);
+
+                LocationRequest locationRequest = new LocationRequest()  // ใช้สำหรับ onlicationchange ทำเรื่อยๆ
+                        .setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY)
+                        .setInterval(2000)
+                        .setFastestInterval(2000);
+                if (ContextCompat.checkSelfPermission(this,
+                        Manifest.permission.ACCESS_FINE_LOCATION)
+                        == PackageManager.PERMISSION_GRANTED) {
+                    LocationServices.FusedLocationApi.requestLocationUpdates(googleApiClient, locationRequest, this);
+                }
+
+                mLastLocation = LocationServices.FusedLocationApi.getLastLocation(googleApiClient);  // ใช้สำหรัรับตำแหน่งแรกเลย ครั้งเดียว
                 if (mLastLocation != null) {
 
                     Location target = new Location("Target");
                     target.setLatitude(37.5219983);
                     target.setLongitude(-122.184);
                     float d;
-                    d = location.distanceTo(target);
-                    la.setText(String.valueOf(d));
+                  //  d = location.distanceTo(target);
+                 //   la.setText(String.valueOf(d));
                     if(location.distanceTo(target) < 1000) {
                         Toast.makeText(context, "Hi", Toast.LENGTH_SHORT).show();
                     }
@@ -244,15 +255,7 @@ public class MapsActivity extends AppCompatActivity implements  OnMyLocationButt
                     lo.setText(String.valueOf(mLastLocation.getLongitude()));
 
                 }
-                LocationRequest locationRequest = new LocationRequest()
-                        .setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY)
-                        .setInterval(1000)
-                        .setFastestInterval(1000);
-                if (ContextCompat.checkSelfPermission(this,
-                        Manifest.permission.ACCESS_FINE_LOCATION)
-                        == PackageManager.PERMISSION_GRANTED) {
-                    LocationServices.FusedLocationApi.requestLocationUpdates(googleApiClient, locationRequest, this);
-                }
+
                // LocationServices.FusedLocationApi.requestLocationUpdates(googleApiClient, locationRequest, this);
             }
 

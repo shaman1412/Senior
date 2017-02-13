@@ -67,7 +67,7 @@ public class LoginActivity extends ActionBarActivity {
             String message = getString(R.string.login_error_message);
             Toast.makeText(mContext, message, Toast.LENGTH_SHORT).show();
         } else {
-            Intent intent = new Intent(mContext, MainActivity.class);
+            Intent intent = new Intent(mContext, Main2Activity.class);
             intent.putExtra(UserAuthen.Column.USERNAME, validateUserAuthen.getUsername());
             intent.putExtra(UserAuthen.Column.ID, validateUserAuthen.getId());
             startActivity(intent);
