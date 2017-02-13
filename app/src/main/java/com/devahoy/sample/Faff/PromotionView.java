@@ -1,21 +1,25 @@
 package com.devahoy.sample.Faff;
 
 import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
-import android.widget.ArrayAdapter;
-import android.widget.ListAdapter;
 import android.widget.ListView;
 
-import com.devahoy.sample.Faff.model.Promotion;
+import com.devahoy.sample.Faff.model.promotion_view_list;
 import com.devahoy.sample.Faff.utils.DatabaseManager;
+import com.devahoy.sample.Faff.utils.PromotionViewArrayAdapter;
 
 import java.util.ArrayList;
 
 public class PromotionView extends ActionBarActivity {
 
+    public static final String TAG = PromotionView.class.getSimpleName();
     ListView mListPromotion;
     DatabaseManager mManager;
+    ArrayList<promotion_view_list> data;
+    ArrayList<Bitmap> bmap = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -23,34 +27,69 @@ public class PromotionView extends ActionBarActivity {
         setContentView(R.layout.activity_promotion_view);
 
         mManager = new DatabaseManager(this);
+        data = getAllPromotion();
 
-        ArrayList<String> data = getAllPromotion();
-        ListAdapter adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, data);
+        //custom list view
+
         mListPromotion = (ListView) findViewById(R.id.listview);
+        PromotionViewArrayAdapter adapter = new PromotionViewArrayAdapter(this, data);
         mListPromotion.setAdapter(adapter);
 
     }
 
-    private ArrayList<String> getAllPromotion(){
+    private ArrayList<promotion_view_list> getAllPromotion(){
         Cursor c = mManager.getAllPromotion();
-        ArrayList<String> ls = new ArrayList<String>();
+        String check="";
         int i=0;
+        ArrayList<promotion_view_list> ls = new ArrayList<>();
         if(c.moveToFirst()) {
             do {
-                String str = Promotion.Column.ID + ": " + c.getString(0) + "\n" +
-                        Promotion.Column.Title + ": " + c.getString(1) + "\n" +
-                        Promotion.Column.TitlePicture + ": " + c.getString(2) + "\n" +
-                        Promotion.Column.StartDate + ": " + c.getString(3) + "\n" +
-                        Promotion.Column.EndDate + ": " + c.getString(4) + "\n" +
-                        Promotion.Column.PromotionDetail + ": " + c.getString(5) + "\n" +
-                        Promotion.Column.Location + ": " + c.getString(6) + "\n\n\n";
-                ls.add(i,str);
-                i++;
-                //Toast.makeText(this, str, Toast.LENGTH_LONG).show();
+                if(c.getString(0).equals(check))
+                {
+                    if(c.isLast())
+                    {
+                        promotion_view_list l = new promotion_view_list(c.getString(0),c.getString(1),bmap,c.getString(3),c.getString(4),c.getString(5),c.getString(6));
+                        ls.add(l);
+                        bmap = new ArrayList<>();
+                    }
+                    else {
+                        byte[] imgByte = c.getBlob(2);
+                        bmap.add(BitmapFactory.decodeByteArray(imgByte, 0, imgByte.length));
+                    }
+                }
+                else
+                {
+                    if(!c.isFirst())
+                    {
+                        if(c.isLast())
+                        {
+                            promotion_view_list l = new promotion_view_list(c.getString(0),c.getString(1),bmap,c.getString(3),c.getString(4),c.getString(5),c.getString(6));
+                            ls.add(l);
+                            bmap = new ArrayList<>();
+                        }
+                        else
+                        {
+                            c.moveToPrevious();
+                            promotion_view_list l = new promotion_view_list(c.getString(0),c.getString(1),bmap,c.getString(3),c.getString(4),c.getString(5),c.getString(6));
+                            ls.add(l);
+                            bmap = new ArrayList<>();
+
+                            c.moveToNext();
+                            byte[] imgByte = c.getBlob(2);
+                            bmap.add(BitmapFactory.decodeByteArray(imgByte, 0, imgByte.length));
+                        }
+                    }
+                    else
+                    {
+                        byte[] imgByte = c.getBlob(2);
+                        bmap.add(BitmapFactory.decodeByteArray(imgByte, 0, imgByte.length));
+                    }
+                }
+                check = c.getString(0);
             } while (c.moveToNext());
             mManager.close();
-            //t.setText(ls.toString());
         }
         return ls;
     }
 }
+

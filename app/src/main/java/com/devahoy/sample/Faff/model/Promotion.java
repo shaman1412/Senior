@@ -13,7 +13,6 @@ public class Promotion {
     public class Column {
         public static final String ID = BaseColumns._ID;
         public static final String Title = "Title";
-        public static final String TitlePicture = "TitlePicture";
         public static final String StartDate = "StartDate";
         public static final String EndDate = "EndDate";
         public static final String PromotionDetail = "PromotionDetail";
@@ -22,24 +21,18 @@ public class Promotion {
 
     private int id;
     private String title;
-    private String titlePictureLink;
     private String startDate;
     private String endDate;
     private String promotionDetail;
     private String googleMapLink;
 
     // Constructor
-    public Promotion(String title, String titlePictureLink, String startDate, String endDate, String promotionDetail, String googleMapLink) {
+    public Promotion(String title, String startDate, String endDate, String promotionDetail, String googleMapLink) {
         this.title = title;
-        this.titlePictureLink = titlePictureLink;
         this.startDate = startDate;
         this.endDate = endDate;
         this.promotionDetail = promotionDetail;
         this.googleMapLink = googleMapLink;
-    }
-
-    public Promotion() {
-
     }
 
     //region getter setter
@@ -58,14 +51,6 @@ public class Promotion {
 
     public void setTitle(String title) {
         this.title = title;
-    }
-
-    public String getTitlePictureLink() {
-        return titlePictureLink;
-    }
-
-    public void setTitlePictureLink(String titlePictureLink) {
-        this.titlePictureLink = titlePictureLink;
     }
 
     public String getStartDate() {

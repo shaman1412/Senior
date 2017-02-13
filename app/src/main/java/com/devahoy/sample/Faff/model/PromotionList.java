@@ -25,10 +25,6 @@ public class PromotionList {
         this.userID = userID;
     }
 
-    public PromotionList(){
-
-    }
-
     //region getter setter
 
     public int getId() {
