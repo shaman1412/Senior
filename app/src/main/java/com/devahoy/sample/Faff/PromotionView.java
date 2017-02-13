@@ -48,6 +48,8 @@ public class PromotionView extends ActionBarActivity {
                 {
                     if(c.isLast())
                     {
+                        byte[] imgByte = c.getBlob(2);
+                        bmap.add(BitmapFactory.decodeByteArray(imgByte, 0, imgByte.length));
                         promotion_view_list l = new promotion_view_list(c.getString(0),c.getString(1),bmap,c.getString(3),c.getString(4),c.getString(5),c.getString(6));
                         ls.add(l);
                         bmap = new ArrayList<>();
