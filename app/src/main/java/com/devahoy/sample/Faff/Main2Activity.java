@@ -1,34 +1,32 @@
 package com.devahoy.sample.Faff;
 
 
-import android.app.ActionBar;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.TabLayout;
-import android.support.v4.app.FragmentActivity;
-import android.support.v4.app.FragmentTransaction;
-import android.support.v4.view.GravityCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.view.ViewGroup;
-import android.view.Window;
-import android.widget.Button;
 
 
 import com.devahoy.sample.Faff.Fragment.Adapter.MainMenu_adpater;
-import com.devahoy.sample.Faff.Fragment.Content_MainFragment;
-import com.devahoy.sample.Faff.Fragment.Search_MainFragment;
+import com.devahoy.sample.Faff.Fragment.Adapter.Party_adapter;
+import com.devahoy.sample.Faff.UserProfile.InsertUserProfile;
+import com.devahoy.sample.Faff.UserProfile.ProfileManager;
+import com.devahoy.sample.Faff.UserProfile.ShowUserprofile;
+import com.devahoy.sample.Faff.model.UserAuthen;
+import com.devahoy.sample.Faff.model.UserProfile;
 
 public class Main2Activity extends AppCompatActivity {
     ViewPager pager;
@@ -43,6 +41,9 @@ public class Main2Activity extends AppCompatActivity {
     private Toolbar toolbar;
     private NavigationView nvDrawer;
     private ActionBarDrawerToggle drawerToggle;
+    private TabLayout tabLayout;
+    private ProfileManager profileManager;
+    private UserProfile userProfile;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,6 +51,7 @@ public class Main2Activity extends AppCompatActivity {
 
         setContentView(R.layout.activity_main2);
         setTitle("");
+        Bundle args = getIntent().getExtras();
         pager = (ViewPager)findViewById(R.id.pager);
         context = this;
 
@@ -66,14 +68,15 @@ public class Main2Activity extends AppCompatActivity {
         setupDrawerContent(nvDrawer);
 
 
-
-        MainMenu_adpater adpater = new MainMenu_adpater(getSupportFragmentManager(),context);
         pager = (ViewPager)findViewById(R.id.pager);
-        pager.setAdapter(adpater);
-        pager.setCurrentItem(1);
+        tabLayout = (TabLayout) findViewById(R.id.sliding_tabs);
 
-        TabLayout tabLayout = (TabLayout) findViewById(R.id.sliding_tabs);
-        tabLayout.setupWithViewPager(pager);
+        changeTabToHome();
+        profileManager = new ProfileManager(this);
+        userProfile = new UserProfile();
+        int id = profileManager.getID(args.getString(UserAuthen.Column.USERNAME));
+        userProfile.setId(id);
+
 
       /*tabLayout.getTabAt(0).setIcon(ICONS[0]);
         tabLayout.getTabAt(1).setIcon(ICONS[1]);
@@ -105,15 +108,15 @@ public class Main2Activity extends AppCompatActivity {
                     @Override
                     public boolean onNavigationItemSelected(MenuItem item) {
                         switch (item.getItemId()) {
-                            case R.id.action_favorites:
+                            case R.id.Party:
+                                ChageeTabToParty();
+                                break;
+                            case R.id.Home:
+                                changeTabToHome();
+                                break;
+                            case R.id.Nearby:
                                 Intent intent = new Intent(context,MapsActivity.class);
                                 startActivity(intent);
-                                break;
-                            case R.id.action_video:
-
-                                break;
-                            case R.id.action_music:
-
                                 break;
                         }
 
@@ -123,6 +126,19 @@ public class Main2Activity extends AppCompatActivity {
 
         //ActionBarDrawerToggle drawerToggle
 
+    }
+    public void ChageeTabToParty(){
+        Party_adapter adapter = new Party_adapter(getSupportFragmentManager(),context);
+        pager.setAdapter(adapter);
+        pager.setCurrentItem(0);
+        tabLayout.setupWithViewPager(pager);
+    }
+    public  void changeTabToHome(){
+        MainMenu_adpater adpater = new MainMenu_adpater(getSupportFragmentManager(),context);
+        pager = (ViewPager)findViewById(R.id.pager);
+        pager.setAdapter(adpater);
+        pager.setCurrentItem(1);
+        tabLayout.setupWithViewPager(pager);
     }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -152,10 +168,18 @@ public class Main2Activity extends AppCompatActivity {
         // Create a new fragment and specify the fragment to show based on nav item clicked
         switch(menuItem.getItemId()) {
             case R.id.Home:
-
+                Intent Home_intent = new Intent(context, InsertUserProfile.class);
+                startActivity(Home_intent);
                 break;
             case R.id.NotificationUser:
 
+                break;
+            case R.id.UserProfile:
+                 int id = userProfile.getId();
+                String a = String.valueOf(id);
+                Intent intent = new Intent(context, ShowUserprofile.class);
+                intent.putExtra(UserProfile.Column.ID,a);
+                startActivity(intent);
                 break;
             case R.id.Favourite:
 
@@ -199,6 +223,7 @@ public class Main2Activity extends AppCompatActivity {
         super.onPostCreate(savedInstanceState);
         // Sync the toggle state after onRestoreInstanceState has occurred.
         drawerToggle.syncState();
+
     }
 
     @Override
@@ -207,6 +232,22 @@ public class Main2Activity extends AppCompatActivity {
         // Pass any configuration change to the drawer toggles
         drawerToggle.onConfigurationChanged(newConfig);
     }
+    @Override
+    public void onBackPressed() {
+        new AlertDialog.Builder(this)
+                .setIcon(android.R.drawable.ic_dialog_alert)
+                .setTitle("Exit")
+                .setMessage("Are you sure you want to close this app?")
+                .setPositiveButton("Yes", new DialogInterface.OnClickListener()
+                {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        finish();
+                    }
 
+                })
+                .setNegativeButton("No", null)
+                .show();
+    }
 
 }

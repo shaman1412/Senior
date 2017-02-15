@@ -3,4 +3,7 @@
     <color name="colorPrimary">#3F51B5</color>
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
+    <color name="TabUserProfile">#ffc04d</color>
+    <color name="ButtonUserProfile">#ffa500</color>
+    <color name="backgroundpro">#d3d3d3</color>
 </resources>

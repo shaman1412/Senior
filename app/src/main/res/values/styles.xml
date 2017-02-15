@@ -1,4 +1,4 @@
-<resources>
+<resources xmlns:android="http://schemas.android.com/tools">
 
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat.Light">
@@ -48,6 +48,18 @@
 
  <!--   <style name="BottomTab_main" parent="Widget.Design.BottomNavigationView">
         <item name="colorTab">#000000</item>
+
+    </style>-->
+<!--    <style name="Editextbox">
+        <solid android:color="#FFFFFF"/>
+
+        <stroke
+            android:width="2dp"
+            android:color="#E7E7E7"
+            android:height="10dp"/>
+
+        <corners
+            android:radius="5dp"/>
 
     </style>-->
 

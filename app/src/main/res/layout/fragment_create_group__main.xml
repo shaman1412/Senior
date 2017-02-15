@@ -4,7 +4,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:gravity="center"
-    tools:context="com.devahoy.sample.Faff.Fragment.CreateGroup_MainFragment">
+    tools:context="com.devahoy.sample.Faff.Fragment.MainMenu.CreateGroup_MainFragment">
 
     <!-- TODO: Update blank fragment layout -->
     <TextView

@@ -4,18 +4,13 @@ package com.devahoy.sample.Faff.Fragment.Adapter;
  * Created by InFiNity on 09-Feb-17.
  */
 import android.content.Context;
-import android.graphics.drawable.Drawable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
-import android.support.v4.content.ContextCompat;
-import android.text.Spannable;
-import android.text.SpannableString;
-import android.text.style.ImageSpan;
 
-import com.devahoy.sample.Faff.Fragment.Content_MainFragment;
-import com.devahoy.sample.Faff.Fragment.CreateGroup_MainFragment;
-import com.devahoy.sample.Faff.Fragment.Search_MainFragment;
+import com.devahoy.sample.Faff.Fragment.MainMenu.Content_MainFragment;
+import com.devahoy.sample.Faff.Fragment.MainMenu.CreateGroup_MainFragment;
+import com.devahoy.sample.Faff.Fragment.MainMenu.Search_MainFragment;
 import com.devahoy.sample.Faff.R;
 
 public class MainMenu_adpater extends FragmentPagerAdapter   {

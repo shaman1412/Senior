@@ -56,7 +56,11 @@
             android:label="@string/title_activity_maps" />
         <activity android:name=".LocationProvider" />
         <activity android:name=".TestActivity" />
-        <activity android:name=".Main2Activity"></activity>
+        <activity android:name=".Main2Activity" />
+        <activity android:name=".PartyActivity" />
+        <activity android:name=".UserProfile.ShowUserprofile" />
+        <activity android:name=".UserProfile.ProfileManager" />
+        <activity android:name=".UserProfile.InsertUserProfile"></activity>
     </application>
 
 </manifest>

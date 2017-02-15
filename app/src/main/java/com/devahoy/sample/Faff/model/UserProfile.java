@@ -28,11 +28,11 @@ public class UserProfile {
     private String email;
     private int telephone;
     private String dateOfBirth;
-    private char gender;
+    private String gender;
     private int age;
     private String picture;
 
-    public UserProfile(String name, String address, String email, int telephone, String dateOfBirth, char gender, int age, String picture) {
+    public UserProfile(String name, String address, String email, int telephone, String dateOfBirth, String gender, int age, String picture) {
         this.name = name;
         this.address = address;
         this.email = email;
@@ -97,11 +97,11 @@ public class UserProfile {
         this.dateOfBirth = dateOfBirth;
     }
 
-    public char getGender() {
+    public String getGender() {
         return gender;
     }
 
-    public void setGender(char gender) {
+    public void setGender(String gender) {
         this.gender = gender;
     }
 

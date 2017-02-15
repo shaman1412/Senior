@@ -27,7 +27,7 @@ public class Signup_profile extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layo
         // ut for this fragment
-        View root = inflater.inflate(R.layout.fragment_first_page, container, false);
+        View root = inflater.inflate(R.layout.signup_profile, container, false);
         Spinner dropdown = (Spinner)root.findViewById(R.id.spinner1);
         String[] items = new String[]{"Female", "Male"};
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this.getActivity(), android.R.layout.simple_spinner_dropdown_item, items);

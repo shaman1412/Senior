@@ -13,7 +13,7 @@ import com.devahoy.sample.Faff.R;
 
 
 
-public class Content_MainFragment extends Fragment {
+public class Content_MainFragment extends Fragment  {
 
 
 

@@ -3,21 +3,21 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="#000000">
     <item
-        android:id="@+id/action_favorites"
+        android:id="@+id/Party"
         android:enabled="true"
         android:icon="@drawable/group_bottom_main"
         android:title="Acitivty"
         app:showAsAction="ifRoom" />
 
     <item
-        android:id="@+id/action_video"
+        android:id="@+id/Home"
         android:enabled="true"
         android:icon="@drawable/home_drawer_home"
         android:title="Home"
         app:showAsAction="ifRoom" />
 
     <item
-        android:id="@+id/action_music"
+        android:id="@+id/Nearby"
         android:enabled="true"
         android:icon="@drawable/nearby_bottom_main"
         android:title="Nearby"
