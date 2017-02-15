@@ -1,4 +1,4 @@
-package com.devahoy.sample.Faff.Fragment;
+package com.devahoy.sample.Faff.Fragment.MainMenu;
 
 
 import android.os.Bundle;

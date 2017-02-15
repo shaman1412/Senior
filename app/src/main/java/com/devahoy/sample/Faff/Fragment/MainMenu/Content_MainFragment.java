@@ -1,4 +1,4 @@
-package com.devahoy.sample.Faff.Fragment;
+package com.devahoy.sample.Faff.Fragment.MainMenu;
 
 import android.content.Context;
 import android.net.Uri;
@@ -12,11 +12,12 @@ import android.widget.Button;
 import com.devahoy.sample.Faff.R;
 
 
-public class Search_MainFragment extends Fragment {
+
+public class Content_MainFragment extends Fragment {
 
 
 
-    public Search_MainFragment() {
+    public Content_MainFragment() {
         // Required empty public constructor
     }
 
@@ -25,17 +26,20 @@ public class Search_MainFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View rootView =  inflater.inflate(R.layout.fragment_search__main, container, false);
-       /* Button close = (Button)rootView.findViewById(R.id.close);
-        View.OnClickListener a = new View.OnClickListener() {
+        View rootView =  inflater.inflate(R.layout.fragment_content__main, container, false);
+
+        /*Button close  = (Button)rootView.findViewById(R.id.close);
+        View.OnClickListener a = new View.OnClickListener(){
             @Override
             public void onClick(View v) {
-                *//*getFragmentManager().beginTransaction().remove(Search_MainFragment.this).commit();*//*
+                getFragmentManager().beginTransaction().remove(Content_MainFragment.this).commit();
             }
         };
         close.setOnClickListener(a);*/
 
-    return rootView;
+
+        return  rootView;
     }
+
 
 }

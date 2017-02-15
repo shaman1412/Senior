@@ -1,0 +1,98 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:gravity="center"
+    android:background="@color/backgroundpro"
+    tools:context="com.devahoy.sample.Faff.Fragment.InsertUserProfile.Signup_profile">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="40dp"
+
+       >
+     <!--   <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Name"
+            android:id="@+id/name"
+            android:layout_marginBottom="20dp"
+            android:textSize="20sp"/>-->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Sign Up"
+            android:textSize="30sp"
+            android:id="@+id/sign"
+            android:layout_marginBottom="10dp"
+            android:textStyle="bold"
+            android:textColor="#000000"
+          />
+        <EditText
+            android:layout_width="500dp"
+            android:layout_height="30dp"
+            android:id="@+id/name"
+            android:layout_marginBottom="20dp"
+            android:padding="2dip"
+            android:hint="Name"
+            android:layout_below="@+id/sign"
+            android:background="@drawable/edittextbox"/>
+
+        <EditText
+            android:layout_width="500dp"
+            android:layout_height="30dp"
+            android:id="@+id/email"
+            android:layout_marginBottom="20dp"
+            android:padding="2dip"
+            android:layout_below="@+id/name"
+            android:hint="Email"
+            android:background="@drawable/edittextbox"/>
+        <EditText
+            android:layout_width="500dp"
+            android:layout_height="30dp"
+            android:id="@+id/telephone"
+            android:layout_marginBottom="20dp"
+            android:padding="2dip"
+            android:layout_below="@+id/email"
+            android:hint="Telephone No."
+            android:background="@drawable/edittextbox"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/telephone"
+            android:text="Gender"
+            android:id="@+id/gender"
+            android:layout_marginBottom="20dp"/>
+        <Spinner
+            android:layout_toRightOf="@+id/gender"
+            android:layout_below="@+id/telephone"
+            android:id="@+id/spinner1"
+            android:layout_width="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_height="30dp"
+            android:background="@android:drawable/btn_dropdown"
+            android:spinnerMode="dropdown" />
+        <EditText
+            android:layout_width="500dp"
+            android:layout_height="30dp"
+            android:id="@+id/age"
+            android:layout_marginBottom="20dp"
+            android:padding="2dip"
+            android:layout_below="@+id/gender"
+            android:hint="Age"
+            android:background="@drawable/edittextbox"/>
+        <EditText
+            android:layout_width="500dp"
+            android:layout_height="30dp"
+            android:id="@+id/Address"
+            android:layout_marginBottom="20dp"
+            android:padding="2dip"
+            android:layout_below="@+id/age"
+            android:hint="Address"
+            android:background="@drawable/edittextbox"/>
+
+    </RelativeLayout>
+
+</LinearLayout>
