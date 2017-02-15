@@ -20,11 +20,13 @@
         <activity
             android:name=".LoginActivity"
             android:label="Faff">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
+             <intent-filter>
+             <action android:name="android.intent.action.MAIN" />
+
+
+             <category android:name="android.intent.category.LAUNCHER" />
+             </intent-filter>
         </activity>
         <activity android:name=".RegisterActivity" />
         <activity android:name=".MainActivity" />
@@ -61,6 +63,21 @@
         <activity android:name=".UserProfile.ShowUserprofile" />
         <activity android:name=".UserProfile.ProfileManager" />
         <activity android:name=".UserProfile.InsertUserProfile"></activity>
+        <!-- <activity -->
+        <!-- android:name=".ServerSocketActivity" -->
+        <!-- android:label="@string/title_activity_server_socket" -->
+        <!-- android:theme="@style/AppTheme"></activity> -->
+
+        <activity android:name=".ServerSocketActivity">
+
+
+
+
+        </activity>
+
+        <activity android:name=".ClientSocketActivity">
+
+        </activity>
     </application>
 
 </manifest>

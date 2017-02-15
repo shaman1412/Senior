@@ -2,7 +2,7 @@ apply plugin: 'android'
 
 android {
     compileSdkVersion 25
-    buildToolsVersion "25.0.0"
+    buildToolsVersion '25.0.0'
 
     defaultConfig {
         applicationId "com.devahoy.sample.login"
@@ -26,6 +26,8 @@ ext {
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
 
+dependencies {
+    compile fileTree(include: ['*.jar'], dir: 'libs')
     compile "com.android.support:appcompat-v7:${supportLibVersion}"
     compile 'com.android.support:design:25.1.1'
     compile 'com.google.android.gms:play-services-location:10.0.1'
