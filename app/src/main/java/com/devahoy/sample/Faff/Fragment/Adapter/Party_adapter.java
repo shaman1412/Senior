@@ -37,6 +37,7 @@ public class Party_adapter extends FragmentPagerAdapter {
         else if(position == 3){
             return  new Created_Fragment();
         }
+        else
         return null;
     }
 

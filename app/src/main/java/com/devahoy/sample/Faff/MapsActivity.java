@@ -91,13 +91,13 @@ public class MapsActivity extends AppCompatActivity implements  OnMyLocationButt
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
-        marker = new Marker("pee","sdfsdf","37.5219983,-122.184");
-        mManager.addMarker(marker);
+        //marker = new Marker("pee","sdfsdf","16.820,100.34");
+       // mManager.addMarker(marker);
 
         List<Marker> m = mManager.getMarker();
         mMap.setOnMyLocationButtonClickListener(this);
 
-        enableMyLocation();
+        //enableMyLocation();
         /*double a = -34;
         double b = 151;
             LatLng sydney = new LatLng(a,b);
@@ -148,9 +148,15 @@ public class MapsActivity extends AppCompatActivity implements  OnMyLocationButt
         if (location != null) {
           myLocation = new LatLng(location.getLatitude(),
                     location.getLongitude());
+            mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(myLocation,
+                    11));
+            MarkerOptions markerOptions = new MarkerOptions();
+            markerOptions.position(myLocation);
+            markerOptions.title("Current Position");
+            markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN));
+            mCurrLocationMarker = mMap.addMarker(markerOptions);
         }
-        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(myLocation,
-                11));
+
 
         Toast.makeText(this, "MyLocation button clicked", Toast.LENGTH_SHORT).show();
         // Return false so that we don't consume the event and the default behavior still occurs
@@ -245,14 +251,16 @@ public class MapsActivity extends AppCompatActivity implements  OnMyLocationButt
                     float d;
                   //  d = location.distanceTo(target);
                  //   la.setText(String.valueOf(d));
+                    if(location!=null)
                     if(location.distanceTo(target) < 1000) {
                         Toast.makeText(context, "Hi", Toast.LENGTH_SHORT).show();
                     }
                    /* if(location.distanceTo(target) < METERS_100) {
                         // bingo!
                     }*/
-                   // la.setText(String.valueOf(mLastLocation.getLatitude()));
-                    lo.setText(String.valueOf(mLastLocation.getLongitude()));
+
+                  /*  lo.setText(String.valueOf(mLastLocation.getLongitude()));
+                    la.setText(String.valueOf(mLastLocation.getLatitude()));*/
 
                 }
 
@@ -280,18 +288,20 @@ public class MapsActivity extends AppCompatActivity implements  OnMyLocationButt
         if (mCurrLocationMarker != null) {
             mCurrLocationMarker.remove();
         }
-
+        Toast.makeText(this,"On changed",Toast.LENGTH_SHORT);
         //Place current location marker
         LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
         MarkerOptions markerOptions = new MarkerOptions();
         markerOptions.position(latLng);
         markerOptions.title("Current Position");
-        markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE));
+
+        lo.setText(String.valueOf(mLastLocation.getLongitude()));
+        la.setText(String.valueOf(mLastLocation.getLatitude()));
         mCurrLocationMarker = mMap.addMarker(markerOptions);
 
         //move map camera
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
-        mMap.animateCamera(CameraUpdateFactory.zoomTo(11));
+        //mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
+       // mMap.animateCamera(CameraUpdateFactory.zoomTo(11));
     }
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,

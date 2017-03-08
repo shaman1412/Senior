@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.devahoy.sample.login">
+    package="com.devahoy.sample.Faff">
 
     <!--
          The ACCESS_COARSE/FINE_LOCATION permissions are not required to use
@@ -9,40 +9,38 @@
     -->
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
-    <uses-permission android:name="com.google.android.providers.gsf.permission.READ_GSERVICES"/>
-    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="com.google.android.providers.gsf.permission.READ_GSERVICES" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+
     <application
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
-        android:label="Faff"
         android:theme="@style/AppTheme">
         <activity
             android:name=".LoginActivity"
             android:label="Faff">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
+             <intent-filter>
+             <action android:name="android.intent.action.MAIN" />
+
+
+             <category android:name="android.intent.category.LAUNCHER" />
+             </intent-filter>
         </activity>
-        <activity
-            android:name=".RegisterActivity"
-            android:label="@string/app_name" />
-        <activity
-            android:name=".MainActivity"
-            android:label="@string/app_name" />
-<<<<<<< HEAD
-        <activity android:name=".HomeActivity">
+        <activity android:name=".RegisterActivity" />
+        <activity android:name=".MainActivity" />
+        <activity android:name=".PromotionActivity" />
+        <activity android:name=".PromotionView" />
 
-            <!--
+        <!--
                  <intent-filter>
              <action android:name="android.intent.action.MAIN" />
 
 
              <category android:name="android.intent.category.LAUNCHER" />
              </intent-filter>
-            -->
-        </activity>
+        -->
         <!--
              The API key for Google Maps-based APIs is defined as a string resource.
              (See the file "res/values/google_maps_api.xml").
@@ -59,13 +57,30 @@
             android:name=".MapsActivity"
             android:label="@string/title_activity_maps" />
         <activity android:name=".LocationProvider" />
-        <activity android:name=".Main2Activity"></activity>
+        <activity android:name=".TestActivity" />
+        <activity android:name=".Main2Activity" />
+<<<<<<< HEAD
+        <activity android:name=".PartyActivity" />
+        <activity android:name=".UserProfile.ShowUserprofile" />
+        <activity android:name=".UserProfile.ProfileManager" />
+        <activity android:name=".UserProfile.InsertUserProfile"></activity>
 =======
-        <activity
-            android:name=".PromotionActivity"
-            android:label="promotion" />
-        <activity android:name=".PromotionView"></activity>
->>>>>>> c13c4ff7a8679a24357ea2a64ad61d8c737c3119
+        <!-- <activity -->
+        <!-- android:name=".ServerSocketActivity" -->
+        <!-- android:label="@string/title_activity_server_socket" -->
+        <!-- android:theme="@style/AppTheme"></activity> -->
+
+        <activity android:name=".ServerSocketActivity">
+
+
+
+
+        </activity>
+
+        <activity android:name=".ClientSocketActivity">
+
+        </activity>
+>>>>>>> 4bf86aeea11eab838101e2a55105f3dc86539aef
     </application>
 
 </manifest>

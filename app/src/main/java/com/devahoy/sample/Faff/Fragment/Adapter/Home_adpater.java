@@ -8,9 +8,10 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
+import com.devahoy.sample.Faff.Fragment.Home.promotion_restaurant_MainFragment;
+import com.devahoy.sample.Faff.Fragment.Home.top_resturant_MainFragment;
 import com.devahoy.sample.Faff.Fragment.MainMenu.MainHome_Fragment;
-import com.devahoy.sample.Faff.Fragment.Home.CreateGroup_MainFragment;
-import com.devahoy.sample.Faff.Fragment.Home.Search_MainFragment;
+import com.devahoy.sample.Faff.Fragment.Home.advice_restaurant_MainFragment;
 import com.devahoy.sample.Faff.R;
 
 public class Home_adpater extends FragmentPagerAdapter   {
@@ -30,13 +31,13 @@ public class Home_adpater extends FragmentPagerAdapter   {
     @Override
     public Fragment getItem(int position) {
         if(position == 0){
-            return new CreateGroup_MainFragment();
+            return new advice_restaurant_MainFragment();
         }
         else if(position == 1) {
-            return new MainHome_Fragment();
+            return new promotion_restaurant_MainFragment();
         }
         else if(position == 2){
-            return  new Search_MainFragment();
+            return  new top_resturant_MainFragment();
         }
         else
         return null;

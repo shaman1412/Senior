@@ -1,6 +1,147 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    >
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:background="@color/dialog_filter"
+        android:layout_weight="1"
+        android:text="FILTER"
+        android:gravity="center"
+        android:textSize="16pt"
+        android:textColor="#ffffff"/>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="6"
+        android:orientation="vertical"
+        android:padding="10dp"
+        android:background="#4c4c4c">
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="Type"
+        android:id="@+id/textView"
+        android:layout_marginBottom="5dp"
+        android:textColor="#ffffff"/>
+<RelativeLayout
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
+        <CheckBox
+            android:id="@+id/noodle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Noodle"
+            android:textColor="#ffffff"/>
+        <CheckBox
+            android:id="@+id/seafood"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Seafood"
+            android:layout_toRightOf="@+id/noodle"
+            android:layout_marginLeft="30dp"
+            android:textColor="#ffffff"/>
+        <CheckBox
+            android:id="@+id/cto"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Cooked to Order"
+            android:layout_toRightOf="@+id/seafood"
+            android:layout_marginLeft="30dp"
+            android:textColor="#ffffff"/>
+        <CheckBox
+            android:id="@+id/dessert"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Dessert"
+            android:layout_below="@+id/noodle"
+            android:textColor="#ffffff"/>
+        <CheckBox
+            android:id="@+id/steak"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Steak"
+            android:layout_below="@+id/seafood"
+            android:layout_toRightOf="@+id/dessert"
+            android:layout_marginLeft="27dp"
+            android:textColor="#ffffff"/>
 
+    <CheckBox
+            android:id="@+id/fried"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="fried"
+            android:layout_below="@+id/dessert"
+            android:textColor="#ffffff"/>
+        <CheckBox
+            android:id="@+id/thai_food"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Thai Food"
+            android:layout_below="@+id/steak"
+            android:layout_toRightOf="@+id/fried"
+            android:layout_marginLeft="47dp"
+            android:textColor="#ffffff"/>
+        <CheckBox
+            android:id="@+id/Japanese_food"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Japanese Food"
+            android:layout_below="@+id/pizza"
+            android:layout_toRightOf="@+id/thai_food"
+            android:layout_marginLeft="21dp"
+            android:textColor="#ffffff"/>
+        <CheckBox
+            android:id="@+id/Chinese_food"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Chinese Food"
+            android:textColor="#ffffff"
+            android:layout_below="@+id/Japanese_food"/>
+
+    <CheckBox
+        android:id="@+id/pizza"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Pizza"
+        android:textColor="#ffffff"
+        android:layout_below="@+id/cto"
+        android:layout_alignLeft="@+id/Japanese_food"
+        android:layout_alignStart="@+id/Japanese_food" />
+</RelativeLayout>
+
+
+
+    </LinearLayout>
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="0dp"
+    android:orientation="horizontal"
+    android:layout_weight="2"
+    android:background="#444444">
+    <TextView
+        android:layout_width="0dp"
+        android:layout_height="50dp"
+        android:layout_weight="1"
+        android:text="Cancel"
+        android:gravity="center"
+        android:id="@+id/btn1"
+        android:clickable="true"
+       android:textColor="#ffffff"/>
+    <TextView
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:text="APPLY"
+        android:gravity="center"
+        android:id="@+id/btn2"
+        android:clickable="true"
+        android:textColor="#000000"
+        android:background="@color/ButtonUserProfile"/>
+
+</LinearLayout>
 </LinearLayout>

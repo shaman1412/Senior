@@ -1,5 +1,6 @@
 package com.devahoy.sample.Faff.UserProfile;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -79,8 +80,19 @@ public class ProfileManager extends SQLiteOpenHelper {
         int id = ((int) cursor.getLong(0));
         return id;
     }
-    public void insetUserprofile(){
-
+    public long insetUserprofile(UserProfile userProfile){
+            mdatabase = getReadableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(UserProfile.Column.Name,userProfile.getName());
+        values.put(UserProfile.Column.Address,userProfile.getAddress());
+        values.put(UserProfile.Column.Email,userProfile.getEmail());
+        values.put(UserProfile.Column.Telephone,userProfile.getTelephone());
+        values.put(UserProfile.Column.DateOfBirth,userProfile.getDateOfBirth());
+        values.put(UserProfile.Column.Gender,userProfile.getGender());
+        values.put(UserProfile.Column.Age,userProfile.getAge());
+        values.put(UserProfile.Column.Picture,userProfile.getPicture());
+        long result = mdatabase.insert(UserProfile.TABLE,null,values);
+        return result;
     }
 
 }

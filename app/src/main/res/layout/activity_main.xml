@@ -59,7 +59,7 @@
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="GotoMAp"
+        android:text="Add restaurant"
         android:id="@+id/goTomap"/>
     <Button
         android:layout_width="wrap_content"

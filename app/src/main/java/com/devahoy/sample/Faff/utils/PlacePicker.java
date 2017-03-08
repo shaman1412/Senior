@@ -3,6 +3,8 @@ package com.devahoy.sample.Faff.utils;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
+import com.devahoy.sample.Faff.R;
+
 public class PlacePicker extends AppCompatActivity {
 
     @Override

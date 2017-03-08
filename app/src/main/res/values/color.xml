@@ -6,4 +6,5 @@
     <color name="TabUserProfile">#ffc04d</color>
     <color name="ButtonUserProfile">#ffa500</color>
     <color name="backgroundpro">#d3d3d3</color>
+    <color name="dialog_filter">#ffa500</color>
 </resources>

@@ -1,21 +1,29 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     tools:context="com.devahoy.sample.Faff.Fragment.MainMenu.MainHome_Fragment">
 
     <!-- TODO: Update blank fragment layout -->
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_centerVertical="true"
-        android:text="ContentMain" />
-    <RelativeLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
+    <android.support.design.widget.TabLayout
+        android:id="@+id/tablayout"
+        style="@style/MyCustomTabLayout"
+        android:layout_width="match_parent"
+        android:background="#ffa500"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        app:tabMode="scrollable"
+         />
 
-    </RelativeLayout>
-</RelativeLayout>
+    <android.support.v4.view.ViewPager
+        android:layout_width="wrap_content"
+        android:background="#ffffff"
+        android:layout_alignTop="@+id/sliding_tabs"
+        android:id="@+id/pager"
+        android:layout_height="0dp"
+        android:layout_weight="6"
+        android:layout_below="@+id/sliding_tabs"/>
+
+</LinearLayout>

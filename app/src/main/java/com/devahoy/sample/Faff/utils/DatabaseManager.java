@@ -296,6 +296,23 @@ public class DatabaseManager extends SQLiteOpenHelper implements DatabaseManager
 
         return result;
     }
+    public UserAuthen getUserID(String username){
+        mDatabase = this.getReadableDatabase();
+        UserAuthen user = new UserAuthen();
+        Cursor cursor = mDatabase.query(UserAuthen.TABLE,
+                null,
+                UserAuthen.Column.USERNAME + " = ? ", new String[]{username},
+                null,
+                null,
+                null
+        );
+        if(cursor != null){
+            cursor.moveToFirst();
+            user.setId((int)cursor.getLong(0));
+        }
+        mDatabase.close();
+        return user;
+    }
 
     @Override
     public UserAuthen checkUserLogin(UserAuthen userAuthen) {

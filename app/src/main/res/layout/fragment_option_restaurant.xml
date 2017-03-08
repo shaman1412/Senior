@@ -5,9 +5,36 @@
     tools:context="com.devahoy.sample.Faff.RestaurantProfile.Option_RestaurantFragment">
 
     <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        android:id="@+id/frame">
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        >
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Add restaurant"
+        android:id="@+id/add_restaurant"/>
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Edit restaurant"
+            android:id="@+id/edit_restaurant"/>
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Show restaurant"
+            android:id="@+id/show_restaurant"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text = "GEt"
+            android:id= "@+id/get"/>
 
+    </LinearLayout>
+    </FrameLayout>
 </FrameLayout>

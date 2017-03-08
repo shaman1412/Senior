@@ -2,16 +2,22 @@ package com.devahoy.sample.Faff.Fragment.MainMenu;
 
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.devahoy.sample.Faff.Fragment.Adapter.Party_adapter;
+import com.devahoy.sample.Faff.MapsActivity;
 import com.devahoy.sample.Faff.R;
+import com.devahoy.sample.Faff.utils.CustomTabLayout;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -23,20 +29,31 @@ public class MainParty_fragment extends Fragment {
         // Required empty public constructor
     }
 
-    private TabLayout tabLayout;
+    private CustomTabLayout tabLayout;
     private ViewPager pager;
     private Context context;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        View root = inflater.inflate(R.layout.fragment_main_party_fragment, container, false);
-        Party_adapter adapter = new Party_adapter(getFragmentManager(),context);
+
+        setHasOptionsMenu(true);
+
+        View root = inflater.inflate(R.layout.fragment_main_party, container, false);
+        Party_adapter adapter = new Party_adapter(getChildFragmentManager(),context);
         pager = (ViewPager)root.findViewById(R.id.pager);
-        tabLayout = (TabLayout)root.findViewById(R.id.tablayout);
+        tabLayout = (CustomTabLayout)root.findViewById(R.id.tablayout);
         pager.setAdapter(adapter);
-        pager.setCurrentItem(0);
+        pager.setCurrentItem(1);
         tabLayout.setupWithViewPager(pager);
+        FloatingActionButton fab = (FloatingActionButton)root.findViewById(R.id.fab);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // Click action
+                Intent intent = new Intent(getActivity(), MapsActivity.class);
+                startActivity(intent);
+            }
+        });
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
@@ -59,5 +76,11 @@ public class MainParty_fragment extends Fragment {
 
     return root;
     }
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        menu.findItem(R.id.dialog_filter).setVisible(false);
+        super.onCreateOptionsMenu(menu, inflater);
+    }
+
 
 }

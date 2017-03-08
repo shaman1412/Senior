@@ -8,21 +8,37 @@
     tools:context="com.devahoy.sample.Faff.Fragment.MainMenu.MainParty_fragment">
 
     <!-- TODO: Update blank fragment layout -->
-<android.support.design.widget.TabLayout
+
+
+<com.devahoy.sample.Faff.utils.CustomTabLayout
     android:layout_width="match_parent"
     android:id="@+id/tablayout"
     android:background="#ffa500"
     android:layout_height="0dp"
     android:layout_weight="1"
+    app:tabMode="scrollable"
     style="@style/MyCustomTabLayout"
-    app:tabMode="fixed" />
+
+    />
+
     <android.support.v4.view.ViewPager
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:id="@+id/pager"
         android:layout_weight="6"
+
         />
 
+    <android.support.design.widget.FloatingActionButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|right"
+        android:layout_margin="16dp"
+        android:src="@drawable/plus_circle"
+        app:layout_anchorGravity="bottom|right|end"
+        android:id = "@+id/fab"
+        app:elevation="6dp"
+        app:backgroundTint="@android:color/holo_red_dark" />
 
 
 

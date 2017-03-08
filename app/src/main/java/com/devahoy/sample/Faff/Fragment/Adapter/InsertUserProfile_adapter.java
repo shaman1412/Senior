@@ -25,6 +25,7 @@ public class InsertUserProfile_adapter extends FragmentPagerAdapter{
         else if(position == 1){
             return new Edit_profile();
         }
+        else
         return null;
     }
 

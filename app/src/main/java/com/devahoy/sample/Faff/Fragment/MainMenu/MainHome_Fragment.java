@@ -1,14 +1,17 @@
 package com.devahoy.sample.Faff.Fragment.MainMenu;
 
 import android.content.Context;
-import android.net.Uri;
 import android.os.Bundle;
+import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
+import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 
+import com.devahoy.sample.Faff.Fragment.Adapter.Home_adpater;
 import com.devahoy.sample.Faff.R;
 
 
@@ -21,25 +24,47 @@ public class MainHome_Fragment extends Fragment  {
         // Required empty public constructor
     }
 
-
+    private TabLayout tabLayout;
+    private ViewPager pager;
+    private Context context;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        View rootView =  inflater.inflate(R.layout.fragment_content__main, container, false);
 
-        /*Button close  = (Button)rootView.findViewById(R.id.close);
-        View.OnClickListener a = new View.OnClickListener(){
+        // call the method setHasOptionsMenu, to have access to the menu from your fragment
+        setHasOptionsMenu(true);
+
+        View rootView =  inflater.inflate(R.layout.fragment_main_home, container, false);
+        tabLayout = (TabLayout)rootView.findViewById(R.id.tablayout);
+        pager = (ViewPager)rootView.findViewById(R.id.pager);
+        Home_adpater adpater = new Home_adpater(getChildFragmentManager(),context);
+        pager.setAdapter(adpater);
+        pager.setCurrentItem(1);
+        tabLayout.setupWithViewPager(pager);
+        tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
-            public void onClick(View v) {
-                getFragmentManager().beginTransaction().remove(MainHome_Fragment.this).commit();
+            public void onTabSelected(TabLayout.Tab tab) {
+                pager.setCurrentItem(tab.getPosition());
+
+
             }
-        };
-        close.setOnClickListener(a);*/
 
+            @Override
+            public void onTabUnselected(TabLayout.Tab tab) {
 
+            }
+
+            @Override
+            public void onTabReselected(TabLayout.Tab tab) {
+
+            }
+        });
         return  rootView;
     }
-
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        menu.findItem(R.id.dialog_filter).setVisible(false);
+        super.onCreateOptionsMenu(menu, inflater);
+    }
 
 }

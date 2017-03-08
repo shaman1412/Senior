@@ -51,4 +51,5 @@ public class BitmapImageManager {
         return BitmapFactory.decodeResource(res, resId, options);
     }
 
+
 }

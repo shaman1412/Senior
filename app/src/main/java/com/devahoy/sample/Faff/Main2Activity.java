@@ -8,6 +8,8 @@ import android.content.res.Configuration;
 import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.TabLayout;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -16,12 +18,24 @@ import android.support.v7.widget.Toolbar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.TextView;
+import android.widget.Toast;
 
 
-import com.devahoy.sample.Faff.Fragment.Adapter.MainMenu_adpater;
+import com.devahoy.sample.Faff.Fragment.Adapter.Home_adpater;
 import com.devahoy.sample.Faff.Fragment.Adapter.Party_adapter;
+import com.devahoy.sample.Faff.Fragment.MainMenu.MainHome_Fragment;
+import com.devahoy.sample.Faff.Fragment.MainMenu.MainNearby_Fragment;
+import com.devahoy.sample.Faff.Fragment.MainMenu.MainParty_fragment;
+import com.devahoy.sample.Faff.RestaurantProfile.Add_RestaurantFragment;
+import com.devahoy.sample.Faff.RestaurantProfile.Option_RestaurantFragment;
+import com.devahoy.sample.Faff.RestaurantProfile.Show_RestaurantFragment;
 import com.devahoy.sample.Faff.UserProfile.InsertUserProfile;
 import com.devahoy.sample.Faff.UserProfile.ProfileManager;
 import com.devahoy.sample.Faff.UserProfile.ShowUserprofile;
@@ -52,7 +66,7 @@ public class Main2Activity extends AppCompatActivity {
         setContentView(R.layout.activity_main2);
         setTitle("");
         Bundle args = getIntent().getExtras();
-        pager = (ViewPager)findViewById(R.id.pager);
+        //pager = (ViewPager)findViewById(R.id.pager);
         context = this;
 
         // Set a Toolbar to replace the ActionBar.
@@ -68,21 +82,23 @@ public class Main2Activity extends AppCompatActivity {
         setupDrawerContent(nvDrawer);
 
 
-        pager = (ViewPager)findViewById(R.id.pager);
-        tabLayout = (TabLayout) findViewById(R.id.sliding_tabs);
 
-        changeTabToHome();
+        //tabLayout = (TabLayout) findViewById(R.id.sliding_tabs);
+
+      //  changeTabToHome();
         profileManager = new ProfileManager(this);
         userProfile = new UserProfile();
         int id = profileManager.getID(args.getString(UserAuthen.Column.USERNAME));
         userProfile.setId(id);
 
-
+        MainHome_Fragment fragment_home = new MainHome_Fragment();
+        FragmentManager fragmentManager_home = getSupportFragmentManager();
+        fragmentManager_home.beginTransaction().replace(R.id.flContent,fragment_home).commit();
       /*tabLayout.getTabAt(0).setIcon(ICONS[0]);
         tabLayout.getTabAt(1).setIcon(ICONS[1]);
         tabLayout.getTabAt(2).setIcon(ICONS[2]);*/
-        tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
-            @Override
+        //tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+/*            @Override
             public void onTabSelected(TabLayout.Tab tab) {
                 pager.setCurrentItem(tab.getPosition());
 
@@ -98,7 +114,7 @@ public class Main2Activity extends AppCompatActivity {
             public void onTabReselected(TabLayout.Tab tab) {
 
             }
-        });
+        });*/
         //tabLayout.setupWithViewPager(pager);
         BottomNavigationView bottomNavigationView = (BottomNavigationView)
                 findViewById(R.id.bottom_navigation);
@@ -109,14 +125,30 @@ public class Main2Activity extends AppCompatActivity {
                     public boolean onNavigationItemSelected(MenuItem item) {
                         switch (item.getItemId()) {
                             case R.id.Party:
-                                ChageeTabToParty();
+                                //ChageeTabToParty();
+                                MainParty_fragment fragment_party = new MainParty_fragment();
+                                FragmentManager fragmentManager_party = getSupportFragmentManager();
+                                fragmentManager_party.beginTransaction()
+                                        .setCustomAnimations(R.anim.fade_in, R.anim.fade_out)
+                                        .replace(R.id.flContent,fragment_party)
+                                        .commit();
+
                                 break;
                             case R.id.Home:
-                                changeTabToHome();
+                                MainHome_Fragment fragment_home = new MainHome_Fragment();
+                                FragmentManager fragmentManager_home = getSupportFragmentManager();
+                                fragmentManager_home.beginTransaction()
+                                        .setCustomAnimations(R.anim.fade_in, R.anim.fade_out)
+                                        .replace(R.id.flContent,fragment_home)
+                                        .commit();
                                 break;
                             case R.id.Nearby:
-                                Intent intent = new Intent(context,MapsActivity.class);
-                                startActivity(intent);
+                                MainNearby_Fragment fragment_nearby = new MainNearby_Fragment();
+                                FragmentManager fragmentManager_nearby = getSupportFragmentManager();
+                                fragmentManager_nearby.beginTransaction()
+                                        .setCustomAnimations(R.anim.fade_in, R.anim.fade_out)
+                                        .replace(R.id.flContent,fragment_nearby)
+                                        .commit();
                                 break;
                         }
 
@@ -134,7 +166,7 @@ public class Main2Activity extends AppCompatActivity {
         tabLayout.setupWithViewPager(pager);
     }
     public  void changeTabToHome(){
-        MainMenu_adpater adpater = new MainMenu_adpater(getSupportFragmentManager(),context);
+        Home_adpater adpater = new Home_adpater(getSupportFragmentManager(),context);
         pager = (ViewPager)findViewById(R.id.pager);
         pager.setAdapter(adpater);
         pager.setCurrentItem(1);
@@ -142,7 +174,7 @@ public class Main2Activity extends AppCompatActivity {
     }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-      /*  getMenuInflater().inflate(R.menu.menu_main, menu);*/
+        getMenuInflater().inflate(R.menu.main_toolbar_filter, menu);
         return true;
     }
 
@@ -151,8 +183,13 @@ public class Main2Activity extends AppCompatActivity {
         if (drawerToggle.onOptionsItemSelected(item)) {
             return true;
         }
-        return super.onOptionsItemSelected(item);
+        int id= item.getItemId();
+        if(id == R.id.dialog_filter){
+            showInputDialog();
+            return true;
+        }
 
+        return super.onOptionsItemSelected(item);
     }
     private void setupDrawerContent(NavigationView navigationView) {
         navigationView.setNavigationItemSelectedListener(
@@ -166,6 +203,8 @@ public class Main2Activity extends AppCompatActivity {
     }
     public void selectDrawerItem(MenuItem menuItem) {
         // Create a new fragment and specify the fragment to show based on nav item clicked
+        int id = userProfile.getId();
+        String User_id = String.valueOf(id);
         switch(menuItem.getItemId()) {
             case R.id.Home:
                 Intent Home_intent = new Intent(context, InsertUserProfile.class);
@@ -175,10 +214,8 @@ public class Main2Activity extends AppCompatActivity {
 
                 break;
             case R.id.UserProfile:
-                 int id = userProfile.getId();
-                String a = String.valueOf(id);
                 Intent intent = new Intent(context, ShowUserprofile.class);
-                intent.putExtra(UserProfile.Column.ID,a);
+                intent.putExtra(UserProfile.Column.ID,User_id);
                 startActivity(intent);
                 break;
             case R.id.Favourite:
@@ -188,7 +225,13 @@ public class Main2Activity extends AppCompatActivity {
 
                 break;
             case R.id.RestaurantProfile:
-
+                Bundle bundle = new Bundle();
+                bundle.putString("message",User_id);
+                //set Fragmentclass Arguments
+                Option_RestaurantFragment option = new Option_RestaurantFragment();
+                option.setArguments(bundle);
+                FragmentManager manager = getSupportFragmentManager();
+                manager.beginTransaction().replace(R.id.flContent,option).commit();
                 break;
             case R.id.NotificationRe:
 
@@ -248,6 +291,48 @@ public class Main2Activity extends AppCompatActivity {
                 })
                 .setNegativeButton("No", null)
                 .show();
+    }
+    protected void showInputDialog() {
+
+        // get prompts.xml view
+        LayoutInflater layoutInflater = LayoutInflater.from(Main2Activity.this);
+        View promptView = layoutInflater.inflate(R.layout.main_dialog_filter, null);
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(Main2Activity.this);
+        alertDialogBuilder.setView(promptView);
+      final  AlertDialog alert = alertDialogBuilder.create();
+       // final EditText editText = (EditText) promptView.findViewById(R.id.edittext);
+        // setup a dialog window
+      /*  alertDialogBuilder.setCancelable(false)
+                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        Toast.makeText(Main2Activity.this, "MyLocation button clicked", Toast.LENGTH_SHORT).show();
+                    }
+                })
+                .setNegativeButton("Cancel",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                dialog.cancel();
+                            }
+                        });*/
+        TextView btn_1 = (TextView)promptView.findViewById(R.id.btn1);
+        TextView btn_2 = (TextView) promptView.findViewById(R.id.btn2);
+        btn_1.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                alert.cancel();
+
+            }
+        });
+
+        btn_2.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                Toast.makeText(Main2Activity.this, "MyLocation button clicked", Toast.LENGTH_SHORT).show();
+
+            }
+        });
+        // create an alert dialog
+
+        alert.show();
+
     }
 
 }
