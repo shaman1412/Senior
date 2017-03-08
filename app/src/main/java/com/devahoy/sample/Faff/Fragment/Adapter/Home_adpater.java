@@ -8,12 +8,12 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
-import com.devahoy.sample.Faff.Fragment.MainMenu.Content_MainFragment;
-import com.devahoy.sample.Faff.Fragment.MainMenu.CreateGroup_MainFragment;
-import com.devahoy.sample.Faff.Fragment.MainMenu.Search_MainFragment;
+import com.devahoy.sample.Faff.Fragment.MainMenu.MainHome_Fragment;
+import com.devahoy.sample.Faff.Fragment.Home.CreateGroup_MainFragment;
+import com.devahoy.sample.Faff.Fragment.Home.Search_MainFragment;
 import com.devahoy.sample.Faff.R;
 
-public class MainMenu_adpater extends FragmentPagerAdapter   {
+public class Home_adpater extends FragmentPagerAdapter   {
     private final int PAGE_NUM = 3;
     private String tabTitles[] = new String[] { "ร้านอาหารแนะนำ", "แนะนำโปรโมชั่น", "ร้านอาหารยอดนิยม" };
     private Context context;
@@ -22,7 +22,7 @@ public class MainMenu_adpater extends FragmentPagerAdapter   {
             R.drawable.find_res,
             R.drawable.find_res
     };
-    public MainMenu_adpater(FragmentManager fm, Context context) {
+    public Home_adpater(FragmentManager fm, Context context) {
         super(fm);
         this.context = context;
     }
@@ -33,11 +33,12 @@ public class MainMenu_adpater extends FragmentPagerAdapter   {
             return new CreateGroup_MainFragment();
         }
         else if(position == 1) {
-            return new Content_MainFragment();
+            return new MainHome_Fragment();
         }
         else if(position == 2){
             return  new Search_MainFragment();
         }
+        else
         return null;
     }
 

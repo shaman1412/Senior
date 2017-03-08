@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="com.devahoy.sample.Faff.Fragment.MainMenu.Content_MainFragment">
+    tools:context="com.devahoy.sample.Faff.Fragment.MainMenu.MainHome_Fragment">
 
     <!-- TODO: Update blank fragment layout -->
     <TextView

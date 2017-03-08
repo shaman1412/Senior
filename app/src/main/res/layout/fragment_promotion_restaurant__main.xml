@@ -1,15 +1,19 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:gravity="center"
-    tools:context="com.devahoy.sample.Faff.Fragment.MainMenu.CreateGroup_MainFragment">
+    tools:context="com.devahoy.sample.Faff.Fragment.Home.Search_MainFragment"
+     >
 
     <!-- TODO: Update blank fragment layout -->
+
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Create Group" />
+        android:layout_centerHorizontal="true"
+        android:text="Search restaurant"
+        android:layout_centerVertical="true"/>
 
-</LinearLayout>
+
+</RelativeLayout>
