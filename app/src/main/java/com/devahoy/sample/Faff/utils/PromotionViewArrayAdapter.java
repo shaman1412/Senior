@@ -3,6 +3,7 @@ package com.devahoy.sample.Faff.utils;
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -40,7 +41,7 @@ public class PromotionViewArrayAdapter extends ArrayAdapter<promotion_view_list>
         final View rowView = inflater.inflate(R.layout.promotion_view_list, null, true);
 
         final TextView id = (TextView) rowView.findViewById(R.id.pvl_id);
-        final ListView ls = (ListView) rowView.findViewById(R.id.pvl_img);
+        final RecyclerView ls = (RecyclerView) rowView.findViewById(R.id.pvl_img);
         final TextView title = (TextView) rowView.findViewById(R.id.pvl_title);
         final TextView startDate = (TextView) rowView.findViewById(R.id.pvl_startDate);
         final TextView endDate = (TextView) rowView.findViewById(R.id.pvl_endDate);
@@ -48,7 +49,9 @@ public class PromotionViewArrayAdapter extends ArrayAdapter<promotion_view_list>
         final TextView location = (TextView) rowView.findViewById(R.id.pvl_location);
 
         id.setText(promotions.get(position).getId());
-        ImageArrayAdapter img = new ImageArrayAdapter(context, promotions.get(position).getPicture());
+        PromotionViewImageRecyclerViewAdapter img = new PromotionViewImageRecyclerViewAdapter(context, promotions.get(position).getPicture());
+        //ImageArrayAdapter img = new ImageArrayAdapter(context, promotions.get(position).getPicture());
+        ls.setNestedScrollingEnabled(false);
         ls.setAdapter(img);
         title.setText(promotions.get(position).getTitle());
         startDate.setText(promotions.get(position).getStartDate());

@@ -40,7 +40,6 @@ public class PromotionRecyclerViewAdapter extends RecyclerView.Adapter<Promotion
         return holder;
     }
 
-
     @Override
     public void onBindViewHolder(MyViewHolder holder, final int position) {
         holder.imageView.setTag(position);
@@ -72,7 +71,6 @@ public class PromotionRecyclerViewAdapter extends RecyclerView.Adapter<Promotion
             super(itemView);
             imageView = (ImageView) itemView.findViewById(R.id.image);
             cancel = (Button) itemView.findViewById(R.id.cancelUpload);
-
         }
     }
 }

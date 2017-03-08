@@ -5,18 +5,22 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.RecyclerView;
 import android.widget.ListView;
 
 import com.devahoy.sample.Faff.model.promotion_view_list;
 import com.devahoy.sample.Faff.utils.DatabaseManager;
 import com.devahoy.sample.Faff.utils.PromotionViewArrayAdapter;
+import com.devahoy.sample.Faff.utils.PromotionViewRecyclerViewAdapter;
 
 import java.util.ArrayList;
 
-public class PromotionView extends ActionBarActivity {
+public class PromotionView extends AppCompatActivity {
 
     public static final String TAG = PromotionView.class.getSimpleName();
-    ListView mListPromotion;
+//    ListView mListPromotion;
+    RecyclerView mListPromotion;
     DatabaseManager mManager;
     ArrayList<promotion_view_list> data;
     ArrayList<Bitmap> bmap = new ArrayList<>();
@@ -31,8 +35,16 @@ public class PromotionView extends ActionBarActivity {
 
         //custom list view
 
-        mListPromotion = (ListView) findViewById(R.id.listview);
-        PromotionViewArrayAdapter adapter = new PromotionViewArrayAdapter(this, data);
+        try{
+            mListPromotion = (RecyclerView) findViewById(R.id.listview);
+        }
+        catch(Exception ex)
+        {
+            ex.printStackTrace();
+        }
+        PromotionViewRecyclerViewAdapter adapter = new PromotionViewRecyclerViewAdapter(this, data);
+        //PromotionViewArrayAdapter adapter = new PromotionViewArrayAdapter(this, data);
+        mListPromotion.setNestedScrollingEnabled(false);
         mListPromotion.setAdapter(adapter);
 
     }

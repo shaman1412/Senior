@@ -21,13 +21,13 @@ import java.util.ArrayList;
  * Created by Not_Today on 2/11/2017.
  */
 
-public class PromotionArrayAdapter extends ArrayAdapter<Bitmap> {
+public class PromotionArrayAdapter_unused extends ArrayAdapter<Bitmap> {
     private final Activity context;
     private final ArrayList<Bitmap> bitmap;
     private Button cancel;
 
 
-    public PromotionArrayAdapter(Activity context, ArrayList<Bitmap> bitmap, ArrayList<Bitmap> bm)
+    public PromotionArrayAdapter_unused(Activity context, ArrayList<Bitmap> bitmap, ArrayList<Bitmap> bm)
     {
         super(context, R.layout.promotion_list_picture,bm);
         this.context = context;
