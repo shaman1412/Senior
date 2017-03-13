@@ -1,6 +1,5 @@
 package com.devahoy.sample.Faff.Fragment.MainMenu;
 
-import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -14,8 +13,6 @@ import com.devahoy.sample.Faff.R;
 
 
 public class Content_MainFragment extends Fragment  {
-
-
 
     public Content_MainFragment() {
         // Required empty public constructor

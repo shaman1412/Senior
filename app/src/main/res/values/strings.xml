@@ -38,5 +38,5 @@
     <string name="TextUserProfile">Please fill out your profile info\nthen click "Done"</string>
     <string name="title_activity_server_socket">ServerSocketActivity</string>
 
-
+    
 </resources>

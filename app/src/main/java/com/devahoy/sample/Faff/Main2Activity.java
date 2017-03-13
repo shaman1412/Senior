@@ -1,6 +1,5 @@
 package com.devahoy.sample.Faff;
 
-
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -25,6 +24,7 @@ import com.devahoy.sample.Faff.Fragment.Adapter.Party_adapter;
 import com.devahoy.sample.Faff.UserProfile.InsertUserProfile;
 import com.devahoy.sample.Faff.UserProfile.ProfileManager;
 import com.devahoy.sample.Faff.UserProfile.ShowUserprofile;
+import com.devahoy.sample.Faff.chat.ChatMainActivity;
 import com.devahoy.sample.Faff.model.UserAuthen;
 import com.devahoy.sample.Faff.model.UserProfile;
 
@@ -108,6 +108,9 @@ public class Main2Activity extends AppCompatActivity {
                     @Override
                     public boolean onNavigationItemSelected(MenuItem item) {
                         switch (item.getItemId()) {
+                            case R.id.AddPromotion:
+                                ChangeTabToAddPromotion();
+                                break;
                             case R.id.Party:
                                 ChageeTabToParty();
                                 break;
@@ -127,18 +130,32 @@ public class Main2Activity extends AppCompatActivity {
         //ActionBarDrawerToggle drawerToggle
 
     }
-    public void ChageeTabToParty(){
-        Party_adapter adapter = new Party_adapter(getSupportFragmentManager(),context);
-        pager.setAdapter(adapter);
-        pager.setCurrentItem(0);
-        tabLayout.setupWithViewPager(pager);
+
+    private void ChangeTabToAddPromotion() {
+        Intent intent = new Intent(context, PromotionActivity.class);
+        startActivity(intent);
     }
+
+    public void ChageeTabToParty(){
+        Intent intent = new Intent(context, ChatMainActivity.class);
+        context.startActivities(new Intent[]{intent});
+
+//        Party_adapter adapter = new Party_adapter(getSupportFragmentManager(),context);
+//        pager.setAdapter(adapter);
+//        pager.setCurrentItem(0);
+//        tabLayout.setupWithViewPager(pager);
+    }
+
+
+
     public  void changeTabToHome(){
-        MainMenu_adpater adpater = new MainMenu_adpater(getSupportFragmentManager(),context);
-        pager = (ViewPager)findViewById(R.id.pager);
-        pager.setAdapter(adpater);
-        pager.setCurrentItem(1);
-        tabLayout.setupWithViewPager(pager);
+        Intent intent = new Intent(context, PromotionView.class);
+        context.startActivity(intent);
+//        MainMenu_adpater adpater = new MainMenu_adpater(getSupportFragmentManager(),context);
+//        pager = (ViewPager)findViewById(R.id.pager);
+//        pager.setAdapter(adpater);
+//        pager.setCurrentItem(1);
+//        tabLayout.setupWithViewPager(pager);
     }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

@@ -5,8 +5,8 @@ android {
     buildToolsVersion '25.0.0'
 
     defaultConfig {
-        applicationId "com.devahoy.sample.login"
-        minSdkVersion 13
+        applicationId "com.devahoy.sample.Faff"
+        minSdkVersion 14
         targetSdkVersion 23
         versionCode 1
         versionName "1.0"
@@ -26,13 +26,22 @@ ext {
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
 
-dependencies {
-    compile fileTree(include: ['*.jar'], dir: 'libs')
-    compile "com.android.support:appcompat-v7:${supportLibVersion}"
-    compile 'com.android.support:design:25.1.1'
-    compile 'com.google.android.gms:play-services-location:10.0.1'
-    compile 'com.google.android.gms:play-services-maps:10.0.1'
-    compile 'com.google.android.gms:play-services-places:10.0.1'
-    compile 'com.android.support:support-v4:25.1.1'
-    compile 'com.google.code.gson:gson:2.8.0'
+    dependencies {
+        compile fileTree(include: ['*.jar'], dir: 'libs')
+        compile "com.android.support:appcompat-v7:${supportLibVersion}"
+        compile 'com.android.support:design:25.1.1'
+        compile 'com.google.android.gms:play-services-location:10.0.1'
+        compile 'com.google.android.gms:play-services-maps:10.0.1'
+        compile 'com.google.android.gms:play-services-places:10.0.1'
+        compile 'com.android.support:support-v4:25.1.1'
+        compile 'com.google.code.gson:gson:2.8.0'
+
+        compile 'com.google.firebase:firebase-auth:10.2.0'
+        compile 'com.google.firebase:firebase-database:10.2.0'
+        compile 'com.google.firebase:firebase-core:10.2.0'
+
+    }
+    compile 'com.android.support.constraint:constraint-layout:1.0.0-beta5'
 }
+
+apply plugin: 'com.google.gms.google-services'
