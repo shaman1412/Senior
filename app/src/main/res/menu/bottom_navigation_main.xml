@@ -2,6 +2,14 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="#000000">
+
+    <item
+        android:id="@+id/AddPromotion"
+        android:enabled="true"
+        android:icon="@drawable/group_bottom_main"
+        android:title="AddPromotion"
+        app:showAsAction="ifRoom" />
+
     <item
         android:id="@+id/Party"
         android:enabled="true"

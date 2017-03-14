@@ -1,6 +1,5 @@
 package com.Senior.Faff;
 
-import android.app.ListActivity;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
@@ -9,6 +8,9 @@ import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
@@ -16,18 +18,19 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ListView;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.Senior.Faff.model.Promotion;
 import com.Senior.Faff.model.PromotionPicture;
 import com.Senior.Faff.utils.DatabaseManager;
-import com.Senior.Faff.utils.PromotionArrayAdapter;
+import com.devahoy.sample.Faff.utils.PromotionRecyclerViewAdapter;
 
+import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 
-import static android.R.id.list;
+public class PromotionActivity extends AppCompatActivity {
 
 public class PromotionActivity extends ListActivity {
 
@@ -52,7 +55,7 @@ public class PromotionActivity extends ListActivity {
     public static int image_count=0;                                    //number of images
 
     DatabaseManager mManager;
-    public static PromotionArrayAdapter adapter;
+    public static PromotionRecyclerViewAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,7 +63,8 @@ public class PromotionActivity extends ListActivity {
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
-        setContentView(R.layout.activity_promotion);
+            setContentView(R.layout.activity_promotion);
+
 
         mManager = new DatabaseManager(this);
 
@@ -124,29 +128,32 @@ public class PromotionActivity extends ListActivity {
                 imgByte.add(stream.toByteArray());
                 image_count++;
 
-                adapter = new PromotionArrayAdapter(this, bmap, bmap);
-                ListView lv = (ListView) findViewById(list);
+                adapter = new PromotionRecyclerViewAdapter(this, bmap, bmap);
+                RecyclerView lv = (RecyclerView) findViewById(R.id.rlist1);
+                lv.setNestedScrollingEnabled(false);
                 lv.setAdapter(adapter);
-                lv.setOnTouchListener(new ListView.OnTouchListener(){
-                    @Override
-                    public boolean onTouch(View v, MotionEvent event) {
-                        int action = event.getAction();
-                        switch (action) {
-                            case MotionEvent.ACTION_DOWN:
-                                // Disallow ScrollView to intercept touch events.
-                                v.getParent().requestDisallowInterceptTouchEvent(true);
-                                break;
 
-                            case MotionEvent.ACTION_UP:
-                                // Allow ScrollView to intercept touch events.
-                                v.getParent().requestDisallowInterceptTouchEvent(false);
-                                break;
-                        }
-                        // Handle ListView touch events.
-                        v.onTouchEvent(event);
-                        return true;
-                    }
-                });
+
+//                lv.setOnTouchListener(new ListView.OnTouchListener(){
+//                    @Override
+//                    public boolean onTouch(View v, MotionEvent event) {
+//                        int action = event.getAction();
+//                        switch (action) {
+//                            case MotionEvent.ACTION_DOWN:
+//                                // Disallow ScrollView to intercept touch events.
+//                                v.getParent().requestDisallowInterceptTouchEvent(true);
+//                                break;
+//
+//                            case MotionEvent.ACTION_UP:
+//                                // Allow ScrollView to intercept touch events.
+//                                v.getParent().requestDisallowInterceptTouchEvent(false);
+//                                break;
+//                        }
+//                        // Handle ListView touch events.
+//                        v.onTouchEvent(event);
+//                        return true;
+//                    }
+//                });
 
                 //img.setImageBitmap(bitSelectedImg);
             }

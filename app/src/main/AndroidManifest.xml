@@ -26,6 +26,8 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
         <activity android:name=".RegisterActivity" />
         <activity android:name=".MainActivity" />
@@ -62,7 +64,8 @@
         <activity android:name=".TestActivity" />
         <activity android:name=".Main2Activity" />
         <activity android:name=".PartyActivity" />
-        <activity android:name=".UserProfile.ShowUserprofile" />
+        <activity andrfile:///E:/merge/app/google-services.jsonoid:name=".UserProfile.ShowUserprofile" />
+        <activity android:name=".UserProfile.InsertUserProfile" />
         <activity android:name=".UserProfile.InsertUserProfile" />
         <!-- <activity -->
         <!-- android:name=".ServerSocketActivity" -->

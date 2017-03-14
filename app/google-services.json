@@ -1,27 +1,27 @@
 {
   "project_info": {
-    "project_number": "417591834290",
-    "firebase_url": "https://faff-1489402013619.firebaseio.com",
-    "project_id": "faff-1489402013619",
-    "storage_bucket": "faff-1489402013619.appspot.com"
+    "project_number": "3724378329",
+    "firebase_url": "https://chatapp-a52d5.firebaseio.com",
+    "project_id": "chatapp-a52d5",
+    "storage_bucket": "chatapp-a52d5.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:417591834290:android:d616e4e02768e882",
+        "mobilesdk_app_id": "1:3724378329:android:90e5088fff923640",
         "android_client_info": {
-          "package_name": "com.Senior.Faff"
+          "package_name": "app.real_time_chat"
         }
       },
       "oauth_client": [
         {
-          "client_id": "417591834290-0tp5k6hlkpcqkamv7kjuo79de43vi7kv.apps.googleusercontent.com",
+          "client_id": "3724378329-80s6f2kvep589uheupocoe4j212bj36j.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyBICTHgLXGy99t6iFCsiZhzzJL2AggZCWQ"
+          "current_key": "AIzaSyDnl7ObXcsU01hWi6vf_GvSFu5fwZByG1M"
         }
       ],
       "services": {
@@ -31,6 +31,94 @@
         "appinvite_service": {
           "status": 1,
           "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:3724378329:android:b5d75907de594a2d",
+        "android_client_info": {
+          "package_name": "com.google.firebase.codelab.friendlychat"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "3724378329-kktthdh8sii4rf0tgob76mhal6knuq33.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.google.firebase.codelab.friendlychat",
+            "certificate_hash": "48c2bc6dbfe8f5428aff2787294f136e85210dc9"
+          }
+        },
+        {
+          "client_id": "3724378329-80s6f2kvep589uheupocoe4j212bj36j.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDnl7ObXcsU01hWi6vf_GvSFu5fwZByG1M"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "3724378329-80s6f2kvep589uheupocoe4j212bj36j.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:3724378329:android:f47c2abd8542e418",
+        "android_client_info": {
+          "package_name": "com.devahoy.sample.Faff"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "3724378329-dcutdbm6vcqoq6s8tdpqjg7b94brfn5d.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.devahoy.sample.Faff",
+            "certificate_hash": "48c2bc6dbfe8f5428aff2787294f136e85210dc9"
+          }
+        },
+        {
+          "client_id": "3724378329-80s6f2kvep589uheupocoe4j212bj36j.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDnl7ObXcsU01hWi6vf_GvSFu5fwZByG1M"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "3724378329-80s6f2kvep589uheupocoe4j212bj36j.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
         },
         "ads_service": {
           "status": 2

@@ -1,6 +1,5 @@
 package com.Senior.Faff;
 
-
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -79,6 +78,8 @@ public class Main2Activity extends AppCompatActivity {
         setupDrawerContent(nvDrawer);
 
 
+        pager = (ViewPager)findViewById(R.id.pager);
+        tabLayout = (TabLayout) findViewById(R.id.sliding_tabs);
 
         //tabLayout = (TabLayout) findViewById(R.id.sliding_tabs);
 
@@ -121,6 +122,9 @@ public class Main2Activity extends AppCompatActivity {
                     @Override
                     public boolean onNavigationItemSelected(MenuItem item) {
                         switch (item.getItemId()) {
+                            case R.id.AddPromotion:
+                                ChangeTabToAddPromotion();
+                                break;
                             case R.id.Party:
                                 //ChageeTabToParty();
                                 MainParty_fragment fragment_party = new MainParty_fragment();
@@ -156,18 +160,32 @@ public class Main2Activity extends AppCompatActivity {
         //ActionBarDrawerToggle drawerToggle
 
     }
-    public void ChageeTabToParty(){
-        Party_adapter adapter = new Party_adapter(getSupportFragmentManager(),context);
-        pager.setAdapter(adapter);
-        pager.setCurrentItem(0);
-        tabLayout.setupWithViewPager(pager);
+
+    private void ChangeTabToAddPromotion() {
+        Intent intent = new Intent(context, PromotionActivity.class);
+        startActivity(intent);
     }
+
+    public void ChageeTabToParty(){
+        Intent intent = new Intent(context, ChatMainActivity.class);
+        context.startActivities(new Intent[]{intent});
+
+//        Party_adapter adapter = new Party_adapter(getSupportFragmentManager(),context);
+//        pager.setAdapter(adapter);
+//        pager.setCurrentItem(0);
+//        tabLayout.setupWithViewPager(pager);
+    }
+
+
+
     public  void changeTabToHome(){
         Home_adpater adpater = new Home_adpater(getSupportFragmentManager(),context);
-        pager = (ViewPager)findViewById(R.id.pager);
-        pager.setAdapter(adpater);
-        pager.setCurrentItem(1);
-        tabLayout.setupWithViewPager(pager);
+        context.startActivity(intent);
+//        MainMenu_adpater adpater = new MainMenu_adpater(getSupportFragmentManager(),context);
+//        pager = (ViewPager)findViewById(R.id.pager);
+//        pager.setAdapter(adpater);
+//        pager.setCurrentItem(1);
+//        tabLayout.setupWithViewPager(pager);
     }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -211,6 +229,8 @@ public class Main2Activity extends AppCompatActivity {
 
                 break;
             case R.id.UserProfile:
+                 int id = userProfile.getId();
+                String a = String.valueOf(id);
                 Intent intent = new Intent(context, ShowUserprofile.class);
                 intent.putExtra(UserProfile.Column.ID,User_id);
                 startActivity(intent);
