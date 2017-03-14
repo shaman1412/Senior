@@ -1,4 +1,4 @@
-package com.devahoy.sample.Faff.chat;
+package com.Senior.Faff.chat;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -8,7 +8,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import com.devahoy.sample.Faff.R;
+import com.Senior.Faff.R;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;

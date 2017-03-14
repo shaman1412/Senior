@@ -1,26 +1,18 @@
 package com.Senior.Faff.utils;
 
 import android.app.Activity;
-import android.content.Context;
-import android.graphics.Bitmap;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
-import android.widget.ImageView;
-import android.widget.ListView;
 import android.widget.TextView;
 
+import com.Senior.Faff.utils.PromotionViewImageRecyclerViewAdapter;
 import com.Senior.Faff.R;
 import com.Senior.Faff.model.promotion_view_list;
 
-import org.w3c.dom.Text;
-
-import java.security.acl.Group;
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by Not_Today on 2/13/2017.

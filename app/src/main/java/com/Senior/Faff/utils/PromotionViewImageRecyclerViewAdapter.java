@@ -1,6 +1,5 @@
-package com.devahoy.sample.Faff.utils;
+package com.Senior.Faff.utils;
 
-import android.app.Activity;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.support.v7.widget.RecyclerView;
@@ -8,10 +7,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.TextView;
 
-import com.devahoy.sample.Faff.R;
-import com.devahoy.sample.Faff.model.promotion_view_list;
+import com.Senior.Faff.R;
+import  com.Senior.Faff.model.promotion_view_list;
 
 import java.util.ArrayList;
 

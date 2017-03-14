@@ -9,30 +9,26 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.Senior.Faff.model.Promotion;
 import com.Senior.Faff.model.PromotionPicture;
 import com.Senior.Faff.utils.DatabaseManager;
-import com.devahoy.sample.Faff.utils.PromotionRecyclerViewAdapter;
+import com.Senior.Faff.utils.PromotionRecyclerViewAdapter;
 
-import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 
 public class PromotionActivity extends AppCompatActivity {
 
-public class PromotionActivity extends ListActivity {
+
 
     public static final String TAG = PromotionActivity.class.getSimpleName();
 

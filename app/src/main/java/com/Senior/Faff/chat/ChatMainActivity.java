@@ -1,4 +1,4 @@
-package com.devahoy.sample.Faff.chat;
+package com.Senior.Faff.chat;
 
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -16,7 +16,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.devahoy.sample.Faff.R;
+import com.Senior.Faff.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;

@@ -1,4 +1,4 @@
-package com.devahoy.sample.Faff.utils;
+package com.Senior.Faff.utils;
 
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -8,10 +8,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.TextView;
 
-import com.devahoy.sample.Faff.PromotionActivity;
-import com.devahoy.sample.Faff.R;
+import com.Senior.Faff.PromotionActivity;
+import com.Senior.Faff.R;
+
 
 import java.util.ArrayList;
 

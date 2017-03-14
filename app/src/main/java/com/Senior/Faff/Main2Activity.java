@@ -33,6 +33,7 @@ import com.Senior.Faff.RestaurantProfile.Option_RestaurantFragment;
 import com.Senior.Faff.UserProfile.InsertUserProfile;
 import com.Senior.Faff.UserProfile.ProfileManager;
 import com.Senior.Faff.UserProfile.ShowUserprofile;
+import com.Senior.Faff.chat.ChatMainActivity;
 import com.Senior.Faff.model.UserAuthen;
 import com.Senior.Faff.model.UserProfile;
 import com.Senior.Faff.utils.firebase;
@@ -83,7 +84,7 @@ public class Main2Activity extends AppCompatActivity {
 
         //tabLayout = (TabLayout) findViewById(R.id.sliding_tabs);
 
-      //  changeTabToHome();
+
         profileManager = new ProfileManager(this);
         userProfile = new UserProfile();
         int id = profileManager.getID(args.getString(UserAuthen.Column.USERNAME));
@@ -126,7 +127,6 @@ public class Main2Activity extends AppCompatActivity {
                                 ChangeTabToAddPromotion();
                                 break;
                             case R.id.Party:
-                                //ChageeTabToParty();
                                 MainParty_fragment fragment_party = new MainParty_fragment();
                                 FragmentManager fragmentManager_party = getSupportFragmentManager();
                                 fragmentManager_party.beginTransaction()
@@ -166,27 +166,7 @@ public class Main2Activity extends AppCompatActivity {
         startActivity(intent);
     }
 
-    public void ChageeTabToParty(){
-        Intent intent = new Intent(context, ChatMainActivity.class);
-        context.startActivities(new Intent[]{intent});
 
-//        Party_adapter adapter = new Party_adapter(getSupportFragmentManager(),context);
-//        pager.setAdapter(adapter);
-//        pager.setCurrentItem(0);
-//        tabLayout.setupWithViewPager(pager);
-    }
-
-
-
-    public  void changeTabToHome(){
-        Home_adpater adpater = new Home_adpater(getSupportFragmentManager(),context);
-        context.startActivity(intent);
-//        MainMenu_adpater adpater = new MainMenu_adpater(getSupportFragmentManager(),context);
-//        pager = (ViewPager)findViewById(R.id.pager);
-//        pager.setAdapter(adpater);
-//        pager.setCurrentItem(1);
-//        tabLayout.setupWithViewPager(pager);
-    }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.main_toolbar_filter, menu);
@@ -229,14 +209,14 @@ public class Main2Activity extends AppCompatActivity {
 
                 break;
             case R.id.UserProfile:
-                 int id = userProfile.getId();
                 String a = String.valueOf(id);
                 Intent intent = new Intent(context, ShowUserprofile.class);
                 intent.putExtra(UserProfile.Column.ID,User_id);
                 startActivity(intent);
                 break;
             case R.id.Favourite:
-
+                Intent b = new Intent(context,ChatMainActivity.class);
+                startActivity(b);
                 break;
             case R.id.History:
 
