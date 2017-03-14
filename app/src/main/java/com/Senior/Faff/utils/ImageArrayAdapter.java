@@ -1,4 +1,4 @@
-package com.Senior.sample.Faff.utils;
+package com.Senior.Faff.utils;
 
 import android.app.Activity;
 import android.graphics.Bitmap;
@@ -8,7 +8,7 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 
-import com.Senior.sample.Faff.R;
+import com.Senior.Faff.R;
 
 import java.util.ArrayList;
 

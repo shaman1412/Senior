@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">DevahoyLogin</string>
-    <string name="login_title">Devahoy</string>
+    <string name="app_name">Faff</string>
+    <string name="login_title">Faff</string>
     <string name="username_title">Username</string>
     <string name="password_title">Password</string>
     <string name="password_confirm_title">Confirm Password</string>
@@ -39,6 +39,7 @@
     <string name="title_activity_server_socket">ServerSocketActivity</string>
     <string name="title_activity_restaurant_maps">Map</string>
     <string name="title_activity_add_map_restaurant">Map</string>
+    <string name="title_activity_test_maps">Map</string>
 
 
 </resources>

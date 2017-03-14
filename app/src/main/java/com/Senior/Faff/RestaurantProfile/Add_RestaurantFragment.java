@@ -1,4 +1,4 @@
-package com.Senior.sample.Faff.RestaurantProfile;
+package com.Senior.Faff.RestaurantProfile;
 
 
 import android.content.Intent;
@@ -15,9 +15,9 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
 
-import com.Senior.sample.Faff.Fragment.MainMenu.MainHome_Fragment;
-import com.Senior.sample.Faff.R;
-import com.Senior.sample.Faff.model.Restaurant;
+import com.Senior.Faff.Fragment.MainMenu.MainHome_Fragment;
+import com.Senior.Faff.R;
+import com.Senior.Faff.model.Restaurant;
 
 /**
  * A simple {@link Fragment} subclass.

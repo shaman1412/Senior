@@ -1,4 +1,4 @@
-package com.Senior.sample.Faff.RestaurantProfile;
+package com.Senior.Faff.RestaurantProfile;
 
 import android.content.Context;
 import android.content.Intent;
@@ -15,8 +15,9 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.Senior.sample.Faff.R;
-import com.Senior.sample.Faff.model.Restaurant;
+import com.Senior.Faff.Main2Activity;
+import com.Senior.Faff.R;
+import com.Senior.Faff.model.Restaurant;
 
 public class AddRes_respro extends AppCompatActivity {
 
@@ -76,9 +77,9 @@ public class AddRes_respro extends AppCompatActivity {
                     case 1:
                         type_food = 1;
                     case 2:
-                        type_food = 2;
+                        type_food = 3;
                     case 3:
-                        type_food = 2;
+                        type_food = 4;
 
                 }
 
@@ -104,7 +105,7 @@ public class AddRes_respro extends AppCompatActivity {
                     Toast.makeText(mcontext, "Fail", Toast.LENGTH_SHORT).show();
                 } else {
                     Toast.makeText(mcontext, "Success", Toast.LENGTH_SHORT).show();
-                    Intent intent = new Intent(mcontext, Restaurant_manager.class);
+                    Intent intent = new Intent(mcontext, Main2Activity.class);
                     startActivity(intent);
 
                 }

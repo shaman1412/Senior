@@ -1,17 +1,20 @@
-package com.Senior.sample.Faff.RestaurantProfile;
+package com.Senior.Faff.RestaurantProfile;
 
 import android.Manifest;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationManager;
+import android.os.Build;
 import android.support.annotation.NonNull;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.app.AlertDialog;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -19,8 +22,8 @@ import android.widget.Toast;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 
-import com.Senior.sample.Faff.R;
-import com.Senior.sample.Faff.utils.PermissionUtils;
+import com.Senior.Faff.R;
+import com.Senior.Faff.utils.PermissionUtils;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationAvailability;
@@ -44,7 +47,7 @@ public class RestaurantMapsActivity extends AppCompatActivity implements OnMapRe
 
 
     private GoogleApiClient googleApiClient;
-    private static final int LOCATION_PERMISSION_REQUEST_CODE = 1;
+    private static final int LOCATION_PERMISSION_REQUEST_CODE = 99;
     private GoogleMap mMap;
     private Location mLastLocation;
     private com.google.android.gms.maps.model.Marker mCurrLocationMarker;
@@ -155,6 +158,7 @@ public class RestaurantMapsActivity extends AppCompatActivity implements OnMapRe
     @Override
     public boolean onMyLocationButtonClick() {
 
+
         if (location != null) {
             myLocation = new LatLng(location.getLatitude(),
                     location.getLongitude());
@@ -204,17 +208,25 @@ public class RestaurantMapsActivity extends AppCompatActivity implements OnMapRe
 
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
                 != PackageManager.PERMISSION_GRANTED) {
-            // Check Permissions Now
 
 
             if (ActivityCompat.shouldShowRequestPermissionRationale(this,
                     Manifest.permission.ACCESS_FINE_LOCATION)) {
-                // Display UI and wait for user interaction
+                new AlertDialog.Builder(this)
+                        .setTitle("Location Permission Needed")
+                        .setMessage("This app needs the Location permission, please accept to use location functionality")
+                        .setPositiveButton("OK",new DialogInterface.OnClickListener(){
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                ActivityCompat.requestPermissions(RestaurantMapsActivity.this,new String[]{Manifest.permission.ACCESS_FINE_LOCATION},LOCATION_PERMISSION_REQUEST_CODE);
+                            }
+
+                        })
+                        .create()
+                        .show();
             } else {
-                /*      ActivityCompat.requestPermissions(
-                        this, new String[]{Manifest.permission.LOCATION_FINE},
-                        ACCESS_FINE_LOCATION);*/
-                ActivityCompat.requestPermissions(this,new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
+
+                ActivityCompat.requestPermissions(this,new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 99);
             }
         }
         else {

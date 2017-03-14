@@ -1,4 +1,4 @@
-package com.Senior.sample.Faff;
+package com.Senior.Faff;
 
 import android.app.AlertDialog;
 import android.content.Context;
@@ -14,8 +14,8 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.Senior.sample.Faff.model.UserAuthen;
-import com.Senior.sample.Faff.utils.DatabaseManager;
+import com.Senior.Faff.model.UserAuthen;
+import com.Senior.Faff.utils.DatabaseManager;
 
 public class MainActivity extends ActionBarActivity {
 

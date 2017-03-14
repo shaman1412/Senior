@@ -1,4 +1,4 @@
-package com.Senior.sample.Faff.utils;
+package com.Senior.Faff.utils;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -10,7 +10,7 @@ import android.database.sqlite.SQLiteOpenHelper;
  * Created by InFiNity on 21-Jan-17.
  */
 
-import com.Senior.sample.Faff.model.Marker;
+import com.Senior.Faff.model.Marker;
 
 import java.util.ArrayList;
 

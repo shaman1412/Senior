@@ -1,4 +1,4 @@
-package com.Senior.sample.Faff;
+package com.Senior.Faff;
 
 import android.content.Context;
 import android.net.ConnectivityManager;
@@ -7,7 +7,7 @@ import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 import android.widget.TextView;
 
-import com.Senior.sample.Faff.utils.DownloadCallback;
+import com.Senior.Faff.utils.DownloadCallback;
 
 public class TestActivity extends FragmentActivity implements DownloadCallback {
 

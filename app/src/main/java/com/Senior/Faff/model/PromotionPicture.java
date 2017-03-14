@@ -1,4 +1,4 @@
-package com.Senior.sample.Faff.model;
+package com.Senior.Faff.model;
 
 /**
  * Created by Not_Today on 2/11/2017.

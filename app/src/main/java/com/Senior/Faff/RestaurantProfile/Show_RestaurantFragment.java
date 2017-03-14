@@ -1,4 +1,4 @@
-package com.Senior.sample.Faff.RestaurantProfile;
+package com.Senior.Faff.RestaurantProfile;
 
 
 import android.os.Bundle;
@@ -8,7 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.Senior.sample.Faff.R;
+import com.Senior.Faff.R;
 
 /**
  * A simple {@link Fragment} subclass.

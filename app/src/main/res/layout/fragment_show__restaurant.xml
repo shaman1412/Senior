@@ -2,7 +2,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.devahoy.sample.Faff.RestaurantProfile.Show_RestaurantFragment">
+    tools:context="com.Senior.Faff.RestaurantProfile.Show_RestaurantFragment">
 
     <!-- TODO: Update blank fragment layout -->
     <TextView

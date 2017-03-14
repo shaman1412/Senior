@@ -1,4 +1,4 @@
-package com.Senior.sample.Faff.Fragment.Party;
+package com.Senior.Faff.Fragment.Party;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -6,7 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.Senior.sample.Faff.R;
+import com.Senior.Faff.R;
 
 /**
  * A simple {@link Fragment} subclass.

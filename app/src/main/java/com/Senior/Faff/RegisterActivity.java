@@ -1,4 +1,4 @@
-package com.Senior.sample.Faff;
+package com.Senior.Faff;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -8,8 +8,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.Senior.sample.Faff.model.UserAuthen;
-import com.Senior.sample.Faff.utils.DatabaseManager;
+import com.Senior.Faff.model.UserAuthen;
+import com.Senior.Faff.utils.DatabaseManager;
 
 public class RegisterActivity extends ActionBarActivity {
 

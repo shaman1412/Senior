@@ -1,4 +1,4 @@
-package com.Senior.sample.Faff.UserProfile;
+package com.Senior.Faff.UserProfile;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -6,9 +6,9 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
-import com.Senior.sample.Faff.model.UserAuthen;
-import com.Senior.sample.Faff.model.UserProfile;
-import com.Senior.sample.Faff.utils.DatabaseManagerHelper;
+import com.Senior.Faff.model.UserAuthen;
+import com.Senior.Faff.model.UserProfile;
+import com.Senior.Faff.utils.DatabaseManagerHelper;
 import com.google.gson.Gson;
 
 import java.util.List;

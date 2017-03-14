@@ -1,4 +1,4 @@
-package com.Senior.sample.Faff.Fragment.MainMenu;
+package com.Senior.Faff.Fragment.MainMenu;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -11,8 +11,8 @@ import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.Senior.sample.Faff.Fragment.Adapter.Home_adpater;
-import com.Senior.sample.Faff.R;
+import com.Senior.Faff.Fragment.Adapter.Home_adpater;
+import com.Senior.Faff.R;
 
 
 

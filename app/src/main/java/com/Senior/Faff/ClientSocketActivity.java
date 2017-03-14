@@ -1,6 +1,5 @@
-package com.devahoy.sample.Faff;
+package com.Senior.Faff;
 
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;

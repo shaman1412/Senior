@@ -1,9 +1,9 @@
-package com.Senior.sample.Faff;
+package com.Senior.Faff;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
-import com.Senior.sample.Faff.utils.BitmapImageManager;
+import com.Senior.Faff.utils.BitmapImageManager;
 
 import it.sephiroth.android.library.imagezoom.ImageViewTouch;
 

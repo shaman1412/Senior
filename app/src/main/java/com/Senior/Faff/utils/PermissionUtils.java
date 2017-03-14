@@ -1,4 +1,4 @@
-package com.Senior.sample.Faff.utils;
+package com.Senior.Faff.utils;
 
 import android.Manifest;
 import android.app.AlertDialog;
@@ -11,7 +11,7 @@ import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.Toast;
 
-import com.Senior.sample.Faff.R;
+import com.Senior.Faff.R;
 
 /**
  * Created by InFiNity on 28-Jan-17.

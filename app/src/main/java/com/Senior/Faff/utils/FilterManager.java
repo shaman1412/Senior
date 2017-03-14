@@ -1,4 +1,4 @@
-package com.Senior.sample.Faff.utils;
+package com.Senior.Faff.utils;
 
 /**
  * Created by InFiNity on 16-Feb-17.

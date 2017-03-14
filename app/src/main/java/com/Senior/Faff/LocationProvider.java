@@ -1,4 +1,4 @@
-package com.Senior.sample.Faff;
+package com.Senior.Faff;
 
 import android.content.pm.PackageManager;
 import android.support.v4.app.ActivityCompat;

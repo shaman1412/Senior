@@ -1,4 +1,4 @@
-package com.Senior.sample.Faff;
+package com.Senior.Faff;
 
 import java.io.BufferedReader;
 import java.io.IOException;

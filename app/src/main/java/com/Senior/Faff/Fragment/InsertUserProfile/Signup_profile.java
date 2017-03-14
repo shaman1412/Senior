@@ -1,4 +1,4 @@
-package com.Senior.sample.Faff.Fragment.InsertUserProfile;
+package com.Senior.Faff.Fragment.InsertUserProfile;
 
 
 import android.os.Bundle;
@@ -9,7 +9,7 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 
-import com.Senior.sample.Faff.R;
+import com.Senior.Faff.R;
 
 /**
  * A simple {@link Fragment} subclass.

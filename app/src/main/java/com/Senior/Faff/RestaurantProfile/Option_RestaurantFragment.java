@@ -1,6 +1,8 @@
-package com.Senior.sample.Faff.RestaurantProfile;
+package com.Senior.Faff.RestaurantProfile;
 
 
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -10,7 +12,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
-import com.Senior.sample.Faff.R;
+import com.Senior.Faff.R;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -24,6 +26,7 @@ public class Option_RestaurantFragment extends Fragment {
         
     private Button add,edit,show;
     private String id;
+    private Context mconctext;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -36,7 +39,7 @@ public class Option_RestaurantFragment extends Fragment {
         id = getArguments().getString("message");
         TextView getdate  = (TextView)root.findViewById(R.id.get);
         getdate.setText(id);
-
+        mconctext =  getContext();
 
         add.setOnClickListener(new View.OnClickListener(){
             @Override
@@ -50,6 +53,7 @@ public class Option_RestaurantFragment extends Fragment {
                 add.setVisibility(View.GONE);
                 edit.setVisibility(View.GONE);
                 show.setVisibility(View.GONE);
+
             }
 
         });

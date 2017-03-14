@@ -1,11 +1,11 @@
-package com.Senior.sample.Faff.Fragment.Adapter;
+package com.Senior.Faff.Fragment.Adapter;
 
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
-import com.Senior.sample.Faff.Fragment.InsertUserProfile.Edit_profile;
-import com.Senior.sample.Faff.Fragment.InsertUserProfile.Signup_profile;
+import com.Senior.Faff.Fragment.InsertUserProfile.Edit_profile;
+import com.Senior.Faff.Fragment.InsertUserProfile.Signup_profile;
 
 /**
  * Created by InFiNity on 14-Feb-17.

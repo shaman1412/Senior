@@ -1,4 +1,4 @@
-package com.Senior.sample.Faff.Fragment.Home;
+package com.Senior.Faff.Fragment.Home;
 
 
 import android.content.Context;
@@ -11,10 +11,10 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
 
-import com.Senior.sample.Faff.R;
-import com.Senior.sample.Faff.RestaurantProfile.Customlistview_addvice_adapter;
-import com.Senior.sample.Faff.RestaurantProfile.Restaurant_manager;
-import com.Senior.sample.Faff.model.Restaurant;
+import com.Senior.Faff.R;
+import com.Senior.Faff.RestaurantProfile.Customlistview_addvice_adapter;
+import com.Senior.Faff.RestaurantProfile.Restaurant_manager;
+import com.Senior.Faff.model.Restaurant;
 
 import java.util.ArrayList;
 
@@ -42,7 +42,7 @@ public class advice_restaurant_MainFragment extends Fragment {
         //re_list.get(1).getRestaurantName();
         String[] list = {"ร้านนำ้ ย่านสาทร","ครัวน้าอ้วน","Don Don tei"};
         View rootView = inflater.inflate(R.layout.fragment_advice_restaurant__main, container, false);
-        ListView listview = (ListView)rootView.findViewById(R.id.listView12);
+        ListView listview = (ListView)rootView.findViewById(R.id.listView1);
         listview.setAdapter( new Customlistview_addvice_adapter(getContext(),0,re_list,resId));
         listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> arg0, View view, int position, long id) {

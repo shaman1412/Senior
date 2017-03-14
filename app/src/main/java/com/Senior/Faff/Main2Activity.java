@@ -1,4 +1,4 @@
-package com.Senior.sample.Faff;
+package com.Senior.Faff;
 
 
 import android.content.Context;
@@ -25,17 +25,18 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 
-import com.Senior.sample.Faff.Fragment.Adapter.Home_adpater;
-import com.Senior.sample.Faff.Fragment.Adapter.Party_adapter;
-import com.Senior.sample.Faff.Fragment.MainMenu.MainHome_Fragment;
-import com.Senior.sample.Faff.Fragment.MainMenu.MainNearby_Fragment;
-import com.Senior.sample.Faff.Fragment.MainMenu.MainParty_fragment;
-import com.Senior.sample.Faff.RestaurantProfile.Option_RestaurantFragment;
-import com.Senior.sample.Faff.UserProfile.InsertUserProfile;
-import com.Senior.sample.Faff.UserProfile.ProfileManager;
-import com.Senior.sample.Faff.UserProfile.ShowUserprofile;
-import com.Senior.sample.Faff.model.UserAuthen;
-import com.Senior.sample.Faff.model.UserProfile;
+import com.Senior.Faff.Fragment.Adapter.Home_adpater;
+import com.Senior.Faff.Fragment.Adapter.Party_adapter;
+import com.Senior.Faff.Fragment.MainMenu.MainHome_Fragment;
+import com.Senior.Faff.Fragment.MainMenu.MainNearby_Fragment;
+import com.Senior.Faff.Fragment.MainMenu.MainParty_fragment;
+import com.Senior.Faff.RestaurantProfile.Option_RestaurantFragment;
+import com.Senior.Faff.UserProfile.InsertUserProfile;
+import com.Senior.Faff.UserProfile.ProfileManager;
+import com.Senior.Faff.UserProfile.ShowUserprofile;
+import com.Senior.Faff.model.UserAuthen;
+import com.Senior.Faff.model.UserProfile;
+import com.Senior.Faff.utils.firebase;
 
 public class Main2Activity extends AppCompatActivity {
     ViewPager pager;
@@ -57,7 +58,8 @@ public class Main2Activity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+       // firebase a  = new firebase();
+       // a.writeNewUser();
         setContentView(R.layout.activity_main2);
         setTitle("");
         Bundle args = getIntent().getExtras();

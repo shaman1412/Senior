@@ -1,9 +1,9 @@
-package com.Senior.sample.Faff.utils;
+package com.Senior.Faff.utils;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
-import com.Senior.sample.Faff.R;
+import com.Senior.Faff.R;
 
 public class PlacePicker extends AppCompatActivity {
 

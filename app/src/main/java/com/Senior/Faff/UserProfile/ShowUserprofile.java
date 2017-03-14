@@ -1,4 +1,4 @@
-package com.Senior.sample.Faff.UserProfile;
+package com.Senior.Faff.UserProfile;
 
 import android.os.Build;
 import android.support.annotation.RequiresApi;
@@ -14,9 +14,9 @@ import android.view.MenuItem;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.Senior.sample.Faff.R;
-import com.Senior.sample.Faff.model.UserProfile;
-import com.Senior.sample.Faff.utils.BitmapImageManager;
+import com.Senior.Faff.R;
+import com.Senior.Faff.model.UserProfile;
+import com.Senior.Faff.utils.BitmapImageManager;
 
 public class ShowUserprofile extends AppCompatActivity {
     private Toolbar toolbar;

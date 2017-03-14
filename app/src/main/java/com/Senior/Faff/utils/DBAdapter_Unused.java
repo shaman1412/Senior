@@ -1,4 +1,4 @@
-package com.Senior.sample.Faff.utils;
+package com.Senior.Faff.utils;
 
 /**
  * Created by Not_Today on 12/21/2016.

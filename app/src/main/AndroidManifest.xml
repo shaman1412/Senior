@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.devahoy.sample.Faff">
+    package="com.Senior.Faff">
 
     <!--
          The ACCESS_COARSE/FINE_LOCATION permissions are not required to use
@@ -51,6 +51,9 @@
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/google_maps_key" />
+        <meta-data
+            android:name="com.google.android.gms.version"
+            android:value="@integer/google_play_services_version" />
 
         <activity
             android:name=".MapsActivity"
@@ -60,7 +63,6 @@
         <activity android:name=".Main2Activity" />
         <activity android:name=".PartyActivity" />
         <activity android:name=".UserProfile.ShowUserprofile" />
-        <activity android:name=".UserProfile.ProfileManager" />
         <activity android:name=".UserProfile.InsertUserProfile" />
         <!-- <activity -->
         <!-- android:name=".ServerSocketActivity" -->
@@ -71,12 +73,15 @@
         <activity android:name=".ClientSocketActivity" />
         <activity android:name=".FilterActivity" />
         <activity android:name=".ImagerActivity" />
-        <activity android:name=".RestaurantProfile.Restaurant_manager" />
         <activity android:name=".utils.PlacePicker" />
         <activity
             android:name=".RestaurantProfile.RestaurantMapsActivity"
             android:label="@string/title_activity_restaurant_maps" />
-        <activity android:name=".RestaurantProfile.AddRes_respro"></activity>
+        <activity android:name=".RestaurantProfile.AddRes_respro" />
+        <activity
+            android:name=".TestMapsActivity"
+            android:label="@string/title_activity_test_maps" />
+        <activity android:name=".firebasetestActivity"></activity>
     </application>
 
 </manifest>

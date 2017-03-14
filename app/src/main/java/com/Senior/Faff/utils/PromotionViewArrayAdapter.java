@@ -1,4 +1,4 @@
-package com.Senior.sample.Faff.utils;
+package com.Senior.Faff.utils;
 
 import android.app.Activity;
 import android.view.LayoutInflater;
@@ -8,8 +8,8 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.Senior.sample.Faff.R;
-import com.Senior.sample.Faff.model.promotion_view_list;
+import com.Senior.Faff.R;
+import com.Senior.Faff.model.promotion_view_list;
 
 import java.util.ArrayList;
 

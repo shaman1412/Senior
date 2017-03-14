@@ -1,4 +1,4 @@
-package com.Senior.sample.Faff.RestaurantProfile;
+package com.Senior.Faff.RestaurantProfile;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -6,8 +6,8 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
-import com.Senior.sample.Faff.model.Restaurant;
-import com.Senior.sample.Faff.utils.DatabaseManagerHelper;
+import com.Senior.Faff.model.Restaurant;
+import com.Senior.Faff.utils.DatabaseManagerHelper;
 
 import java.util.ArrayList;
 
@@ -102,6 +102,5 @@ public class Restaurant_manager extends SQLiteOpenHelper {
 
         return list;
     }
-
 
 }

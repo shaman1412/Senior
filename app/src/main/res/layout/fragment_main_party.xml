@@ -5,12 +5,12 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
 
-    tools:context="com.devahoy.sample.Faff.Fragment.MainMenu.MainParty_fragment">
+    tools:context="com.Senior.Faff.Fragment.MainMenu.MainParty_fragment">
 
     <!-- TODO: Update blank fragment layout -->
 
 
-<com.devahoy.sample.Faff.utils.CustomTabLayout
+<com.Senior.Faff.utils.CustomTabLayout
     android:layout_width="match_parent"
     android:id="@+id/tablayout"
     android:background="#ffa500"

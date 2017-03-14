@@ -1,4 +1,4 @@
-package com.Senior.sample.Faff;
+package com.Senior.Faff;
 
 import android.content.Context;
 import android.net.ConnectivityManager;
@@ -9,7 +9,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 
-import com.Senior.sample.Faff.utils.DownloadCallback;
+import com.Senior.Faff.utils.DownloadCallback;
 
 import java.io.IOException;
 import java.io.InputStream;

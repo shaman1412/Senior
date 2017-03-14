@@ -1,4 +1,4 @@
-package com.Senior.sample.Faff;
+package com.Senior.Faff;
 import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationManager;
@@ -20,7 +20,7 @@ import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.GoogleMap.OnMyLocationButtonClickListener;
 import android.Manifest;
-import com.Senior.sample.Faff.model.Marker;
+import com.Senior.Faff.model.Marker;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -30,10 +30,10 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import android.content.pm.PackageManager;
 import android.support.annotation.NonNull;
-import com.Senior.sample.Faff.utils.PermissionUtils;
+import com.Senior.Faff.utils.PermissionUtils;
 import java.util.List;
 
-import com.Senior.sample.Faff.utils.MapManager;
+import com.Senior.Faff.utils.MapManager;
 public class MapsActivity extends AppCompatActivity implements  OnMyLocationButtonClickListener,
         OnMapReadyCallback,GoogleApiClient.ConnectionCallbacks,
         GoogleApiClient.OnConnectionFailedListener, LocationListener,

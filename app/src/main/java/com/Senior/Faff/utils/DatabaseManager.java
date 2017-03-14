@@ -1,4 +1,4 @@
-package com.Senior.sample.Faff.utils;
+package com.Senior.Faff.utils;
 
 //***** in CREATE_TABLE_USERPROFILE {gender type = string but in database type = char}
 
@@ -10,30 +10,30 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
-import com.Senior.sample.Faff.model.Bookmark;
-import com.Senior.sample.Faff.model.BookmarkList;
-import com.Senior.sample.Faff.model.Comment;
-import com.Senior.sample.Faff.model.CommentListResteraunt;
-import com.Senior.sample.Faff.model.FoodProfile;
-import com.Senior.sample.Faff.model.History;
-import com.Senior.sample.Faff.model.Marker;
-import com.Senior.sample.Faff.model.Party;
-import com.Senior.sample.Faff.model.PartyList;
-import com.Senior.sample.Faff.model.Promotion;
-import com.Senior.sample.Faff.model.PromotionList;
-import com.Senior.sample.Faff.model.PromotionPicture;
-import com.Senior.sample.Faff.model.Report;
-import com.Senior.sample.Faff.model.ReportList;
-import com.Senior.sample.Faff.model.Restaurant;
-import com.Senior.sample.Faff.model.RestaurantList;
-import com.Senior.sample.Faff.model.Review;
-import com.Senior.sample.Faff.model.ReviewList;
-import com.Senior.sample.Faff.model.Room;
-import com.Senior.sample.Faff.model.RoomList;
-import com.Senior.sample.Faff.model.Score;
-import com.Senior.sample.Faff.model.TypeFood;
-import com.Senior.sample.Faff.model.UserAuthen;
-import com.Senior.sample.Faff.model.UserProfile;
+import com.Senior.Faff.model.Bookmark;
+import com.Senior.Faff.model.BookmarkList;
+import com.Senior.Faff.model.Comment;
+import com.Senior.Faff.model.CommentListResteraunt;
+import com.Senior.Faff.model.FoodProfile;
+import com.Senior.Faff.model.History;
+import com.Senior.Faff.model.Marker;
+import com.Senior.Faff.model.Party;
+import com.Senior.Faff.model.PartyList;
+import com.Senior.Faff.model.Promotion;
+import com.Senior.Faff.model.PromotionList;
+import com.Senior.Faff.model.PromotionPicture;
+import com.Senior.Faff.model.Report;
+import com.Senior.Faff.model.ReportList;
+import com.Senior.Faff.model.Restaurant;
+import com.Senior.Faff.model.RestaurantList;
+import com.Senior.Faff.model.Review;
+import com.Senior.Faff.model.ReviewList;
+import com.Senior.Faff.model.Room;
+import com.Senior.Faff.model.RoomList;
+import com.Senior.Faff.model.Score;
+import com.Senior.Faff.model.TypeFood;
+import com.Senior.Faff.model.UserAuthen;
+import com.Senior.Faff.model.UserProfile;
 
 public class DatabaseManager extends SQLiteOpenHelper implements DatabaseManagerHelper {
     public static final String TAG = DatabaseManager.class.getSimpleName();

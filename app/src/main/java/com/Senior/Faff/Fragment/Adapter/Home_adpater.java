@@ -1,4 +1,4 @@
-package com.Senior.sample.Faff.Fragment.Adapter;
+package com.Senior.Faff.Fragment.Adapter;
 
 /**
  * Created by InFiNity on 09-Feb-17.
@@ -8,10 +8,10 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
-import com.Senior.sample.Faff.Fragment.Home.promotion_restaurant_MainFragment;
-import com.Senior.sample.Faff.Fragment.Home.top_resturant_MainFragment;
-import com.Senior.sample.Faff.Fragment.Home.advice_restaurant_MainFragment;
-import com.Senior.sample.Faff.R;
+import com.Senior.Faff.Fragment.Home.promotion_restaurant_MainFragment;
+import com.Senior.Faff.Fragment.Home.top_resturant_MainFragment;
+import com.Senior.Faff.Fragment.Home.advice_restaurant_MainFragment;
+import com.Senior.Faff.R;
 
 public class Home_adpater extends FragmentPagerAdapter   {
     private final int PAGE_NUM = 3;

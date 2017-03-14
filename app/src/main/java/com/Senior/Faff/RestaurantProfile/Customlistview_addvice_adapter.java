@@ -1,4 +1,4 @@
-package com.Senior.sample.Faff.RestaurantProfile;
+package com.Senior.Faff.RestaurantProfile;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -8,8 +8,8 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.Senior.sample.Faff.R;
-import com.Senior.sample.Faff.model.Restaurant;
+import com.Senior.Faff.R;
+import com.Senior.Faff.model.Restaurant;
 
 import java.util.ArrayList;
 

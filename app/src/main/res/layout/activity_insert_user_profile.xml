@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="com.devahoy.sample.Faff.UserProfile.InsertUserProfile">
+    tools:context="com.Senior.Faff.UserProfile.InsertUserProfile">
     <android.support.design.widget.AppBarLayout
         android:layout_height="wrap_content"
         android:layout_width="match_parent">

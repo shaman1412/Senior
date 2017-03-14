@@ -1,11 +1,11 @@
-package com.Senior.sample.Faff.RestaurantProfile;
+package com.Senior.Faff.RestaurantProfile;
 
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.os.AsyncTask;
 import android.widget.ImageView;
 
-import com.Senior.sample.Faff.utils.BitmapImageManager;
+import com.Senior.Faff.utils.BitmapImageManager;
 
 /**
  * Created by InFiNity on 19-Feb-17.

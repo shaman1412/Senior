@@ -1,6 +1,6 @@
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    tools:context="com.devahoy.sample.Faff.RestaurantProfile.RestaurantMapsActivity"
+    tools:context="com.Senior.Faff.RestaurantProfile.RestaurantMapsActivity"
     xmlns:map="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -12,7 +12,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:name="com.google.android.gms.maps.SupportMapFragment"
-    tools:context="com.devahoy.sample.Faff.RestaurantProfile.RestaurantMapsActivity"
+    tools:context="com.Senior.sample.Faff.RestaurantProfile.RestaurantMapsActivity"
     />
 
     <LinearLayout

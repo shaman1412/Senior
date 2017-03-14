@@ -1,4 +1,4 @@
-package com.Senior.sample.Faff.Fragment.MainMenu;
+package com.Senior.Faff.Fragment.MainMenu;
 
 
 import android.content.Context;
@@ -14,10 +14,11 @@ import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.Senior.sample.Faff.Fragment.Adapter.Party_adapter;
-import com.Senior.sample.Faff.MapsActivity;
-import com.Senior.sample.Faff.R;
-import com.Senior.sample.Faff.utils.CustomTabLayout;
+import com.Senior.Faff.Fragment.Adapter.Party_adapter;
+import com.Senior.Faff.MapsActivity;
+import com.Senior.Faff.R;
+import com.Senior.Faff.TestMapsActivity;
+import com.Senior.Faff.utils.CustomTabLayout;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -50,7 +51,7 @@ public class MainParty_fragment extends Fragment {
             @Override
             public void onClick(View view) {
                 // Click action
-                Intent intent = new Intent(getActivity(), MapsActivity.class);
+                Intent intent = new Intent(getActivity(), TestMapsActivity.class);
                 startActivity(intent);
             }
         });

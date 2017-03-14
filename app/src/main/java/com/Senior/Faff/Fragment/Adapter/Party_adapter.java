@@ -1,14 +1,14 @@
-package com.Senior.sample.Faff.Fragment.Adapter;
+package com.Senior.Faff.Fragment.Adapter;
 
 import android.content.Context;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
-import com.Senior.sample.Faff.Fragment.Party.Created_Fragment;
-import com.Senior.sample.Faff.Fragment.Party.Joined_Fragment;
-import com.Senior.sample.Faff.Fragment.Party.Requested_Fragment;
-import com.Senior.sample.Faff.Fragment.Party.Room_fragment;
+import com.Senior.Faff.Fragment.Party.Created_Fragment;
+import com.Senior.Faff.Fragment.Party.Joined_Fragment;
+import com.Senior.Faff.Fragment.Party.Requested_Fragment;
+import com.Senior.Faff.Fragment.Party.Room_fragment;
 
 /**
  * Created by InFiNity on 13-Feb-17.

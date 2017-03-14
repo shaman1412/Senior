@@ -5,7 +5,7 @@
     android:orientation="vertical"
     android:gravity="center"
     android:background="@color/backgroundpro"
-    tools:context="com.devahoy.sample.Faff.Fragment.InsertUserProfile.Edit_profile">
+    tools:context="com.Senior.Faff.Fragment.InsertUserProfile.Edit_profile">
 
     <RelativeLayout
         android:layout_width="match_parent"

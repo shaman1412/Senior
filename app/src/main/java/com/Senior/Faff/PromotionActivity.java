@@ -1,4 +1,4 @@
-package com.Senior.sample.Faff;
+package com.Senior.Faff;
 
 import android.app.ListActivity;
 import android.content.Context;
@@ -19,10 +19,10 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
 
-import com.Senior.sample.Faff.model.Promotion;
-import com.Senior.sample.Faff.model.PromotionPicture;
-import com.Senior.sample.Faff.utils.DatabaseManager;
-import com.Senior.sample.Faff.utils.PromotionArrayAdapter;
+import com.Senior.Faff.model.Promotion;
+import com.Senior.Faff.model.PromotionPicture;
+import com.Senior.Faff.utils.DatabaseManager;
+import com.Senior.Faff.utils.PromotionArrayAdapter;
 
 import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;

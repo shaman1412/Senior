@@ -1,4 +1,4 @@
-package com.Senior.sample.Faff;
+package com.Senior.Faff;
 
 import android.content.Context;
 import android.support.design.widget.TabLayout;
@@ -7,7 +7,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
 
-import com.Senior.sample.Faff.Fragment.Adapter.Party_adapter;
+import com.Senior.Faff.Fragment.Adapter.Party_adapter;
 
 public class PartyActivity extends AppCompatActivity {
     private ViewPager pager;

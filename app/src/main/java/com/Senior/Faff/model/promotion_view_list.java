@@ -1,4 +1,4 @@
-package com.Senior.sample.Faff.model;
+package com.Senior.Faff.model;
 
 import android.graphics.Bitmap;
 

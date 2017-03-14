@@ -1,4 +1,4 @@
-package com.Senior.sample.Faff.UserProfile;
+package com.Senior.Faff.UserProfile;
 
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
@@ -10,7 +10,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 
-import com.Senior.sample.Faff.R;
+import com.Senior.Faff.R;
 
 public class InsertUserProfile extends AppCompatActivity {
     private ViewPager pager;

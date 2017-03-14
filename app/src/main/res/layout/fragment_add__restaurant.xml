@@ -4,7 +4,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:gravity="center"
-    tools:context="com.devahoy.sample.Faff.RestaurantProfile.Add_RestaurantFragment">
+    tools:context="com.Senior.Faff.RestaurantProfile.Add_RestaurantFragment">
 
     <!-- TODO: Update blank fragment layout -->
     <TextView
