@@ -12,23 +12,25 @@ import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AlertDialog;
+import android.support.v7.widget.ButtonBarLayout;
 import android.support.v7.widget.Toolbar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
 
-import com.Senior.Faff.Fragment.Adapter.Home_adpater;
-import com.Senior.Faff.Fragment.Adapter.Party_adapter;
 import com.Senior.Faff.Fragment.MainMenu.MainHome_Fragment;
 import com.Senior.Faff.Fragment.MainMenu.MainNearby_Fragment;
 import com.Senior.Faff.Fragment.MainMenu.MainParty_fragment;
+import com.Senior.Faff.Promotion.PromotionActivity;
 import com.Senior.Faff.RestaurantProfile.Option_RestaurantFragment;
 import com.Senior.Faff.UserProfile.InsertUserProfile;
 import com.Senior.Faff.UserProfile.ProfileManager;
@@ -36,9 +38,11 @@ import com.Senior.Faff.UserProfile.ShowUserprofile;
 import com.Senior.Faff.chat.ChatMainActivity;
 import com.Senior.Faff.model.UserAuthen;
 import com.Senior.Faff.model.UserProfile;
-import com.Senior.Faff.utils.firebase;
 
 public class Main2Activity extends AppCompatActivity {
+
+    private static final String Tag = Main2Activity.class.getSimpleName();
+
     ViewPager pager;
     private Context context;
     final int[] ICONS = new int[]{
@@ -62,6 +66,8 @@ public class Main2Activity extends AppCompatActivity {
        // a.writeNewUser();
         setContentView(R.layout.activity_main2);
         setTitle("");
+
+        //get map key-value of this activity in args
         Bundle args = getIntent().getExtras();
         //pager = (ViewPager)findViewById(R.id.pager);
         context = this;
@@ -83,7 +89,6 @@ public class Main2Activity extends AppCompatActivity {
         tabLayout = (TabLayout) findViewById(R.id.sliding_tabs);
 
         //tabLayout = (TabLayout) findViewById(R.id.sliding_tabs);
-
 
         profileManager = new ProfileManager(this);
         userProfile = new UserProfile();
@@ -123,9 +128,6 @@ public class Main2Activity extends AppCompatActivity {
                     @Override
                     public boolean onNavigationItemSelected(MenuItem item) {
                         switch (item.getItemId()) {
-                            case R.id.AddPromotion:
-                                ChangeTabToAddPromotion();
-                                break;
                             case R.id.Party:
                                 MainParty_fragment fragment_party = new MainParty_fragment();
                                 FragmentManager fragmentManager_party = getSupportFragmentManager();
@@ -133,7 +135,6 @@ public class Main2Activity extends AppCompatActivity {
                                         .setCustomAnimations(R.anim.fade_in, R.anim.fade_out)
                                         .replace(R.id.flContent,fragment_party)
                                         .commit();
-
                                 break;
                             case R.id.Home:
                                 MainHome_Fragment fragment_home = new MainHome_Fragment();
@@ -161,12 +162,6 @@ public class Main2Activity extends AppCompatActivity {
 
     }
 
-    private void ChangeTabToAddPromotion() {
-        Intent intent = new Intent(context, PromotionActivity.class);
-        startActivity(intent);
-    }
-
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.main_toolbar_filter, menu);
@@ -178,7 +173,7 @@ public class Main2Activity extends AppCompatActivity {
         if (drawerToggle.onOptionsItemSelected(item)) {
             return true;
         }
-        int id= item.getItemId();
+        int id = item.getItemId();
         if(id == R.id.dialog_filter){
             showInputDialog();
             return true;
@@ -196,10 +191,13 @@ public class Main2Activity extends AppCompatActivity {
                     }
                 });
     }
+
     public void selectDrawerItem(MenuItem menuItem) {
         // Create a new fragment and specify the fragment to show based on nav item clicked
-        int id = userProfile.getId();
-        String User_id = String.valueOf(id);
+
+        int id = userProfile.getId();               // ??? for what ???
+        String User_id = String.valueOf(id);        // ??? for what ???
+
         switch(menuItem.getItemId()) {
             case R.id.Home:
                 Intent Home_intent = new Intent(context, InsertUserProfile.class);
@@ -230,6 +228,10 @@ public class Main2Activity extends AppCompatActivity {
                 FragmentManager manager = getSupportFragmentManager();
                 manager.beginTransaction().replace(R.id.flContent,option).commit();
                 break;
+            case R.id.AddPromotion:
+                Intent i = new Intent(context, PromotionActivity.class);
+                startActivity(i);
+                break;
             case R.id.NotificationRe:
 
                 break;
@@ -253,11 +255,13 @@ public class Main2Activity extends AppCompatActivity {
         // Close the navigation drawer
         mDrawer.closeDrawers();
     }
+
     private ActionBarDrawerToggle setupDrawerToggle() {
         // NOTE: Make sure you pass in a valid toolbar reference.  ActionBarDrawToggle() does not require it
         // and will not render the hamburger icon without it.
         return new ActionBarDrawerToggle(this, mDrawer, toolbar, R.string.drawer_open,  R.string.drawer_close);
     }
+
     @Override
     protected void onPostCreate(Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
@@ -272,6 +276,7 @@ public class Main2Activity extends AppCompatActivity {
         // Pass any configuration change to the drawer toggles
         drawerToggle.onConfigurationChanged(newConfig);
     }
+
     @Override
     public void onBackPressed() {
         new AlertDialog.Builder(this)
@@ -289,6 +294,7 @@ public class Main2Activity extends AppCompatActivity {
                 .setNegativeButton("No", null)
                 .show();
     }
+
     protected void showInputDialog() {
 
         // get prompts.xml view

@@ -9,7 +9,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
 
-import com.Senior.Faff.PromotionActivity;
+import com.Senior.Faff.Promotion.PromotionActivity;
 import com.Senior.Faff.R;
 
 import java.util.ArrayList;

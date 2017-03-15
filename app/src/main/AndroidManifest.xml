@@ -29,8 +29,8 @@
         </activity>
         <activity android:name=".RegisterActivity" />
         <activity android:name=".MainActivity" />
-        <activity android:name=".PromotionActivity" />
-        <activity android:name=".PromotionView" />
+        <activity android:name=".Promotion.PromotionActivity" />
+        <activity android:name=".Promotion.PromotionView" />
 
         <!--
                  <intent-filter>

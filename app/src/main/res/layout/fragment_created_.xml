@@ -10,4 +10,25 @@
         android:layout_height="match_parent"
         android:text="created fragment" />
 
+    <LinearLayout
+        android:layout_gravity="center"
+        android:layout_width="match_parent"
+        android:layout_height="100dp">
+
+        <EditText
+            android:layout_width="1dp"
+            android:layout_height="match_parent"
+            android:id="@+id/AddRoomText"
+            android:layout_alignParentLeft="true"
+            android:layout_weight="0.7" />
+
+        <Button
+            android:layout_width="1dp"
+            android:layout_height="match_parent"
+            android:layout_alignRight="@+id/AddRoomText"
+            android:layout_weight="0.3"
+            android:id="@+id/AddRoomButton"/>
+
+    </LinearLayout>
+
 </FrameLayout>
