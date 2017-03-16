@@ -16,6 +16,7 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -55,36 +56,28 @@ public class Nearby_Fragment extends Fragment implements GoogleApiClient.OnConne
     private Location mLastLocation;
     private LatLng myLocation;
     private Location location;
+    private ArrayList<Restaurant> re_list;
+    private ListView listview;
+    int[] resId =  {R.drawable.restaurant1,R.drawable.restaurant2,R.drawable.restaurant3};
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View root =  inflater.inflate(R.layout.fragment_nearby_, container, false);
-        int[] resId =  {R.drawable.restaurant1,R.drawable.restaurant2,R.drawable.restaurant3};
+
         mcontext  = getContext();
-        Restaurant_manager res_manager = new Restaurant_manager(mcontext);
+
         Restaurant model = new Restaurant();
-        ArrayList<Restaurant> re_list = new ArrayList<>();
-        re_list = res_manager.showAllRestaurant();
-        ListView listview = (ListView)root.findViewById(R.id.listView12);
-        listview.setAdapter( new Customlistview_addvice_adapter(getContext(),0,re_list,resId));
-        listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            public void onItemClick(AdapterView<?> arg0, View view, int position, long id) {
-                if(position == 0){
-                    Toast.makeText(getContext(),"position 0",Toast.LENGTH_SHORT).show();
-                }
-                if(position== 1){
-                    Toast.makeText(getContext(),"position 1",Toast.LENGTH_SHORT).show();
-                }
-            }
-        });
+
+       listview = (ListView)root.findViewById(R.id.listView12);
+
         googleApiClient = new GoogleApiClient.Builder(getContext())
                 .addApi(LocationServices.API)
                 .addConnectionCallbacks(this)
                 .addOnConnectionFailedListener(this)
                 .build();
 
-
+        Log.d("Myactivity", "omCreateview");
 
 
 
@@ -109,6 +102,7 @@ public class Nearby_Fragment extends Fragment implements GoogleApiClient.OnConne
 
     @Override
     public void onConnected(@Nullable Bundle bundle) {
+        Log.d("Myactivity", "onConnected");
         if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION)
                 != PackageManager.PERMISSION_GRANTED) {
             // Check Permissions Now
@@ -156,11 +150,11 @@ public class Nearby_Fragment extends Fragment implements GoogleApiClient.OnConne
                     Location target = new Location("Target");
                     target.setLatitude(37.5219983);
                     target.setLongitude(-122.184);
-                    float d;
+                    float d = mLastLocation.distanceTo(target);
                     //  d = location.distanceTo(target);
                     //   la.setText(String.valueOf(d));
-                    if(location!=null)
-                        if(location.distanceTo(target) < 1000) {
+                    if( mLastLocation!=null)
+                        if( mLastLocation.distanceTo(target) > 1000) {
                             Toast.makeText(getContext(), "Hi", Toast.LENGTH_SHORT).show();
                         }
                    /* if(location.distanceTo(target) < METERS_100) {
@@ -169,6 +163,8 @@ public class Nearby_Fragment extends Fragment implements GoogleApiClient.OnConne
 
                   /*  lo.setText(String.valueOf(mLastLocation.getLongitude()));
                     la.setText(String.valueOf(mLastLocation.getLatitude()));*/
+
+                    showlist(listview,re_list,resId);
 
                 }
 
@@ -193,6 +189,44 @@ public class Nearby_Fragment extends Fragment implements GoogleApiClient.OnConne
     @Override
     public void onLocationChanged(Location location) {
 
+    }
+    public ArrayList<Restaurant> calculatedistance(int de_distance,int[] typeID,ArrayList<Restaurant> listRes){
+        int distance;
+        float latitude,longtitude;
+        ArrayList<Restaurant> res  = new ArrayList<>();
+        for(int i =0; i<listRes.size(); i++){
+          String[] position = listRes.get(i).getLocation().split(",");
+            latitude = Float.parseFloat(position[0]);
+            longtitude = Float.parseFloat(position[1]);
+            Location target = new Location("Target");
+            target.setLatitude(latitude);
+            target.setLongitude(longtitude);
+            distance  =  (int)mLastLocation.distanceTo(target);
+            if(distance <= de_distance ){
+                for(int j =0; j<typeID.length;j++) {
+                    if(listRes.get(i).getTypeID() == typeID[j] )
+                    res.add(listRes.get(i));
+                }
+            }
+        }
+
+        return res;
+    }
+    public void showlist(ListView listview,ArrayList<Restaurant> re_list,int[] resId){
+        int[] h = {1,2};
+        Restaurant_manager res_manager = new Restaurant_manager(mcontext);
+        re_list =  calculatedistance(900 ,h,res_manager.showAllRestaurant());
+        listview.setAdapter( new Customlistview_addvice_adapter(getContext(),0,re_list,resId));
+        listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            public void onItemClick(AdapterView<?> arg0, View view, int position, long id) {
+                if(position == 0){
+                    Toast.makeText(getContext(),"position 0",Toast.LENGTH_SHORT).show();
+                }
+                if(position== 1){
+                    Toast.makeText(getContext(),"position 1",Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
     }
 
 }

@@ -55,7 +55,7 @@ public class MainActivity extends ActionBarActivity {
             mUsername.setText(getString(R.string.say_hi) + " " +
                     args.getString(UserAuthen.Column.USERNAME));
 
-            mUserAuthen.setId(args.getInt(UserAuthen.Column.ID));
+            //mUserAuthen.setId(args.getInt(UserAuthen.Column.ID));
             mUserAuthen.setUsername(args.getString(UserAuthen.Column.USERNAME));
         }
 

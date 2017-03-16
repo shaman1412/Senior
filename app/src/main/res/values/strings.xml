@@ -40,6 +40,7 @@
     <string name="title_activity_restaurant_maps">Map</string>
     <string name="title_activity_add_map_restaurant">Map</string>
     <string name="title_activity_test_maps">Map</string>
+    <string name="title_activity_party__create_new_party_map">Map</string>
 
-    
+
 </resources>

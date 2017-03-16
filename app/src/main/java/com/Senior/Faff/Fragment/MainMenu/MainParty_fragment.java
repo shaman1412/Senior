@@ -15,6 +15,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.Senior.Faff.Fragment.Adapter.Party_adapter;
+import com.Senior.Faff.Fragment.Party.Party_CreateNewParty;
 import com.Senior.Faff.MapsActivity;
 import com.Senior.Faff.R;
 import com.Senior.Faff.TestMapsActivity;
@@ -51,7 +52,7 @@ public class MainParty_fragment extends Fragment {
             @Override
             public void onClick(View view) {
                 // Click action
-                Intent intent = new Intent(getActivity(), TestMapsActivity.class);
+                Intent intent = new Intent(getActivity(), Party_CreateNewParty.class);
                 startActivity(intent);
             }
         });

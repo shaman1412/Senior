@@ -36,7 +36,7 @@ public class Option_RestaurantFragment extends Fragment {
         add = (Button)root.findViewById(R.id.add_restaurant);
         edit = (Button)root.findViewById(R.id.edit_restaurant);
         show = (Button)root.findViewById(R.id.show_restaurant);
-        id = getArguments().getString("message");
+        id = getArguments().getString("userid");
         TextView getdate  = (TextView)root.findViewById(R.id.get);
         getdate.setText(id);
         mconctext =  getContext();
@@ -53,6 +53,8 @@ public class Option_RestaurantFragment extends Fragment {
                 add.setVisibility(View.GONE);
                 edit.setVisibility(View.GONE);
                 show.setVisibility(View.GONE);
+              /*  Intent  intent  = new Intent(getActivity(), RestaurantMapsActivity.class);
+                startActivity(intent);*/
 
             }
 

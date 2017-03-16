@@ -27,11 +27,11 @@ public class Restaurant {
     private String location;
     private String restaurantDetail;
     private int score;
-    private int userID;
+    private String userID;
     private int typeID;
 
     // Constructor
-    public Restaurant(String restaurantName, String restaurantPicture, String location, String restaurantDetail, int score, int userID, int typeID) {
+    public Restaurant(String restaurantName, String restaurantPicture, String location, String restaurantDetail, int score, String userID, int typeID) {
         this.restaurantName = restaurantName;
         this.restaurantPicture = restaurantPicture;
         this.location = location;
@@ -95,11 +95,11 @@ public class Restaurant {
         this.score = score;
     }
 
-    public int getUserID() {
+    public String getUserID() {
         return userID;
     }
 
-    public void setUserID(int userID) {
+    public void setUserID(String userID) {
         this.userID = userID;
     }
 

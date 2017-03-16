@@ -17,9 +17,9 @@ public class ReportList {
 
     private int id;
     private int reportID;
-    private int userID;
+    private String userID;
 
-    public ReportList(int reportID, int userID){
+    public ReportList(int reportID, String userID){
         this.reportID = reportID;
         this.userID = userID;
     }
@@ -46,11 +46,11 @@ public class ReportList {
         this.reportID = reportID;
     }
 
-    public int getUserID() {
+    public String getUserID() {
         return userID;
     }
 
-    public void setUserID(int userID) {
+    public void setUserID(String userID) {
         this.userID = userID;
     }
 

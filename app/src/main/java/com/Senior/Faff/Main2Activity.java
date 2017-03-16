@@ -4,6 +4,8 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Configuration;
+import android.net.Uri;
+import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.TabLayout;
@@ -34,9 +36,28 @@ import com.Senior.Faff.UserProfile.InsertUserProfile;
 import com.Senior.Faff.UserProfile.ProfileManager;
 import com.Senior.Faff.UserProfile.ShowUserprofile;
 import com.Senior.Faff.chat.ChatMainActivity;
+import com.Senior.Faff.model.Party;
 import com.Senior.Faff.model.UserAuthen;
 import com.Senior.Faff.model.UserProfile;
 import com.Senior.Faff.utils.firebase;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
+
+import java.io.File;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.Set;
 
 public class Main2Activity extends AppCompatActivity {
     ViewPager pager;
@@ -58,11 +79,83 @@ public class Main2Activity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-       // firebase a  = new firebase();
-       // a.writeNewUser();
+       firebase a  = new firebase();
+      // a.writeNewUser();
+        //a.change();
+/*        FirebaseStorage storage = FirebaseStorage.getInstance();
+        StorageReference storageRef = storage.getReference();
+       // File files = new File("C:/Users/Acer/Desktop/new nsc/bubble-512");
+        Uri file = Uri.fromFile(new File("@drawable/addphoto.png"));
+        StorageReference riversRef = storageRef.child("images/"+file.getLastPathSegment());
+        UploadTask uploadTask = riversRef.putFile(file);
+
+// Register observers to listen for when the download is done or if it fails
+        uploadTask.addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception exception) {
+                Toast.makeText(Main2Activity.this,"error",Toast.LENGTH_SHORT).show();
+            }
+        }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+            @Override
+            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                // taskSnapshot.getMetadata() contains file metadata such as size, content-type, and download URL.
+               // Uri downloadUrl = taskSnapshot.getDownloadUrl();
+            }
+        });*/
+
+        DatabaseReference mRootRef = FirebaseDatabase.getInstance().getReference();
+        mRootRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange (DataSnapshot dataSnapshot){
+                long count = dataSnapshot.child("All_Room").getChildrenCount();
+                ArrayList<Party> m = new ArrayList<>();
+                for (DataSnapshot postSnapshot: dataSnapshot.child("All_Room").getChildren()) {
+                Party post= postSnapshot.getValue(Party.class);
+                   m.add(post);
+                }
+
+                Toast.makeText(Main2Activity.this,"hi",Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                Toast.makeText(Main2Activity.this,"Cant connect database",Toast.LENGTH_SHORT).show();
+            }
+        });
+ /*       mRootRef.addChildEventListener(new ChildEventListener(){
+            @Override
+            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                //Party post = dataSnapshot.getValue(Party.class);
+            }
+
+            @Override
+            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+                 long count = dataSnapshot.getChildrenCount();
+                Party posts = dataSnapshot.child("messages").getValue(Party.class);
+                String commentKey = dataSnapshot.getKey();
+                String key = dataSnapshot.child("All_Room").getKey();
+                Toast.makeText(Main2Activity.this,"hi",Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onChildRemoved(DataSnapshot dataSnapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                Toast.makeText(Main2Activity.this,"Cant connect database",Toast.LENGTH_SHORT).show();
+            }
+        });*/
+
         setContentView(R.layout.activity_main2);
         setTitle("");
-        Bundle args = getIntent().getExtras();
+
         //pager = (ViewPager)findViewById(R.id.pager);
         context = this;
 
@@ -87,8 +180,13 @@ public class Main2Activity extends AppCompatActivity {
 
         profileManager = new ProfileManager(this);
         userProfile = new UserProfile();
-        int id = profileManager.getID(args.getString(UserAuthen.Column.USERNAME));
-        userProfile.setId(id);
+        Bundle args;
+        if((args = getIntent().getExtras()) != null) {
+            args = getIntent().getExtras();
+            //int id = profileManager.getID(args.getString(UserAuthen.Column.USERNAME));
+             String  id = args.getString("userid");
+            userProfile.setId(id);
+        }
 
         MainHome_Fragment fragment_home = new MainHome_Fragment();
         FragmentManager fragmentManager_home = getSupportFragmentManager();
@@ -198,7 +296,7 @@ public class Main2Activity extends AppCompatActivity {
     }
     public void selectDrawerItem(MenuItem menuItem) {
         // Create a new fragment and specify the fragment to show based on nav item clicked
-        int id = userProfile.getId();
+        String id = userProfile.getId();
         String User_id = String.valueOf(id);
         switch(menuItem.getItemId()) {
             case R.id.Home:
@@ -209,7 +307,7 @@ public class Main2Activity extends AppCompatActivity {
 
                 break;
             case R.id.UserProfile:
-                String a = String.valueOf(id);
+                String a = id;
                 Intent intent = new Intent(context, ShowUserprofile.class);
                 intent.putExtra(UserProfile.Column.ID,User_id);
                 startActivity(intent);
@@ -223,7 +321,7 @@ public class Main2Activity extends AppCompatActivity {
                 break;
             case R.id.RestaurantProfile:
                 Bundle bundle = new Bundle();
-                bundle.putString("message",User_id);
+                bundle.putString("userid",User_id);
                 //set Fragmentclass Arguments
                 Option_RestaurantFragment option = new Option_RestaurantFragment();
                 option.setArguments(bundle);
@@ -331,5 +429,7 @@ public class Main2Activity extends AppCompatActivity {
         alert.show();
 
     }
+    public  void read(){
+            }
 
 }

@@ -30,7 +30,7 @@ public class Add_RestaurantFragment extends Fragment {
     }
 
     private String get_user_id;
-    private int user_id;
+    private String user_id;
     private int type_food;
     private EditText name,detail,picture;
     private Button location;
@@ -46,7 +46,7 @@ public class Add_RestaurantFragment extends Fragment {
         adapter.setDropDownViewResource(android.R.layout.simple_dropdown_item_1line);
         spinner.setAdapter(adapter);
         get_user_id = getArguments().getString("message");
-        user_id = Integer.parseInt(get_user_id);
+        user_id = get_user_id;
 
         name = (EditText)root.findViewById(R.id.addName);
         detail = (EditText)root.findViewById(R.id.addDetail);
@@ -58,6 +58,7 @@ public class Add_RestaurantFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 Intent  intent  = new Intent(getActivity(), RestaurantMapsActivity.class);
+                intent.putExtra("userid",user_id);
                 startActivity(intent);
             }
         });

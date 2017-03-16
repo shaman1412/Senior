@@ -1,4 +1,4 @@
-package com.Senior.Faff.RestaurantProfile;
+package com.Senior.Faff.Fragment.Party;
 
 import android.Manifest;
 import android.content.Context;
@@ -8,21 +8,24 @@ import android.content.pm.PackageManager;
 import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationManager;
-import android.os.Build;
 import android.support.annotation.NonNull;
-
-import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.FragmentActivity;
+import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
-import android.support.v4.app.ActivityCompat;
-import android.support.v7.app.AppCompatActivity;
 
+import com.Senior.Faff.Main2Activity;
 import com.Senior.Faff.R;
+import com.Senior.Faff.RestaurantProfile.AddRes_respro;
+import com.Senior.Faff.RestaurantProfile.RestaurantMapsActivity;
+import com.Senior.Faff.utils.CreatePartyManager;
 import com.Senior.Faff.utils.PermissionUtils;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -38,17 +41,15 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
-
-public class RestaurantMapsActivity extends AppCompatActivity implements OnMapReadyCallback,
+public class Party_CreateNewParty_map extends AppCompatActivity implements OnMapReadyCallback,
         GoogleMap.OnMyLocationButtonClickListener,
         GoogleApiClient.OnConnectionFailedListener,
         GoogleApiClient.ConnectionCallbacks,LocationListener,
-        ActivityCompat.OnRequestPermissionsResultCallback {
+        ActivityCompat.OnRequestPermissionsResultCallback{
 
-
+    private GoogleMap mMap;
     private GoogleApiClient googleApiClient;
     private static final int LOCATION_PERMISSION_REQUEST_CODE = 99;
-    private GoogleMap mMap;
     private Location mLastLocation;
     private com.google.android.gms.maps.model.Marker mCurrLocationMarker;
     private LatLng myLocation;
@@ -59,11 +60,19 @@ public class RestaurantMapsActivity extends AppCompatActivity implements OnMapRe
     private int latitude,logtitude;
     private String position;
     private Context mcontext;
+    private CreatePartyManager manager;
     private String user_id;
+    //////////////////////
+    private String roomid;
+    private String name;
+    private String description;
+    private int people;
+    private int[] rule;
+    ////////////////////
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_restaurant_maps);
+        setContentView(R.layout.activity_party__create_new_party_map);
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
@@ -82,15 +91,22 @@ public class RestaurantMapsActivity extends AppCompatActivity implements OnMapRe
             lo.setText(String.valueOf(location.getLongitude()));
         }
         Button btn = (Button)findViewById(R.id.addlo);
-        if(getIntent().getStringExtra("userid") != null) {
+        if(getIntent().getStringExtra("Roomid") != null) {
+            roomid = getIntent().getStringExtra("Roomid");
+            name = getIntent().getStringExtra("Name");
+            description = getIntent().getStringExtra("Description");
+            people = getIntent().getIntExtra("People",0);
+            rule = getIntent().getIntArrayExtra("rule");
             user_id = getIntent().getStringExtra("userid");
+
         }
         add_location.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
                 if(position != null) {
-                    Intent intent = new Intent(getApplicationContext(), AddRes_respro.class);
-                    intent.putExtra("Position",position);
+                    manager = new CreatePartyManager(roomid,name,description,people,rule,position);
+                    manager.addroom();
+                    Intent intent = new Intent(mcontext, Main2Activity.class);
                     intent.putExtra("userid",user_id);
                     startActivity(intent);
                 }
@@ -217,11 +233,11 @@ public class RestaurantMapsActivity extends AppCompatActivity implements OnMapRe
 
     @Override
     public void onConnected(@Nullable Bundle bundle) {
-    int check = ContextCompat.checkSelfPermission(RestaurantMapsActivity.this, Manifest.permission.ACCESS_FINE_LOCATION);
+        int check = ContextCompat.checkSelfPermission(Party_CreateNewParty_map.this, Manifest.permission.ACCESS_FINE_LOCATION);
         if (check != PackageManager.PERMISSION_GRANTED) {
 
 
-            if (!ActivityCompat.shouldShowRequestPermissionRationale(RestaurantMapsActivity.this,
+            if (!ActivityCompat.shouldShowRequestPermissionRationale(Party_CreateNewParty_map.this,
                     Manifest.permission.ACCESS_FINE_LOCATION)) {
                 new AlertDialog.Builder(this)
                         .setTitle("Location Permission Needed")
@@ -229,7 +245,7 @@ public class RestaurantMapsActivity extends AppCompatActivity implements OnMapRe
                         .setPositiveButton("OK",new DialogInterface.OnClickListener(){
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
-                                ActivityCompat.requestPermissions(RestaurantMapsActivity.this,new String[]{Manifest.permission.ACCESS_FINE_LOCATION},LOCATION_PERMISSION_REQUEST_CODE);
+                                ActivityCompat.requestPermissions(Party_CreateNewParty_map.this,new String[]{Manifest.permission.ACCESS_FINE_LOCATION},LOCATION_PERMISSION_REQUEST_CODE);
                             }
 
                         })
@@ -237,11 +253,11 @@ public class RestaurantMapsActivity extends AppCompatActivity implements OnMapRe
                         .show();
             } else {
 
-                ActivityCompat.requestPermissions(RestaurantMapsActivity.this,new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 99);
+                ActivityCompat.requestPermissions(Party_CreateNewParty_map.this,new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 99);
             }
         }
         else {
-            ActivityCompat.requestPermissions(RestaurantMapsActivity.this,new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 99);
+            ActivityCompat.requestPermissions(Party_CreateNewParty_map.this,new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 99);
             //createLocationRequest();
             //mMap.setMyLocationEnabled(true);
             LocationAvailability locationAvailability = LocationServices.FusedLocationApi.getLocationAvailability(googleApiClient);

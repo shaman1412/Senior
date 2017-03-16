@@ -23,7 +23,7 @@ public class AddRes_respro extends AppCompatActivity {
 
 
     private String get_user_id;
-    private int user_id;
+    private String user_id;
     private int type_food;
     private EditText name,detail,picture;
     private Button location;
@@ -31,6 +31,7 @@ public class AddRes_respro extends AppCompatActivity {
     private Toolbar toolbar;
     private String getlocation;
     private TextView showlocation;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -44,9 +45,14 @@ public class AddRes_respro extends AppCompatActivity {
         mcontext = this;
         //user_id = Integer.parseInt(get_user_id);
         showlocation  = (TextView)findViewById(R.id.showlocation);
-        getlocation = getIntent().getStringExtra("Position");
-        if(getlocation != null){
-            showlocation.setText(getlocation);
+        if(getIntent().getStringExtra("Position") != null) {
+            getlocation = getIntent().getStringExtra("Position");
+            if (getlocation != null) {
+                showlocation.setText(getlocation);
+            }
+        }
+        if(getIntent().getStringExtra("userid") != null) {
+            user_id = getIntent().getStringExtra("userid");
         }
 
         toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -64,6 +70,7 @@ public class AddRes_respro extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(getApplicationContext(), RestaurantMapsActivity.class);
+                intent.putExtra("userid",user_id);
                 startActivity(intent);
             }
         });
@@ -74,12 +81,19 @@ public class AddRes_respro extends AppCompatActivity {
                 switch (pos) {
                     case 0:
                         type_food = 0;
+                        Toast.makeText(AddRes_respro.this,"0",Toast.LENGTH_SHORT);
+                        break;
                     case 1:
                         type_food = 1;
+                        Toast.makeText(AddRes_respro.this,"1",Toast.LENGTH_SHORT);
+                        break;
                     case 2:
-                        type_food = 3;
+                        type_food = 2;
+                        Toast.makeText(AddRes_respro.this,"2",Toast.LENGTH_SHORT);
+                        break;
                     case 3:
-                        type_food = 4;
+                        type_food = 3;
+                        break;
 
                 }
 
@@ -106,6 +120,7 @@ public class AddRes_respro extends AppCompatActivity {
                 } else {
                     Toast.makeText(mcontext, "Success", Toast.LENGTH_SHORT).show();
                     Intent intent = new Intent(mcontext, Main2Activity.class);
+                    intent.putExtra("userid",user_id);
                     startActivity(intent);
 
                 }

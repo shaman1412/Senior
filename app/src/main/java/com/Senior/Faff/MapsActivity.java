@@ -76,6 +76,7 @@ public class MapsActivity extends AppCompatActivity implements  OnMyLocationButt
                 mMap.setMapType(GoogleMap.MAP_TYPE_TERRAIN);
             }
         });
+
     }
 
 
@@ -120,6 +121,7 @@ public class MapsActivity extends AppCompatActivity implements  OnMyLocationButt
 
 
         }
+        enableMyLocation();
 
 
 
@@ -293,15 +295,15 @@ public class MapsActivity extends AppCompatActivity implements  OnMyLocationButt
         LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
         MarkerOptions markerOptions = new MarkerOptions();
         markerOptions.position(latLng);
-        markerOptions.title("Current Position");
+        //markerOptions.title("Current Position");
 
         lo.setText(String.valueOf(mLastLocation.getLongitude()));
         la.setText(String.valueOf(mLastLocation.getLatitude()));
         mCurrLocationMarker = mMap.addMarker(markerOptions);
 
         //move map camera
-        //mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
-       // mMap.animateCamera(CameraUpdateFactory.zoomTo(11));
+        mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
+       mMap.animateCamera(CameraUpdateFactory.zoomTo(11));
     }
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,

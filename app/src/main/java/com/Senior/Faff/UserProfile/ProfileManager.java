@@ -46,7 +46,7 @@ public class ProfileManager extends SQLiteOpenHelper {
         UserProfile profile = new UserProfile();
         if(cursor!=null){
         cursor.moveToFirst();
-        profile.setId((int) cursor.getLong(0));
+        profile.setId(cursor.getString(0));
         profile.setName(cursor.getString(1));
         profile.setAddress(cursor.getString(2));
         profile.setEmail(cursor.getString(3));

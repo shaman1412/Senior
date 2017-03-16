@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center"
+    android:orientation="vertical"
+    tools:context="com.Senior.Faff.Fragment.Party.Party_CreateNewParty">
+
+    <android.support.design.widget.AppBarLayout
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent">
+
+        <android.support.v7.widget.Toolbar
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/ButtonUserProfile">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="Profile"
+                android:gravity = "center"
+                android:id="@+id/toolbar_title"
+                android:textSize="30sp"/>
+        </android.support.v7.widget.Toolbar>
+
+    </android.support.design.widget.AppBarLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="0.4"
+        android:background="@color/TabUserProfile"
+        android:gravity="center"
+        android:orientation="vertical"
+        >
+
+                <Button
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="2"
+                    android:id="@+id/submit"
+
+                    android:textSize="30dp"
+                    android:background="@drawable/addphoto"/>
+
+
+    </LinearLayout>
+
+    <android.support.v4.widget.NestedScrollView
+        android:id="@+id/scroll"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="0.6"
+        android:background="#181C20"
+        android:padding="20dp"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="#181C20"
+            android:padding="10dp">
+
+
+            <EditText
+                android:id="@+id/name"
+                android:layout_width="600dp"
+                android:layout_height="30dp"
+                android:layout_below="@+id/sign"
+                android:layout_marginBottom="20dp"
+                android:background="@drawable/create_party_edittextbox"
+                android:gravity="left|start"
+                android:hint="Name"
+                android:padding="2dip"
+                android:textColor="#ffffff"
+                android:textColorHint="#FFA500" />
+
+            <EditText
+                android:id="@+id/description"
+                android:layout_width="500dp"
+                android:layout_height="80dp"
+                android:layout_below="@+id/name"
+                android:layout_marginBottom="20dp"
+                android:background="@drawable/create_party_edittextbox"
+                android:gravity="left|start"
+                android:hint="Description"
+                android:padding="2dip"
+                android:textColor="#ffffff"
+                android:textColorHint="#FFA500" />
+
+
+
+            <TextView
+                android:id="@+id/people"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/description"
+                android:text="People"
+                android:layout_marginLeft="8dp"
+                android:textColor="#FFA500"
+                android:textSize="18dp"
+                android:layout_marginBottom="20dp"
+                />
+
+            <Spinner
+                android:id="@+id/spinner1"
+                android:layout_width="wrap_content"
+                android:layout_height="30dp"
+                android:layout_below="@+id/description"
+                android:layout_marginLeft="20dp"
+                android:layout_toRightOf="@+id/people"
+                android:background="@android:drawable/btn_dropdown"
+                android:spinnerMode="dropdown" />
+
+            <TextView
+                android:id="@+id/require"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/people"
+                android:text="Requirement"
+                android:layout_marginLeft="8dp"
+                android:textColor="#FFA500"
+                android:textSize="18dp"
+                android:layout_marginBottom="20dp"
+                />
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/require"
+                android:id="@+id/addrequire"
+                android:layout_centerHorizontal="true"
+                android:text="Add Requirement"
+                android:background="#1D9E5D"
+                android:layout_marginBottom="20dp"/>
+
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/addrequire"
+                android:id="@+id/create"
+                android:layout_centerHorizontal="true"
+                android:text="Create Party"
+                android:background="#ffa500"/>
+
+
+
+
+        </RelativeLayout>
+    </android.support.v4.widget.NestedScrollView>
+
+
+</LinearLayout>

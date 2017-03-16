@@ -69,7 +69,7 @@ public class LoginActivity extends ActionBarActivity {
         } else {
             Intent intent = new Intent(mContext, Main2Activity.class);
             intent.putExtra(UserAuthen.Column.USERNAME, validateUserAuthen.getUsername());
-            intent.putExtra(UserAuthen.Column.ID, validateUserAuthen.getId());
+            intent.putExtra("userid", validateUserAuthen.getId());
             startActivity(intent);
             //finish();
         }

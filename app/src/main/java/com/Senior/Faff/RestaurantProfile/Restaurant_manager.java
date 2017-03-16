@@ -62,7 +62,7 @@ public class Restaurant_manager extends SQLiteOpenHelper {
             model.setLocation(cursor.getString(3));
             model.setRestaurantDetail(cursor.getString(4));
             model.setScore((int)cursor.getLong(5));
-            model.setUserID((int)cursor.getLong(6));
+            model.setUserID(cursor.getString(6));
             model.setTypeID((int)cursor.getLong(7));
         }
         mDatabase.close();
@@ -92,7 +92,7 @@ public class Restaurant_manager extends SQLiteOpenHelper {
                     model.setLocation(cursor.getString(3));
                     model.setRestaurantDetail(cursor.getString(4));
                     model.setScore((int) cursor.getLong(5));
-                    model.setUserID((int) cursor.getLong(6));
+                    model.setUserID( cursor.getString(6));
                     model.setTypeID((int) cursor.getLong(7));
                     list.add(model);
                 }while(cursor.moveToNext());
