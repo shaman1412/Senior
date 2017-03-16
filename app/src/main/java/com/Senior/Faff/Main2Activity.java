@@ -306,8 +306,7 @@ public class Main2Activity extends AppCompatActivity {
     public void selectDrawerItem(MenuItem menuItem) {
         // Create a new fragment and specify the fragment to show based on nav item clicked
         String id = userProfile.getId();
-        int id = userProfile.getId();               // ??? for what ???
-        String User_id = String.valueOf(id);        // ??? for what ???
+        String User_id = String.valueOf(id);        // ??? for what ??? ไม่บอก 5555
 
         switch(menuItem.getItemId()) {
             case R.id.Home:

@@ -129,7 +129,7 @@ public class Nearby_Fragment extends Fragment implements GoogleApiClient.OnConne
         }
         else {
             //createLocationRequest();
-
+            showlist(listview,re_list,resId);
             LocationAvailability locationAvailability = LocationServices.FusedLocationApi.getLocationAvailability(googleApiClient);
             if (locationAvailability != null) {
 
@@ -193,6 +193,9 @@ public class Nearby_Fragment extends Fragment implements GoogleApiClient.OnConne
     public ArrayList<Restaurant> calculatedistance(int de_distance,int[] typeID,ArrayList<Restaurant> listRes){
         int distance;
         float latitude,longtitude;
+        mLastLocation  = new Location("Target");
+        mLastLocation.setLatitude(37.421998);
+        mLastLocation.setLongitude(-122.084);
         ArrayList<Restaurant> res  = new ArrayList<>();
         for(int i =0; i<listRes.size(); i++){
           String[] position = listRes.get(i).getLocation().split(",");

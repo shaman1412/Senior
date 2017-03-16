@@ -48,7 +48,6 @@ import java.util.Objects;
 
 public class Room_fragment extends Fragment implements GoogleApiClient.OnConnectionFailedListener,
         GoogleApiClient.ConnectionCallbacks,LocationListener {
-    private ArrayAdapter<String> arrayAdapter;
     private ArrayList<String> list_of_rooms = new ArrayList<>();
     private Context context;
     private String name = "testuser";
@@ -73,43 +72,6 @@ public class Room_fragment extends Fragment implements GoogleApiClient.OnConnect
         // Inflate the layout for this fragment
         View root = inflater.inflate(R.layout.fragment_room_fragment, container, false);
 
-        listView = (ListView) rootview.findViewById(R.id.listView);
-
-        arrayAdapter = new ArrayAdapter<String>(getActivity(),android.R.layout.simple_list_item_1,list_of_rooms);
-        listView.setAdapter(arrayAdapter);
-
-        root.addValueEventListener(new ValueEventListener() {
-
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                Set<String> set = new HashSet<String>();
-                Iterator i = dataSnapshot.getChildren().iterator();
-
-                while (i.hasNext()){
-                    set.add(((DataSnapshot)i.next()).getKey());
-                }
-
-                list_of_rooms.clear();
-                list_of_rooms.addAll(set);
-
-                arrayAdapter.notifyDataSetChanged();
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
-
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                Intent intent = new Intent(getActivity().getApplicationContext(),Chat_Room.class);
-                intent.putExtra("room_name",((TextView)view).getText().toString() );
-                intent.putExtra("user_name",name);
-                startActivity(intent);
-            }
-        });
 
         mcontext = getContext();
 
@@ -278,6 +240,7 @@ public class Room_fragment extends Fragment implements GoogleApiClient.OnConnect
                        countcheck++;
                 }
                 if(countcheck == 2){
+                    countcheck = 0;
                     res.add(listRes.get(i));
                 }
             }
