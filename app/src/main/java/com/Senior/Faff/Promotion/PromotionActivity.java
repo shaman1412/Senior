@@ -1,4 +1,4 @@
-package com.Senior.Faff;
+package com.Senior.Faff.Promotion;
 
 import android.content.Context;
 import android.content.Intent;
@@ -18,6 +18,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.Senior.Faff.R;
 import com.Senior.Faff.model.Promotion;
 import com.Senior.Faff.model.PromotionPicture;
 import com.Senior.Faff.utils.DatabaseManager;

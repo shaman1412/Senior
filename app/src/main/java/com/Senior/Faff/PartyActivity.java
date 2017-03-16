@@ -5,11 +5,13 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 
 
 import com.Senior.Faff.Fragment.Adapter.Party_adapter;
 
 public class PartyActivity extends AppCompatActivity {
+    private static final String Tag = PartyActivity.class.getSimpleName();
     private ViewPager pager;
     private Context context;
     private TabLayout tablayout;
@@ -31,8 +33,6 @@ public class PartyActivity extends AppCompatActivity {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
                 pager.setCurrentItem(tab.getPosition());
-
-
             }
 
             @Override

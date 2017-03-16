@@ -14,6 +14,8 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.Senior.Faff.Promotion.PromotionActivity;
+import com.Senior.Faff.Promotion.PromotionView;
 import com.Senior.Faff.model.UserAuthen;
 import com.Senior.Faff.utils.DatabaseManager;
 

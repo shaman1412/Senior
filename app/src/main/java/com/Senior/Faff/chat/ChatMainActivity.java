@@ -100,7 +100,6 @@ public class ChatMainActivity extends AppCompatActivity {
         add_room.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
                 Map<String,Object> map = new HashMap<String, Object>();
                 map.put(room_name.getText().toString(),"");
                 root.updateChildren(map);

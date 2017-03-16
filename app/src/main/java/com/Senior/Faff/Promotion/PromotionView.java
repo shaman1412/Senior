@@ -1,4 +1,4 @@
-package com.Senior.Faff;
+package com.Senior.Faff.Promotion;
 
 import android.database.Cursor;
 import android.graphics.Bitmap;
@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 
+import com.Senior.Faff.R;
 import com.Senior.Faff.model.promotion_view_list;
 import com.Senior.Faff.utils.DatabaseManager;
 import com.Senior.Faff.utils.PromotionViewRecyclerViewAdapter;

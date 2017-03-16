@@ -32,9 +32,14 @@
                     android:id="@+id/RestaurantProfile"
                     android:title="Restaurant Profile" />
                 <item
+                    android:icon="@drawable/restaurantpro_drawer_home"
+                    android:id="@+id/AddPromotion"
+                    android:title="Add Promotion" />
+                <item
                     android:icon="@drawable/notification_drawer_home"
                     android:id="@+id/NotificationRe"
                     android:title="Notification" />
+
             </group>
         </menu>
     </item>

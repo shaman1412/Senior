@@ -30,7 +30,7 @@ public class CustomTabLayout extends TabLayout {
         try {
             if (getTabCount() == 0)
                 return;
-            Field field = TabLayout.class.getDeclaredField("mTabMinWidth");
+            Field field = TabLayout.class.getDeclaredField("mScrollableTabMinWidth");
             field.setAccessible(true);
             field.set(this, (int) (getMeasuredWidth() / (float) getTabCount()));
         } catch (Exception e) {

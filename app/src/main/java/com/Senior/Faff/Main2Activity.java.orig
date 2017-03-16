@@ -185,7 +185,6 @@ public class Main2Activity extends AppCompatActivity {
 
         //tabLayout = (TabLayout) findViewById(R.id.sliding_tabs);
 
-
         profileManager = new ProfileManager(this);
         userProfile = new UserProfile();
         Bundle args;
