@@ -1,4 +1,4 @@
-package com.Senior.Faff.utils;
+package com.Senior.Faff.Promotion;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;

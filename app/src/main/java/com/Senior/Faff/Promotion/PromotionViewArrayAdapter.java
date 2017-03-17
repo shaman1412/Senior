@@ -1,4 +1,4 @@
-package com.Senior.Faff.utils;
+package com.Senior.Faff.Promotion;
 
 import android.app.Activity;
 import android.support.v7.widget.RecyclerView;
@@ -8,7 +8,6 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
-import com.Senior.Faff.utils.PromotionViewImageRecyclerViewAdapter;
 import com.Senior.Faff.R;
 import com.Senior.Faff.model.promotion_view_list;
 

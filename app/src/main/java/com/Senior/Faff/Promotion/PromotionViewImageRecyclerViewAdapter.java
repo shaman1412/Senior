@@ -1,4 +1,4 @@
-package com.Senior.Faff.utils;
+package com.Senior.Faff.Promotion;
 
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -9,7 +9,6 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import com.Senior.Faff.R;
-import  com.Senior.Faff.model.promotion_view_list;
 
 import java.util.ArrayList;
 

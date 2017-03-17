@@ -1,4 +1,4 @@
-package com.Senior.Faff.utils;
+package com.Senior.Faff.Promotion;
 
 import android.app.Activity;
 import android.graphics.Bitmap;

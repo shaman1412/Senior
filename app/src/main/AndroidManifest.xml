@@ -20,11 +20,13 @@
         <activity
             android:name=".LoginActivity"
             android:label="Faff">
+
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+
         </activity>
         <activity android:name=".RegisterActivity" />
         <activity android:name=".MainActivity" />
@@ -86,7 +88,8 @@
         <activity android:name=".Fragment.Party.Party_CreateNewParty" />
         <activity
             android:name=".Fragment.Party.Party_CreateNewParty_map"
-            android:label="@string/title_activity_party__create_new_party_map"></activity>
+            android:label="@string/title_activity_party__create_new_party_map" />
+        <activity android:name=".Promotion.PromotionShow"/>
     </application>
 
 </manifest>

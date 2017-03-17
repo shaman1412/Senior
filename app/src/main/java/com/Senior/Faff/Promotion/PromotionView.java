@@ -10,7 +10,6 @@ import android.support.v7.widget.RecyclerView;
 import com.Senior.Faff.R;
 import com.Senior.Faff.model.promotion_view_list;
 import com.Senior.Faff.utils.DatabaseManager;
-import com.Senior.Faff.utils.PromotionViewRecyclerViewAdapter;
 
 import java.util.ArrayList;
 

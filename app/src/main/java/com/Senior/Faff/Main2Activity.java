@@ -35,6 +35,7 @@ import com.Senior.Faff.Fragment.MainMenu.MainHome_Fragment;
 import com.Senior.Faff.Fragment.MainMenu.MainNearby_Fragment;
 import com.Senior.Faff.Fragment.MainMenu.MainParty_fragment;
 import com.Senior.Faff.Promotion.PromotionActivity;
+import com.Senior.Faff.Promotion.PromotionShow;
 import com.Senior.Faff.RestaurantProfile.Option_RestaurantFragment;
 import com.Senior.Faff.UserProfile.InsertUserProfile;
 import com.Senior.Faff.UserProfile.ProfileManager;
@@ -327,7 +328,8 @@ public class Main2Activity extends AppCompatActivity {
                 startActivity(b);
                 break;
             case R.id.History:
-
+                Intent i = new Intent(context, PromotionShow.class);
+                startActivity(i);
                 break;
             case R.id.RestaurantProfile:
                 Bundle bundle = new Bundle();
@@ -339,8 +341,8 @@ public class Main2Activity extends AppCompatActivity {
                 manager.beginTransaction().replace(R.id.flContent,option).commit();
                 break;
             case R.id.AddPromotion:
-                Intent i = new Intent(context, PromotionActivity.class);
-                startActivity(i);
+                Intent ii = new Intent(context, PromotionActivity.class);
+                startActivity(ii);
                 break;
             case R.id.NotificationRe:
 
