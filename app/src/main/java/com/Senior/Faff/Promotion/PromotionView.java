@@ -16,6 +16,8 @@ import com.Senior.Faff.utils.DatabaseManager;
 import com.Senior.Faff.utils.Helper;
 import com.google.gson.Gson;
 
+import org.w3c.dom.Text;
+
 import java.util.ArrayList;
 
 public class PromotionView extends AppCompatActivity {
@@ -40,18 +42,25 @@ public class PromotionView extends AppCompatActivity {
         textView1.setText(data.getTitle());
 
         TextView textView2 = (TextView) findViewById(R.id.textView4);
-        textView2.setText(data.getPromotionDetail());
+        textView2.setText(data.getStartDate());
+
+        TextView textView3 = (TextView) findViewById(R.id.textView5);
+        textView3.setText(data.getEndDate());
+
+        TextView textView4 = (TextView) findViewById(R.id.textView6);
+        textView4.setText(data.getPromotionDetail());
+
+        TextView textView5 = (TextView) findViewById(R.id.textView7);
+        textView5.setText(data.getGoogleMapLink());
 
         tmp = i.getExtras().getString("path");
         ArrayList<String> path = new Gson().fromJson(tmp, ArrayList.class);
-
         ArrayList<Bitmap> arr_bmp = new ArrayList<>();
         Helper h = new Helper();
         for(int j=0; j<path.size(); j++)
         {
             arr_bmp.add(h.loadImageFromStorage(path.get(j),data.getTitle()+String.valueOf(j)));
         }
-
         RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recyclerview);
         PromotionViewImageRecyclerViewAdapter adapter = new PromotionViewImageRecyclerViewAdapter(getApplicationContext(), arr_bmp);
         recyclerView.setAdapter(adapter);
