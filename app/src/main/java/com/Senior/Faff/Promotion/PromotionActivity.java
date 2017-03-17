@@ -168,7 +168,6 @@ public class PromotionActivity extends AppCompatActivity {
             long rowID = mManager.addPromotionPicture(pro_pic);
         }
 
-
         long rowId = mManager.addPromotion(promotion);
 
         if (rowId == -1) {
