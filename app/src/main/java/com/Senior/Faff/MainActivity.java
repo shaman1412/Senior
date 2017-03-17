@@ -84,13 +84,13 @@ public class MainActivity extends ActionBarActivity {
             }
         });
 
-        mShowPromotion.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(mContext, PromotionView.class);
-                startActivity(intent);
-            }
-        });
+//        mShowPromotion.setOnClickListener(new View.OnClickListener(){
+//            @Override
+//            public void onClick(View v) {
+//                Intent intent = new Intent(mContext, PromotionView.class);
+//                startActivity(intent);
+//            }
+//        });
         Go_to_map.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v){

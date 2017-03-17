@@ -9,22 +9,45 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="com.devahoy.sample.Faff.PromotionView">
+    tools:context="com.Senior.Faff.Promotion.PromotionView">
 
 
     <LinearLayout
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="fill_parent"
         android:orientation="vertical">
 
+        <TextView
+            android:id="@+id/textView3"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="0.5"
+            android:text="Title"
+            android:textAlignment="center"
+            android:layout_gravity="center"/>
+
+
         <android.support.v7.widget.RecyclerView
-            android:id="@+id/listview"
-            android:layout_width="fill_parent"
-            android:layout_height="match_parent"
+            android:id="@+id/recyclerview"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_alignParentTop="true"
+            android:layout_weight="4"
             android:orientation="horizontal"
-            app:layoutManager="android.support.v7.widget.LinearLayoutManager"
             android:scrollbars="horizontal"
-            android:layout_alignParentTop="true"/>
+            app:layoutManager="android.support.v7.widget.LinearLayoutManager"
+            android:layout_gravity="center">
+
+        </android.support.v7.widget.RecyclerView>
+
+        <TextView
+            android:id="@+id/textView4"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="4"
+            android:text="Description"
+            android:textAlignment="center"
+            android:layout_gravity="center"/>
 
     </LinearLayout>
 

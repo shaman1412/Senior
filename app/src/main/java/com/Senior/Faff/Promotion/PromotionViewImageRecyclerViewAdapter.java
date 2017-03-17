@@ -37,10 +37,8 @@ public class PromotionViewImageRecyclerViewAdapter extends RecyclerView.Adapter<
 
     @Override
     public void onBindViewHolder(PromotionViewImageRecyclerViewAdapter.MyViewHolder holder, int position) {
-
         holder.imageView.setTag(position);
         holder.imageView.setImageBitmap(bitmap.get(position));
-
     }
 
     @Override

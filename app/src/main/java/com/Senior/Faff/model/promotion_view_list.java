@@ -1,13 +1,22 @@
 package com.Senior.Faff.model;
 
 import android.graphics.Bitmap;
+import android.os.Parcel;
+import android.os.Parcelable;
 
+import com.google.gson.JsonDeserializationContext;
+import com.google.gson.JsonDeserializer;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonParseException;
+
+import java.io.Serializable;
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 
 /**
  * Created by Not_Today on 2/13/2017.
  */
-public class promotion_view_list{
+public class promotion_view_list {
     String id;
     String title;
     ArrayList<Bitmap> picture;
@@ -25,6 +34,7 @@ public class promotion_view_list{
         this.promotionDetail = promotionDetail;
         this.location = location;
     }
+
 
     //region getter setter
 
@@ -85,4 +95,18 @@ public class promotion_view_list{
     }
 
     //endregion
+
+    @Override
+    public String toString() {
+        return "promotion_view_list{" +
+                "id='" + id + '\'' +
+                ", title='" + title + '\'' +
+                ", picture=" + picture +
+                ", startDate='" + startDate + '\'' +
+                ", endDate='" + endDate + '\'' +
+                ", promotionDetail='" + promotionDetail + '\'' +
+                ", location='" + location + '\'' +
+                '}';
+    }
+
 }

@@ -1,18 +1,24 @@
 package com.Senior.Faff.Promotion;
 
+import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.nfc.Tag;
+import android.os.Parcelable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ListView;
 
 import com.Senior.Faff.R;
 import com.Senior.Faff.model.Promotion;
 import com.Senior.Faff.model.promotion_view_list;
 import com.Senior.Faff.utils.DatabaseManager;
+import com.Senior.Faff.utils.Helper;
+import com.google.gson.Gson;
 
 import java.util.ArrayList;
 
@@ -28,13 +34,39 @@ public class PromotionShow extends AppCompatActivity {
         setContentView(R.layout.activity_promotion_show);
 
         mManager = new DatabaseManager(this);
-        ArrayList<promotion_view_list> data;
+        final ArrayList<promotion_view_list> data;
         data = getAllPromotion();
 
 
         ListView list = (ListView) findViewById(R.id.listView1) ;
         PromotionShowAdapter adapter = new PromotionShowAdapter(this, data);
         list.setAdapter(adapter);
+
+        list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+                promotion_view_list tmp = data.get(position);
+                Helper h = new Helper();
+                ArrayList<String> path = new ArrayList<String>();
+                for(int i=0; i<tmp.getPicture().size(); i++)
+                {
+                    String txt = h.saveToInternalStorage(tmp.getPicture().get(i), getApplicationContext(), tmp.getTitle()+ i);
+                    path.add(txt);
+                    Log.i(Tag, "ID is " + tmp.getId().toString() + "    Path: "+ txt);
+                }
+                Promotion pro = new Promotion(tmp.getTitle(), tmp.getStartDate(), tmp.getEndDate(), tmp.getPromotionDetail(), tmp.getLocation());
+                pro.setId(Integer.parseInt(tmp.getId()));
+
+                Intent i = new Intent(getApplicationContext(), PromotionView.class);
+                String tmp_object = new Gson().toJson(pro);
+                i.putExtra("pro", tmp_object);
+                String tmp_object1 = new Gson().toJson(path);
+                i.putExtra("path", tmp_object1);
+                startActivity(i);
+            }
+        });
+
     }
 
     private ArrayList<promotion_view_list> getAllPromotion(){
