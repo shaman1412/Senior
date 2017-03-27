@@ -44,7 +44,7 @@ public class Option_RestaurantFragment extends Fragment {
         add.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view) {
-                Bundle bundle = new Bundle();
+             /*   Bundle bundle = new Bundle();
                 bundle.putString("message",id);
                 Add_RestaurantFragment add_fragment = new Add_RestaurantFragment();
                 add_fragment.setArguments(bundle);
@@ -52,9 +52,10 @@ public class Option_RestaurantFragment extends Fragment {
                 fragmentManager_add.beginTransaction().replace(R.id.frame,add_fragment).commit();
                 add.setVisibility(View.GONE);
                 edit.setVisibility(View.GONE);
-                show.setVisibility(View.GONE);
-              /*  Intent  intent  = new Intent(getActivity(), RestaurantMapsActivity.class);
-                startActivity(intent);*/
+                show.setVisibility(View.GONE);*/
+                Intent  intent  = new Intent(getActivity(), RestaurantMapsActivity.class);
+                intent.putExtra("userid",id);
+                startActivity(intent);
 
             }
 

@@ -86,7 +86,8 @@
         <activity android:name=".Fragment.Party.Party_CreateNewParty" />
         <activity
             android:name=".Fragment.Party.Party_CreateNewParty_map"
-            android:label="@string/title_activity_party__create_new_party_map"></activity>
+            android:label="@string/title_activity_party__create_new_party_map" />
+        <activity android:name=".RestaurantProfile.Show_RestaurantProfile"></activity>
     </application>
 
 </manifest>

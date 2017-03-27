@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.pm.PackageManager;
 import android.location.Location;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -87,7 +88,7 @@ public class Room_fragment extends Fragment implements GoogleApiClient.OnConnect
 
         Log.d("Myactivity", "omCreateview");
 
-        DatabaseReference mRootRef = FirebaseDatabase.getInstance().getReference();
+  /*      DatabaseReference mRootRef = FirebaseDatabase.getInstance().getReference();
         mRootRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange (DataSnapshot dataSnapshot){
@@ -105,7 +106,7 @@ public class Room_fragment extends Fragment implements GoogleApiClient.OnConnect
             public void onCancelled(DatabaseError databaseError) {
                 Toast.makeText(getActivity(),"Cant connect database",Toast.LENGTH_SHORT).show();
             }
-        });
+        });*/
         return root;
     }
 
@@ -168,8 +169,8 @@ public class Room_fragment extends Fragment implements GoogleApiClient.OnConnect
                         == PackageManager.PERMISSION_GRANTED) {
                     LocationServices.FusedLocationApi.requestLocationUpdates(googleApiClient, locationRequest, this);
                 }
-                showlist(listview,party_list, resId);
-                //showlist(listview, re_list, resId);
+               // showlist(listview,party_list, resId);
+               new getData().execute();
                 mLastLocation = LocationServices.FusedLocationApi.getLastLocation(googleApiClient);  // ใช้สำหรัรับตำแหน่งแรกเลย ครั้งเดียว
                 if (mLastLocation != null) {
 
@@ -191,7 +192,7 @@ public class Room_fragment extends Fragment implements GoogleApiClient.OnConnect
                   /*  lo.setText(String.valueOf(mLastLocation.getLongitude()));
                     la.setText(String.valueOf(mLastLocation.getLatitude()));*/
 
-                    showlist(listview, party_list, resId);
+                   // showlist(listview, party_list, resId);
 
                 }
 
@@ -274,5 +275,47 @@ public class Room_fragment extends Fragment implements GoogleApiClient.OnConnect
             Toast.makeText(getActivity(),"Dont have party",Toast.LENGTH_SHORT);
         }
 
+    }
+    private class getData extends AsyncTask<Void, Integer, Void> {
+        protected void onPreExecute()  {
+
+
+
+        }
+
+        protected Void doInBackground(Void... params)   {
+            DatabaseReference mRootRef = FirebaseDatabase.getInstance().getReference();
+            mRootRef.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange (DataSnapshot dataSnapshot){
+                    long count = dataSnapshot.child("All_Room").getChildrenCount();
+                    party_list = new ArrayList<>();
+                    for (DataSnapshot postSnapshot: dataSnapshot.child("All_Room").getChildren()) {
+                        Party post= postSnapshot.getValue(Party.class);
+                        party_list.add(post);
+
+                    }
+                    showlist(listview, party_list, resId);
+                    Toast.makeText(getActivity(),"hi",Toast.LENGTH_SHORT).show();
+                }
+
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+                    Toast.makeText(getActivity(),"Cant connect database",Toast.LENGTH_SHORT).show();
+                }
+            });
+            return null;
+        }
+
+        protected void onProgressUpdate(Integer... values) {
+
+
+        }
+
+        protected void onPostExecute(Void result)  {
+            Toast.makeText(getActivity(),"GEt dataaaa",Toast.LENGTH_SHORT).show();
+
+
+        }
     }
 }
