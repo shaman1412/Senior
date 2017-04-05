@@ -19,15 +19,7 @@
         android:theme="@style/AppTheme">
         <activity
             android:name=".LoginActivity"
-            android:label="Faff">
-
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-
-        </activity>
+            android:label="Faff" />
         <activity android:name=".RegisterActivity" />
         <activity android:name=".MainActivity" />
         <activity android:name=".Promotion.PromotionActivity" />
@@ -75,7 +67,13 @@
         <activity android:name=".FilterActivity" />
         <activity android:name=".ImagerActivity" />
         <activity android:name=".utils.PlacePicker" />
-        <activity android:name=".chat.ChatMainActivity" />
+        <activity android:name=".chat.ChatMainActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
         <activity android:name=".chat.Chat_Room" />
         <activity
             android:name=".RestaurantProfile.RestaurantMapsActivity"
@@ -89,7 +87,10 @@
         <activity
             android:name=".Fragment.Party.Party_CreateNewParty_map"
             android:label="@string/title_activity_party__create_new_party_map" />
-        <activity android:name=".Promotion.PromotionShow"/>
+        <activity android:name=".Promotion.PromotionShow" />
+        <activity android:name=".chat.TestFirebaseStorageActivity" />
+        <activity android:name=".chat.CreateParty" />
+        <activity android:name=".chat.ParttyDetail"></activity>
     </application>
 
 </manifest>

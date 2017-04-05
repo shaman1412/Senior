@@ -9,6 +9,15 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context=".chat.ChatMainActivity">
 
+    <TextView
+        android:id="@+id/textView9"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="72dp"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:text="Party" />
+
     <EditText
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -24,17 +33,27 @@
         android:layout_height="wrap_content"
         android:text="Add room"
         android:id="@+id/btn_add_room"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true" />
+        android:layout_toLeftOf="@+id/creat_party"
+        android:layout_alignParentBottom="true" />
 
     <ListView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/listView"
-        android:layout_alignParentTop="true"
+        android:layout_below="@+id/textView9"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:layout_above="@+id/room_name_edittext" />
+
+    <Button
+        android:id="@+id/creat_party"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/listView"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:text="Create"
+        android:layout_alignParentBottom="true" />
+
 </RelativeLayout>
 
