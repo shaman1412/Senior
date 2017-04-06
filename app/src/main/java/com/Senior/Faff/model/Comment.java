@@ -12,18 +12,21 @@ public class Comment {
 
     public class Column {
         public static final String ID = BaseColumns._ID;
-        public static final String UserID = "UserID";
-        public static final String Comment = "Comment";
-        public static final String Datetime = "DateTime";
+        public static final String UserID = "id";
+        public static final String UserName = "name";
+        public static final String Comment = "comment";
+        public static final String Datetime = "datetime";
     }
 
     private int id;
     private int userID;
     private String comment;
     private String dateTime;
+    private String name;
 
-    public Comment(int userID, String comment, String dateTime){
+    public Comment(int userID, String name, String comment, String dateTime){
         this.userID = userID;
+        this.name = name;
         this.comment = comment;
         this.dateTime = dateTime;
     }
@@ -31,8 +34,6 @@ public class Comment {
     public Comment(){
 
     }
-
-    //region getter setter
 
     public int getId() {
         return id;
@@ -66,6 +67,11 @@ public class Comment {
         this.dateTime = dateTime;
     }
 
-    //endregion
+    public String getName() {
+        return name;
+    }
 
+    public void setName(String name) {
+        this.name = name;
+    }
 }

@@ -13,18 +13,27 @@ import android.widget.RatingBar;
 import android.widget.TextView;
 
 import com.Senior.Faff.R;
+import com.Senior.Faff.UserProfile.ProfileManager;
+import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.text.DateFormat;
+import java.text.DecimalFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
+import java.util.TimeZone;
 
 /**
  * Created by Not_Today on 4/6/2017.
@@ -34,8 +43,7 @@ public class Comment_RestaurantFragment extends Fragment {
 
     FirebaseDatabase storage = FirebaseDatabase.getInstance();
     String id;
-    DatabaseReference ref;
-    DatabaseReference rate;
+    DatabaseReference comment;
     private Button add_comment;
     private TextView comment_text;
     private ListView listView;
@@ -43,6 +51,7 @@ public class Comment_RestaurantFragment extends Fragment {
     private ArrayAdapter<String> adapter;
     private RatingBar rating_star;
     private TextView score;
+    private DatabaseReference rate = storage.getReference("Restaurant").child("score");
 
     public Comment_RestaurantFragment(){
 
@@ -53,8 +62,7 @@ public class Comment_RestaurantFragment extends Fragment {
                              Bundle savedInstanceState) {
 
         id = getArguments().getString("id");
-        ref = storage.getReference("Restaurant").child("Comment");
-        rate = storage.getReference("Restaurant").child("score").child(id);
+        comment = storage.getReference("Restaurant").child("Comment");
 
         View root = inflater.inflate(R.layout.comment_restaurant, container, false);
 
@@ -64,17 +72,31 @@ public class Comment_RestaurantFragment extends Fragment {
         add_comment.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String comment = comment_text.getText().toString();
+                String c = comment_text.getText().toString();
                 Map<String, Object> map = new HashMap<String, Object>();
-                String tmp = ref.push().getKey();
+                Map<String, Object> map1 = new HashMap<String, Object>();
+                Map<String, Object> map2 = new HashMap<String, Object>();
+                Map<String, Object> map3 = new HashMap<String, Object>();
 
+                String tmp = comment.push().getKey();
 
-                map.put("comment", comment);
-                ref.child(tmp).updateChildren(map);
-
-                map.clear();
                 map.put("id", id);
-                ref.child(tmp).updateChildren(map);
+
+                ProfileManager pm = new ProfileManager(getActivity());
+                String userName = pm.getUserName(id);
+                map1.put("name", userName);
+
+                map2.put("comment", c);
+
+                DateFormat dateformat = DateFormat.getDateTimeInstance();
+                dateformat.setTimeZone(TimeZone.getTimeZone("GMT+7"));
+                Date date = new Date();
+                map3.put("date", dateformat.format(date));
+
+                comment.child(tmp).updateChildren(map);
+                comment.child(tmp).updateChildren(map1);
+                comment.child(tmp).updateChildren(map2);
+                comment.child(tmp).updateChildren(map3);
             }
         });
 
@@ -82,11 +104,13 @@ public class Comment_RestaurantFragment extends Fragment {
         listView = (ListView)root.findViewById(R.id.listView);
         listView.setAdapter(adapter);
 
-        ref.addValueEventListener(new ValueEventListener() {
+        comment.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                ArrayList<String> set = new ArrayList<String>();
-                ArrayList<String> set1 = new ArrayList<String>();
+                ArrayList<String> setId = new ArrayList<String>();
+                ArrayList<String> setName = new ArrayList<String>();
+                ArrayList<String> setComment = new ArrayList<String>();
+                ArrayList<String> setDate = new ArrayList<String>();
 
                 Iterator i = dataSnapshot.getChildren().iterator();
 
@@ -98,16 +122,20 @@ public class Comment_RestaurantFragment extends Fragment {
 
                     while (j.hasNext())
                     {
-                        if(x%2==0)
-                            set.add(((DataSnapshot) j.next()).getValue().toString());
-                        else
-                            set1.add(((DataSnapshot) j.next()).getValue().toString());
+                        if(x%4==0)
+                            setComment.add(((DataSnapshot) j.next()).getValue().toString());
+                        else if(x%4==1)
+                            setDate.add(((DataSnapshot) j.next()).getValue().toString());
+                        else if(x%4==2)
+                            setId.add(((DataSnapshot) j.next()).getValue().toString());
+                        else if(x%4==3)
+                            setName.add(((DataSnapshot) j.next()).getValue().toString());
                         x++;
                     }
                 }
 
                 list_of_comment.clear();
-                list_of_comment.addAll(set);
+                list_of_comment.addAll(setComment);
 
                 adapter.notifyDataSetChanged();
             }
@@ -125,8 +153,29 @@ public class Comment_RestaurantFragment extends Fragment {
             public void onDataChange(DataSnapshot dataSnapshot) {
                 if(dataSnapshot.getValue()!=null)
                 {
-                    String t = dataSnapshot.getValue().toString();
-                    rating_star.setRating(Float.parseFloat(t));
+                    Iterator i = dataSnapshot.getChildren().iterator();
+                    float sum = 0;
+                    long n = dataSnapshot.getChildrenCount();
+
+                    while (i.hasNext())
+                    {
+                        String t = ((DataSnapshot) i.next()).getValue().toString();
+                        float tmp = Float.parseFloat(t);
+                        sum+=tmp;
+                    }
+
+                    rating_star.setOnRatingBarChangeListener(null);
+                    rating_star.setRating(sum/n);
+                    score.setText(String.valueOf(new DecimalFormat("#.##").format(sum/n)));
+                    rating_star.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
+                        @Override
+                        public void onRatingChanged(RatingBar ratingBar, float rating, boolean fromUser) {
+                            String tmp = String.valueOf(rating);
+                            score.setText(tmp);
+                            rate.child(id).setValue(tmp);
+                        }
+                    });
+
                 }
             }
 
@@ -143,12 +192,11 @@ public class Comment_RestaurantFragment extends Fragment {
             public void onRatingChanged(RatingBar ratingBar, float rating, boolean fromUser) {
                 String tmp = String.valueOf(rating);
                 score.setText(tmp);
-                rate.setValue(tmp);
+                rate.child(id).setValue(tmp);
             }
         });
 
         return root;
     }
-
 
 }

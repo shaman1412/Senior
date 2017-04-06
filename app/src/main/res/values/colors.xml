@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="yellow">#fae171</color>
+    <color name="yellow_weak1">#d6e6e648</color>
+    <color name="custom_gray1">#b6b4b4</color>
+    <color name="custom_yellow1">#fae171</color>
+    <color name="custom_azure1">#65e9f8</color>
+</resources>
