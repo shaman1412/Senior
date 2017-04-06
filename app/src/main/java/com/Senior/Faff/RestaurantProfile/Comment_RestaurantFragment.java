@@ -14,6 +14,7 @@ import android.widget.TextView;
 
 import com.Senior.Faff.R;
 import com.Senior.Faff.UserProfile.ProfileManager;
+import com.Senior.Faff.model.Comment;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -23,14 +24,11 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.text.DateFormat;
 import java.text.DecimalFormat;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
-import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 import java.util.TimeZone;
@@ -47,8 +45,9 @@ public class Comment_RestaurantFragment extends Fragment {
     private Button add_comment;
     private TextView comment_text;
     private ListView listView;
-    private ArrayList<String> list_of_comment = new ArrayList<>();
-    private ArrayAdapter<String> adapter;
+//    private ArrayList<String> list_of_comment = new ArrayList<>();
+    private ArrayList<Comment> list = new ArrayList<>();
+    private CommentAdapter adapter;
     private RatingBar rating_star;
     private TextView score;
     private DatabaseReference rate = storage.getReference("Restaurant").child("score");
@@ -100,7 +99,7 @@ public class Comment_RestaurantFragment extends Fragment {
             }
         });
 
-        adapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_list_item_1, list_of_comment);
+        adapter = new CommentAdapter(getContext(), list);
         listView = (ListView)root.findViewById(R.id.listView);
         listView.setAdapter(adapter);
 
@@ -134,8 +133,16 @@ public class Comment_RestaurantFragment extends Fragment {
                     }
                 }
 
-                list_of_comment.clear();
-                list_of_comment.addAll(setComment);
+//                list_of_comment.clear();
+//                list_of_comment.addAll(setComment);
+
+
+                list.clear();
+                for(int q=0; q<setComment.size();q++)
+                {
+                    Comment com = new Comment(Integer.parseInt(setId.get(q)),setName.get(q),setComment.get(q),setDate.get(q));
+                    list.add(com);
+                }
 
                 adapter.notifyDataSetChanged();
             }
