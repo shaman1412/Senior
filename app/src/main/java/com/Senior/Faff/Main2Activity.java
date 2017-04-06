@@ -230,9 +230,6 @@ public class Main2Activity extends AppCompatActivity {
                     @Override
                     public boolean onNavigationItemSelected(MenuItem item) {
                         switch (item.getItemId()) {
-                            case R.id.AddPromotion:
-                                ChangeTabToAddPromotion();
-                                break;
                             case R.id.Party:
                                 MainParty_fragment fragment_party = new MainParty_fragment();
                                 FragmentManager fragmentManager_party = getSupportFragmentManager();
@@ -267,12 +264,6 @@ public class Main2Activity extends AppCompatActivity {
         //ActionBarDrawerToggle drawerToggle
 
     }
-
-    private void ChangeTabToAddPromotion() {
-        Intent intent = new Intent(context, PromotionActivity.class);
-        startActivity(intent);
-    }
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
