@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/Home"
+            android:icon="@drawable/home_drawer_home"
+            android:title="Home" />
+        <item
+            android:id="@+id/NotificationUser"
+            android:icon="@drawable/notification_drawer_home"
+            android:title="Notification" />
+        <item
+            android:id="@+id/UserProfile"
+            android:icon="@drawable/userpro_drawer_home"
+            android:title="UserProfile" />
+        <item
+            android:id="@+id/Favourite"
+            android:icon="@drawable/favourite_drawer_home"
+            android:title="Favourite" />
+        <item
+            android:id="@+id/History"
+            android:icon="@drawable/history_drawer_home"
+            android:title="History" />
+
+    </group>
+    <item android:title="Restaurant">
+        <menu>
+            <group android:checkableBehavior="single">
+                <item
+                    android:icon="@drawable/restaurantpro_drawer_home"
+                    android:id="@+id/RestaurantProfile"
+                    android:title="Restaurant Profile" />
+                <item
+                    android:icon="@drawable/restaurantpro_drawer_home"
+                    android:id="@+id/AddPromotion"
+                    android:title="Add Promotion" />
+                <item
+                    android:icon="@drawable/notification_drawer_home"
+                    android:id="@+id/NotificationRe"
+                    android:title="Notification" />
+
+            </group>
+        </menu>
+    </item>
+    <item android:title="Other">
+        <menu>
+            <group android:checkableBehavior="single">
+                <item
+                    android:id="@+id/Setting"
+                    android:icon="@drawable/setting_drawer_home"
+                    android:title="Setting" />
+                <item
+                    android:icon="@drawable/contact_drawer_home"
+                    android:id="@+id/Contact"
+                    android:title="Contact" />
+                <item
+                    android:icon="@drawable/logout_drawer_home"
+                    android:id="@+id/Logout"
+                    android:title="Logout" />
+            </group>
+        </menu>
+    </item>
+</menu>

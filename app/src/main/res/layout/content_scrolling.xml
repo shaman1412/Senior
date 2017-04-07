@@ -7,7 +7,6 @@
     android:padding="20dp"
     android:id="@+id/scroll"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:showIn="@layout/user_picture"
     android:background="#ffffff"
     >
 

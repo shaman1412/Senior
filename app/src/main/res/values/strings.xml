@@ -41,6 +41,11 @@
     <string name="title_activity_add_map_restaurant">Map</string>
     <string name="title_activity_test_maps">Map</string>
     <string name="title_activity_party__create_new_party_map">Map</string>
-
+    //////////////////////////////////////////////////////////////////////////////////////////////
+    <string name="main_commend">ร้านอาหารแนะนำ</string>
+    <string name="main_promotion">แนะนำโปรโมชั่น</string>
+    <string name="main_top">ร้านอาหารยอดนิยม</string>
+//////////////////////////////////////////////////////////////////////////////////////////////////
+    <string name="Add_Restaurant_title">Add Restaurant</string>
 
 </resources>

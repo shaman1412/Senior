@@ -2,6 +2,7 @@ package com.Senior.Faff.UserProfile;
 
 import android.os.Build;
 import android.support.annotation.RequiresApi;
+import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.NavigationView;
 
 import android.support.v4.widget.DrawerLayout;
@@ -38,6 +39,11 @@ public class ShowUserprofile extends AppCompatActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
+
+/*        CollapsingToolbarLayout collapsingToolbar =
+                (CollapsingToolbarLayout) findViewById(R.id.toolbar_layout);
+        collapsingToolbar.setTitle("Title");*/
+
 
         text = (TextView) findViewById(R.id.text);
         String id = args.getString(UserProfile.Column.ID);

@@ -1,11 +1,13 @@
 package com.Senior.Faff;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.Senior.Faff.model.UserAuthen;
@@ -20,7 +22,7 @@ public class RegisterActivity extends ActionBarActivity {
 
     private Context mContext;
     private DatabaseManager mManager;
-
+    private TextView login;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -33,6 +35,15 @@ public class RegisterActivity extends ActionBarActivity {
         mPassword = (EditText) findViewById(R.id.password);
         mConfirmPassword = (EditText) findViewById(R.id.confirm_password);
         mRegister = (Button) findViewById(R.id.button_register);
+        login = (TextView)findViewById(R.id.login);
+        login.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent goLogin = new Intent(RegisterActivity.this,LoginActivity.class);
+                startActivity(goLogin);
+            }
+        });
+
 
         mRegister.setOnClickListener(new View.OnClickListener() {
             @Override

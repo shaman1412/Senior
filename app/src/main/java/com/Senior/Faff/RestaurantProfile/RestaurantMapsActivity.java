@@ -8,7 +8,6 @@ import android.content.pm.PackageManager;
 import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationManager;
-import android.os.Build;
 import android.support.annotation.NonNull;
 
 import android.os.Bundle;
@@ -89,7 +88,7 @@ public class RestaurantMapsActivity extends AppCompatActivity implements OnMapRe
             @Override
             public void onClick(View v) {
                 if(position != null) {
-                    Intent intent = new Intent(getApplicationContext(), AddRes_respro.class);
+                    Intent intent = new Intent(getApplicationContext(), Add_RestaurantProfile.class);
                     intent.putExtra("Position",position);
                     intent.putExtra("userid",user_id);
                     startActivity(intent);

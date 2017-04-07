@@ -26,7 +26,7 @@ public class InsertUserProfile extends AppCompatActivity {
         EditText Tel = (EditText)findViewById(R.id.telephone);
         EditText Age = (EditText)findViewById(R.id.age);
         EditText location = (EditText)findViewById(R.id.address);
-        Spinner gender = (Spinner)findViewById(R.id.spinner1);
+        Spinner gender = (Spinner)findViewById(R.id.gender);
         Button submit = (Button)findViewById(R.id.submit);
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,android.R.layout.simple_spinner_item,values);
         adapter.setDropDownViewResource(android.R.layout.simple_dropdown_item_1line);

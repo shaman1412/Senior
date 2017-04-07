@@ -53,7 +53,7 @@ public class Option_RestaurantFragment extends Fragment {
                 add.setVisibility(View.GONE);
                 edit.setVisibility(View.GONE);
                 show.setVisibility(View.GONE);*/
-                Intent  intent  = new Intent(getActivity(), RestaurantMapsActivity.class);
+                Intent  intent  = new Intent(getActivity(),Add_RestaurantProfile.class);
                 intent.putExtra("userid",id);
                 startActivity(intent);
 

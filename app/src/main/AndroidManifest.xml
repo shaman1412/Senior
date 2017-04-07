@@ -25,6 +25,7 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+
         </activity>
         <activity android:name=".RegisterActivity" />
         <activity android:name=".MainActivity" />
@@ -67,7 +68,9 @@
         <!-- android:name=".ServerSocketActivity" -->
         <!-- android:label="@string/title_activity_server_socket" -->
         <!-- android:theme="@style/AppTheme"></activity> -->
-        <activity android:name=".UserProfile.ShowUserprofile" />
+        <activity android:name=".UserProfile.ShowUserprofile" >
+
+        </activity>
         <activity android:name=".ServerSocketActivity" />
         <activity android:name=".ClientSocketActivity" />
         <activity android:name=".FilterActivity" />
@@ -78,7 +81,7 @@
         <activity
             android:name=".RestaurantProfile.RestaurantMapsActivity"
             android:label="@string/title_activity_restaurant_maps" />
-        <activity android:name=".RestaurantProfile.AddRes_respro" />
+        <activity android:name=".RestaurantProfile.Add_RestaurantProfile" />
         <activity
             android:name=".TestMapsActivity"
             android:label="@string/title_activity_test_maps" />
@@ -87,7 +90,19 @@
         <activity
             android:name=".Fragment.Party.Party_CreateNewParty_map"
             android:label="@string/title_activity_party__create_new_party_map" />
-        <activity android:name=".RestaurantProfile.Show_RestaurantProfile"></activity>
+        <activity android:name=".RestaurantProfile.Show_RestaurantProfile" />
+        <activity
+            android:name=".testlife"
+            android:configChanges="orientation|screenSize|keyboardHidden">
+
+
+        </activity>
+        <activity android:name=".Main3Activity" />
+        <activity android:name=".TestAPI">
+
+
+
+        </activity>
     </application>
 
 </manifest>
