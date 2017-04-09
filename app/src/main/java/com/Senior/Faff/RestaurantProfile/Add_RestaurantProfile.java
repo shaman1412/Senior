@@ -36,6 +36,7 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
@@ -45,6 +46,8 @@ public class Add_RestaurantProfile extends AppCompatActivity implements OnMapRea
         GoogleApiClient.ConnectionCallbacks,LocationListener,
         ActivityCompat.OnRequestPermissionsResultCallback{
 
+    private com.google.android.gms.maps.model.Marker mCurrLocationMarker;
+    private LatLng myLocation;
     private GoogleApiClient googleApiClient;
     private Location location;
     private boolean mPermissionDenied = false;
@@ -53,7 +56,7 @@ public class Add_RestaurantProfile extends AppCompatActivity implements OnMapRea
     private String get_user_id;
     private String user_id;
     private int type_food;
-    private EditText name,detail,picture;
+    private EditText name,detail,picture,description;
     private Button next;
     private Context mcontext;
     private Toolbar toolbar;
@@ -103,7 +106,7 @@ public class Add_RestaurantProfile extends AppCompatActivity implements OnMapRea
 
         next = (Button) findViewById(R.id.next);
         picture = (EditText) findViewById(R.id.addPicture);
-
+        description = (EditText)findViewById(R.id.description);
         next.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -216,6 +219,23 @@ public class Add_RestaurantProfile extends AppCompatActivity implements OnMapRea
 
     @Override
     public boolean onMyLocationButtonClick() {
+        if (location != null) {
+            myLocation = new LatLng(location.getLatitude(),
+                    location.getLongitude());
+            mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(myLocation,
+                    11));
+            MarkerOptions markerOptions = new MarkerOptions();
+            markerOptions.position(myLocation);
+            markerOptions.title("Current Position");
+            markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN));
+            mCurrLocationMarker = mMap.addMarker(markerOptions);
+
+            description.setText(String.valueOf(myLocation.latitude));
+
+        }
+
+
+        Toast.makeText(this, "MyLocation button clicked", Toast.LENGTH_SHORT).show();
         return false;
     }
 
@@ -224,9 +244,9 @@ public class Add_RestaurantProfile extends AppCompatActivity implements OnMapRea
         mMap = googleMap;
 
         // Add a marker in Sydney and move the camera
-        LatLng sydney = new LatLng(37.62,-122.284);
+/*        LatLng sydney = new LatLng(37.62,-122.284);
         mMap.addMarker(new MarkerOptions().position(sydney).title("PPAP"));
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
+        mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));*/
 
         mMap.setOnMyLocationButtonClickListener(this);
         enableMyLocation();
@@ -246,6 +266,16 @@ public class Add_RestaurantProfile extends AppCompatActivity implements OnMapRea
 
             location = locationManager.getLastKnownLocation(locationManager
                     .getBestProvider(criteria, false));
+
+            myLocation = new LatLng(location.getLatitude(),
+                    location.getLongitude());
+            mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(myLocation,
+                    11));
+            MarkerOptions markerOptions = new MarkerOptions();
+            markerOptions.position(myLocation);
+            markerOptions.title("Current Position");
+            markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN));
+            mCurrLocationMarker = mMap.addMarker(markerOptions);
 
 
         }

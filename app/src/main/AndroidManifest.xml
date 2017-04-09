@@ -19,7 +19,8 @@
         android:theme="@style/AppTheme">
         <activity
             android:name=".LoginActivity"
-            android:label="Faff">
+            android:label="Faff" >
+
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -76,7 +77,13 @@
         <activity android:name=".FilterActivity" />
         <activity android:name=".ImagerActivity" />
         <activity android:name=".utils.PlacePicker" />
-        <activity android:name=".chat.ChatMainActivity" />
+        <activity android:name=".chat.ChatMainActivity">
+
+
+
+
+
+        </activity>
         <activity android:name=".chat.Chat_Room" />
         <activity
             android:name=".RestaurantProfile.RestaurantMapsActivity"
@@ -90,6 +97,10 @@
         <activity
             android:name=".Fragment.Party.Party_CreateNewParty_map"
             android:label="@string/title_activity_party__create_new_party_map" />
+        <activity android:name=".Promotion.PromotionShow" />
+        <activity android:name=".chat.TestFirebaseStorageActivity" />
+        <activity android:name=".chat.CreateParty" />
+        <activity android:name=".chat.ParttyDetail"></activity>
         <activity android:name=".RestaurantProfile.Show_RestaurantProfile" />
         <activity
             android:name=".testlife"

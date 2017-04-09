@@ -46,7 +46,7 @@ public class Chat_Room extends AppCompatActivity {
         room_name = getIntent().getExtras().get("room_name").toString();
         setTitle(" Room - "+room_name);
 
-        root = FirebaseDatabase.getInstance().getReference().child(room_name);
+        root = FirebaseDatabase.getInstance().getReference("Party").child("chat-room").child(room_name);
 
         btn_send_msg.setOnClickListener(new View.OnClickListener() {
             @Override

@@ -22,7 +22,7 @@ function list (limit, token, cb) {
   token = token ? parseInt(token, 10) : 0;
   const connection = getConnection();
   connection.query(
-    'SELECT * FROM `user` LIMIT ? OFFSET ?', [limit, token],
+    'SELECT * FROM `user_profile` LIMIT ? OFFSET ?', [limit, token],
     (err, results) => {
       if (err) {
         cb(err);
@@ -37,7 +37,7 @@ function list (limit, token, cb) {
 
 function create (data, cb) {
   const connection = getConnection();
-  connection.query('INSERT INTO `user` SET ?', data, (err, res) => {
+  connection.query('INSERT INTO `user_profile` SET ?', data, (err, res) => {
     if (err) {
       cb(err);
       return;
@@ -50,7 +50,7 @@ function create (data, cb) {
 function read (id, cb) {
   const connection = getConnection();
   connection.query(
-    'SELECT * FROM `user` WHERE `userid` = ?', id, (err, results) => {
+    'SELECT * FROM `user_profile` WHERE `userid` = ?', id, (err, results) => {
       if (err) {
         cb(err);
         return;
@@ -70,7 +70,7 @@ function read (id, cb) {
 function update (id, data, cb) {
   const connection = getConnection();
   connection.query(
-    'UPDATE `user` SET ? WHERE `userid` = ?', [data, id], (err) => {
+    'UPDATE `user_profile` SET ? WHERE `userid` = ?', [data, id], (err) => {
       if (err) {
         cb(err);
         return;
@@ -81,7 +81,7 @@ function update (id, data, cb) {
 }
 function _delete (id, cb) {
   const connection = getConnection();
-  connection.query('DELETE FROM `user` WHERE `userid` = ?', id, cb);
+  connection.query('DELETE FROM `user_profile` WHERE `userid` = ?', id, cb);
   connection.end();
 }
 
@@ -120,7 +120,7 @@ function createSchema (config) {
       DEFAULT CHARACTER SET = 'utf8'
       DEFAULT COLLATE 'utf8_general_ci';
     USE \`faff\`;
-    CREATE TABLE IF NOT EXISTS \`faff\`.\`user\` (
+    CREATE TABLE IF NOT EXISTS \`faff\`.\`user_profile\` (
       \`id\` INT UNSIGNED NOT NULL AUTO_INCREMENT,
       \`userid\` VARCHAR(255) NOT NULL,
       \`name\` VARCHAR(255) NULL,

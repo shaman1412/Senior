@@ -22,9 +22,9 @@ import com.Senior.Faff.R;
 import com.Senior.Faff.model.Promotion;
 import com.Senior.Faff.model.PromotionPicture;
 import com.Senior.Faff.utils.DatabaseManager;
-import com.Senior.Faff.utils.PromotionRecyclerViewAdapter;
 
 import java.io.ByteArrayOutputStream;
+import java.io.OutputStream;
 import java.util.ArrayList;
 
 public class PromotionActivity extends AppCompatActivity {
@@ -130,29 +130,6 @@ public class PromotionActivity extends AppCompatActivity {
                 lv.setNestedScrollingEnabled(false);
                 lv.setAdapter(adapter);
 
-
-//                lv.setOnTouchListener(new ListView.OnTouchListener(){
-//                    @Override
-//                    public boolean onTouch(View v, MotionEvent event) {
-//                        int action = event.getAction();
-//                        switch (action) {
-//                            case MotionEvent.ACTION_DOWN:
-//                                // Disallow ScrollView to intercept touch events.
-//                                v.getParent().requestDisallowInterceptTouchEvent(true);
-//                                break;
-//
-//                            case MotionEvent.ACTION_UP:
-//                                // Allow ScrollView to intercept touch events.
-//                                v.getParent().requestDisallowInterceptTouchEvent(false);
-//                                break;
-//                        }
-//                        // Handle ListView touch events.
-//                        v.onTouchEvent(event);
-//                        return true;
-//                    }
-//                });
-
-                //img.setImageBitmap(bitSelectedImg);
             }
         }
     }
@@ -166,17 +143,29 @@ public class PromotionActivity extends AppCompatActivity {
 
         Promotion promotion = new Promotion(title, startDate, endDate, promotionDetail,location);
         int proID = (int)mManager.getCurrentPromotionID()+1;
-        for (byte[] b:imgByte) {
+        if(imgByte.size()!=0)
+        {
+            for (byte[] b:imgByte) {
+                PromotionPicture pro_pic = new PromotionPicture(proID,b);
+                long rowID = mManager.addPromotionPicture(pro_pic);
+                if(rowID == -1)
+                {
+                    Log.i(TAG,"add pro_pic " + proID + " fail");
+                }
+                else
+                {
+                    Log.i(TAG,"add pro_pic " + proID + " success");
+                }
+            }
+        }
+        else
+        {
+            Bitmap btmp = BitmapFactory.decodeResource(getResources(), R.drawable.noimage);
+            ByteArrayOutputStream ostmp = new ByteArrayOutputStream();
+            btmp.compress(Bitmap.CompressFormat.PNG, 100, ostmp);
+            byte[] b = ostmp.toByteArray();
             PromotionPicture pro_pic = new PromotionPicture(proID,b);
             long rowID = mManager.addPromotionPicture(pro_pic);
-            if(rowID == -1)
-            {
-                Log.i(TAG,"add pro_pic " + proID + " fail");
-            }
-            else
-            {
-                Log.i(TAG,"add pro_pic " + proID + " success");
-            }
         }
 
         long rowId = mManager.addPromotion(promotion);

@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/TabUserProfile"
+    tools:context="com.Senior.Faff.RestaurantProfile.Show_RestaurantFragment">
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="center"
+        android:background="@color/yellow"
+        android:backgroundTint="@android:color/transparent">
+
+        <TextView
+            android:id="@+id/comment_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:background="@color/custom_orange1"
+            android:gravity="center"
+            android:text="Comment"
+            android:textAppearance="@style/TextAppearance.AppCompat.Headline"
+            android:textColor="@android:color/holo_red_dark" />
+
+        <TextView
+            android:id="@+id/comment_score"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/listView"
+            android:layout_alignParentLeft="true"
+            android:layout_marginBottom="15dp"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="15dp"
+            android:layout_marginTop="15dp"
+            android:layout_toLeftOf="@+id/ratingBar"
+            android:background="@android:color/transparent"
+            android:gravity="right"
+            android:textAlignment="center"
+            android:textAppearance="@style/TextAppearance.AppCompat.Headline"
+            android:textColor="@android:color/holo_red_dark"
+            android:textSize="30sp" />
+
+        <RatingBar
+            android:id="@+id/ratingBar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_below="@+id/comment_title"
+            android:background="@color/TabUserProfile" />
+
+        <ListView
+            android:id="@id/listView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/comment_send"
+            android:layout_below="@+id/ratingBar"
+            android:layout_centerHorizontal="true"
+            android:background="@color/custom_yellow1" />
+
+        <EditText
+            android:id="@+id/comment_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/listView"
+            android:layout_alignParentBottom="true"
+            android:layout_toLeftOf="@+id/comment_send"
+            android:background="@color/custom_gray1"
+            android:hint="add comment"
+            android:inputType="text" />
+
+        <Button
+            android:id="@+id/comment_send"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:backgroundTint="@android:color/darker_gray"
+            android:text="Send" />
+
+    </RelativeLayout>
+
+</FrameLayout>

@@ -18,49 +18,31 @@ function getConnection () {
   return mysql.createConnection(options);
 }
 
-function all_list (limit, token, cb) {
+function all_list ( cb) {
   const connection = getConnection();
   connection.query(
-    'SELECT * FROM `user` ', (err, results) => {
+    'SELECT * FROM `restaurant_profile` ', (err, results) => {
       if (err) {
         cb(err);
         return;
       }
-      const hasMore = results.length === limit ? token + results.length : false;
-      cb(null, results, hasMore);
+      //const hasMore = results.length === limit ? token + results.length : false;
+      cb(null, results);
     }
   );
   connection.end();
 }
 
-function filter_list (type, cb) {
-  const connection = getConnection();
-const type_split = type.split(",");
-const sql = 'SELECT * FROM `user` WHERE  type_food =';
-for(let i = 0; i< type_split.length; i++){
-	let 
-}
-  connection.query(
-    'SELECT * FROM `user` WHERE  type_food = ? ', (err, results) => {
-      if (err) {
-        cb(err);
-        return;
-      }
-      const hasMore = results.length === limit ? token + results.length : false;
-      cb(null, results, hasMore);
-    }
-  );
-  connection.end();
-}
+
 
 function create (data, cb) {
   const connection = getConnection();
-  connection.query('INSERT INTO `user` SET ?', data, (err, res) => {
+  connection.query('INSERT INTO `restaurant_profile` SET ?', data, (err, res) => {
     if (err) {
       cb(err);
       return;
     }
-    read(res.insertId, cb);
+     cb(null, res);
   });
   connection.end();
 }
@@ -68,7 +50,7 @@ function create (data, cb) {
 function read (id, cb) {
   const connection = getConnection();
   connection.query(
-    'SELECT * FROM `user` WHERE `userid` = ?', id, (err, results) => {
+    'SELECT * FROM `restaurant_profile` WHERE `res_id` = ?', id, (err, results) => {
       if (err) {
         cb(err);
         return;
@@ -87,28 +69,65 @@ function read (id, cb) {
 function update (id, data, cb) {
   const connection = getConnection();
   connection.query(
-    'UPDATE `user` SET ? WHERE `userid` = ?', [data, id], (err) => {
+    'UPDATE `restaurant_profile` SET ? WHERE `res_id` = ?', [data, id], (err, results) => {
       if (err) {
         cb(err);
         return;
       }
-      read(id, cb);
+      cb(null, results);
     });
   connection.end();
 }
 function _delete (id, cb) {
   const connection = getConnection();
-  connection.query('DELETE FROM `user` WHERE `userid` = ?', id, cb);
+  connection.query('DELETE FROM `restaurant_profile` WHERE `res_id` = ?', id, cb);
+  connection.end();
+}
+
+function update_score(data, id, cb){
+  const connection = getConnection();
+  connection.query('UPDATE `restaurant_profile` SET  ? WHERE `res_id` = ? ',[ data , id] , (err, results) =>{
+    if(err){
+      cb(err);
+      return;
+    }
+    cb(null, results);
+  });
+ connection.end();
+}
+
+function calculate_score(id, data , cb){
+  const connection = getConnection();
+  connection.query('SELECT vote,score FROM  `restaurant_profile` WHERE `res_id` = ? ' , id , (err , results) =>{
+    if(err){
+      cb(err);
+      return;
+    }
+
+     const  vote = results[0].vote + 1;
+     const result = Math.round( ( results[0].score + parseInt(data, 10) ) / vote ) ;
+     const getdata  = {
+      vote : vote,
+      score : result
+     }
+    update_score(getdata , id , (err, entity) => {
+      if(err){
+      cb(err);
+      return;
+    }
+     cb(null, entity);
+    })
+  })
   connection.end();
 }
 
 module.exports = {
-  createSchema: createSchema,
-  list: list,
   create: create,
+  createSchema: createSchema,
   read: read,
   update: update,
-  delete: _delete
+  delete: _delete,
+  calculate_score : calculate_score
 };
 
 if (module === require.main) {
@@ -138,8 +157,7 @@ function createSchema (config) {
       DEFAULT COLLATE 'utf8_general_ci';
     USE \`faff\`;
     CREATE TABLE IF NOT EXISTS \`faff\`.\`restaurant_profile\` (
-      \`id\` INT UNSIGNED NOT NULL AUTO_INCREMENT,
-       \`restaurantid\` VARCHAR(255) NULL,
+       \`res_id\` VARCHAR(255) NOT NULL,
       \`name\` VARCHAR(255) NULL,
        \`type_food\` VARCHAR(255) NULL,
        \`description\` VARCHAR(255) NULL,
@@ -147,8 +165,9 @@ function createSchema (config) {
       \`address\` VARCHAR(255) NULL,
       \`location\` VARCHAR(255) NULL,
       \`score\` Float NULL,
-      \`create_time\` DATETIME NULL,
-    PRIMARY KEY (\`id\`));`,
+        \`vote\` Float NULL,
+      \`create_time\` TIMESTAMP NULL,
+    PRIMARY KEY (\`res_id\`));`,
     (err) => {
       if (err) {
         throw err;

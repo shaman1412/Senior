@@ -76,6 +76,22 @@ public class ProfileManager extends SQLiteOpenHelper {
         int id = ((int) cursor.getLong(0));
         return id;
     }
+
+    public String getUserName(String id){
+        mdatabase = this.getReadableDatabase();
+        Cursor cursor = mdatabase.query(UserAuthen.TABLE,
+                new String[]{UserAuthen.Column.USERNAME},
+                UserAuthen.Column.ID + "=?", new String[]{id},
+                null,
+                null,
+                null
+        );
+
+        cursor.moveToFirst();
+        String userName = ((String)cursor.getString(0));
+        return userName;
+    }
+
     public long insetUserprofile(UserProfile userProfile){
             mdatabase = getReadableDatabase();
         ContentValues values = new ContentValues();

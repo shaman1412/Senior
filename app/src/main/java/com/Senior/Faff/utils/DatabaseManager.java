@@ -398,7 +398,6 @@ public class DatabaseManager extends SQLiteOpenHelper implements DatabaseManager
         Cursor qry = null;
         try{
             qry =  mDatabase.rawQuery("select "+tb1+"."+Promotion.Column.ID+", "+tb1+"."+Promotion.Column.Title+", "+tb2+"."+PromotionPicture.Column.PictureData+", "+tb1+"."+Promotion.Column.StartDate+", "+tb1+"."+Promotion.Column.EndDate+", "+tb1+"."+Promotion.Column.PromotionDetail+", "+tb1+"."+Promotion.Column.Location+" from "+tb1+", "+tb2+" WHERE "+tb1+"."+Promotion.Column.ID+" = "+tb2+"."+PromotionPicture.Column.PromotionID+" group by "+tb2+"."+Promotion.Column.ID+" order by "+tb2+"."+PromotionPicture.Column.ID+" asc",null);
-
         }
         catch (Exception ex){
             Log.i(TAG, ex.toString());
