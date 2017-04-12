@@ -50,9 +50,9 @@ public class ProfileManager extends SQLiteOpenHelper {
         profile.setName(cursor.getString(1));
         profile.setAddress(cursor.getString(2));
         profile.setEmail(cursor.getString(3));
-        profile.setTelephone((int) (cursor.getLong(4)));
-        profile.setDateOfBirth(cursor.getString(5));
-        profile.setGender(cursor.getString(6));
+        //profile.setTelephone((int) (cursor.getLong(4)));
+        //profile.setDateOfBirth(cursor.getString(5));
+      //  profile.setGender(cursor.getString(6));
         profile.setAge((int) cursor.getLong(7));
         profile.setPicture(cursor.getString(8));
         }
@@ -65,7 +65,7 @@ public class ProfileManager extends SQLiteOpenHelper {
     public int getID(String Username) {
         mdatabase = this.getReadableDatabase();
         Cursor cursor = mdatabase.query(UserAuthen.TABLE,
-                new String[]{UserAuthen.Column.ID},
+                new String[]{UserAuthen.Column.USERID},
                 UserAuthen.Column.USERNAME + "=?", new String[]{Username},
                 null,
                 null,
@@ -81,7 +81,7 @@ public class ProfileManager extends SQLiteOpenHelper {
         mdatabase = this.getReadableDatabase();
         Cursor cursor = mdatabase.query(UserAuthen.TABLE,
                 new String[]{UserAuthen.Column.USERNAME},
-                UserAuthen.Column.ID + "=?", new String[]{id},
+                UserAuthen.Column.USERID + "=?", new String[]{id},
                 null,
                 null,
                 null
@@ -99,7 +99,7 @@ public class ProfileManager extends SQLiteOpenHelper {
         values.put(UserProfile.Column.Address,userProfile.getAddress());
         values.put(UserProfile.Column.Email,userProfile.getEmail());
         values.put(UserProfile.Column.Telephone,userProfile.getTelephone());
-        values.put(UserProfile.Column.DateOfBirth,userProfile.getDateOfBirth());
+       // values.put(UserProfile.Column.DateOfBirth,userProfile.getDateOfBirth());
         values.put(UserProfile.Column.Gender,userProfile.getGender());
         values.put(UserProfile.Column.Age,userProfile.getAge());
         values.put(UserProfile.Column.Picture,userProfile.getPicture());

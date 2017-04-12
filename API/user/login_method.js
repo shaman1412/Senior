@@ -47,7 +47,7 @@ function create (data, cb) {
       cb(err);
       return;
     }
-    read(res.insertId, cb);
+    cb(null, res);
   });
   connection.end();
 }

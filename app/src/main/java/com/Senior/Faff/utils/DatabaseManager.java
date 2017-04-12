@@ -51,7 +51,7 @@ public class DatabaseManager extends SQLiteOpenHelper implements DatabaseManager
         String CREATE_TABLE_USER = String.format("CREATE TABLE %s " +
                         "(%s INTEGER PRIMARY KEY AUTOINCREMENT, %s TEXT, %s TEXT)" ,
                 UserAuthen.TABLE,
-                UserAuthen.Column.ID,
+                UserAuthen.Column.USERID,
                 UserAuthen.Column.USERNAME,
                 UserAuthen.Column.PASSWORD
         );
@@ -96,13 +96,13 @@ public class DatabaseManager extends SQLiteOpenHelper implements DatabaseManager
                 History.Column.PartyID
         );
 
- /*       String CREATE_TABLE_PARTY = String.format("create table if not exists %s (%s integer primary key autoincrement, %s text not null, %s integer not null, %s text not null);",
+        String CREATE_TABLE_PARTY = String.format("create table if not exists %s (%s integer primary key autoincrement, %s text not null, %s integer not null, %s text not null);",
                 Party.TABLE,
                 Party.Column.ID,
                 Party.Column.Name,
                 Party.Column.RoomID,
                 Party.Column.Appointment
-        );*/
+        );
 
         String CREATE_TALBLE_PARTYLIST = String.format("create table if not exists %s (%s integer primary key autoincrement, %s integer not null, %s integer not null);",
                 PartyList.TABLE,
@@ -204,7 +204,6 @@ public class DatabaseManager extends SQLiteOpenHelper implements DatabaseManager
                 UserProfile.Column.Address,
                 UserProfile.Column.Email,
                 UserProfile.Column.Telephone,
-                UserProfile.Column.DateOfBirth,
                 UserProfile.Column.Gender,
                 UserProfile.Column.Age,
                 UserProfile.Column.Picture
@@ -250,7 +249,7 @@ public class DatabaseManager extends SQLiteOpenHelper implements DatabaseManager
         db.execSQL(CREATE_TABLE_BOOKMARKLIST);
         db.execSQL(CREATE_TABLE_FOODPROFILE);
         db.execSQL(CREATE_TABLE_HISTORY);
-       // db.execSQL(CREATE_TABLE_PARTY);
+      db.execSQL(CREATE_TABLE_PARTY);
         db.execSQL(CREATE_TALBLE_PARTYLIST);
         db.execSQL(CREATE_TABLE_PROMOTIONLIST);
         db.execSQL(CREATE_TABLE_REPORT);
@@ -263,7 +262,7 @@ public class DatabaseManager extends SQLiteOpenHelper implements DatabaseManager
         db.execSQL(CREATE_TABLE_ROOMLIST);
         db.execSQL(CREATE_TABLE_SCORE);
         db.execSQL(CREATE_TABLE_TYPEFOOD);
-        db.execSQL(CREATE_TABLE_USERPROFILE);
+ db.execSQL(CREATE_TABLE_USERPROFILE);
         db.execSQL(CREATE_TABLE_COMMENT);
         db.execSQL(CREATE_TABLE_COMMENTLISTRESTERAUNT);
         db.execSQL(CREATE_TABLE_MARKER); // สร้าง map database
@@ -304,7 +303,7 @@ public class DatabaseManager extends SQLiteOpenHelper implements DatabaseManager
         );
         if(cursor != null){
             cursor.moveToFirst();
-            user.setId(cursor.getString(0));
+            user.setUserid(cursor.getString(0));
         }
         mDatabase.close();
         return user;
@@ -328,7 +327,7 @@ public class DatabaseManager extends SQLiteOpenHelper implements DatabaseManager
 
         if (cursor != null) {
             if (cursor.moveToFirst()) {
-                currentUserAuthen.setId(cursor.getString(0));
+                currentUserAuthen.setUserid(cursor.getString(0));
                 currentUserAuthen.setUsername(cursor.getString(1));
                 currentUserAuthen.setPassword(cursor.getString(2));
                 mDatabase.close();
@@ -350,11 +349,12 @@ public class DatabaseManager extends SQLiteOpenHelper implements DatabaseManager
 
         int row = mDatabase.update(UserAuthen.TABLE,
                 values,
-                UserAuthen.Column.ID + " = ?",
-                new String[] {String.valueOf(userAuthen.getId())});
+                UserAuthen.Column.USERID + " = ?",
+                new String[] {String.valueOf(userAuthen.getUserid())});
 
         mDatabase.close();
         return row;
+
     }
     //endregion
 
@@ -415,5 +415,7 @@ public class DatabaseManager extends SQLiteOpenHelper implements DatabaseManager
     public void close(){
         mDatabase.close();
     }
+
     //endregion
+
 }

@@ -31,11 +31,10 @@ router.get('/:username', (req, res, next) => {
 router.post('/register',(req, res, next) => {
 	const json = req.body;
 	//const token = tokenGenerator(json.username);
-	const token = json.username + "1412";
 	const data = {
 		username:json.username,
 		password:json.password,
-		userid:token
+		userid:json.userid
 	}
 	getModel().create(data,(err,entities) => {
 		if(err){

@@ -42,7 +42,7 @@ function create (data, cb) {
       cb(err);
       return;
     }
-    read(res.insertId, cb);
+    cb(null, res);
   });
   connection.end();
 }
@@ -121,16 +121,15 @@ function createSchema (config) {
       DEFAULT COLLATE 'utf8_general_ci';
     USE \`faff\`;
     CREATE TABLE IF NOT EXISTS \`faff\`.\`user_profile\` (
-      \`id\` INT UNSIGNED NOT NULL AUTO_INCREMENT,
       \`userid\` VARCHAR(255) NOT NULL,
       \`name\` VARCHAR(255) NULL,
       \`address\`TEXT NULL,
       \`email\` VARCHAR(255) NULL,
       \`telephone\` VARCHAR(255) NULL,
-      \`gender\` VARCHAR(255) NULL,
+      \`gender\` INT NULL,    
       \`favourite_type\` VARCHAR(255) NULL,
       \`age\` INT NULL,
-    PRIMARY KEY (\`id\`));`,
+    PRIMARY KEY (\`userid\`));`,
     (err) => {
       if (err) {
         throw err;

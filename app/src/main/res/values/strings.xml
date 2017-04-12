@@ -45,7 +45,21 @@
     <string name="main_commend">ร้านอาหารแนะนำ</string>
     <string name="main_promotion">แนะนำโปรโมชั่น</string>
     <string name="main_top">ร้านอาหารยอดนิยม</string>
-//////////////////////////////////////////////////////////////////////////////////////////////////
+    //////////////////////////////////////////////////////////////////////////////////////////////////
     <string name="Add_Restaurant_title">Add Restaurant</string>
-
+    <string name="userid">userid</string>
+    /////////////////////////// drop down type food
+    /////////////////////////////////////////////////////////////
+    <string-array name="type_food_dropdown">
+        <item>Noodle</item>
+        <item>Seafood</item>
+        <item>Cooked To Order</item>
+        <item>Dessert</item>
+        <item>Steak</item>
+        <item>Pizza</item>
+        <item>Fried</item>
+        <item>Thai Food</item>
+        <item>Japanese Food</item>
+        <item>Chinese Food</item>
+    </string-array>
 </resources>

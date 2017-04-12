@@ -24,7 +24,7 @@ public class firebase {
 
 
     public void writeNewUser() {
-      UserAuthen friendlyMessage = new UserAuthen("Hello World!", "Jirawatee");
+      UserAuthen friendlyMessage = new UserAuthen("Hello World!", "Jirawatee","ASDF");
      // mUsersRef.child("id-12345").setValue("Jirawatee");
       //  mMessagesRef.child("1").setValue(friendlyMessage);
        // mMessagesRef.child("2").setValue(friendlyMessage);

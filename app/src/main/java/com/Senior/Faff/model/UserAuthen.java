@@ -7,31 +7,33 @@ public class UserAuthen {
     public static final String TABLE = "user";
 
     public class Column {
-        public static final String ID = BaseColumns._ID;
         public static final String USERNAME = "username";
         public static final String PASSWORD = "password";
+        public static final String USERID = "userid";
+
     }
 
-    private String id;
+    private String userid;
     private String username;
     private String password;
 
     // Constructor
-    public UserAuthen(String username, String password) {
+    public UserAuthen(String username, String password, String userid) {
         this.username = username;
         this.password = password;
+        this.userid = userid;
     }
 
     public UserAuthen() {
 
     }
 
-    public String getId() {
-        return id;
+    public String getUserid() {
+        return userid;
     }
 
-    public void setId(String id) {
-        this.id = id;
+    public void setUserid(String userid) {
+        this.userid = userid;
     }
     public String getUsername() {
         return username;

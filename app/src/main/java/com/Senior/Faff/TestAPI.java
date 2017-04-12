@@ -33,8 +33,8 @@ public class TestAPI extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_test_api2);
         pee = (TextView) findViewById(R.id.pee);
-        new getData().execute();
-       // new addData().execute();
+       // new getData().execute();
+        new addData().execute();
     }
 
 
@@ -99,17 +99,12 @@ public class TestAPI extends AppCompatActivity {
 
 
                 JSONObject postDataParams = new JSONObject();
-                postDataParams.put("userid", "ฉันชื่อ");
-                postDataParams.put("name", "abc@gmail.com");
-                postDataParams.put("address", "abc@gmail.com");
-                postDataParams.put("email", "abc@gmail.com");
-                postDataParams.put("telephone", "0123213123");
-                postDataParams.put("dof", "abc@gmail.com");
-                postDataParams.put("gender", "abc@gmail.com");
-                postDataParams.put("age", 23); //int
+                postDataParams.put("username", "ass");
+                postDataParams.put("password", "abc@gmail.com");
 
 
-                URL url = new URL("https://faff-1489402013619.appspot.com/user/new_user");
+
+                URL url = new URL("https://faff-1489402013619.appspot.com/login/register");
                 connection = (HttpURLConnection) url.openConnection();
                 connection.setRequestMethod("POST");
                 connection.setDoOutput(true);

@@ -17,6 +17,7 @@ public class Party {
         public static final String Name = "Name";
         public static final String Description = "Description";
         public static final String Appointment = "Appointment";
+        public static final String RoomID = "Roomid";
     }
 
     private int id;

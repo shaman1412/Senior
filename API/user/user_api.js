@@ -44,14 +44,14 @@ router.post('/new_user',(req, res, next) => {
 	const json  = req.body;
 	console.log(json);
 	const user = {
-		userid : json.para1,
-		name: json.para2,
-		address: json.para3,
-		email: json.para4,
-		telephone: json.para5,
-		dof: json.para6,
-		gender: json.para7,
-		age: json.para8
+		userid : json.userid,
+		name: json.name,
+		address: json.address,
+		email: json.email,
+		telephone: json.telephone,
+		gender: json.gender,
+    favourite_type : json.favourite_type,
+		age: json.age
 	}
 	getModel().create(user,(err,entities) => {
 		if(err){
@@ -72,6 +72,7 @@ router.put('/:userid', (req, res, next) => {
 		address: json.address,
 		telephone: json.telephone,
 		gender: json.gender,
+    favourite_type : json.favourite_type,
 		age: json.age
 	}	
   getModel().update(req.params.userid, user, (err, entity) => {

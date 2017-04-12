@@ -2,16 +2,28 @@ package com.Senior.Faff;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.provider.ContactsContract;
 import android.support.v7.app.ActionBarActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.Senior.Faff.UserProfile.InsertUserProfile;
 import com.Senior.Faff.model.UserAuthen;
 import com.Senior.Faff.utils.DatabaseManager;
+import com.google.gson.Gson;
+
+import java.io.BufferedInputStream;
+import java.io.BufferedReader;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
 
 
 public class LoginActivity extends ActionBarActivity {
@@ -58,20 +70,69 @@ public class LoginActivity extends ActionBarActivity {
     private void checkLogin() {
         String username = mUsername.getText().toString().trim().toLowerCase();
         String password = mPassword.getText().toString().trim();
+        new getData().execute(username,password);
+    }
+    private class getData extends AsyncTask<String, String, UserAuthen> {
 
-        UserAuthen userAuthen = new UserAuthen(username, password);
+        String pass;
+        int responseCode;
+        HttpURLConnection connection;
+        String resultjson;
+        @Override
+        protected UserAuthen doInBackground(String... args) {
+            StringBuilder result = new StringBuilder();
+            String url_api = "https://faff-1489402013619.appspot.com/login/" + args[0];
+            pass = args[1];
+            try {
+                URL url = new URL(url_api);
+                connection = (HttpURLConnection) url.openConnection();
+                connection.setRequestMethod("GET");
 
-        UserAuthen validateUserAuthen = mManager.checkUserLogin(userAuthen);
+                InputStream in = new BufferedInputStream(connection.getInputStream());
 
-        if (null == validateUserAuthen) {
-            String message = getString(R.string.login_error_message);
-            Toast.makeText(mContext, message, Toast.LENGTH_SHORT).show();
-        } else {
-            Intent intent = new Intent(mContext, Main2Activity.class);
-            intent.putExtra(UserAuthen.Column.USERNAME, validateUserAuthen.getUsername());
-            intent.putExtra("userid", validateUserAuthen.getId());
-            startActivity(intent);
-            //finish();
+                BufferedReader reader = new BufferedReader(new InputStreamReader(in));
+
+                responseCode = connection.getResponseCode();
+                String line;
+                while ((line = reader.readLine()) != null) {
+                    result.append(line);
+                }
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            if (responseCode == 200) {
+                Log.i("Request Status", "This is success response status from server: " + responseCode);
+                Gson gson = new Gson();
+                UserAuthen userAuthen  =  gson.fromJson(result.toString(), UserAuthen.class);
+                return userAuthen;
+            } else {
+                Log.i("Request Status", "This is failure response status from server: " + responseCode);
+                return null ;
+
+            }
+
         }
+        @Override
+        protected void onPostExecute(UserAuthen userAuthen) {
+            super.onPostExecute(userAuthen);
+            if (userAuthen != null) {
+                if (pass.equals(userAuthen.getPassword())) {
+                    Intent intent = new Intent(mContext, Main2Activity.class);
+                    //intent.putExtra(UserAuthen.Column.USERNAME, userAuthen.getUsername());
+                    intent.putExtra(UserAuthen.Column.USERID, userAuthen.getUserid());
+                    startActivity(intent);
+                }else{
+                    String message = getString(R.string.login_error_message);
+                    Toast.makeText(mContext, message, Toast.LENGTH_SHORT).show();
+                }
+            }
+            else{
+                String message = getString(R.string.login_error_message);
+                Toast.makeText(mContext, message, Toast.LENGTH_SHORT).show();
+            }
+
+        }
+
     }
 }

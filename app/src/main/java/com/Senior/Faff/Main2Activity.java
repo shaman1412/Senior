@@ -311,7 +311,7 @@ public class Main2Activity extends AppCompatActivity {
             case R.id.UserProfile:
                 String a = id;
                 Intent intent = new Intent(context, ShowUserprofile.class);
-                intent.putExtra(UserProfile.Column.ID,User_id);
+                intent.putExtra(UserProfile.Column.UserID,User_id);
                 startActivity(intent);
                 break;
             case R.id.Favourite:
