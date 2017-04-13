@@ -55,7 +55,7 @@ public class PromotionShow extends AppCompatActivity {
                     path.add(txt);
                     Log.i(Tag, "ID is " + tmp.getId().toString() + "    Path: "+ txt);
                 }
-                Promotion pro = new Promotion(tmp.getTitle(), tmp.getStartDate(), tmp.getEndDate(), tmp.getPromotionDetail(), tmp.getLocation());
+                Promotion pro = new Promotion(tmp.getTitle(),"","", tmp.getStartDate(), tmp.getEndDate(), tmp.getPromotionDetail(), tmp.getLocation());
                 pro.setId(Integer.parseInt(tmp.getId()));
 
                 Intent i = new Intent(getApplicationContext(), PromotionView.class);

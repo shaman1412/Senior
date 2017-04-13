@@ -90,22 +90,36 @@ router.post('/adda', (req, res, next) => {
 // [END add_post]
 
 router.post(
-  '/add',
-  images.multer.single('image'),
-  images.sendUploadToGCS,
-  (req, res, next) => {
+  '/add',images.multer.array('image'),images.sendUploadToGCS, (req, res, next) => {
     let data = req.body;
-
-
 
     // Was an image uploaded? If so, we'll use its public URL
     // in cloud storage.
     if (req.file && req.file.cloudStoragePublicUrl) {
-
-
-      data.imageUrl = req.file.cloudStoragePublicUrl;
+		data.imageUrl = req.file.cloudStoragePublicUrl;
+		// console.log(data);
     }
-
+	
+	else if(req.files)
+	{
+		var ls=req.files;
+		data.imageUrl = "";
+		var n = ls.length;
+		var i = 0;
+		ls.forEach(function(item){
+			
+			if(!(++i == n))
+			{
+				data.imageUrl = data.imageUrl + item.cloudStoragePublicUrl+",";
+			}
+			else
+			{
+				data.imageUrl = data.imageUrl + item.cloudStoragePublicUrl;
+			}
+		});
+	}
+	
+	console.log(data.imageUrl);
 
     // Save the data to the database.
     getModel().create(data, (err, savedData) => {
@@ -115,8 +129,8 @@ router.post(
       }
       res.redirect(`${req.baseUrl}/${savedData.id}`);
     });
-  }
-);
+	
+  });
 /**
  * GET /books/:id/edit
  *

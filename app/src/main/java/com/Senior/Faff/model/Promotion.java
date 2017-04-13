@@ -14,12 +14,13 @@ public class Promotion {
 
     public class Column {
         public static final String ID = BaseColumns._ID;
-        public static final String Title = "Title";
-        public static final String StartDate = "StartDate";
-        public static final String EndDate = "EndDate";
-        public static final String PromotionDetail = "PromotionDetail";
-        public static final String Location = "Location";
-        public static final String Type = "Type";
+        public static final String Title = "promotionname";
+        public static final String Picture = "promotionpictureurl";
+        public static final String Type = "promotiontype";
+        public static final String StartDate = "promotionstartdate";
+        public static final String EndDate = "promotionenddate";
+        public static final String PromotionDetail = "promotiondetail";
+        public static final String Location = "promotionlocation";
     }
 
     private int id;
@@ -29,16 +30,18 @@ public class Promotion {
     private String promotionDetail;
     private String googleMapLink;
     private String type;
+    private String promotionpictureurl;
 
     // Constructor
 
-    public Promotion(String title, String startDate, String endDate, String promotionDetail, String googleMapLink, String type) {
+    public Promotion(String title, String promotionpictureurl, String type, String startDate, String endDate, String promotionDetail, String googleMapLink) {
         this.title = title;
         this.startDate = startDate;
         this.endDate = endDate;
         this.promotionDetail = promotionDetail;
         this.googleMapLink = googleMapLink;
         this.type = type;
+        this.promotionpictureurl = promotionpictureurl;
     }
 
 
@@ -98,6 +101,14 @@ public class Promotion {
 
     public void setType(String type) {
         this.type = type;
+    }
+
+    public String getPromotionpictureurl() {
+        return promotionpictureurl;
+    }
+
+    public void setPromotionpictureurl(String promotionpictureurl) {
+        this.promotionpictureurl = promotionpictureurl;
     }
 
 

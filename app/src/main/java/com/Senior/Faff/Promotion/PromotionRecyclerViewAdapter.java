@@ -3,6 +3,7 @@ package com.Senior.Faff.Promotion;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,6 +21,8 @@ import java.util.ArrayList;
  */
 
 public class PromotionRecyclerViewAdapter extends RecyclerView.Adapter<PromotionRecyclerViewAdapter.MyViewHolder>{
+
+    private static final String TAG = PromotionRecyclerViewAdapter.class.getSimpleName();
 
     private LayoutInflater inflater;
     private Context context;
@@ -41,8 +44,9 @@ public class PromotionRecyclerViewAdapter extends RecyclerView.Adapter<Promotion
 
     @Override
     public void onBindViewHolder(MyViewHolder holder, final int position) {
-        holder.imageView.setTag(position);
-        holder.imageView.setImageBitmap(bitmap.get(position));
+        ImageView img = holder.imageView;
+        img.setTag(position);
+        img.setImageBitmap(bitmap.get(position));
 
         cancel.setTag(position);
         cancel.setOnClickListener(new View.OnClickListener(){
@@ -55,6 +59,7 @@ public class PromotionRecyclerViewAdapter extends RecyclerView.Adapter<Promotion
                 notifyDataSetChanged();
             }
         });
+
     }
 
     @Override

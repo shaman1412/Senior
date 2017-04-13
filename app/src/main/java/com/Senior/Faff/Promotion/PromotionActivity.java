@@ -48,8 +48,6 @@ import java.util.ArrayList;
 
 public class PromotionActivity extends AppCompatActivity {
 
-
-
     public static final String TAG = PromotionActivity.class.getSimpleName();
 
     private Button addPromotion;
@@ -73,7 +71,6 @@ public class PromotionActivity extends AppCompatActivity {
 
     public static int image_count=0;                                    //number of images
 
-    DatabaseManager mManager;
     public static PromotionRecyclerViewAdapter adapter;
     private Spinner type;
     private ArrayList<String> type_list;
@@ -133,9 +130,6 @@ public class PromotionActivity extends AppCompatActivity {
             }
         });
 
-
-        mManager = new DatabaseManager(this);
-
         addPromotion = (Button) findViewById(R.id.addPromotion);
         Title = (EditText) findViewById(R.id.title);
         uploadPicture = (Button) findViewById(R.id.titlePicture);
@@ -177,8 +171,8 @@ public class PromotionActivity extends AppCompatActivity {
                 String promotionDetail = PromotionDetail.getText().toString();
                 String location = Location.getText().toString();
 
-                Promotion promotion = new Promotion(title, startDate, endDate, promotionDetail,location, type_check);
-                new AddPromotion(imgByte).execute(promotion);
+                Promotion promotion = new Promotion(title, "", type_check,startDate, endDate, promotionDetail,location);
+                new AddPromotion(bmap, imgByte, image_count).execute(promotion);
                 bmap.clear();
                 imgPath.clear();
                 imgByte.clear();
@@ -236,30 +230,45 @@ public class PromotionActivity extends AppCompatActivity {
 
     private class AddPromotion extends AsyncTask<Promotion,String,Promotion>{
 
+        private ArrayList<Bitmap> bmap = new ArrayList<>();
         private ArrayList<byte[]> imgByte = new ArrayList<>();
+        int img_count = 0;
+
         int responseCode;
         HttpURLConnection connection;
 
-
-        public AddPromotion(ArrayList<byte[]> imgByte) {
+        public AddPromotion(ArrayList<Bitmap> bmap, ArrayList<byte[]> imgByte, int img_count) {
+            this.bmap = bmap;
             this.imgByte = imgByte;
+            this.img_count = img_count;
         }
 
         @Override
         protected Promotion doInBackground(Promotion... params) {
-
             try {
 
                 JSONObject para = new JSONObject();
                 para.put(Promotion.Column.ID, params[0].getId());
                 para.put(Promotion.Column.Title, params[0].getTitle());
+                if(image_count>0)
+                {
+                    para.put(Promotion.Column.Picture, params[0].getPromotionpictureurl());
+                }
+                else
+                {
+                    para.put(Promotion.Column.Picture, "txt");
+                }
                 para.put(Promotion.Column.Type, params[0].getType());
                 para.put(Promotion.Column.StartDate, params[0].getStartDate());
                 para.put(Promotion.Column.EndDate, params[0].getEndDate());
                 para.put(Promotion.Column.PromotionDetail, params[0].getPromotionDetail());
                 para.put(Promotion.Column.Location, params[0].getGoogleMapLink());
 
+//                Log.i(TAG,"\n\nType is :   "+Promotion.Column.Type+"   :   "+params[0].getType());
+
                 URL url = new URL("https://faff-1489402013619.appspot.com/promotion_list/new_promotion");
+                //URL url = new URL("http://localhost:8080/promotion_list/new_promotion");
+
                 connection = (HttpURLConnection)url.openConnection();
                 connection.setRequestMethod("POST");
                 connection.setDoOutput(true);
@@ -291,13 +300,14 @@ public class PromotionActivity extends AppCompatActivity {
 
         @Override
         protected void onPostExecute(Promotion promotion) {
-            int proID = promotion.getId();
+            int proID = 1;
             if(imgByte.size()!=0)
             {
                 for (byte[] b:imgByte) {
                     PromotionPicture pro_pic = new PromotionPicture(proID,b);
 
                     //add picture to googleCloud
+
 //                    long rowID = mManager.addPromotionPicture(pro_pic);
 //                    if(rowID == -1)
 //                    {
@@ -307,6 +317,7 @@ public class PromotionActivity extends AppCompatActivity {
 //                    {
 //                        Log.i(TAG,"add pro_pic " + proID + " success");
 //                    }
+
                     //add picture to googleCloud
                 }
             }
@@ -318,7 +329,7 @@ public class PromotionActivity extends AppCompatActivity {
                 byte[] b = ostmp.toByteArray();
                 PromotionPicture pro_pic = new PromotionPicture(proID,b);
 
-                long rowID = mManager.addPromotionPicture(pro_pic);
+                //long rowID = mManager.addPromotionPicture(pro_pic);
 
             }
 
@@ -335,9 +346,7 @@ public class PromotionActivity extends AppCompatActivity {
             //add promotion
 
             if(promotion != null){
-                Intent intent = new Intent(PromotionActivity.this, Main2Activity.class);
-                intent.putExtra(UserProfile.Column.ID,promotion.getId());
-                startActivity(intent);
+                finish();
                 Toast.makeText(mContext,type_check,Toast.LENGTH_LONG).show();
             }
             else{
