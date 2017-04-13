@@ -31,6 +31,7 @@ app.use('/user',require('./user/user_api'));
 app.use('/login',require('./user/login_api'));
 app.use('/res_profile',require('./restaurant/res_profile_api'));
 app.use('/res_list',require('./restaurant/res_list_api'));
+app.use('/promotion_list',require('./promotion/promotion_api'));
 
 
 // Redirect root to /books
