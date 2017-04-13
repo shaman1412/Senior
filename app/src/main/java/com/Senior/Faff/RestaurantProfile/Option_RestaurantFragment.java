@@ -13,6 +13,8 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.Senior.Faff.R;
+import com.Senior.Faff.UserProfile.ShowUserprofile;
+import com.Senior.Faff.model.UserProfile;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -54,7 +56,7 @@ public class Option_RestaurantFragment extends Fragment {
                 edit.setVisibility(View.GONE);
                 show.setVisibility(View.GONE);*/
                 Intent  intent  = new Intent(getActivity(),Add_RestaurantProfile.class);
-                intent.putExtra("userid",id);
+                intent.putExtra(UserProfile.Column.UserID,id);
                 startActivity(intent);
 
             }
@@ -63,26 +65,27 @@ public class Option_RestaurantFragment extends Fragment {
         edit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Edit_RestaurantFragment edit_fragment = new Edit_RestaurantFragment();
+               /* Edit_RestaurantFragment edit_fragment = new Edit_RestaurantFragment();
                 FragmentManager fragmentManager_edit = getFragmentManager();
                 fragmentManager_edit.beginTransaction().replace(R.id.frame,edit_fragment).commit();
                 add.setVisibility(view.GONE);
                 edit.setVisibility(view.GONE);
-                show.setVisibility(view.GONE);
+                show.setVisibility(view.GONE);*/
             }
         });
         show.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view){
-                Bundle bundle = new Bundle();
+/*                Bundle bundle = new Bundle();
                 bundle.putString("message",id);
                 Show_RestaurantFragment show_fragement = new Show_RestaurantFragment();
                 show_fragement.setArguments(bundle);
                 FragmentManager fragmentManager_show = getFragmentManager();
-                fragmentManager_show.beginTransaction().replace(R.id.frame,show_fragement).commit();
-                add.setVisibility(view.GONE);
-                edit.setVisibility(view.GONE);
-                show.setVisibility(view.GONE);
+                fragmentManager_show.beginTransaction().replace(R.id.frame,show_fragement).commit();*/
+                Intent  intent  = new Intent(getActivity(),Show_RestaurantProfile.class);
+                intent.putExtra(UserProfile.Column.UserID,id);
+                startActivity(intent);
+
             }
         });
 

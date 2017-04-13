@@ -93,9 +93,9 @@ public class Add_RestaurantFragment extends Fragment {
         addre.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Restaurant restaurant = new Restaurant(name.getText().toString(),picture.getText().toString(),location.getText().toString(),detail.getText().toString(),0,user_id,type_food);
+                Restaurant restaurant = new Restaurant(name.getText().toString(),picture.getText().toString(),location.getText().toString(),detail.getText().toString(),"0",user_id,"type_food");
                 Restaurant_manager manager = new Restaurant_manager(getActivity());
-               long result  = manager.AddRestaurant(restaurant);
+   /*            long result  = manager.AddRestaurant(restaurant);
                 if(result == -1){
                     Toast.makeText(getActivity(), "Fail", Toast.LENGTH_SHORT).show();
                 }
@@ -108,7 +108,7 @@ public class Add_RestaurantFragment extends Fragment {
                             .replace(R.id.flContent,fragment_home)
                             .commit();
 
-                }
+                }*/
 
             }
         });

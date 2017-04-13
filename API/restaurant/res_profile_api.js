@@ -26,10 +26,12 @@ router.get('/:resid', (req, res, next) => {
 router.post('/create', (req,res,next) => {
   const json = req.body;
   const data  =  {
-    res_id : json.res_id,
+    resid : json.resid,
+    userid : json.userid,
     name : json.name,
     type_food :  json.type_food,
     description : json.description,
+    telephone : json.telephone,
     period : json.period,
     address : json.address,
     location :  json.location,

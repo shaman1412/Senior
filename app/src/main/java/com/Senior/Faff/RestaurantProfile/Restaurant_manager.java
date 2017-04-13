@@ -28,7 +28,7 @@ public class Restaurant_manager extends SQLiteOpenHelper {
     public void onUpgrade(SQLiteDatabase sqLiteDatabase, int i, int i1) {
 
     }
-    public long  AddRestaurant(Restaurant restaurant){
+/*    public long  AddRestaurant(Restaurant restaurant){
         mDatabase = getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put(Restaurant.Column.RestaurantName,restaurant.getRestaurantName());
@@ -42,8 +42,8 @@ public class Restaurant_manager extends SQLiteOpenHelper {
 
         mDatabase.close();
     return result;
-    }
-    public Restaurant showRestaurant(String user_id,String res_id){
+    }*/
+/*    public Restaurant showRestaurant(String user_id,String res_id){
         mDatabase = getReadableDatabase();
 
         Cursor cursor = mDatabase.query(Restaurant.TABLE,
@@ -68,8 +68,8 @@ public class Restaurant_manager extends SQLiteOpenHelper {
         mDatabase.close();
 
         return model;
-    }
-    public ArrayList<Restaurant> showAllRestaurant(){
+    }*/
+  /*  public ArrayList<Restaurant> showAllRestaurant(){
         mDatabase = getReadableDatabase();
 
         Cursor cursor = mDatabase.query(Restaurant.TABLE,
@@ -101,6 +101,6 @@ public class Restaurant_manager extends SQLiteOpenHelper {
         mDatabase.close();
 
         return list;
-    }
+    }*/
 
 }

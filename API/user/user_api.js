@@ -71,9 +71,9 @@ router.put('/:userid', (req, res, next) => {
 		name: json.name,
 		address: json.address,
 		telephone: json.telephone,
-		gender: json.gender,
+
     favourite_type : json.favourite_type,
-		age: json.age
+		
 	}	
   getModel().update(req.params.userid, user, (err, entity) => {
     if (err) {

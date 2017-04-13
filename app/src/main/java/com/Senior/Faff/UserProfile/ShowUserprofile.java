@@ -54,6 +54,7 @@ public class ShowUserprofile extends AppCompatActivity {
     private RecyclerView mRecyclerView;
     private List_typeNodel list_adapter;
     private FloatingActionButton fab;
+
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -92,7 +93,7 @@ public class ShowUserprofile extends AppCompatActivity {
 
         final NestedScrollView childScroll = (NestedScrollView) findViewById(R.id.scroll);
         if(userid != null){
-            new getData().execute(userid);
+           new getData().execute(userid);
         }
         fab.setOnClickListener(new View.OnClickListener() {
             @Override

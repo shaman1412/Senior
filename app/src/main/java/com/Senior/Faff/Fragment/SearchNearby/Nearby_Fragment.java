@@ -190,7 +190,7 @@ public class Nearby_Fragment extends Fragment implements GoogleApiClient.OnConne
     public void onLocationChanged(Location location) {
 
     }
-    public ArrayList<Restaurant> calculatedistance(int de_distance,int[] typeID,ArrayList<Restaurant> listRes){
+    public ArrayList<Restaurant> calculatedistance(int de_distance,ArrayList<String> typeID,ArrayList<Restaurant> listRes){
         int distance;
         float latitude,longtitude;
         mLastLocation  = new Location("Target");
@@ -206,8 +206,8 @@ public class Nearby_Fragment extends Fragment implements GoogleApiClient.OnConne
             target.setLongitude(longtitude);
             distance  =  (int)mLastLocation.distanceTo(target);
             if(distance <= de_distance ){
-                for(int j =0; j<typeID.length;j++) {
-                    if(listRes.get(i).getTypeID() == typeID[j] )
+                for(int j =0; j<typeID.size();j++) {
+                    if(listRes.get(i).getTypefood() == typeID.get(j) )
                     res.add(listRes.get(i));
                 }
             }
@@ -216,9 +216,14 @@ public class Nearby_Fragment extends Fragment implements GoogleApiClient.OnConne
         return res;
     }
     public void showlist(ListView listview,ArrayList<Restaurant> re_list,int[] resId){
-        int[] h = {1,2};
+        String h = "1,2";
+        ArrayList<String> type_list = new ArrayList<>();
+        String[] sp = h.split(",");
+        for(int i = 0; i<sp.length ; i++){
+            type_list.add(sp[i]);
+        }
         Restaurant_manager res_manager = new Restaurant_manager(mcontext);
-        re_list =  calculatedistance(900 ,h,res_manager.showAllRestaurant());
+      //  re_list =  calculatedistance(900 ,type_list,res_manager.showAllRestaurant());
         listview.setAdapter( new Customlistview_addvice_adapter(getContext(),0,re_list,resId));
         listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> arg0, View view, int position, long id) {
