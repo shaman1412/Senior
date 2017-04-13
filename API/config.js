@@ -24,7 +24,9 @@ nconf
   .argv()
   // 2. Environment variables
   .env([
+	'CLOUD_BUCKET',
     'DATA_BACKEND',
+	'DATA_BACKEND1',
     'GCLOUD_PROJECT',
     'MONGO_URL',
     'MONGO_COLLECTION',
@@ -39,11 +41,14 @@ nconf
   .file({ file: path.join(__dirname, 'config.json') })
   // 4. Defaults
   .defaults({
+	// Typically you will create a bucket with the same name as your project ID.
+    CLOUD_BUCKET: 'promotion_picture',
     // dataBackend can be 'datastore', 'cloudsql', or 'mongodb'. Be sure to
     // configure the appropriate settings for each storage engine below.
     // If you are unsure, use datastore as it requires no additional
     // configuration.
     DATA_BACKEND: 'cloudsql',
+	DATA_BACKEND1: 'datastore',
 
     // This is the id of your project in the Google Cloud Developers Console.
     GCLOUD_PROJECT: 'faff-1489402013619',
@@ -66,6 +71,7 @@ nconf
 
 // Check for required settings
 checkConfig('GCLOUD_PROJECT');
+checkConfig('CLOUD_BUCKET');
 
 if (nconf.get('DATA_BACKEND') === 'cloudsql') {
   checkConfig('MYSQL_USER');

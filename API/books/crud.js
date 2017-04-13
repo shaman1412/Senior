@@ -16,9 +16,14 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const config = require('../config');
+const images = require('../lib/images');
 
 function getModel () {
   return require(`./model-${config.get('DATA_BACKEND')}`);
+}
+
+function getModel1 () {
+  return require(`./model-${config.get('DATA_BACKEND1')}`);
 }
 
 const router = express.Router();
@@ -70,7 +75,7 @@ router.get('/add', (req, res) => {
  * Create a book.
  */
 // [START add_post]
-router.post('/add', (req, res, next) => {
+router.post('/adda', (req, res, next) => {
   const data = req.body;
 
   // Save the data to the database.
@@ -84,6 +89,34 @@ router.post('/add', (req, res, next) => {
 });
 // [END add_post]
 
+router.post(
+  '/add',
+  images.multer.single('image'),
+  images.sendUploadToGCS,
+  (req, res, next) => {
+    let data = req.body;
+
+
+
+    // Was an image uploaded? If so, we'll use its public URL
+    // in cloud storage.
+    if (req.file && req.file.cloudStoragePublicUrl) {
+
+
+      data.imageUrl = req.file.cloudStoragePublicUrl;
+    }
+
+
+    // Save the data to the database.
+    getModel().create(data, (err, savedData) => {
+      if (err) {
+        next(err);
+        return;
+      }
+      res.redirect(`${req.baseUrl}/${savedData.id}`);
+    });
+  }
+);
 /**
  * GET /books/:id/edit
  *
