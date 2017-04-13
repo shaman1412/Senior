@@ -89,8 +89,6 @@ public class InsertUserProfile extends AppCompatActivity {
         }
 
 
-
-
         type.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener(){
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -105,7 +103,7 @@ public class InsertUserProfile extends AppCompatActivity {
                 if(same == false && first == false) {
                     type_list.add(text);
                     list_adapter = new List_type(type_list, mcontext);
-                     LinearLayoutManager mLayoutManager  = new LinearLayoutManager(mcontext);
+                    LinearLayoutManager mLayoutManager  = new LinearLayoutManager(mcontext);
                     mLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
                     mRecyclerView = (RecyclerView) findViewById(R.id.list_show);
                     mRecyclerView.setLayoutManager(mLayoutManager);
@@ -188,7 +186,7 @@ public class InsertUserProfile extends AppCompatActivity {
                 return super.onOptionsItemSelected(item);
         }
     }
-    private class addprofile extends AsyncTask<UserProfile ,String , UserProfile >{
+    private class addprofile extends AsyncTask<UserProfile ,String , UserProfile>{
 
         int responseCode;
         HttpURLConnection connection;

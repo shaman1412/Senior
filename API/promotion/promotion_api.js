@@ -48,7 +48,8 @@ router.post('/new_promotion',(req, res, next) => {
 		promotionstartdate: json.promotionstartdate,
 		promotionenddate: json.promotionenddate,
 		promotiondetail: json.promotiondetail,
-		promotionlocation: json.promotionlocation
+		promotionlocation: json.promotionlocation,
+		promotiontype:json.promotiontype
 	}
 	getModel().create(promotion,(err,entities) => {
 		if(err){
@@ -57,7 +58,7 @@ router.post('/new_promotion',(req, res, next) => {
 		}
 		res.json(entities)
 	})
-})
+});
 
 router.put('/:promotionid', (req, res, next) => {
 	const json  = req.body;
@@ -67,7 +68,8 @@ router.put('/:promotionid', (req, res, next) => {
 		promotionstartdate: json.promotionstartdate,
 		promotionenddate: json.promotionenddate,
 		promotiondetail: json.promotiondetail,
-		promotionlocation: json.promotionlocation
+		promotionlocation: json.promotionlocation,
+		promotiontype:json.promotiontype
 	}	
   getModel().update(req.params.promotionid, promotion, (err, entity) => {
     if (err) {

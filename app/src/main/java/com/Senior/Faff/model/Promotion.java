@@ -6,6 +6,8 @@ package com.Senior.Faff.model;
 
 import android.provider.BaseColumns;
 
+import java.util.ArrayList;
+
 public class Promotion {
 
     public static final String TABLE = "promotion";
@@ -17,6 +19,7 @@ public class Promotion {
         public static final String EndDate = "EndDate";
         public static final String PromotionDetail = "PromotionDetail";
         public static final String Location = "Location";
+        public static final String Type = "Type";
     }
 
     private int id;
@@ -25,15 +28,19 @@ public class Promotion {
     private String endDate;
     private String promotionDetail;
     private String googleMapLink;
+    private String type;
 
     // Constructor
-    public Promotion(String title, String startDate, String endDate, String promotionDetail, String googleMapLink) {
+
+    public Promotion(String title, String startDate, String endDate, String promotionDetail, String googleMapLink, String type) {
         this.title = title;
         this.startDate = startDate;
         this.endDate = endDate;
         this.promotionDetail = promotionDetail;
         this.googleMapLink = googleMapLink;
+        this.type = type;
     }
+
 
     //region getter setter
 
@@ -84,6 +91,15 @@ public class Promotion {
     public void setGoogleMapLink(String googleMapLink) {
         this.googleMapLink = googleMapLink;
     }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
 
     //endregion
 }
