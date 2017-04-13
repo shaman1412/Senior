@@ -134,7 +134,7 @@ public class DatabaseManager extends SQLiteOpenHelper implements DatabaseManager
                 ReportList.Column.UserID
         );
 
-        String CREATE_TABLE_RESTERAUNT = String.format("create table if not exists %s (%s integer primary key autoincrement, %s text not null, %s text not null, %s text not null, %s text not null, %s integer not null, %s text not null, %s integer not null);",
+/*        String CREATE_TABLE_RESTERAUNT = String.format("create table if not exists %s (%s integer primary key autoincrement, %s text not null, %s text not null, %s text not null, %s text not null, %s integer not null, %s text not null, %s integer not null);",
                 Restaurant.TABLE,
                 Restaurant.Column.ID,
                 Restaurant.Column.RestaurantName,
@@ -144,7 +144,7 @@ public class DatabaseManager extends SQLiteOpenHelper implements DatabaseManager
                 Restaurant.Column.Score,
                 Restaurant.Column.UserID,
                 Restaurant.Column.TypeID
-        );
+        );*/
 
         String CREATE_TABLE_RESTERRAUNTLIST = String.format("create table if not exists %s (%s integer primary key autoincrement, %s integer not null, %s integer not null);",
                 RestaurantList.TABLE,
@@ -254,7 +254,7 @@ public class DatabaseManager extends SQLiteOpenHelper implements DatabaseManager
         db.execSQL(CREATE_TABLE_PROMOTIONLIST);
         db.execSQL(CREATE_TABLE_REPORT);
         db.execSQL(CREATE_TABLE_REPORTLIST);
-        db.execSQL(CREATE_TABLE_RESTERAUNT);
+      //  db.execSQL(CREATE_TABLE_RESTERAUNT);
         db.execSQL(CREATE_TABLE_RESTERRAUNTLIST);
         db.execSQL(CREATE_TABLE_REVIEW);
         db.execSQL(CREATE_TABLE_REVIEWLIST);

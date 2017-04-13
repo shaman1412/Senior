@@ -50,7 +50,7 @@ function create (data, cb) {
 function read (id, cb) {
   const connection = getConnection();
   connection.query(
-    'SELECT * FROM `restaurant_profile` WHERE `res_id` = ?', id, (err, results) => {
+    'SELECT * FROM `restaurant_profile` WHERE `resid` = ?', id, (err, results) => {
       if (err) {
         cb(err);
         return;
@@ -69,7 +69,7 @@ function read (id, cb) {
 function update (id, data, cb) {
   const connection = getConnection();
   connection.query(
-    'UPDATE `restaurant_profile` SET ? WHERE `res_id` = ?', [data, id], (err, results) => {
+    'UPDATE `restaurant_profile` SET ? WHERE `resid` = ?', [data, id], (err, results) => {
       if (err) {
         cb(err);
         return;
@@ -80,13 +80,13 @@ function update (id, data, cb) {
 }
 function _delete (id, cb) {
   const connection = getConnection();
-  connection.query('DELETE FROM `restaurant_profile` WHERE `res_id` = ?', id, cb);
+  connection.query('DELETE FROM `restaurant_profile` WHERE `resid` = ?', id, cb);
   connection.end();
 }
 
 function update_score(data, id, cb){
   const connection = getConnection();
-  connection.query('UPDATE `restaurant_profile` SET  ? WHERE `res_id` = ? ',[ data , id] , (err, results) =>{
+  connection.query('UPDATE `restaurant_profile` SET  ? WHERE `resid` = ? ',[ data , id] , (err, results) =>{
     if(err){
       cb(err);
       return;
@@ -98,7 +98,7 @@ function update_score(data, id, cb){
 
 function calculate_score(id, data , cb){
   const connection = getConnection();
-  connection.query('SELECT vote,score FROM  `restaurant_profile` WHERE `res_id` = ? ' , id , (err , results) =>{
+  connection.query('SELECT vote,score FROM  `restaurant_profile` WHERE `resid` = ? ' , id , (err , results) =>{
     if(err){
       cb(err);
       return;
@@ -157,17 +157,19 @@ function createSchema (config) {
       DEFAULT COLLATE 'utf8_general_ci';
     USE \`faff\`;
     CREATE TABLE IF NOT EXISTS \`faff\`.\`restaurant_profile\` (
-       \`res_id\` VARCHAR(255) NOT NULL,
+       \`resid\` VARCHAR(255) NOT NULL,
+        \`userid\` VARCHAR(255) NULL,
       \`name\` VARCHAR(255) NULL,
        \`type_food\` VARCHAR(255) NULL,
        \`description\` VARCHAR(255) NULL,
        \`period\` VARCHAR(255) NULL,
       \`address\` VARCHAR(255) NULL,
+      \`telephone\` VARCHAR(255) NULL,
       \`location\` VARCHAR(255) NULL,
       \`score\` Float NULL,
         \`vote\` Float NULL,
       \`create_time\` TIMESTAMP NULL,
-    PRIMARY KEY (\`res_id\`));`,
+    PRIMARY KEY (\`resid\`));`,
     (err) => {
       if (err) {
         throw err;

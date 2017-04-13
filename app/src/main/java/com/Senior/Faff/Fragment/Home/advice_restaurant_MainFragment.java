@@ -37,7 +37,7 @@ public class advice_restaurant_MainFragment extends Fragment {
         Restaurant_manager res_manager = new Restaurant_manager(mcontext);
         Restaurant model = new Restaurant();
         ArrayList<Restaurant> re_list = new ArrayList<>();
-        re_list = res_manager.showAllRestaurant();
+       // re_list = res_manager.showAllRestaurant();
 
         //re_list.get(1).getRestaurantName();
         String[] list = {"ร้านนำ้ ย่านสาทร","ครัวน้าอ้วน","Don Don tei"};

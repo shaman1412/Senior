@@ -55,7 +55,7 @@ public class Customlistview_addvice_adapter extends ArrayAdapter<Restaurant> {
 
 
         viewHolder.ResName.setText(res_name.get(position).getRestaurantName());
-        viewHolder.ResType.setText(changeTypeResID(res_name.get(position).getTypeID()));
+        viewHolder.ResType.setText(res_name.get(position).getTypefood());
         viewHolder.ResLo.setText(res_name.get(position).getLocation());
 
         return convertView;

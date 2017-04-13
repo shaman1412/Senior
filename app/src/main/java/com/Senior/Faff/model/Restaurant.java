@@ -6,39 +6,52 @@ package com.Senior.Faff.model;
 
 import android.provider.BaseColumns;
 
+import java.sql.Timestamp;
+
 public class Restaurant {
 
     public static final String TABLE = "restaurant";
 
     public class Column {
-        public static final String ID = BaseColumns._ID;
-        public static final String RestaurantName = "RestaurantName";
+        public static final String ResID = "resid";
+        public static final String RestaurantName = "name";
         public static final String RestaurantPicture = "RestaurantPicture";
-        public static final String Location = "Location";
-        public static final String RestaurantDetail = "RestaurantDetail";
+        public static final String TypeFood = "type_food";
+        public static final String Description = "description";
+        public static final String Period = "period";
+        public static final String Address = "address";
+        public static final String Location = "location";
+        public static final String Telephone = "telephone";
+        public static final String CreateTime = "create_time";
         public static final String Score = "Score";
-        public static final String UserID = "UserID";
-        public static final String TypeID = "TypeID";
+        public static final String UserID = "userid";
+
     }
 
-    private int id;
-    private String restaurantName;
+    private String resid;
+    private String name;
     private String restaurantPicture;
+    private String type_food;
+    private String description;
+    private String period;
+    private String address;
+    private String  telephone;
     private String location;
-    private String restaurantDetail;
+    private Timestamp create_time;
     private int score;
     private String userID;
-    private int typeID;
+
 
     // Constructor
-    public Restaurant(String restaurantName, String restaurantPicture, String location, String restaurantDetail, int score, String userID, int typeID) {
-        this.restaurantName = restaurantName;
-        this.restaurantPicture = restaurantPicture;
-        this.location = location;
-        this.restaurantDetail = restaurantDetail;
-        this.score = score;
+    public Restaurant(String restaurantName, String address, String description,String period, String telephone, String userID,String type_food) {
+        this.name = name;
+        this.address= address;
+        this.telephone = telephone;
+        this.description = description;
         this.userID = userID;
-        this.typeID = typeID;
+        this.type_food = type_food;
+        this.period = period;
+
     }
 
     public  Restaurant(){
@@ -47,20 +60,20 @@ public class Restaurant {
 
     //region getter setter
 
-    public int getId() {
-        return id;
+    public String getresId() {
+        return resid;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public void setresId(String resid) {
+        this.resid = resid;
     }
 
     public String getRestaurantName() {
-        return restaurantName;
+        return name;
     }
 
     public void setRestaurantName(String restaurantName) {
-        this.restaurantName = restaurantName;
+        this.name = restaurantName;
     }
 
     public String getRestaurantPicture() {
@@ -79,12 +92,12 @@ public class Restaurant {
         this.location = location;
     }
 
-    public String getRestaurantDetail() {
-        return restaurantDetail;
+    public String getDescription() {
+        return description;
     }
 
-    public void setRestaurantDetail(String restaurantDetail) {
-        this.restaurantDetail = restaurantDetail;
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     public int getScore() {
@@ -103,13 +116,36 @@ public class Restaurant {
         this.userID = userID;
     }
 
-    public int getTypeID() {
-        return typeID;
+    public String getTypefood() {
+        return type_food;
     }
 
-    public void setTypeID(int typeID) {
-        this.typeID = typeID;
+    public void setTypefood(String type_food) {
+        this.type_food = type_food;
     }
 
-    //endregion
+    public  void setCreate_time(Timestamp create_time){ this.create_time = create_time; }
+
+    public  Timestamp getCreate_time(){ return create_time; }
+
+    public void setAddress(String address){
+        this.address = address;
+    }
+
+    public String getAddress(){ return  address;}
+
+    public void setTelephone(String telephone){
+        this.telephone = telephone;
+    }
+
+    public String getTelephone(){ return  telephone;}
+
+    public void setPeriod(String period){
+        this.period = period;
+    }
+
+    public String getPeriod(){ return  period;}
+
+
+
 }
