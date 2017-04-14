@@ -4,24 +4,34 @@ import android.content.Context;
 import android.content.ContextWrapper;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.util.Log;
 import android.widget.ImageView;
 
 import org.json.JSONObject;
 
+import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
+import java.io.DataOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.net.URLEncoder;
+import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.Map;
 
 /**
  * Created by Not_Today on 3/17/2017.
  */
 
 public class Helper {
+    private static final String TAG = Helper.class.getSimpleName();
 
     public byte[] ConvertBitmapToArrayOfByte(Bitmap bmp) {
         ByteArrayOutputStream stream = new ByteArrayOutputStream();
@@ -65,28 +75,126 @@ public class Helper {
         return b;
     }
 
-    public String getPostDataString(JSONObject params) throws Exception {
+    public String multipartRequest(String urlTo, Map<String, String> parmas, ArrayList<String> imgPath, String filefield, String fileMimeType) throws Exception {
+        HttpURLConnection connection = null;
+        DataOutputStream outputStream = null;
+        FileInputStream fileInputStream = null;
+        InputStream inputStream = null;
 
-        StringBuilder result = new StringBuilder();
-        boolean first = true;
 
-        Iterator<String> itr = params.keys();
+        String twoHyphens = "--";
+        String boundary = "*****" + Long.toString(System.currentTimeMillis()) + "*****";
+        String lineEnd = "\r\n";
 
-        while (itr.hasNext()) {
+        String result = "";
 
-            String key = itr.next();
-            Object value = params.get(key);
+        int bytesRead, bytesAvailable, bufferSize;
+        byte[] buffer;
+        int maxBufferSize = 1 * 1024 * 1024;
 
-            if (first)
-                first = false;
-            else
-                result.append("&");
+        if (imgPath.size() > 0) {
+            try {
+                URL url = new URL(urlTo);
+                connection = (HttpURLConnection) url.openConnection();
 
-            result.append(URLEncoder.encode(key, "UTF-8"));
-            result.append("=");
-            result.append(URLEncoder.encode(value.toString(), "UTF-8"));
+                connection.setDoInput(true);
+                connection.setDoOutput(true);
+                connection.setUseCaches(false);
 
+                connection.setRequestMethod("POST");
+                connection.setRequestProperty("Connection", "Keep-Alive");
+                connection.setRequestProperty("User-Agent", "Android Multipart HTTP Client 1.0");
+                connection.setRequestProperty("Content-Type", "multipart/form-data; boundary=" + boundary);
+
+                outputStream = new DataOutputStream(connection.getOutputStream());
+
+                for (int i=0; i < imgPath.size(); i++) {
+                    String filepath = imgPath.get(i);
+                    Log.i(TAG, "  i : "+i+"  filename : "+filepath);
+                    String[] q = filepath.split("/");
+                    int idx = q.length - 1;
+
+                    File file = new File(filepath);
+                    fileInputStream = new FileInputStream(file);
+
+                    outputStream.writeBytes(twoHyphens + boundary + lineEnd);
+                    outputStream.writeBytes("Content-Disposition: form-data; name=\"" + filefield + "\"; filename=\"" + q[idx] + "\"" + lineEnd);
+                    outputStream.writeBytes("Content-Type: " + fileMimeType + lineEnd);
+                    outputStream.writeBytes("Content-Transfer-Encoding: binary" + lineEnd);
+
+                    outputStream.writeBytes(lineEnd);
+
+                    bytesAvailable = fileInputStream.available();
+                    bufferSize = Math.min(bytesAvailable, maxBufferSize);
+                    buffer = new byte[bufferSize];
+
+                    bytesRead = fileInputStream.read(buffer, 0, bufferSize);
+                    while (bytesRead > 0) {
+                        outputStream.write(buffer, 0, bufferSize);
+                        bytesAvailable = fileInputStream.available();
+                        bufferSize = Math.min(bytesAvailable, maxBufferSize);
+                        bytesRead = fileInputStream.read(buffer, 0, bufferSize);
+                    }
+
+                    outputStream.writeBytes(lineEnd);
+                    fileInputStream.close();
+                }
+
+                // Upload POST Data
+                Iterator<String> keys = parmas.keySet().iterator();
+                while (keys.hasNext()) {
+                    String key = keys.next();
+                    String value = parmas.get(key);
+
+                    outputStream.writeBytes(twoHyphens + boundary + lineEnd);
+                    outputStream.writeBytes("Content-Disposition: form-data; name=\"" + key + "\"" + lineEnd);
+                    outputStream.writeBytes("Content-Type: text/plain" + lineEnd);
+                    outputStream.writeBytes(lineEnd);
+                    outputStream.writeBytes(value);
+                    outputStream.writeBytes(lineEnd);
+                }
+
+                outputStream.writeBytes(twoHyphens + boundary + twoHyphens + lineEnd);
+
+                if (200 != connection.getResponseCode()) {
+                    throw new Exception("Failed to upload code:" + connection.getResponseCode() + " " + connection.getResponseMessage());
+                }
+
+
+                inputStream = connection.getInputStream();
+                result = this.convertStreamToString(inputStream);
+                inputStream.close();
+                outputStream.flush();
+                outputStream.close();
+
+                return result;
+            } catch (Exception e) {
+                throw new Exception(e);
+            }
+        } else {
+            return "Wrong Size";
         }
-        return result.toString();
     }
+
+    private String convertStreamToString(InputStream is) {
+        BufferedReader reader = new BufferedReader(new InputStreamReader(is));
+        StringBuilder sb = new StringBuilder();
+
+        String line = null;
+        try {
+            while ((line = reader.readLine()) != null) {
+                sb.append(line);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                is.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        return sb.toString();
+    }
+
 }

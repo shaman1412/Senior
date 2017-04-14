@@ -38,8 +38,6 @@ function list (limit, token, cb) {
 
 function create (data, cb) {
   const connection = getConnection();
-  console.log("console.log(data) : " + data);
-  console.log("test in method   :   "+JSON.stringify(data));
   connection.query('INSERT INTO `'+table_name+'` SET ?', data, (err, res) => {
     if (err) {
       cb(err);

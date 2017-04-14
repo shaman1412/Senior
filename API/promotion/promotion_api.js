@@ -13,6 +13,11 @@ router.use(bodyParser.urlencoded({
     extended: true
 }));
 
+router.use((req, res, next) => {
+  res.set('Content-Type', 'text/html');
+  next();
+});
+
 function getModel () {
   return require(`./promotion_method`);
 }
@@ -49,17 +54,17 @@ router.post('/new_promotion',images.multer.array('image'),images.sendUploadToGCS
 	else if(req.files)
 	{
 		var ls=req.files;
-		data.imageUrl = "";
+		json.promotionpictureurl = "";
 		var n = ls.length;
 		var i = 0;
 		ls.forEach(function(item){
 			if(!(++i == n))
 			{
-				data.imageUrl = data.imageUrl + item.cloudStoragePublicUrl+",";
+				json.promotionpictureurl = json.promotionpictureurl + item.cloudStoragePublicUrl+",";
 			}
 			else
 			{
-				data.imageUrl = data.imageUrl + item.cloudStoragePublicUrl;
+				json.promotionpictureurl = json.promotionpictureurl + item.cloudStoragePublicUrl;
 			}
 		});
 	}
@@ -72,18 +77,18 @@ router.post('/new_promotion',images.multer.array('image'),images.sendUploadToGCS
 		promotiondetail: json.promotiondetail,
 		promotionlocation: json.promotionlocation
 	}
+	console.log("\n\n");
+	console.log(promotion.promotionpictureurl);
 	
-	if (req.file && req.file.cloudStoragePublicUrl) {
-      json.promotionpictureurl = req.file.cloudStoragePublicUrl;
-    }
 	
 	getModel().create(promotion,(err,entities) => {
 		if(err){
-			next(err);
-			return;
+			return next(err);
 		}
-		res.json(entities)
-	})
+		//res.json(entities);
+	});	
+	
+	return res.send(promotion.promotionpictureurl);
 });
 
 router.put('/:promotionid', (req, res, next) => {

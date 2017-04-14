@@ -47,7 +47,7 @@ function sendUploadToGCS (req, res, next) {
   }
 
   var tmp = req.files;
-  console.log(tmp);
+  //console.log(tmp);
   
   tmp.forEach(function (item)
   {
