@@ -4,6 +4,7 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const config = require('../config');
+const images = require('../lib/images');
 
 const router = express.Router();
 
@@ -15,6 +16,7 @@ router.use(bodyParser.urlencoded({
 function getModel () {
   return require(`./promotion_method`);
 }
+
 
 router.get('/', (req, res, next) => {
   getModel().list(10, req.query.pageToken, (err, entities, cursor) => {
@@ -39,17 +41,42 @@ router.get('/:promotionid', (req, res, next) => {
   });
 });
 
-
-router.post('/new_promotion',(req, res, next) => {
+router.post('/new_promotion',images.multer.array('image'),images.sendUploadToGCS,(req, res, next) => {
 	const json  = req.body;
-	console.log(json);
+	if (req.file && req.file.cloudStoragePublicUrl) {
+		json.promotionpictureurl = req.file.cloudStoragePublicUrl;
+    }
+	else if(req.files)
+	{
+		var ls=req.files;
+		data.imageUrl = "";
+		var n = ls.length;
+		var i = 0;
+		ls.forEach(function(item){
+			if(!(++i == n))
+			{
+				data.imageUrl = data.imageUrl + item.cloudStoragePublicUrl+",";
+			}
+			else
+			{
+				data.imageUrl = data.imageUrl + item.cloudStoragePublicUrl;
+			}
+		});
+	}
 	const promotion = {
 		promotionname: json.promotionname,
+		promotionpictureurl: json.promotionpictureurl,
+		promotiontype: json.promotiontype,
 		promotionstartdate: json.promotionstartdate,
 		promotionenddate: json.promotionenddate,
 		promotiondetail: json.promotiondetail,
 		promotionlocation: json.promotionlocation
 	}
+	
+	if (req.file && req.file.cloudStoragePublicUrl) {
+      json.promotionpictureurl = req.file.cloudStoragePublicUrl;
+    }
+	
 	getModel().create(promotion,(err,entities) => {
 		if(err){
 			next(err);
@@ -57,13 +84,15 @@ router.post('/new_promotion',(req, res, next) => {
 		}
 		res.json(entities)
 	})
-})
+});
 
 router.put('/:promotionid', (req, res, next) => {
 	const json  = req.body;
 	console.log(json);
 	const promotion = {		
 		promotionname: json.promotionname,
+		promotionpictureurl: json.promotionpictureurl,
+		promotiontype: json.promotiontype,
 		promotionstartdate: json.promotionstartdate,
 		promotionenddate: json.promotionenddate,
 		promotiondetail: json.promotiondetail,

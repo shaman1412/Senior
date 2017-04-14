@@ -21,6 +21,10 @@ function getModel () {
   return require(`./model-${config.get('DATA_BACKEND')}`);
 }
 
+function getModel1 () {
+  return require(`./model-${config.get('DATA_BACKEND1')}`);
+}
+
 const router = express.Router();
 
 // Automatically parse request body as JSON

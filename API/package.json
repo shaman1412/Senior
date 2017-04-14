@@ -11,7 +11,8 @@
     "test": "mocha test/index.js -t 30000",
     "init-cloudsql": "node books/model-cloudsql.js",
     "init-userlogin" : "node user/login_method.js",
-    "init-res_profile" : "node restaurant/res_prfile_method.js"
+    "init-res_profile" : "node restaurant/res_prfile_method.js",
+	"init-promotion" : "node promotion/promotion_method.js"
   },
   "author": "Google Inc.",
   "contributors": [
@@ -42,11 +43,13 @@
   "dependencies": {
     "body-parser": "^1.15.2",
     "express": "^4.14.0",
+	"@google-cloud/storage": "^0.1.1",
     "@google-cloud/datastore": "^0.1.1",
     "jade": "^1.11.0",
     "kerberos": "^0.0.21",
     "lodash": "^4.14.2",
     "mongodb": "^2.2.5",
+	"multer": "^1.2.0",
     "mysql": "^2.11.1",
     "nconf": "^0.8.4",
     "prompt": "^1.0.0"

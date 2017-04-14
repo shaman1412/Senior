@@ -126,6 +126,8 @@ function createSchema (config) {
     CREATE TABLE IF NOT EXISTS \`faff\`.\``+table_name+`\`(
       \`promotionid\` INT UNSIGNED NOT NULL AUTO_INCREMENT,
       \`promotionname\` VARCHAR(255) NULL,
+	  \`promotionpictureurl\` TEXT NULL,
+	  \`promotiontype\` VARCHAR(255) NULL,
       \`promotionstartdate\`TEXT NULL,
       \`promotionenddate\` VARCHAR(255) NULL,
       \`promotiondetail\` VARCHAR(255) NULL,
