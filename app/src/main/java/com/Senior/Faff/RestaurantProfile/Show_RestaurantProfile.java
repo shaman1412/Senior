@@ -2,11 +2,13 @@ package com.Senior.Faff.RestaurantProfile;
 
 import android.Manifest;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationManager;
 import android.os.AsyncTask;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -15,6 +17,7 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -54,10 +57,11 @@ public class Show_RestaurantProfile extends AppCompatActivity implements OnMapRe
     private ArrayList<String> favourite_type;
     private List_typeNodel list_adapter;
     private Context mcontext;
-    private String userid;
+    private String userid,resid;
     private Toolbar toolbar;
     private RatingBar rate;
     private TextView text_rate;
+    private FloatingActionButton fab;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -65,7 +69,7 @@ public class Show_RestaurantProfile extends AppCompatActivity implements OnMapRe
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
-
+        mcontext = this;
         name = (TextView)findViewById(R.id.name);
         telephone = (TextView)findViewById(R.id.telephone);
         period = (TextView)findViewById(R.id.period);
@@ -73,17 +77,31 @@ public class Show_RestaurantProfile extends AppCompatActivity implements OnMapRe
         address = (TextView)findViewById(R.id.address);
         type_food = (TextView)findViewById(R.id.address);
         mRecyclerView = (RecyclerView)findViewById(R.id.mRecyclerView);
-        Bundle args = getIntent().getExtras();
-        userid = args.getString(UserProfile.Column.UserID,null);
+
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         rate = (RatingBar)findViewById(R.id.rate);
         text_rate = (TextView)findViewById(R.id.text_rate);
+        fab = (FloatingActionButton)findViewById(R.id.fab);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
-        if(userid != null){
-            new getData().execute("a1412pee");
+        Bundle args = getIntent().getExtras();
+        if(args != null) {
+            userid = args.getString(Restaurant.Column.UserID, null);
+            resid = args.getString(Restaurant.Column.ResID,null);
         }
+        if(userid != null){
+            new getData().execute(resid);
+        }
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(Show_RestaurantProfile.this,Edit_RestaurantProfile.class);
+                intent.putExtra(Restaurant.Column.ResID,resid);
+                intent.putExtra(Restaurant.Column.UserID,userid);
+                startActivity(intent);
+            }
+        });
         rate.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
             public void onRatingChanged(RatingBar ratingBar, float rating,
                                         boolean fromUser) {
@@ -122,20 +140,20 @@ public class Show_RestaurantProfile extends AppCompatActivity implements OnMapRe
 
             location = locationManager.getLastKnownLocation(locationManager
                     .getBestProvider(criteria, false));
+            if(lola != null) {
+                String[] pos = lola.split(",");
+                myLocation = new LatLng(Double.parseDouble(pos[0]),
+                        Double.parseDouble(pos[0]));
+                mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(myLocation,
+                        11));
+                MarkerOptions markerOptions = new MarkerOptions();
+                markerOptions.position(myLocation);
+                markerOptions.title(res_name);
+                markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN));
+                mCurrLocationMarker = mMap.addMarker(markerOptions);
+                //    getlocation = location.getLatitude() + ","  + location.getLongitude();
 
-            String[] pos = lola.split(",");
-            myLocation = new LatLng(Double.parseDouble(pos[0]),
-                    Double.parseDouble(pos[0]));
-            mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(myLocation,
-                    11));
-            MarkerOptions markerOptions = new MarkerOptions();
-            markerOptions.position(myLocation);
-            markerOptions.title(res_name);
-            markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN));
-            mCurrLocationMarker = mMap.addMarker(markerOptions);
-        //    getlocation = location.getLatitude() + ","  + location.getLongitude();
-
-
+            }
         }
     }
     private class getData extends AsyncTask<String, String, Restaurant >{
@@ -190,7 +208,9 @@ public class Show_RestaurantProfile extends AppCompatActivity implements OnMapRe
                 rate.setRating(respro.getScore());
                 text_rate.setText(String.valueOf(respro.getScore()));
                 enableMyLocation(respro.getLocation(),respro.getRestaurantName());
-
+                userid = respro.getUserID();
+                resid =  respro.getresId();
+                setTitle(respro.getRestaurantName());
                 if(respro.getTypefood() != null){
                     String[] list = respro.getTypefood().split(",");
                     favourite_type = new ArrayList<String>();

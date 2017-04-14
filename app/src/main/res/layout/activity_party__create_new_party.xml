@@ -8,145 +8,179 @@
     android:orientation="vertical"
     tools:context="com.Senior.Faff.Fragment.Party.Party_CreateNewParty">
 
-    <android.support.design.widget.AppBarLayout
-        android:layout_height="wrap_content"
-        android:layout_width="match_parent">
-
-        <android.support.v7.widget.Toolbar
+    <include
+        layout="@layout/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+    <android.support.v4.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/ButtonUserProfile">
+            android:orientation="vertical"
+            android:gravity="center"
+            android:padding="20dp"
+            >
+
             <TextView
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:text="Profile"
-                android:gravity = "center"
-                android:id="@+id/toolbar_title"
-                android:textSize="30sp"/>
-        </android.support.v7.widget.Toolbar>
+                android:layout_height="wrap_content"
+                android:text="Profile Picture:"
+                android:textSize="15sp"
+                android:id="@+id/picture_txt"
+                android:textColor="#000000"
 
-    </android.support.design.widget.AppBarLayout>
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="0.4"
-        android:background="@color/TabUserProfile"
-        android:gravity="center"
-        android:orientation="vertical"
-        >
-
+                android:layout_marginBottom="5dp"/>
+            <android.support.v7.widget.LinearLayoutCompat
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="start"
+                >
+                <View
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:layout_marginRight="10dp"
+                    android:background="@drawable/examplepicture"
+                    ></View>
                 <Button
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="2"
-                    android:id="@+id/submit"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:id="@+id/picture"
+                    android:background="@drawable/adduserphoto"/>
 
-                    android:textSize="30dp"
-                    android:background="@drawable/addphoto"/>
+            </android.support.v7.widget.LinearLayoutCompat>
 
-
-    </LinearLayout>
-
-    <android.support.v4.widget.NestedScrollView
-        android:id="@+id/scroll"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="0.6"
-        android:background="#181C20"
-        android:padding="20dp"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior">
-
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="#181C20"
-            android:padding="10dp">
-
-
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Name:"
+                android:textSize="15sp"
+                android:id="@+id/name_txt"
+                android:textColor="#000000"
+                android:layout_marginBottom="5dp"/>
             <EditText
+                android:layout_width="match_parent"
+                android:layout_height="30dp"
                 android:id="@+id/name"
-                android:layout_width="600dp"
-                android:layout_height="30dp"
-                android:layout_below="@+id/sign"
-                android:layout_marginBottom="20dp"
-                android:background="@drawable/create_party_edittextbox"
-                android:gravity="left|start"
-                android:hint="Name"
+                android:layout_marginBottom="5dp"
                 android:padding="2dip"
-                android:textColor="#ffffff"
-                android:textColorHint="#FFA500" />
-
+                android:background="@drawable/edittextbox"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Adddress:"
+                android:textSize="15sp"
+                android:id="@+id/address_txt"
+                android:textColor="#000000"
+                android:layout_marginBottom="5dp"/>
             <EditText
-                android:id="@+id/description"
-                android:layout_width="500dp"
-                android:layout_height="80dp"
-                android:layout_below="@+id/name"
-                android:layout_marginBottom="20dp"
-                android:background="@drawable/create_party_edittextbox"
-                android:gravity="left|start"
-                android:hint="Description"
+                android:inputType="textMultiLine"
+                android:lines="2"
+                android:maxLines="3"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/address"
+                android:layout_marginBottom="5dp"
                 android:padding="2dip"
-                android:textColor="#ffffff"
-                android:textColorHint="#FFA500" />
-
-
-
-            <TextView
-                android:id="@+id/people"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/description"
-                android:text="People"
-                android:layout_marginLeft="8dp"
-                android:textColor="#FFA500"
-                android:textSize="18dp"
-                android:layout_marginBottom="20dp"
+                android:background="@drawable/edittextbox"
+                android:scrollbars="vertical"
                 />
 
-            <Spinner
-                android:id="@+id/spinner1"
-                android:layout_width="wrap_content"
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Description:"
+                android:textSize="15sp"
+                android:id="@+id/description_txt"
+                android:textColor="#000000"
+                android:layout_marginBottom="5dp"/>
+            <EditText
+                android:inputType="textMultiLine"
+                android:lines="4"
+                android:maxLines="6"
+                android:layout_height="wrap_content"
+                android:layout_width="fill_parent"
+                android:id="@+id/description"
+                android:scrollbars="vertical"
+                android:layout_marginBottom="5dp"
+                android:padding="2dip"
+                android:background="@drawable/edittextbox"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="People:"
+                android:textSize="15sp"
+                android:id="@+id/people_txt"
+                android:textColor="#000000"
+                android:layout_marginBottom="5dp"/>
+            <EditText
+                android:layout_width="50dp"
                 android:layout_height="30dp"
-                android:layout_below="@+id/description"
-                android:layout_marginLeft="20dp"
-                android:layout_toRightOf="@+id/people"
-                android:background="@android:drawable/btn_dropdown"
-                android:spinnerMode="dropdown" />
+                android:id="@+id/people"
+                android:layout_marginBottom="5dp"
+                android:padding="2dip"
+                android:background="@drawable/edittextbox"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Period:"
+                android:textSize="15sp"
+                android:id="@+id/period_txt"
+                android:textColor="#000000"
+                android:layout_marginBottom="5dp"/>
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="30dp"
+                android:id="@+id/period"
+                android:layout_marginBottom="5dp"
+                android:padding="2dip"
+                android:background="@drawable/edittextbox"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Telephone No:"
+                android:textSize="15sp"
+                android:id="@+id/telephone_txt"
+                android:textColor="#000000"
+                android:layout_marginBottom="5dp"/>
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="30dp"
+                android:id="@+id/telephone"
+                android:layout_marginBottom="5dp"
+                android:padding="2dip"
+                android:background="@drawable/edittextbox"/>
 
             <TextView
-                android:id="@+id/require"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Rule:"
+                android:textSize="15sp"
+                android:id="@+id/type_txt"
+                android:textColor="#000000"
+                android:layout_marginBottom="5dp"/>
+            <Button
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/people"
-                android:text="Requirement"
-                android:layout_marginLeft="8dp"
-                android:textColor="#FFA500"
-                android:textSize="18dp"
-                android:layout_marginBottom="20dp"
-                />
-            <Button
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/require"
-                android:id="@+id/addrequire"
-                android:layout_centerHorizontal="true"
-                android:text="Add Requirement"
-                android:background="#1D9E5D"
-                android:layout_marginBottom="20dp"/>
+                android:id="@+id/rule"
+                android:layout_marginBottom="5dp"
+                android:text="Add Rule"
+                android:textSize="15sp"/>
+
+
 
             <Button
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/addrequire"
-                android:id="@+id/create"
+                android:id="@+id/next"
                 android:layout_centerHorizontal="true"
-                android:text="Create Party"
-                android:background="#ffa500"/>
+                android:text="Next"
+                android:background="@color/ButtonUserProfile"/>
 
 
+        </LinearLayout>
 
-
-        </RelativeLayout>
     </android.support.v4.widget.NestedScrollView>
 
 

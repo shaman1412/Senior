@@ -20,10 +20,10 @@ import java.util.ArrayList;
 public class Customlistview_addvice_adapter extends ArrayAdapter<Restaurant> {
     Context mcontext;
     int[] res_id;
-    ArrayList<Restaurant> res_name;
+   Restaurant[] res_name;
     LayoutInflater inflater;
     private String type_result;
-    public Customlistview_addvice_adapter(Context context,int tv, ArrayList<Restaurant> res_name,int[] res_id) {
+    public Customlistview_addvice_adapter(Context context,int tv, Restaurant[] res_name,int[] res_id) {
         super(context,tv,res_name);
         this.res_id = res_id;
          this.res_name = res_name;
@@ -54,9 +54,9 @@ public class Customlistview_addvice_adapter extends ArrayAdapter<Restaurant> {
         imageView.setTag(R.id.imageView1, asyn2);
 
 
-        viewHolder.ResName.setText(res_name.get(position).getRestaurantName());
-        viewHolder.ResType.setText(res_name.get(position).getTypefood());
-        viewHolder.ResLo.setText(res_name.get(position).getLocation());
+        viewHolder.ResName.setText(res_name[position].getRestaurantName());
+        viewHolder.ResType.setText(res_name[position].getTypefood());
+        viewHolder.ResLo.setText(res_name[position].getLocation());
 
         return convertView;
     }

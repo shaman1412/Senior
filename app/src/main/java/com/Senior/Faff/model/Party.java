@@ -13,39 +13,87 @@ public class Party {
     public static final String TABLE = "party";
 
     public class Column {
-        public static final String ID = BaseColumns._ID;
-        public static final String Name = "Name";
-        public static final String Description = "Description";
-        public static final String Appointment = "Appointment";
-        public static final String RoomID = "Roomid";
+        public static final String Name = "name";
+        public static final String Description = "description";
+        public static final String Appointment = "appointment";
+        public static final String People = "people";
+        public static final String Rule = "rule";
+        public static final String Request = "request";
+        public static final String Accept = "accept";
+        public static final String Location = "location";
+        public static final String Address = "address";
+        public static final String Telephone = "telephone";
+        public static final String RoomID = "roomid";
+        public static final String Rule_gender = "gender";
+        public static final String Rule_age = "age";
+        public static final String Create_by = "userid";
+        public static final String Create_by_name = "create_by_name";
+
     }
 
     private int id;
     private String name;
     private String description;
     private int people;
-    private String roomID;
+    private String roomid;
     private String location;
-    //private String rule;
+    private String appointment;
+    private String request;
+    private String accept;
+    private String address;
+    private String telephone;
     private Map<String, String> rule = new HashMap<>();
+    private String rule_gender;
+    private String rule_age;
+    private String create_by_name;
+    private String create_by_id;
 
-    public Party(String roomID,String name,  String decription, int people, Map<String, String> rule,String location) {
+    public Party(String roomid, String name,  String description, int people, String address ,String appointment, String telephone) {
         this.name = name;
-        this.roomID = roomID;
-        this.description = decription;
+        this.roomid = roomid;
+        this.description = description;
         this.people = people;
-        this.rule = rule;
-        this.location  = location;
+        this.address = address;
+        this.appointment  = appointment;
+        this.telephone = telephone;
     }
-
     public Party(){
 
     }
 
     //region getter setter
+    public String getCreateid(){ return  create_by_id;}
+
+    public void setCreateid(String create_by_id){
+        this.create_by_id = create_by_id;
+    }
+
+    public String getCreatename(){ return  create_by_name;}
+
+    public void setCreatename(String create_by_name){
+        this.create_by_name = create_by_name;
+    }
+
+    public String getRequest(){ return  request;}
+
+    public void setRequest(String request){ this.request = request; }
+
+    public String getAccept(){ return  accept; }
+
+    public void setAccept(String accept){ this.accept = accept; }
+
+
     public String getLocation(){ return location; }
 
     public void setLocation(String location){ this.location = location; }
+
+    public String getAppointment(){ return appointment; }
+
+    public void setAppointment(String appointment){ this.appointment = appointment; }
+
+    public String getTelephone(){ return telephone; }
+
+    public void setTelephone(String telephone){ this.telephone = telephone; }
 
     public int getId() {
         return id;
@@ -64,18 +112,18 @@ public class Party {
     }
 
     public String getRoomID() {
-        return roomID;
+        return roomid;
     }
 
-    public void setRoomID(String roomID) {
-        this.roomID = roomID;
+    public void setRoomID(String roomid) {
+        this.roomid = roomid;
     }
 
     public String getDescription() {
         return description;
     }
 
-    public void setDescription(String appoinment) {
+    public void setDescription(String description) {
         this.description = description;
     }
 
@@ -87,7 +135,9 @@ public class Party {
 
     public void setRule(Map<String, String> rule){ this.rule = rule; }
 
+    public void setAddress(String address){ this.address = address; }
 
+    public  String getAddress(){ return  address; }
 
     //endregion
 }

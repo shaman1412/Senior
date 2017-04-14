@@ -1,0 +1,332 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v4.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="10dp"
+    android:id="@+id/scroll"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    android:background="#e9e9e9"
+    >
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:orientation="vertical">
+
+        <android.support.v7.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            card_view:cardCornerRadius="4dp"
+
+            >
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:padding="10dp"
+                >
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/start"
+                    >
+                    <TextView
+                        android:id="@+id/name"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="1dp"
+                        android:text="Name"
+                        android:textSize="7pt"
+                        android:textColor="#000000" />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_toLeftOf="@+id/status"
+                        android:text="Status:"
+                        android:textSize="7pt"
+                        android:textColor="#000000"
+                        android:layout_marginRight="1dp"
+                        android:layout_marginTop="1dp"
+                        android:layout_marginBottom="1dp" />
+                    <TextView
+                        android:id="@+id/status"
+                        android:layout_width="60dp"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:textSize="7pt"
+                        android:textColor="#000000"
+                        android:layout_marginLeft="1dp"
+                        android:layout_marginRight="1dp"
+                        android:layout_marginTop="1dp"
+                        android:layout_marginBottom="1dp" />
+                </RelativeLayout>
+
+                <TextView
+                    android:id="@+id/appointment_txt"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:text="Appointment"
+                    android:textColor="#000000"
+                    android:textSize="7pt" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginTop="5dp"
+                    android:background="@drawable/line" />
+
+                <TextView
+                    android:id="@+id/appointment"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="7dp"
+
+                    android:textColor="#000000"
+                    android:textSize="7pt" />
+
+                <TextView
+                    android:id="@+id/description_txt"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:text="Description"
+                    android:textColor="#000000"
+                    android:textSize="7pt" />
+
+                <View
+                    android:id="@+id/line"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginTop="5dp"
+                    android:background="@drawable/line" />
+
+                <TextView
+                    android:id="@+id/description"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="7dp"
+
+                    android:textColor="#000000"
+                    android:textSize="7pt" />
+
+                <TextView
+                    android:id="@+id/telephone_txt"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:text="Telephone"
+                    android:textColor="#000000"
+                    android:textSize="7pt" />
+
+                <View
+
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginTop="5dp"
+                    android:background="@drawable/line" />
+
+                <TextView
+                    android:id="@+id/telephone"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="7dp"
+
+                    android:textColor="#000000"
+                    android:textSize="7pt" />
+
+                <TextView
+                    android:id="@+id/address_txt"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:text="Address"
+                    android:textColor="#000000"
+                    android:textSize="7pt" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginTop="5dp"
+                    android:background="@drawable/line" />
+
+                <TextView
+                    android:id="@+id/address"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="7dp"
+                    android:textColor="#000000"
+                    android:textSize="7pt" />
+
+                <TextView
+                    android:id="@+id/location_txt"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:text="Location"
+                    android:textColor="#000000"
+                    android:textSize="7pt" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginTop="5dp"
+                    android:background="@drawable/line" />
+
+                <fragment
+                    android:id="@+id/map_party"
+                    android:name="com.google.android.gms.maps.SupportMapFragment"
+                    android:layout_width="match_parent"
+                    android:layout_height="150dp"
+                    android:layout_marginBottom="5dp"
+                    android:layout_marginTop="8dp"
+                    >
+
+                </fragment>
+
+                <TextView
+                    android:id="@+id/createby_txt"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:text="Host"
+                    android:textColor="#000000"
+                    android:textSize="7pt" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginTop="5dp"
+                    android:background="@drawable/line" />
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginTop="5dp">
+                    <ImageView
+                        android:id="@+id/create_image"
+                        android:layout_width="70dp"
+                        android:layout_height="60dp"
+                        android:layout_marginLeft="10dp"
+
+                        />
+
+                    <TextView
+                        android:id="@+id/createby"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="5dp"
+                        android:layout_marginLeft="60dp"
+                        android:layout_gravity="center"
+                        android:text="Name"
+                        android:textSize="20sp"
+                        android:textColor="#000000" />
+
+                    <!--          <TextView
+                                  android:id="@+id/Location"
+                                  android:layout_width="wrap_content"
+                                  android:layout_height="wrap_content"
+                                  android:layout_alignParentBottom="true"
+                                  android:text="Location:"
+                                  android:textSize="10sp"
+                                  android:textColor="#000000"
+                                  android:layout_toLeftOf="@+id/Location_text"
+                                  android:layout_marginRight="10dp"/>
+                              <TextView
+                                  android:id="@+id/Location_text"
+                                  android:layout_width="wrap_content"
+                                  android:layout_height="wrap_content"
+                                  android:layout_alignParentBottom="true"
+                                  android:text="Location"
+                                  android:textSize="10sp"
+                                  android:textColor="#000000"
+                                  android:layout_alignParentRight="true"
+                                  android:layout_marginRight="20dp"/>-->
+
+                </LinearLayout>
+
+                <!--         <android.support.v7.widget.RecyclerView
+                             android:id="@+id/mRecyclerView"
+                             android:layout_width="wrap_content"
+                             android:layout_height="wrap_content"
+                             android:layout_marginTop="7dp"
+                             android:text="Sex"
+                             android:textColor="#000000"
+                             android:textSize="7pt" />-->
+                <Button
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/send_request"
+                    android:text="SEND REQUEST"
+                    android:background="@color/ButtonUserProfile"
+                    android:layout_marginTop="7dp"
+                    android:layout_gravity="center"/>
+
+            </LinearLayout>
+
+
+        </android.support.v7.widget.CardView>
+        <android.support.v7.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            card_view:cardCornerRadius="4dp">
+            <TextView
+                android:id="@+id/member_txt"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:text="Member"
+                android:textColor="#000000"
+                android:textSize="7pt" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginTop="5dp"
+                android:background="@drawable/line" />
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/mRecyclerView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:textSize="7pt"
+                android:textColor="#000000" />
+
+        </android.support.v7.widget.CardView>
+        <android.support.v7.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            card_view:cardCornerRadius="4dp">
+
+            <TextView
+                android:id="@+id/request_txt"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:text="Member"
+                android:textColor="#000000"
+                android:textSize="7pt" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginTop="5dp"
+                android:background="@drawable/line" />
+
+           <!-- <fragment
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:id="@+id/request"/>-->
+        </android.support.v7.widget.CardView>
+    </LinearLayout>
+
+</android.support.v4.widget.NestedScrollView>

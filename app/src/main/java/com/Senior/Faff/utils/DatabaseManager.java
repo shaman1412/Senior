@@ -96,13 +96,13 @@ public class DatabaseManager extends SQLiteOpenHelper implements DatabaseManager
                 History.Column.PartyID
         );
 
-        String CREATE_TABLE_PARTY = String.format("create table if not exists %s (%s integer primary key autoincrement, %s text not null, %s integer not null, %s text not null);",
+/*        String CREATE_TABLE_PARTY = String.format("create table if not exists %s (%s integer primary key autoincrement, %s text not null, %s integer not null, %s text not null);",
                 Party.TABLE,
                 Party.Column.ID,
                 Party.Column.Name,
                 Party.Column.RoomID,
                 Party.Column.Appointment
-        );
+        );*/
 
         String CREATE_TALBLE_PARTYLIST = String.format("create table if not exists %s (%s integer primary key autoincrement, %s integer not null, %s integer not null);",
                 PartyList.TABLE,
@@ -249,7 +249,7 @@ public class DatabaseManager extends SQLiteOpenHelper implements DatabaseManager
         db.execSQL(CREATE_TABLE_BOOKMARKLIST);
         db.execSQL(CREATE_TABLE_FOODPROFILE);
         db.execSQL(CREATE_TABLE_HISTORY);
-      db.execSQL(CREATE_TABLE_PARTY);
+     // db.execSQL(CREATE_TABLE_PARTY);
         db.execSQL(CREATE_TALBLE_PARTYLIST);
         db.execSQL(CREATE_TABLE_PROMOTIONLIST);
         db.execSQL(CREATE_TABLE_REPORT);

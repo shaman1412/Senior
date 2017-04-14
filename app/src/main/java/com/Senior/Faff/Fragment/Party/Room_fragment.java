@@ -3,6 +3,7 @@ package com.Senior.Faff.Fragment.Party;
 import android.Manifest;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.AsyncTask;
@@ -28,6 +29,7 @@ import com.Senior.Faff.RestaurantProfile.Customlistview_addvice_adapter;
 import com.Senior.Faff.RestaurantProfile.Restaurant_manager;
 import com.Senior.Faff.model.Party;
 import com.Senior.Faff.model.Restaurant;
+import com.Senior.Faff.model.UserProfile;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationAvailability;
@@ -66,14 +68,20 @@ public class Room_fragment extends Fragment implements GoogleApiClient.OnConnect
     private ArrayList<Party> re_list;
     private ListView listview;
     private ArrayList<Party> party_list;
+    private int gender,age;
+    private String userid;
     int[] resId =  {R.drawable.restaurant1,R.drawable.restaurant2,R.drawable.restaurant3};
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View root = inflater.inflate(R.layout.fragment_room_fragment, container, false);
+    if(getArguments().getString(UserProfile.Column.UserID) != null) {
+         userid = getArguments().getString(UserProfile.Column.UserID);
+         gender = getArguments().getInt(UserProfile.Column.Gender);
+         age = getArguments().getInt(UserProfile.Column.Age);
 
-
+    }
         mcontext = getContext();
 
         Restaurant model = new Restaurant();
@@ -183,7 +191,7 @@ public class Room_fragment extends Fragment implements GoogleApiClient.OnConnect
                     String a = "found location" + mLastLocation + "and" + target;
                     if (mLastLocation != null)
                         if (mLastLocation.distanceTo(target) > 1000) {
-                            Toast.makeText(getContext(), a, Toast.LENGTH_SHORT).show();
+                           // Toast.makeText(getContext(), a, Toast.LENGTH_SHORT).show();
                         }
                    /* if(location.distanceTo(target) < METERS_100) {
                         // bingo!
@@ -219,7 +227,7 @@ public class Room_fragment extends Fragment implements GoogleApiClient.OnConnect
         //showlist(listview, re_list, resId);
     }
 
-    public ArrayList<Party> calculatedistance(int de_distance,  Map<String, String> rule, ArrayList<Party> listRes) {
+    public ArrayList<Party> calculatedistance(int de_distance,   Map<String, String> rule_gender,Map<String, Integer> rule_age, ArrayList<Party> listRes) {
         int distance;
         int countcheck = 0;
         float latitude, longtitude;
@@ -236,29 +244,52 @@ public class Room_fragment extends Fragment implements GoogleApiClient.OnConnect
             target.setLongitude(longtitude);
             distance = (int) mLastLocation.distanceTo(target);
             if (distance <= de_distance) {
-                for (Map.Entry<String, String> check_rule: rule.entrySet()) {
-                    if (listRes.get(i).getRule().containsKey(check_rule.getKey())&& listRes.get(i).getRule().get(check_rule.getKey()).equals(check_rule.getValue()))
-                       countcheck++;
+
+                for (Map.Entry<String, String> check_rule : rule_gender.entrySet()) {
+                    String check = listRes.get(i).getRule().get(check_rule.getKey());
+                    String a = check_rule.getValue();
+                    if (check != null) {
+                        String[] sp = check.split(",");
+                        for (int j = 0; j < sp.length; j++)
+                            if (sp[j].equals(a)) {
+                                countcheck++;
+                            }
+                    }
                 }
-                if(countcheck == 2){
-                    countcheck = 0;
-                    res.add(listRes.get(i));
+                for (Map.Entry<String, Integer> check_rule : rule_age.entrySet()) {
+                    String check = listRes.get(i).getRule().get(check_rule.getKey());
+                    int a = check_rule.getValue();
+                    if (check != null) {
+                        int b = Integer.valueOf(check);
+                        if (a < b) {
+                            countcheck++;
+                        }
+                    }
+                    if (countcheck == 2) {
+                        countcheck = 0;
+                        res.add(listRes.get(i));
+                    }
                 }
             }
         }
-
         return res;
     }
 
 
-    public void showlist(ListView listview, ArrayList<Party> Pary_list, int[] resId) {
-        Map<String, String> rule = new HashMap<>();
-        rule.put("password", "shit");
-        rule.put("username", "ddddd!");
+    public void showlist(ListView listview, ArrayList<Party> Pary_list, int[] resId, int gender, int age) {
+
+        Map<String, String> rule_gender = new HashMap<>();
+        if(gender == 0){
+            rule_gender.put("gender","Female");
+        }else{
+            rule_gender.put("gender","Male");
+        }
+        Map<String, Integer> rule_age = new HashMap<>();
+        rule_age.put("age", age);
 
         // Restaurant_manager res_manager = new Restaurant_manager(mcontext);
         if (Pary_list != null) {
-            re_list = calculatedistance(900, rule, Pary_list);
+            re_list = calculatedistance(900, rule_gender,rule_age, Pary_list);
             listview.setAdapter(new Customlistview_nearparty_adapter(getContext(), 0, re_list, resId));
             listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 public void onItemClick(AdapterView<?> arg0, View view, int position, long id) {
@@ -295,8 +326,8 @@ public class Room_fragment extends Fragment implements GoogleApiClient.OnConnect
                         party_list.add(post);
 
                     }
-                    showlist(listview, party_list, resId);
-                    Toast.makeText(getActivity(),"hi",Toast.LENGTH_SHORT).show();
+                    showlist(listview, party_list, resId,gender,age);
+                    //Toast.makeText(getActivity(),"hi",Toast.LENGTH_SHORT).show();
                 }
 
                 @Override
@@ -313,7 +344,7 @@ public class Room_fragment extends Fragment implements GoogleApiClient.OnConnect
         }
 
         protected void onPostExecute(Void result)  {
-            Toast.makeText(getActivity(),"GEt dataaaa",Toast.LENGTH_SHORT).show();
+           // Toast.makeText(getActivity(),"GEt dataaaa",Toast.LENGTH_SHORT).show();
 
 
         }

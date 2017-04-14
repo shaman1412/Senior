@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.Senior.Faff.Fragment.Party.Show_party_profile;
 import com.Senior.Faff.R;
 import com.Senior.Faff.UserProfile.ShowUserprofile;
 import com.Senior.Faff.model.UserProfile;
@@ -71,6 +72,10 @@ public class Option_RestaurantFragment extends Fragment {
                 add.setVisibility(view.GONE);
                 edit.setVisibility(view.GONE);
                 show.setVisibility(view.GONE);*/
+                Intent  intent  = new Intent(getActivity(),Show_party_profile.class);
+                intent.putExtra(UserProfile.Column.UserID,id);
+                startActivity(intent);
+
             }
         });
         show.setOnClickListener(new View.OnClickListener(){

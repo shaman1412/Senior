@@ -15,25 +15,46 @@ import java.util.Map;
 
 public class CreatePartyManager {
 
-    private String name,description;
+    private String name;
+    private String description;
     private int people;
-    //private String rule;
-    private String roomID;
+    private String roomid;
     private String location;
+    private String appointment;
+    private String userid;
+    private String request;
+    private String accept;
+    private String address;
+    private String telephone;
+    private String rule_age ;
+    private String rule_gender;
+    private String createby;
     private Map<String, String> rule = new HashMap<>();
-    public CreatePartyManager(String roomID, String name, String description, int people, int[] rule,String location ){
-        this.name  = name;
+    public CreatePartyManager(String roomid,String name,  String description, int people, String address ,String appointment, String telephone,String location, String rule_age, String rule_gender,String userid, String createby){
+        this.name = name;
+        this.roomid = roomid;
         this.description = description;
         this.people = people;
-        //this.rule  = Arrays.toString(rule);
-        addhash();
+        this.address = address;
+        this.appointment  = appointment;
+        this.telephone = telephone;
         this.location = location;
-        this.roomID = roomID;
+        this.rule_age= rule_age;
+        this.rule_gender = rule_gender;
+        this.userid = userid;
+        this.createby = createby;
+        addhash();
     }
     public void addhash() {
-        rule.put("password", "shit");
-        rule.put("username", "ddddd!");
+        if(rule_gender != null) {
+            rule.put("gender", rule_gender);
+        }
+        if(rule_age != null){
+            rule.put("age", rule_age);
+        }
     }
+
+
 
     DatabaseReference mdatabase = FirebaseDatabase.getInstance().getReference();
     DatabaseReference allroom = mdatabase.child("All_Room");
@@ -41,7 +62,11 @@ public class CreatePartyManager {
 
     public void addroom() {
 
-        Party party = new Party(roomID,name,description,people,rule,location);
+        Party party = new Party(roomid, name, description, people, address, appointment, telephone);
+        party.setLocation(location);
+        party.setCreateid(userid);
+        party.setCreatename(createby);
+        party.setRule(rule);
       allroom.push().setValue(party);
     }
 

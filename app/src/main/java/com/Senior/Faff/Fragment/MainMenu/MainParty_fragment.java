@@ -21,6 +21,7 @@ import com.Senior.Faff.Fragment.Party.Party_CreateNewParty;
 import com.Senior.Faff.MapsActivity;
 import com.Senior.Faff.R;
 import com.Senior.Faff.TestMapsActivity;
+import com.Senior.Faff.model.UserProfile;
 import com.Senior.Faff.utils.CustomTabLayout;
 
 /**
@@ -37,7 +38,11 @@ public class MainParty_fragment extends Fragment {
     private CustomTabLayout tabLayout;
     private ViewPager pager;
     private Context context;
-
+    private String userid;
+    private Bundle bundle;
+    private int age;
+    private int gender;
+    private String name;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -45,11 +50,24 @@ public class MainParty_fragment extends Fragment {
         setHasOptionsMenu(true);
 
         View root = inflater.inflate(R.layout.fragment_main_party, container, false);
-        Party_adapter adapter = new Party_adapter(getChildFragmentManager(),context);
+        userid = getArguments().getString(UserProfile.Column.UserID);
+        gender = getArguments().getInt(UserProfile.Column.Gender);
+        age = getArguments().getInt(UserProfile.Column.Age);
+        name= getArguments().getString(UserProfile.Column.Name);
+
+        bundle = new Bundle();
+        bundle.putString(UserProfile.Column.UserID,userid);
+        bundle.putInt(UserProfile.Column.Age,age);
+        bundle.putInt(UserProfile.Column.Gender,gender);
+        bundle.putString(UserProfile.Column.Name,name);
+
+
+        Party_adapter adapter = new Party_adapter(getChildFragmentManager(),context,bundle);
         pager = (ViewPager)root.findViewById(R.id.pager);
         tabLayout = (CustomTabLayout)root.findViewById(R.id.tablayout);
         pager.setAdapter(adapter);
         pager.setCurrentItem(1);
+
 
         Log.i(Tag, "Alert!!!! index of item in Party_adapter is "+pager.getCurrentItem());
 
@@ -59,6 +77,8 @@ public class MainParty_fragment extends Fragment {
             public void onClick(View view) {
                 // Click action
                 Intent intent = new Intent(getActivity(), Party_CreateNewParty.class);
+                intent.putExtra(UserProfile.Column.UserID,userid);
+                intent.putExtra(UserProfile.Column.Name,name);
                 startActivity(intent);
             }
         });
