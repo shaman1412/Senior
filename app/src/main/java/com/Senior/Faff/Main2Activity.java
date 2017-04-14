@@ -5,6 +5,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.NavigationView;
@@ -15,6 +16,8 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.ButtonBarLayout;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -38,6 +41,7 @@ import com.Senior.Faff.Promotion.PromotionActivity;
 import com.Senior.Faff.Promotion.PromotionShow;
 import com.Senior.Faff.RestaurantProfile.Option_RestaurantFragment;
 import com.Senior.Faff.UserProfile.InsertUserProfile;
+import com.Senior.Faff.UserProfile.List_typeNodel;
 import com.Senior.Faff.UserProfile.ProfileManager;
 import com.Senior.Faff.UserProfile.ShowUserprofile;
 import com.Senior.Faff.chat.ChatMainActivity;
@@ -56,8 +60,15 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
+import com.google.gson.Gson;
 
+import java.io.BufferedInputStream;
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -83,83 +94,12 @@ public class Main2Activity extends AppCompatActivity {
     private TabLayout tabLayout;
     private ProfileManager profileManager;
     private UserProfile userProfile;
+    private Bundle bundle;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
        firebase a  = new firebase();
-      // a.writeNewUser();
-        //a.change();
-/*        FirebaseStorage storage = FirebaseStorage.getInstance();
-        StorageReference storageRef = storage.getReference();
-       // File files = new File("C:/Users/Acer/Desktop/new nsc/bubble-512");
-        Uri file = Uri.fromFile(new File("@drawable/addphoto.png"));
-        StorageReference riversRef = storageRef.child("images/"+file.getLastPathSegment());
-        UploadTask uploadTask = riversRef.putFile(file);
-
-// Register observers to listen for when the download is done or if it fails
-        uploadTask.addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception exception) {
-                Toast.makeText(Main2Activity.this,"error",Toast.LENGTH_SHORT).show();
-            }
-        }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-            @Override
-            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                // taskSnapshot.getMetadata() contains file metadata such as size, content-type, and download URL.
-               // Uri downloadUrl = taskSnapshot.getDownloadUrl();
-            }
-        });*/
-
-        DatabaseReference mRootRef = FirebaseDatabase.getInstance().getReference();
-        mRootRef.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange (DataSnapshot dataSnapshot){
-                long count = dataSnapshot.child("All_Room").getChildrenCount();
-                ArrayList<Party> m = new ArrayList<>();
-                for (DataSnapshot postSnapshot: dataSnapshot.child("All_Room").getChildren()) {
-                Party post= postSnapshot.getValue(Party.class);
-                   m.add(post);
-                }
-
-                Toast.makeText(Main2Activity.this,"hi",Toast.LENGTH_SHORT).show();
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-                Toast.makeText(Main2Activity.this,"Cant connect database",Toast.LENGTH_SHORT).show();
-            }
-        });
- /*       mRootRef.addChildEventListener(new ChildEventListener(){
-            @Override
-            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                //Party post = dataSnapshot.getValue(Party.class);
-            }
-
-            @Override
-            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-                 long count = dataSnapshot.getChildrenCount();
-                Party posts = dataSnapshot.child("messages").getValue(Party.class);
-                String commentKey = dataSnapshot.getKey();
-                String key = dataSnapshot.child("All_Room").getKey();
-                Toast.makeText(Main2Activity.this,"hi",Toast.LENGTH_SHORT).show();
-            }
-
-            @Override
-            public void onChildRemoved(DataSnapshot dataSnapshot) {
-
-            }
-
-            @Override
-            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
-
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-                Toast.makeText(Main2Activity.this,"Cant connect database",Toast.LENGTH_SHORT).show();
-            }
-        });*/
 
         setContentView(R.layout.activity_main2);
         setTitle("");
@@ -193,8 +133,12 @@ public class Main2Activity extends AppCompatActivity {
         if((args = getIntent().getExtras()) != null) {
             args = getIntent().getExtras();
             //int id = profileManager.getID(args.getString(UserAuthen.Column.USERNAME));
-             String  id = args.getString("userid");
-            userProfile.setId(id);
+             String  id = args.getString(UserProfile.Column.UserID);
+           // userProfile.setId(id);
+            bundle = new Bundle();
+            new getData().execute(id);
+
+
         }
 
         MainHome_Fragment fragment_home = new MainHome_Fragment();
@@ -229,9 +173,11 @@ public class Main2Activity extends AppCompatActivity {
                 new BottomNavigationView.OnNavigationItemSelectedListener() {
                     @Override
                     public boolean onNavigationItemSelected(MenuItem item) {
+
                         switch (item.getItemId()) {
                             case R.id.Party:
                                 MainParty_fragment fragment_party = new MainParty_fragment();
+                                fragment_party.setArguments(bundle);
                                 FragmentManager fragmentManager_party = getSupportFragmentManager();
                                 fragmentManager_party.beginTransaction()
                                         .setCustomAnimations(R.anim.fade_in, R.anim.fade_out)
@@ -241,6 +187,7 @@ public class Main2Activity extends AppCompatActivity {
                                 break;
                             case R.id.Home:
                                 MainHome_Fragment fragment_home = new MainHome_Fragment();
+                                fragment_home.setArguments(bundle);
                                 FragmentManager fragmentManager_home = getSupportFragmentManager();
                                 fragmentManager_home.beginTransaction()
                                         .setCustomAnimations(R.anim.fade_in, R.anim.fade_out)
@@ -250,6 +197,7 @@ public class Main2Activity extends AppCompatActivity {
                             case R.id.Nearby:
                                 MainNearby_Fragment fragment_nearby = new MainNearby_Fragment();
                                 FragmentManager fragmentManager_nearby = getSupportFragmentManager();
+                                fragment_nearby.setArguments(bundle);
                                 fragmentManager_nearby.beginTransaction()
                                         .setCustomAnimations(R.anim.fade_in, R.anim.fade_out)
                                         .replace(R.id.flContent,fragment_nearby)
@@ -297,8 +245,8 @@ public class Main2Activity extends AppCompatActivity {
 
     public void selectDrawerItem(MenuItem menuItem) {
         // Create a new fragment and specify the fragment to show based on nav item clicked
-        String id = userProfile.getId();
-        String User_id = String.valueOf(id);        // ??? for what ??? ไม่บอก 5555
+        String id = userProfile.getUserid();
+        //String User_id = String.valueOf(id);        // ??? for what ??? ไม่บอก 5555
 
         switch(menuItem.getItemId()) {
             case R.id.Home:
@@ -309,9 +257,8 @@ public class Main2Activity extends AppCompatActivity {
 
                 break;
             case R.id.UserProfile:
-                String a = id;
                 Intent intent = new Intent(context, ShowUserprofile.class);
-                intent.putExtra(UserProfile.Column.UserID,User_id);
+                intent.putExtra(UserProfile.Column.UserID,id);
                 startActivity(intent);
                 break;
             case R.id.Favourite:
@@ -324,7 +271,7 @@ public class Main2Activity extends AppCompatActivity {
                 break;
             case R.id.RestaurantProfile:
                 Bundle bundle = new Bundle();
-                bundle.putString("userid",User_id);
+                bundle.putString("userid",id);
                 //set Fragmentclass Arguments
                 Option_RestaurantFragment option = new Option_RestaurantFragment();
                 option.setArguments(bundle);
@@ -440,7 +387,63 @@ public class Main2Activity extends AppCompatActivity {
         alert.show();
 
     }
-    public  void read(){
+    private class getData extends AsyncTask<String, String, UserProfile> {
+
+        String pass;
+        int responseCode;
+        HttpURLConnection connection;
+        String resultjson;
+        @Override
+        protected UserProfile doInBackground(String... args) {
+            StringBuilder result = new StringBuilder();
+            String url_api = "https://faff-1489402013619.appspot.com/user/" + args[0];
+            try {
+                URL url = new URL(url_api);
+                connection = (HttpURLConnection) url.openConnection();
+                connection.setRequestMethod("GET");
+
+                InputStream in = new BufferedInputStream(connection.getInputStream());
+
+                BufferedReader reader = new BufferedReader(new InputStreamReader(in));
+
+                responseCode = connection.getResponseCode();
+                String line;
+                while ((line = reader.readLine()) != null) {
+                    result.append(line);
+                }
+
+            } catch (Exception e) {
+                e.printStackTrace();
             }
+            if (responseCode == 200) {
+                Log.i("Request Status", "This is success response status from server: " + responseCode);
+                Gson gson = new Gson();
+                UserProfile userPro  =  gson.fromJson(result.toString(),  UserProfile.class);
+                return userPro;
+            } else {
+                Log.i("Request Status", "This is failure response status from server: " + responseCode);
+                return null ;
+
+            }
+
+        }
+        @Override
+        protected void onPostExecute(UserProfile userpro) {
+            super.onPostExecute(userpro);
+            if (userpro != null) {
+                userProfile = userpro;
+                bundle.putString(UserProfile.Column.UserID,userProfile.getUserid());
+                bundle.putString(UserProfile.Column.Name,userProfile.getName());
+                bundle.putInt(UserProfile.Column.Age,userProfile.getAge());
+                bundle.putInt(UserProfile.Column.Gender,userProfile.getGender());
+            }
+            else{
+                String message = getString(R.string.login_error_message);
+                Toast.makeText(Main2Activity.this, message, Toast.LENGTH_SHORT).show();
+            }
+
+        }
+
+    }
 
 }

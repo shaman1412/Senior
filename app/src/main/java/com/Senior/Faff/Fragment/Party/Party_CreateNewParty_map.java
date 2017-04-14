@@ -22,6 +22,8 @@ import android.widget.Toast;
 
 import com.Senior.Faff.Main2Activity;
 import com.Senior.Faff.R;
+import com.Senior.Faff.model.Party;
+import com.Senior.Faff.model.UserProfile;
 import com.Senior.Faff.utils.CreatePartyManager;
 import com.Senior.Faff.utils.PermissionUtils;
 import com.google.android.gms.common.ConnectionResult;
@@ -64,7 +66,13 @@ public class Party_CreateNewParty_map extends AppCompatActivity implements OnMap
     private String name;
     private String description;
     private int people;
-    private int[] rule;
+    private String rule;
+    private String rule_age;
+    private String rule_gender;
+    private String address;
+    private String appointment;
+    private String telephone;
+    private String createby;
     ////////////////////
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -88,20 +96,25 @@ public class Party_CreateNewParty_map extends AppCompatActivity implements OnMap
             lo.setText(String.valueOf(location.getLongitude()));
         }
         Button btn = (Button)findViewById(R.id.addlo);
-        if(getIntent().getStringExtra("Roomid") != null) {
-            roomid = getIntent().getStringExtra("Roomid");
-            name = getIntent().getStringExtra("Name");
-            description = getIntent().getStringExtra("Description");
-            people = getIntent().getIntExtra("People",0);
-            rule = getIntent().getIntArrayExtra("rule");
-            user_id = getIntent().getStringExtra("userid");
-
+        if(getIntent().getStringExtra(Party.Column.RoomID) != null) {
+            roomid = getIntent().getStringExtra(Party.Column.RoomID);
+            name = getIntent().getStringExtra(Party.Column.Create_by_name);
+            description = getIntent().getStringExtra(Party.Column.Description);
+            people = getIntent().getIntExtra(Party.Column.People,0);
+            rule = getIntent().getStringExtra(Party.Column.Rule);
+            user_id = getIntent().getStringExtra(UserProfile.Column.UserID);
+            rule_age = getIntent().getStringExtra(Party.Column.Rule_age);
+            rule_gender = getIntent().getStringExtra(Party.Column.Rule_gender);
+            address = getIntent().getStringExtra(Party.Column.Address);
+            appointment = getIntent().getStringExtra(Party.Column.Appointment);
+            telephone = getIntent().getStringExtra(Party.Column.Telephone);
+            createby = getIntent().getStringExtra(UserProfile.Column.Name);
         }
         add_location.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
                 if(position != null) {
-                    manager = new CreatePartyManager(roomid,name,description,people,rule,position);
+                    manager = new CreatePartyManager(roomid,name,description,people,address,appointment,telephone,position,rule_age, rule_gender,user_id,createby );
                     manager.addroom();
                     Intent intent = new Intent(mcontext, Main2Activity.class);
                     intent.putExtra("userid",user_id);

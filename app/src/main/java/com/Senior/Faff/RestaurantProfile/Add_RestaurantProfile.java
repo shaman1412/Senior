@@ -286,7 +286,7 @@ public class Add_RestaurantProfile extends AppCompatActivity implements OnMapRea
             markerOptions.title("Current Position");
             markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN));
             mCurrLocationMarker = mMap.addMarker(markerOptions);
-
+            getlocation = location.getLatitude() + "," + location.getLongitude();
             //description.setText(String.valueOf(myLocation.latitude));
 
         }

@@ -132,8 +132,9 @@ public class Edit_RestaurantProfile extends AppCompatActivity implements OnMapRe
                         }
                     }
                 }
+              String k =  name.getText().toString();
                 restaurant = new Restaurant(name.getText().toString(),address.getText().toString(),description.getText().toString(),period.getText().toString(),telephone.getText().toString(),user_id, type_check);
-                restaurant.setresId(user_id + "pee");
+                restaurant.setresId(resid);
                 restaurant.setLocation(getlocation);
                 Timestamp timestamp = new Timestamp(System.currentTimeMillis());
                 restaurant.setCreate_time(timestamp);
@@ -148,16 +149,16 @@ public class Edit_RestaurantProfile extends AppCompatActivity implements OnMapRe
                                        long id) {
                 String text = type.getSelectedItem().toString();
                 boolean same = false;
-                if(type_list != null) {
-                    for (int i = 0; i < type_list.size(); i++) {
-                        if (text.equals(type_list.get(i))) {
+                if(favourite_type != null) {
+                    for (int i = 0; i < favourite_type.size(); i++) {
+                        if (text.equals(favourite_type.get(i))) {
                             same = true;
                         }
                     }
                 }
                 if(same == false && first == false) {
-                    type_list.add(text);
-                    list_adapter = new List_type(type_list, mcontext);
+                    favourite_type.add(text);
+                    list_adapter = new List_type(favourite_type, mcontext);
                     LinearLayoutManager mLayoutManager  = new LinearLayoutManager(mcontext);
                     mLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
                     mRecyclerView = (RecyclerView) findViewById(R.id.list_show);
@@ -196,27 +197,26 @@ public class Edit_RestaurantProfile extends AppCompatActivity implements OnMapRe
                     Manifest.permission.ACCESS_FINE_LOCATION, true);
         } else if (mMap != null) {
             // Access to the location has been granted to the app.
-            //mMap.setMyLocationEnabled(true);
+            mMap.setMyLocationEnabled(true);
             LocationManager locationManager = (LocationManager)
                     getSystemService(Context.LOCATION_SERVICE);
             Criteria criteria = new Criteria();
 
             location = locationManager.getLastKnownLocation(locationManager
                     .getBestProvider(criteria, false));
-
-            String[] pos = lola.split(",");
-            myLocation = new LatLng(Double.parseDouble(pos[0]),
-                    Double.parseDouble(pos[0]));
-            mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(myLocation,
-                    11));
-            MarkerOptions markerOptions = new MarkerOptions();
-            markerOptions.position(myLocation);
-            markerOptions.title(res_name);
-            markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN));
-            mCurrLocationMarker = mMap.addMarker(markerOptions);
-            //    getlocation = location.getLatitude() + ","  + location.getLongitude();
-
-
+            if(lola != null) {
+                String[] pos = lola.split(",");
+                myLocation = new LatLng(Double.parseDouble(pos[0]),
+                        Double.parseDouble(pos[0]));
+                mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(myLocation,
+                        11));
+                MarkerOptions markerOptions = new MarkerOptions();
+                markerOptions.position(myLocation);
+                markerOptions.title(res_name);
+                markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN));
+                mCurrLocationMarker = mMap.addMarker(markerOptions);
+                getlocation = location.getLatitude() + "," + location.getLongitude();
+            }
         }
     }
 
@@ -232,6 +232,8 @@ public class Edit_RestaurantProfile extends AppCompatActivity implements OnMapRe
             markerOptions.title("Current Position");
             markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN));
             mCurrLocationMarker = mMap.addMarker(markerOptions);
+            getlocation = location.getLatitude() + ","  + location.getLongitude();
+
         }
 
         return false;
@@ -256,11 +258,12 @@ public class Edit_RestaurantProfile extends AppCompatActivity implements OnMapRe
                 para.put(Restaurant.Column.Location, params[0].getLocation());
 
 
-                String url_api = "https://faff-1489402013619.appspot.com/res_profile/update/" + params[0];
+                String url_api = "https://faff-1489402013619.appspot.com/res_profile/update/" + params[0].getresId();
                 URL url = new URL(url_api);
                 connection = (HttpURLConnection)url.openConnection();
                 connection.setRequestMethod("PUT");
                 connection.setDoOutput(true);
+                connection.setDoInput(true);
 
                 OutputStream out = new BufferedOutputStream(connection.getOutputStream());
                 BufferedWriter buffer = new BufferedWriter(new OutputStreamWriter(out, "UTF-8"));
@@ -384,7 +387,7 @@ public class Edit_RestaurantProfile extends AppCompatActivity implements OnMapRe
                     list_adapter = new List_type(favourite_type, mcontext);
                     LinearLayoutManager mLayoutManager  = new LinearLayoutManager(mcontext);
                     mLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
-                    mRecyclerView = (RecyclerView) findViewById(R.id.mRecyclerView);
+                    mRecyclerView = (RecyclerView) findViewById(R.id.list_show);
                     mRecyclerView.setLayoutManager(mLayoutManager);
                     mRecyclerView.setAdapter(list_adapter);
                 }

@@ -15,13 +15,14 @@ public class PartyActivity extends AppCompatActivity {
     private ViewPager pager;
     private Context context;
     private TabLayout tablayout;
+    private Bundle bundle;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_party);
         context = this;
 
-        Party_adapter adapter = new Party_adapter(getSupportFragmentManager(),context);
+        Party_adapter adapter = new Party_adapter(getSupportFragmentManager(),context , bundle);
         pager = (ViewPager)findViewById(R.id.pager);
         pager.setAdapter(adapter);
         pager.setCurrentItem(1);

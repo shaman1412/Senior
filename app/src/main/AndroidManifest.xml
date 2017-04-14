@@ -99,7 +99,8 @@
         <activity android:name=".TestAPI" />
         <activity android:name=".UserProfile.List_typeNodel" />
         <activity android:name=".UserProfile.UpdateUserProfile" />
-        <activity android:name=".RestaurantProfile.Edit_RestaurantProfile"></activity>
+        <activity android:name=".RestaurantProfile.Edit_RestaurantProfile" />
+        <activity android:name=".Fragment.Party.Show_party_profile"></activity>
     </application>
 
 </manifest>

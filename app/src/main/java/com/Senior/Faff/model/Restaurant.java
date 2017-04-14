@@ -39,16 +39,16 @@ public class Restaurant {
     private String location;
     private Timestamp create_time;
     private int score;
-    private String userID;
+    private String userid;
 
 
     // Constructor
-    public Restaurant(String restaurantName, String address, String description,String period, String telephone, String userID,String type_food) {
+    public Restaurant(String name, String address, String description,String period, String telephone, String userid,String type_food) {
         this.name = name;
         this.address= address;
         this.telephone = telephone;
         this.description = description;
-        this.userID = userID;
+        this.userid = userid;
         this.type_food = type_food;
         this.period = period;
 
@@ -109,11 +109,11 @@ public class Restaurant {
     }
 
     public String getUserID() {
-        return userID;
+        return userid;
     }
 
     public void setUserID(String userID) {
-        this.userID = userID;
+        this.userid = userid;
     }
 
     public String getTypefood() {

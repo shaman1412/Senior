@@ -5,10 +5,12 @@ import android.Manifest;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationManager;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -24,9 +26,11 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.Senior.Faff.Fragment.Home.top_resturant_MainFragment;
 import com.Senior.Faff.R;
 import com.Senior.Faff.RestaurantProfile.Customlistview_addvice_adapter;
 import com.Senior.Faff.RestaurantProfile.Restaurant_manager;
+import com.Senior.Faff.RestaurantProfile.Show_RestaurantProfile;
 import com.Senior.Faff.model.Restaurant;
 import com.Senior.Faff.utils.PermissionUtils;
 import com.google.android.gms.common.ConnectionResult;
@@ -36,7 +40,14 @@ import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.gson.Gson;
 
+import java.io.BufferedInputStream;
+import java.io.BufferedReader;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.ArrayList;
 
 /**
@@ -58,6 +69,7 @@ public class Nearby_Fragment extends Fragment implements GoogleApiClient.OnConne
     private Location location;
     private ArrayList<Restaurant> re_list;
     private ListView listview;
+    private  ArrayList<String> lalo;
     int[] resId =  {R.drawable.restaurant1,R.drawable.restaurant2,R.drawable.restaurant3};
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -70,7 +82,6 @@ public class Nearby_Fragment extends Fragment implements GoogleApiClient.OnConne
         Restaurant model = new Restaurant();
 
        listview = (ListView)root.findViewById(R.id.listView12);
-
         googleApiClient = new GoogleApiClient.Builder(getContext())
                 .addApi(LocationServices.API)
                 .addConnectionCallbacks(this)
@@ -129,7 +140,9 @@ public class Nearby_Fragment extends Fragment implements GoogleApiClient.OnConne
         }
         else {
             //createLocationRequest();
-            showlist(listview,re_list,resId);
+            //showlist(listview,re_list,resId);
+
+           // new getData().execute();
             LocationAvailability locationAvailability = LocationServices.FusedLocationApi.getLocationAvailability(googleApiClient);
             if (locationAvailability != null) {
 
@@ -146,8 +159,9 @@ public class Nearby_Fragment extends Fragment implements GoogleApiClient.OnConne
 
                 mLastLocation = LocationServices.FusedLocationApi.getLastLocation(googleApiClient);  // ใช้สำหรัรับตำแหน่งแรกเลย ครั้งเดียว
                 if (mLastLocation != null) {
-
-                    Location target = new Location("Target");
+                     lalo =  locationStringFromLocation(mLastLocation);
+                    new getData().execute(lalo.get(0),lalo.get(1));
+                   /* Location target = new Location("Target");
                     target.setLatitude(37.5219983);
                     target.setLongitude(-122.184);
                     float d = mLastLocation.distanceTo(target);
@@ -157,15 +171,15 @@ public class Nearby_Fragment extends Fragment implements GoogleApiClient.OnConne
                         if( mLastLocation.distanceTo(target) > 1000) {
                             Toast.makeText(getContext(), "Hi", Toast.LENGTH_SHORT).show();
                         }
-                   /* if(location.distanceTo(target) < METERS_100) {
+                   *//* if(location.distanceTo(target) < METERS_100) {
                         // bingo!
-                    }*/
+                    }*//*
 
-                  /*  lo.setText(String.valueOf(mLastLocation.getLongitude()));
-                    la.setText(String.valueOf(mLastLocation.getLatitude()));*/
+                  *//*  lo.setText(String.valueOf(mLastLocation.getLongitude()));
+                    la.setText(String.valueOf(mLastLocation.getLatitude()));*//*
 
                     showlist(listview,re_list,resId);
-
+*/
                 }
 
                 // LocationServices.FusedLocationApi.requestLocationUpdates(googleApiClient, locationRequest, this);
@@ -224,7 +238,7 @@ public class Nearby_Fragment extends Fragment implements GoogleApiClient.OnConne
         }
         Restaurant_manager res_manager = new Restaurant_manager(mcontext);
       //  re_list =  calculatedistance(900 ,type_list,res_manager.showAllRestaurant());
-        listview.setAdapter( new Customlistview_addvice_adapter(getContext(),0,re_list,resId));
+       // listview.setAdapter( new Customlistview_addvice_adapter(getContext(),0,re_list,resId));
         listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> arg0, View view, int position, long id) {
                 if(position == 0){
@@ -236,5 +250,74 @@ public class Nearby_Fragment extends Fragment implements GoogleApiClient.OnConne
             }
         });
     }
+    private class getData extends AsyncTask<String, String, Restaurant[] > {
 
+        String pass;
+        int responseCode;
+        HttpURLConnection connection;
+        String resultjson;
+        @Override
+        protected Restaurant[] doInBackground(String... args) {
+            StringBuilder result = new StringBuilder();
+            String url_api = "https://faff-1489402013619.appspot.com/res_list/nearby/" + args[0] + "/" + args[1] ;
+            try {
+                URL url = new URL(url_api);
+                connection = (HttpURLConnection) url.openConnection();
+                connection.setRequestMethod("GET");
+
+                InputStream in = new BufferedInputStream(connection.getInputStream());
+
+                BufferedReader reader = new BufferedReader(new InputStreamReader(in));
+
+                responseCode = connection.getResponseCode();
+                String line;
+                while ((line = reader.readLine()) != null) {
+                    result.append(line);
+                }
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            if (responseCode == 200) {
+                Log.i("Request Status", "This is success response status from server: " + responseCode);
+                Gson gson = new Gson();
+                Restaurant[] userPro  =  gson.fromJson(result.toString(),  Restaurant[].class);
+                return userPro;
+            } else {
+                Log.i("Request Status", "This is failure response status from server: " + responseCode);
+                return null ;
+
+            }
+
+        }
+        @Override
+        protected void onPostExecute(final Restaurant[] respro) {
+            super.onPostExecute(respro);
+            if (respro != null) {
+                listview.setAdapter( new Customlistview_addvice_adapter(mcontext,0,respro,resId));
+                listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                    public void onItemClick(AdapterView<?> arg0, View view, int position, long id) {
+                        Intent intent = new Intent(mcontext, Show_RestaurantProfile.class);
+                        intent.putExtra(Restaurant.Column.ResID,respro[position].getresId());
+                        intent.putExtra(Restaurant.Column.UserID,respro[position].getUserID());
+                        startActivity(intent);
+                    }
+                });
+
+
+            }
+            else{
+                String message = getString(R.string.login_error_message);
+                Toast.makeText(mcontext, message, Toast.LENGTH_SHORT).show();
+            }
+
+        }
+
+    }
+    public static ArrayList<String> locationStringFromLocation(final Location location) {
+        ArrayList<String> lo = new ArrayList<>();
+        lo.add(Location.convert(location.getLatitude(), Location.FORMAT_DEGREES));
+        lo.add(Location.convert(location.getLongitude(), Location.FORMAT_DEGREES));
+        return  lo;
+    }
 }
