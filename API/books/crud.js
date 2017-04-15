@@ -27,9 +27,13 @@ function getModel1 () {
 }
 
 const router = express.Router();
+// router.use(bodyParser.json({limit: '50mb'}));
+// router.use(bodyParser.urlencoded({limit: '50mb', extended: false}));
 
 // Automatically parse request body as form data
-router.use(bodyParser.urlencoded({ extended: false }));
+router.use(bodyParser.urlencoded({
+    extended: false
+}));
 
 // Set Content-Type for all responses for these routes
 router.use((req, res, next) => {
@@ -122,13 +126,13 @@ router.post(
 	console.log(data.imageUrl);
 
     // Save the data to the database.
-    getModel().create(data, (err, savedData) => {
-      if (err) {
-        next(err);
-        return;
-      }
-      res.redirect(`${req.baseUrl}/${savedData.id}`);
-    });
+    // getModel().create(data, (err, savedData) => {
+      // if (err) {
+        // next(err);
+        // return;
+      // }
+      // res.redirect(`${req.baseUrl}/${savedData.id}`);
+    // });
 	
   });
 /**
