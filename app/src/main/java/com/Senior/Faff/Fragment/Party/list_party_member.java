@@ -7,53 +7,69 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.Senior.Faff.R;
+import com.Senior.Faff.UserProfile.List_type;
 import com.Senior.Faff.UserProfile.List_typeNodel;
+import com.Senior.Faff.model.UserProfile;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
 
-public class list_party_member extends RecyclerView.Adapter<List_typeNodel.ViewHolder>{
-    private ArrayList<String> list ;
+public class list_party_member extends RecyclerView.Adapter<list_party_member.ViewHolder>{
+    private UserProfile[] list ;
     private Context context;
+    private String key;
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
                 // each data item is just a string in this case
 
-        public TextView type_list;
+        public TextView list_name;
         public ImageView image;
+        public Button kick;
+
         public ViewHolder(View v) {
             super(v);
-            type_list = (TextView)v.findViewById(R.id.name);
+            list_name = (TextView)v.findViewById(R.id.name);
             image =  (ImageView)v.findViewById(R.id.image);
+            kick = (Button)v.findViewById(R.id.kick);
         }
     }
 
-    public list_party_member(ArrayList<String> list, Context context){
+    public list_party_member(UserProfile[] list, Context context, String key){
                 this.list = list;
                 this.context = context;
+                this.key = key;
             }
             @Override
-            public List_typeNodel.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+            public list_party_member.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
                 View view = LayoutInflater.from(parent.getContext())
                         .inflate(R.layout.activity_list_party, parent, false);
-                List_typeNodel.ViewHolder vh = new List_typeNodel.ViewHolder(view);
+                ViewHolder vh = new ViewHolder(view);
 
                 return vh;
             }
 
             @Override
-            public void onBindViewHolder(List_typeNodel.ViewHolder holder,  int position) {
+            public void onBindViewHolder(ViewHolder holder, final int position) {
 
-                holder.type_list.setText(list.get(position));
+                holder.list_name.setText(list[position].getName());
+                holder.kick.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        sendRequest(list[position].getUserid(),list);
+                    }
+                });
 
             }
 
             @Override
             public int getItemCount() {
-                return list.size();
+                return list.length;
             }
 
             @Override
@@ -61,58 +77,21 @@ public class list_party_member extends RecyclerView.Adapter<List_typeNodel.ViewH
                 super.onAttachedToRecyclerView(recyclerView);
             }
 
+    public void sendRequest(String userid,UserProfile[] list){
+        DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference().child("All_Room");
+        StringBuilder  setuserid  = new StringBuilder();
+        for(int i =0 ;i<list.length; i++){
+            if(userid != list[i].getName()){
+                setuserid.append(list[i].getName());
+            }
+            if(i != list.length - 1){
+                setuserid.append(",");
+            }
+        }
+        mDatabase.child(key).child("request").setValue(setuserid);
 
-    /* @Override
-     public int getCount() {
-         return list.size();
-     }
-
-     @Override
-     public Object getItem(int position) {
-         return list.get(position);
-     }
-
-     @Override
-     public long getItemId(int position) {
-         return 0;
-     }
-
-
-     @Override
-     public List_type.ViewHolder onCreateViewHolder(ViewGroup parent,
-                                                    int viewType) {
-         // create a new view
-         TextView v = (TextView) LayoutInflater.from(parent.getContext())
-                 .inflate(R.layout.my_text_view, parent, false);
-         // set the view's size, margins, paddings and layout parameters
-         ...
-         ViewHolder vh = new ViewHolder(v);
-         return vh;
-     }
-
-     @Override
-     public View getView(final int position, View convertView, ViewGroup parent) {
-         View view = convertView;
-         if(view == null){
-             LayoutInflater layout = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-             view = layout.inflate(R.layout.activity_list_type, null);
-         }
-
-         Button type_list = (Button)view.findViewById(R.id.type_list);
-         type_list.setText(list.get(position));
-         type_list.setOnClickListener(new View.OnClickListener() {
-             @Override
-             public void onClick(View v) {
-                 list.remove(position);
-                 notifyDataSetChanged();
-             }
-         });
-
-
-
-         return  view;
-     }*/
-            public ArrayList<String> getlist(){
+    }
+            public UserProfile[] getlist(){
                 return  list;
             }
 

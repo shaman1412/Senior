@@ -213,6 +213,7 @@ public class Show_party_profile extends AppCompatActivity implements OnMapReadyC
         }
         Bundle bundle = new Bundle();
         bundle.putString(UserProfile.Column.UserID,olduserid);
+        bundle.putString("key",key);
         party_member_accept fragment_party = new party_member_accept();
         FragmentManager fragmentManager = getSupportFragmentManager();
         fragment_party.setArguments(bundle);
