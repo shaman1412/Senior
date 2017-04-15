@@ -19,10 +19,17 @@
         <TextView
             android:layout_marginLeft="40dp"
             android:layout_width="0dp"
-            android:layout_weight="0.7"
+            android:layout_weight="0.4"
             android:layout_height="wrap_content"
             android:text ="Name"
             android:id="@+id/name"/>
+
+        <Button
+            android:layout_width="0dp"
+            android:layout_weight="0.3"
+            android:layout_height="wrap_content"
+            android:text="Kick"
+            android:id="@+id/kick"/>
 
 
 </LinearLayout>

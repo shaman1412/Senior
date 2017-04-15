@@ -20,16 +20,17 @@
         <activity
             android:name=".LoginActivity"
             android:label="Faff">
-
-        </activity>
-        <activity android:name=".RegisterActivity" />
-        <activity android:name=".MainActivity" />
-        <activity android:name=".Promotion.PromotionActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+
+        </activity>
+        <activity android:name=".RegisterActivity" />
+        <activity android:name=".MainActivity" />
+        <activity android:name=".Promotion.PromotionActivity">
+
         </activity>
         <activity android:name=".Promotion.PromotionView" />
 
