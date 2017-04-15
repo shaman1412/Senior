@@ -104,6 +104,7 @@
                         android:layout_height="wrap_content"
                         android:layout_alignParentTop="true"
                         android:hint="title"
+                        android:inputType="text"
                         android:padding="16dp" />
 
                     <LinearLayout
@@ -165,6 +166,7 @@
                         android:layout_height="wrap_content"
                         android:layout_below="@id/list_show"
                         android:hint="startDate"
+                        android:inputType="datetime"
                         android:padding="16dp" />
 
                     <EditText
@@ -173,6 +175,7 @@
                         android:layout_height="wrap_content"
                         android:layout_below="@id/startDate"
                         android:hint="endDate"
+                        android:inputType="datetime"
                         android:padding="16dp" />
 
                     <EditText
@@ -181,6 +184,7 @@
                         android:layout_height="wrap_content"
                         android:layout_below="@id/endDate"
                         android:hint="promotionDetail"
+                        android:inputType="text"
                         android:padding="16dp" />
 
                     <EditText
@@ -189,6 +193,7 @@
                         android:layout_height="wrap_content"
                         android:layout_below="@id/promotionDetail"
                         android:hint="googleMapLink"
+                        android:inputType="text"
                         android:padding="16dp" />
 
                     <Button

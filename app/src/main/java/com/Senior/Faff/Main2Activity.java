@@ -265,7 +265,7 @@ public class Main2Activity extends AppCompatActivity {
                 Intent b = new Intent(context,ChatMainActivity.class);
                 startActivity(b);
                 break;
-            case R.id.History:
+            case R.id.ShowPromotion:
                 Intent i = new Intent(context, PromotionShow.class);
                 startActivity(i);
                 break;

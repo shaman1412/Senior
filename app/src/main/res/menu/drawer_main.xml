@@ -20,9 +20,9 @@
             android:icon="@drawable/favourite_drawer_home"
             android:title="Favourite" />
         <item
-            android:id="@+id/History"
+            android:id="@+id/ShowPromotion"
             android:icon="@drawable/history_drawer_home"
-            android:title="History" />
+            android:title="Show Promotion" />
 
     </group>
     <item android:title="Restaurant">
