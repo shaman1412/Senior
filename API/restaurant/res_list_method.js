@@ -119,6 +119,8 @@ function all_restaurant(cb){
 	connection.end();
 }
 
+
+
 module.exports = {
  nearby_list:  nearby_list,
  all_restaurant : all_restaurant,

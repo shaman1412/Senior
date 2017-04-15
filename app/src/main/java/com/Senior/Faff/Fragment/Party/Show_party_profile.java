@@ -7,6 +7,7 @@ import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationManager;
 import android.os.AsyncTask;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -15,6 +16,7 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -24,6 +26,7 @@ import com.Senior.Faff.R;
 import com.Senior.Faff.UserProfile.List_typeNodel;
 import com.Senior.Faff.model.Party;
 import com.Senior.Faff.model.Restaurant;
+import com.Senior.Faff.model.UserProfile;
 import com.Senior.Faff.utils.PermissionUtils;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -62,6 +65,10 @@ public class Show_party_profile extends AppCompatActivity implements OnMapReadyC
     private RecyclerView mRecyclerView;
     private String userid,partyid;
     private ArrayList<Party> party_list;
+    private String key;
+    private String Userid;
+    private String olduserid;
+    private Button sent_request;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -84,6 +91,16 @@ public class Show_party_profile extends AppCompatActivity implements OnMapReadyC
         mRecyclerView = (RecyclerView)findViewById(R.id.mRecyclerView);
         address = (TextView)findViewById(R.id.address);
         telephone = (TextView)findViewById(R.id.telephone);
+        sent_request = (Button)findViewById(R.id.sent_request);
+        Userid = "peeranat";
+
+
+        send_request.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                sendRequest();
+            }
+        });
 
     new getData().execute();
     }
@@ -108,6 +125,7 @@ public class Show_party_profile extends AppCompatActivity implements OnMapReadyC
                 @Override
                 public void onDataChange (DataSnapshot dataSnapshot){
                     for (DataSnapshot postSnapshot: dataSnapshot.getChildren()) {
+                        key = postSnapshot.getKey();
                         Party post= postSnapshot.getValue(Party.class);
                         setvalue(post);
                     }
@@ -148,7 +166,7 @@ public class Show_party_profile extends AppCompatActivity implements OnMapReadyC
                 myLocation = new LatLng(Double.parseDouble(pos[0]),
                         Double.parseDouble(pos[0]));
                 mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(myLocation,
-                        11));
+                        8));
                 MarkerOptions markerOptions = new MarkerOptions();
                 markerOptions.position(myLocation);
                 markerOptions.title(res_name);
@@ -180,5 +198,33 @@ public class Show_party_profile extends AppCompatActivity implements OnMapReadyC
         createby.setText(partypro.getCreatename());
         telephone.setText(partypro.getTelephone());
         setTitle(partypro.getName());
+        olduserid = partypro.getRequest();
+
+        if(olduserid != null) {
+            String[] a = olduserid.split(",");
+            for(int i= 0; i< a.length ; i++) {
+                if(a[i].equals(Userid)) {
+                    View sd = findViewById(R.id.send_request);
+                    sd.setVisibility(View.GONE);
+                    View st = findViewById(R.id.sent_request);
+                    st.setVisibility(View.VISIBLE);
+                }
+            }
+        }
+        Bundle bundle = new Bundle();
+        bundle.putString(UserProfile.Column.UserID,olduserid);
+        party_member_accept fragment_party = new party_member_accept();
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        fragment_party.setArguments(bundle);
+        fragmentManager.beginTransaction().add(R.id.member,fragment_party).commit();
+    }
+    public void sendRequest(){
+        DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference().child("All_Room");
+        if(olduserid != null){
+            Userid = olduserid + "," + Userid  ;
+        }
+        mDatabase.child(key).child("request").setValue(Userid);
+
+
     }
 }

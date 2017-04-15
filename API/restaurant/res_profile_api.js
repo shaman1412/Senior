@@ -65,6 +65,7 @@ router.put('/update/:resid',(req,res,next)=>{
     name : json.name,
     type_food :  json.type_food,
     description : json.description,
+    telephone: json.telephone,
     period : json.period,
     address : json.address,
     location :  json.location
