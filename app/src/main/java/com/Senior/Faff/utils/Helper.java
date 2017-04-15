@@ -108,9 +108,9 @@ public class Helper {
 
                 outputStream = new DataOutputStream(connection.getOutputStream());
 
-                for (int i=0; i < imgPath.size(); i++) {
+                for (int i = 0; i < imgPath.size(); i++) {
                     String filepath = imgPath.get(i);
-                    Log.i(TAG, "  i : "+i+"  filename : "+filepath);
+                    Log.i(TAG, "  i : " + i + "  filename : " + filepath);
                     String[] q = filepath.split("/");
                     int idx = q.length - 1;
 
@@ -173,6 +173,35 @@ public class Helper {
             }
         } else {
             return "Wrong Size";
+        }
+    }
+
+    public String getRequest(String urlTo) throws Exception {
+        HttpURLConnection connection = null;
+        InputStream inputStream = null;
+
+        String result = "";
+
+        try {
+            URL url = new URL(urlTo);
+            connection = (HttpURLConnection) url.openConnection();
+
+            connection.setDoInput(true);
+            connection.setDoOutput(false);
+            connection.setUseCaches(false);
+
+            connection.setRequestMethod("GET");
+            if (200 != connection.getResponseCode()) {
+                throw new Exception("Failed to upload code:" + connection.getResponseCode() + " " + connection.getResponseMessage());
+            }
+
+            inputStream = connection.getInputStream();
+            result = this.convertStreamToString(inputStream);
+            inputStream.close();
+
+            return result;
+        } catch (Exception e) {
+            throw new Exception(e);
         }
     }
 
