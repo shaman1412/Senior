@@ -23,84 +23,82 @@ public class Promotion {
         public static final String Location = "promotionlocation";
     }
 
-    private int id;
-    private String title;
-    private String startDate;
-    private String endDate;
-    private String promotionDetail;
-    private String googleMapLink;
-    private String type;
+    private int promotionid;
+    private String promotionname;
+    private String promotionstartdate;
+    private String promotionenddate;
+    private String promotiondetail;
+    private String promotionlocation;
+    private String promotiontype;
     private String promotionpictureurl;
 
     // Constructor
 
-    public Promotion(String title, String promotionpictureurl, String type, String startDate, String endDate, String promotionDetail, String googleMapLink) {
-        this.title = title;
-        this.startDate = startDate;
-        this.endDate = endDate;
-        this.promotionDetail = promotionDetail;
-        this.googleMapLink = googleMapLink;
-        this.type = type;
+    public Promotion(String promotionname, String promotionpictureurl, String promotiontype, String promotionstartdate, String promotionenddate, String promotiondetail, String promotionlocation) {
+        this.promotionname = promotionname;
+        this.promotionstartdate = promotionstartdate;
+        this.promotionenddate = promotionenddate;
+        this.promotiondetail = promotiondetail;
+        this.promotionlocation = promotionlocation;
+        this.promotiontype = promotiontype;
         this.promotionpictureurl = promotionpictureurl;
     }
 
-
     //region getter setter
-
     public int getId() {
-        return id;
+        return promotionid;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public void setId(int promotionid) {
+        this.promotionid = promotionid;
     }
 
     public String getTitle() {
-        return title;
+        return promotionname;
     }
 
-    public void setTitle(String title) {
-        this.title = title;
+    public void setTitle(String promotionname) {
+        this.promotionname = promotionname;
     }
 
     public String getStartDate() {
-        return startDate;
+        return promotionstartdate;
     }
 
-    public void setStartDate(String startDate) {
-        this.startDate = startDate;
+    public void setStartDate(String promotionstartdate) {
+        this.promotionstartdate = promotionstartdate;
     }
 
     public String getEndDate() {
-        return endDate;
+        return promotionenddate;
     }
 
-    public void setEndDate(String endDate) {
-        this.endDate = endDate;
+    public void setEndDate(String promotionenddate) {
+        this.promotionenddate = promotionenddate;
     }
 
     public String getPromotionDetail() {
-        return promotionDetail;
+        return promotiondetail;
     }
 
-    public void setPromotionDetail(String promotionDetail) {
-        this.promotionDetail = promotionDetail;
+    public void setPromotionDetail(String promotiondetail) {
+        this.promotiondetail = promotiondetail;
     }
 
     public String getGoogleMapLink() {
-        return googleMapLink;
+        return promotionlocation;
     }
 
-    public void setGoogleMapLink(String googleMapLink) {
-        this.googleMapLink = googleMapLink;
+    public void setGoogleMapLink(String promotionlocation) {
+        this.promotionlocation = promotionlocation;
     }
 
     public String getType() {
-        return type;
+        return promotiontype;
     }
 
-    public void setType(String type) {
-        this.type = type;
+    public void setType(String promotiontype) {
+        this.promotiontype = promotiontype;
     }
 
     public String getPromotionpictureurl() {
@@ -111,6 +109,19 @@ public class Promotion {
         this.promotionpictureurl = promotionpictureurl;
     }
 
-
     //endregion
+
+    @Override
+    public String toString() {
+        return "Promotion{" +
+                "promotionid=" + promotionid +
+                ", promotionname='" + promotionname + '\'' +
+                ", promotionstartdate='" + promotionstartdate + '\'' +
+                ", promotionenddate='" + promotionenddate + '\'' +
+                ", promotiondetail='" + promotiondetail + '\'' +
+                ", promotionlocation='" + promotionlocation + '\'' +
+                ", promotiontype='" + promotiontype + '\'' +
+                ", promotionpictureurl='" + promotionpictureurl + '\'' +
+                '}';
+    }
 }

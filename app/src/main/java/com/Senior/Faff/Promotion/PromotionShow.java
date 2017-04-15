@@ -2,9 +2,6 @@ package com.Senior.Faff.Promotion;
 
 import android.content.Context;
 import android.content.Intent;
-import android.database.Cursor;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -16,23 +13,24 @@ import android.widget.Toast;
 
 import com.Senior.Faff.R;
 import com.Senior.Faff.model.Promotion;
-import com.Senior.Faff.model.promotion_view_list;
-import com.Senior.Faff.utils.DatabaseManager;
 import com.Senior.Faff.utils.Helper;
 import com.google.gson.Gson;
 
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
 
-public class PromotionShow extends AppCompatActivity {
+
+public class PromotionShow extends AppCompatActivity{
 
     private static final String TAG = PromotionShow.class.getSimpleName();
 
-    private Context mContext;
-    DatabaseManager mManager;
-    ArrayList<Bitmap> bmap = new ArrayList<>();
+    private static Context mContext;
+    private String str;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,53 +39,63 @@ public class PromotionShow extends AppCompatActivity {
 
         mContext = this;
 
-        ListPromotion lsp = new ListPromotion();
+        ListPromotion lsp = new ListPromotion(new ListPromotion.AsyncResponse() {
+            @Override
+            public void processFinish(String output) throws JSONException {
+                JSONObject item = new JSONObject(output);
+                JSONArray jsarr = item.getJSONArray("items");
+
+                ArrayList<String[]> bitmap_url_list = new ArrayList<>();
+                final ArrayList<Promotion> pro_list = new ArrayList<>();
+
+                for(int i=0; i<jsarr.length(); i++)
+                {
+                    String[] arr_url = jsarr.getJSONObject(i).getString("promotionpictureurl").split(",");
+                    bitmap_url_list.add(arr_url);
+                    Promotion pro = new Gson().fromJson(jsarr.getJSONObject(i).toString(), Promotion.class);
+                    Log.i(TAG, "   interface data from GET is : " + pro.toString());
+                    pro_list.add(pro);
+                }
+
+                ListView list = (ListView) findViewById(R.id.listView1) ;
+                PromotionShowAdapter adapter = new PromotionShowAdapter(PromotionShow.this, pro_list);
+                list.setAdapter(adapter);
+
+                list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                        Promotion pro = pro_list.get(position);
+                        int proid = pro.getId();
+
+                        Intent i = new Intent(getApplicationContext(), PromotionView.class);
+                        i.putExtra("id", proid);
+                        startActivity(i);
+                    }
+                });
+
+                //finish();
+            }
+        });
         lsp.execute("");
-        String dat = lsp.getResult();
-        Log.i(TAG, "  data from GET is : "+dat);
-
-//        final ArrayList<promotion_view_list> data;
-//        data = getAllPromotion();
-//
-//
-//        ListView list = (ListView) findViewById(R.id.listView1) ;
-//        PromotionShowAdapter adapter = new PromotionShowAdapter(this, data);
-//        list.setAdapter(adapter);
-//
-//        list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-//            @Override
-//            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-//
-//                promotion_view_list tmp = data.get(position);
-//                Helper h = new Helper();
-//                ArrayList<String> path = new ArrayList<String>();
-//                for(int i=0; i<tmp.getPicture().size(); i++)
-//                {
-//                    String txt = h.saveToInternalStorage(tmp.getPicture().get(i), getApplicationContext(), tmp.getTitle()+ i);
-//                    path.add(txt);
-//                    Log.i(TAG, "ID is " + tmp.getId().toString() + "    Path: "+ txt);
-//                }
-//                Promotion pro = new Promotion(tmp.getTitle(),"","", tmp.getStartDate(), tmp.getEndDate(), tmp.getPromotionDetail(), tmp.getLocation());
-//                pro.setId(Integer.parseInt(tmp.getId()));
-//
-//                Intent i = new Intent(getApplicationContext(), PromotionView.class);
-//                String tmp_object = new Gson().toJson(pro);
-//                i.putExtra("pro", tmp_object);
-//                String tmp_object1 = new Gson().toJson(path);
-//                i.putExtra("path", tmp_object1);
-//                startActivity(i);
-//            }
-//        });
-
+//        try {
+//            Log.i(TAG, "   main data from GET is : " + lsp.get());
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
     }
 
-    private class ListPromotion extends AsyncTask<String, String, String> {
+    private static class ListPromotion extends AsyncTask<String, String, String> {
 
-        private ArrayList<Promotion> promotion_list_return = new ArrayList<>();
         String result = "";
 
-        public String getResult() {
-            return result;
+        public interface AsyncResponse {
+            void processFinish(String output) throws JSONException;
+        }
+
+        public AsyncResponse delegate = null;
+
+        public ListPromotion(AsyncResponse delegate){
+            this.delegate = delegate;
         }
 
         @Override
@@ -98,7 +106,6 @@ public class PromotionShow extends AppCompatActivity {
                 //URL url = new URL("http://localhost:8080/promotion_list");
 
                 result = new Helper().getRequest(url.toString());
-                Log.i(TAG, "result for getRequest(url.toString()  :  " + result);
 
             } catch (Exception ex) {
                 ex.printStackTrace();
@@ -109,54 +116,16 @@ public class PromotionShow extends AppCompatActivity {
         @Override
         protected void onPostExecute(String result) {
             if (result != "") {
-                finish();
                 Toast.makeText(mContext, result, Toast.LENGTH_LONG).show();
+                try {
+                    delegate.processFinish(result);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
             } else {
                 Toast.makeText(mContext, "Fail", Toast.LENGTH_SHORT).show();
             }
         }
     }
 
-//    private ArrayList<promotion_view_list> getAllPromotion(){
-//        Cursor c = mManager.getAllPromotion();
-//        String check1="";                           //for keeping previous id
-//        String check2="";                           //for kepping next id
-//        ArrayList<promotion_view_list> ls = new ArrayList<>();
-//        if(c.moveToFirst()) {
-//            do {
-//                if(c.isFirst()&&c.isLast())
-//                {
-//                    byte[] imgByte = c.getBlob(2);
-//                    bmap.add(BitmapFactory.decodeByteArray(imgByte, 0, imgByte.length));
-//                    promotion_view_list l = new promotion_view_list(c.getString(0),c.getString(1),bmap,c.getString(3),c.getString(4),c.getString(5),c.getString(6));
-//                    ls.add(l);
-//                }
-//                else if(c.isLast()){
-//                    byte[] imgByte = c.getBlob(2);
-//                    bmap.add(BitmapFactory.decodeByteArray(imgByte, 0, imgByte.length));
-//                    promotion_view_list l = new promotion_view_list(c.getString(0),c.getString(1),bmap,c.getString(3),c.getString(4),c.getString(5),c.getString(6));
-//                    ls.add(l);
-//                }
-//                else{
-//                    check1 = c.getString(0);
-//                    c.moveToNext();
-//                    check2 = c.getString(0);
-//                    c.moveToPrevious();
-//                    if(check1.equals(check2)){
-//                        byte[] imgByte = c.getBlob(2);
-//                        bmap.add(BitmapFactory.decodeByteArray(imgByte, 0, imgByte.length));
-//                    }
-//                    else{
-//                        byte[] imgByte = c.getBlob(2);
-//                        bmap.add(BitmapFactory.decodeByteArray(imgByte, 0, imgByte.length));
-//                        promotion_view_list l = new promotion_view_list(c.getString(0),c.getString(1),bmap,c.getString(3),c.getString(4),c.getString(5),c.getString(6));
-//                        ls.add(l);
-//                        bmap = new ArrayList<>();
-//                    }
-//                }
-//            } while (c.moveToNext());
-//            mManager.close();
-//        }
-//        return ls;
-//    }
 }
