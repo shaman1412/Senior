@@ -2,6 +2,7 @@ package com.Senior.Faff.RestaurantProfile;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -81,9 +82,9 @@ public class Comment_RestaurantFragment extends Fragment {
 
                 map.put("id", id);
 
-                ProfileManager pm = new ProfileManager(getActivity());
-                String userName = pm.getUserName(id);
-                map1.put("name", userName);
+//                ProfileManager pm = new ProfileManager(getActivity());
+//                String userName = pm.getUserName(id);
+                map1.put("name", "uid : "+id);
 
                 map2.put("comment", c);
 
@@ -101,6 +102,27 @@ public class Comment_RestaurantFragment extends Fragment {
 
         adapter = new CommentAdapter(getContext(), list);
         listView = (ListView)root.findViewById(R.id.listView);
+        listView.setOnTouchListener(new ListView.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                int action = event.getAction();
+                switch (action) {
+                    case MotionEvent.ACTION_DOWN:
+                        // Disallow ScrollView to intercept touch events.
+                        v.getParent().requestDisallowInterceptTouchEvent(true);
+                        break;
+
+                    case MotionEvent.ACTION_UP:
+                        // Allow ScrollView to intercept touch events.
+                        v.getParent().requestDisallowInterceptTouchEvent(false);
+                        break;
+                }
+
+                // Handle ListView touch events.
+                v.onTouchEvent(event);
+                return true;
+            }
+        });
         listView.setAdapter(adapter);
 
         comment.addValueEventListener(new ValueEventListener() {
@@ -136,15 +158,20 @@ public class Comment_RestaurantFragment extends Fragment {
 //                list_of_comment.clear();
 //                list_of_comment.addAll(setComment);
 
-
-                list.clear();
-                for(int q=0; q<setComment.size();q++)
+                if(setId.size() == setComment.size() && setId.size() == setDate.size() && setId.size() == setName.size())
                 {
-                    Comment com = new Comment(Integer.parseInt(setId.get(q)),setName.get(q),setComment.get(q),setDate.get(q));
-                    list.add(com);
-                }
+                    list.clear();
+                    for(int q=0; q<setComment.size();q++)
+                    {
+                        Comment com = new Comment(setId.get(q),setName.get(q),setComment.get(q),setDate.get(q));
+                        list.add(com);
+                    }
 
-                adapter.notifyDataSetChanged();
+                    adapter.notifyDataSetChanged();
+                    Log.i(Comment_RestaurantFragment.class.getSimpleName(), "size equal : "+setId.size());
+                }
+                else
+                    Log.i(Comment_RestaurantFragment.class.getSimpleName(), "size c d i n : "+setComment.size()+" "+setDate.size()+" "+setId.size()+" "+setName.size());
             }
 
             @Override
