@@ -20,24 +20,24 @@ public class promotion_view_list {
     String id;
     String title;
     ArrayList<Bitmap> picture;
+    String type;
     String startDate;
     String endDate;
     String promotionDetail;
     String location;
 
-    public promotion_view_list(String id, String title, ArrayList<Bitmap> picture, String startDate, String endDate, String promotionDetail, String location) {
+    public promotion_view_list(String id, String title, ArrayList<Bitmap> picture, String type, String startDate, String endDate, String promotionDetail, String location) {
         this.id = id;
         this.title = title;
         this.picture = picture;
+        this.type = type;
         this.startDate = startDate;
         this.endDate = endDate;
         this.promotionDetail = promotionDetail;
         this.location = location;
     }
 
-
-    //region getter setter
-
+    //region getter
     public String getId() {
         return id;
     }
@@ -60,6 +60,14 @@ public class promotion_view_list {
 
     public void setPicture(ArrayList<Bitmap> picture) {
         this.picture = picture;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
     }
 
     public String getStartDate() {
@@ -94,7 +102,7 @@ public class promotion_view_list {
         this.location = location;
     }
 
-    //endregion
+    //endregion getter
 
     @Override
     public String toString() {
@@ -102,11 +110,11 @@ public class promotion_view_list {
                 "id='" + id + '\'' +
                 ", title='" + title + '\'' +
                 ", picture=" + picture +
+                ", type='" + type + '\'' +
                 ", startDate='" + startDate + '\'' +
                 ", endDate='" + endDate + '\'' +
                 ", promotionDetail='" + promotionDetail + '\'' +
                 ", location='" + location + '\'' +
                 '}';
     }
-
 }

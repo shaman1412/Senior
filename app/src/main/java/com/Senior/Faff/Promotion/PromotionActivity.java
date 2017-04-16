@@ -27,36 +27,17 @@ import android.widget.Toast;
 
 import com.Senior.Faff.Main2Activity;
 import com.Senior.Faff.R;
-import com.Senior.Faff.UserProfile.InsertUserProfile;
 import com.Senior.Faff.UserProfile.List_type;
 import com.Senior.Faff.model.Promotion;
-import com.Senior.Faff.model.PromotionPicture;
-import com.Senior.Faff.model.UserProfile;
-import com.Senior.Faff.utils.DatabaseManager;
 import com.Senior.Faff.utils.Helper;
 import com.google.gson.Gson;
 
-import org.json.JSONObject;
 
-import java.io.BufferedOutputStream;
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
 import java.io.ByteArrayOutputStream;
-import java.io.DataOutputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.OutputStream;
-import java.io.OutputStreamWriter;
-import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Map;
-import java.util.Objects;
 
 public class PromotionActivity extends AppCompatActivity {
 

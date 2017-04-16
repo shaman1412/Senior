@@ -1,13 +1,17 @@
 package com.Senior.Faff.Promotion;
 
+import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.Senior.Faff.R;
 import com.Senior.Faff.model.Promotion;
@@ -16,55 +20,106 @@ import com.Senior.Faff.utils.DatabaseManager;
 import com.Senior.Faff.utils.Helper;
 import com.google.gson.Gson;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.w3c.dom.Text;
 
+import java.net.URL;
 import java.util.ArrayList;
 
 public class PromotionView extends AppCompatActivity {
-
     public static final String TAG = PromotionView.class.getSimpleName();
+
     //    ListView mListPromotion;
-    RecyclerView mListPromotion;
-    DatabaseManager mManager;
-    ArrayList<promotion_view_list> data;
-    ArrayList<Bitmap> bmap = new ArrayList<>();
+    static Context mContext;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_promotion_view);
 
+        mContext = this;
         Intent i = getIntent();
-        String tmp = i.getExtras().getString("pro");
-        Promotion data = new Gson().fromJson(tmp, Promotion.class);
+        String id = String.valueOf(i.getExtras().getInt("id"));
 
-        TextView textView1 = (TextView) findViewById(R.id.textView3);
-        textView1.setText(data.getTitle());
+        ListPromotion lsp = new ListPromotion(new ListPromotion.AsyncResponse() {
+            @Override
+            public void processFinish(String output) throws JSONException {
+                JSONObject item = new JSONObject(output);
 
-        TextView textView2 = (TextView) findViewById(R.id.textView4);
-        textView2.setText(data.getStartDate());
+                Log.i(TAG, "  item is : "+item.toString());
 
-        TextView textView3 = (TextView) findViewById(R.id.textView5);
-        textView3.setText(data.getEndDate());
+                Promotion data = new Gson().fromJson(item.toString(), Promotion.class);
+                String[] arr_url = item.getString("promotionpictureurl").split(",");
 
-        TextView textView4 = (TextView) findViewById(R.id.textView6);
-        textView4.setText(data.getPromotionDetail());
+                TextView textView1 = (TextView) findViewById(R.id.textView3);
+                textView1.setText(data.getTitle());
 
-        TextView textView5 = (TextView) findViewById(R.id.textView7);
-        textView5.setText(data.getGoogleMapLink());
+                TextView textView2 = (TextView) findViewById(R.id.textView4);
+                textView2.setText(data.getStartDate());
 
-        tmp = i.getExtras().getString("path");
-        ArrayList<String> path = new Gson().fromJson(tmp, ArrayList.class);
-        ArrayList<Bitmap> arr_bmp = new ArrayList<>();
-        Helper h = new Helper();
-        for(int j=0; j<path.size(); j++)
-        {
-            arr_bmp.add(h.loadImageFromStorage(path.get(j),data.getTitle()+String.valueOf(j)));
-        }
-        RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recyclerview);
-        PromotionViewImageRecyclerViewAdapter adapter = new PromotionViewImageRecyclerViewAdapter(getApplicationContext(), arr_bmp);
-        recyclerView.setAdapter(adapter);
+                TextView textView3 = (TextView) findViewById(R.id.textView5);
+                textView3.setText(data.getEndDate());
+
+                TextView textView4 = (TextView) findViewById(R.id.textView6);
+                textView4.setText(data.getPromotionDetail());
+
+                TextView textView5 = (TextView) findViewById(R.id.textView7);
+                textView5.setText(data.getGoogleMapLink());
+
+                RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recyclerview);
+                PromotionViewImageRecyclerViewAdapter adapter = new PromotionViewImageRecyclerViewAdapter(mContext, arr_url);
+                recyclerView.setAdapter(adapter);
+
+            }
+        });
+        lsp.execute(id);
 
     }
+
+    private static class ListPromotion extends AsyncTask<String, String, String> {
+
+        String result = "";
+
+        public interface AsyncResponse {
+            void processFinish(String output) throws JSONException;
+        }
+
+        public PromotionView.ListPromotion.AsyncResponse delegate = null;
+
+        public ListPromotion(PromotionView.ListPromotion.AsyncResponse delegate){
+            this.delegate = delegate;
+        }
+
+        @Override
+        protected String doInBackground(String... params) {
+            try {
+                URL url = new URL("https://faff-1489402013619.appspot.com/promotion_list/"+Integer.parseInt(params[0]));
+                //URL url = new URL("http://localhost:8080/promotion_list");
+
+                result = new Helper().getRequest(url.toString());
+
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
+            return result;
+        }
+
+        @Override
+        protected void onPostExecute(String result) {
+            if (result != "") {
+                Toast.makeText(mContext, result, Toast.LENGTH_LONG).show();
+                try {
+                    delegate.processFinish(result);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            } else {
+                Toast.makeText(mContext, "Fail", Toast.LENGTH_SHORT).show();
+            }
+        }
+    }
+
 }
 

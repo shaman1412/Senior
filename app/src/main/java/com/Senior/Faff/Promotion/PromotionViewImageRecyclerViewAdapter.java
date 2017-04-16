@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import com.Senior.Faff.R;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
@@ -20,12 +21,12 @@ public class PromotionViewImageRecyclerViewAdapter extends RecyclerView.Adapter<
 
     private LayoutInflater inflater;
     private Context context;
-    private ArrayList<Bitmap> bitmap;
+    private String[] img_path;
 
-    public PromotionViewImageRecyclerViewAdapter (Context context, ArrayList<Bitmap> bitmap) {
+    public PromotionViewImageRecyclerViewAdapter (Context context, String[] img_path) {
         inflater = LayoutInflater.from(context);
         this.context = context;
-        this.bitmap = bitmap;
+        this.img_path = img_path;
     }
 
     @Override
@@ -38,12 +39,12 @@ public class PromotionViewImageRecyclerViewAdapter extends RecyclerView.Adapter<
     @Override
     public void onBindViewHolder(PromotionViewImageRecyclerViewAdapter.MyViewHolder holder, int position) {
         holder.imageView.setTag(position);
-        holder.imageView.setImageBitmap(bitmap.get(position));
+        Picasso.with(context).load(img_path[position]).into(holder.imageView);
     }
 
     @Override
     public int getItemCount() {
-        return bitmap.size();
+        return img_path.length;
     }
 
     class MyViewHolder extends RecyclerView.ViewHolder

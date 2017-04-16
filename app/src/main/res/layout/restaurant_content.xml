@@ -3,47 +3,50 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:card_view="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/scroll"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:padding="20dp"
-    android:id="@+id/scroll"
-    app:layout_behavior="@string/appbar_scrolling_view_behavior"
     android:background="#ededed"
-    >
+    android:padding="20dp"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
+        android:gravity="center"
         android:orientation="vertical"
-        android:gravity="center">
+        android:weightSum="1">
+
         <android.support.v7.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             card_view:cardCornerRadius="4dp">
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:padding="10dp"
+                android:gravity="center"
                 android:orientation="vertical"
-                android:gravity="center">
+                android:padding="10dp">
+
                 <TextView
                     android:id="@+id/name"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_margin="1dp"
                     android:text="Restaurant Name"
-                    android:textSize="7pt"
-                    android:textColor="#000000" />
+                    android:textColor="#000000"
+                    android:textSize="7pt" />
 
                 <TextView
                     android:id="@+id/telephone"
-                    android:layout_marginTop="5dp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_margin="1dp"
+                    android:layout_marginTop="5dp"
                     android:text="telephone"
-                    android:textSize="5pt"
-                    android:textColor="#000000" />
+                    android:textColor="#000000"
+                    android:textSize="5pt" />
 
                 <TextView
                     android:id="@+id/period"
@@ -51,8 +54,8 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="5dp"
                     android:text="Period"
-                    android:textSize="5pt"
-                    android:textColor="#000000" />
+                    android:textColor="#000000"
+                    android:textSize="5pt" />
                 <!--<TextView
                     android:id="@+id/gemail"
                     android:layout_width="wrap_content"
@@ -111,11 +114,12 @@
 
             </LinearLayout>
         </android.support.v7.widget.CardView>
+
         <android.support.v7.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            card_view:cardCornerRadius="4dp"
-            android:layout_marginTop="10dp">
+            android:layout_marginTop="10dp"
+            card_view:cardCornerRadius="4dp">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -227,45 +231,53 @@
 
 
         </android.support.v7.widget.CardView>
+
         <android.support.v7.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            card_view:cardCornerRadius="4dp"
             android:layout_marginTop="10dp"
-            >
+            card_view:cardCornerRadius="4dp">
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center"
                 android:orientation="vertical">
+
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Rating"
                     android:layout_marginTop="5dp"
-                    android:textSize="7pt"
-                    />
+                    android:text="Rating"
+                    android:textSize="7pt" />
+
                 <RatingBar
+                    android:id="@+id/rate"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:numStars="5"
-                    android:stepSize="1.0"
-                    android:id="@+id/rate"
-                   />
+                    android:stepSize="1.0" />
+
                 <TextView
+                    android:id="@+id/text_rate"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="5dp"
                     android:text="rate"
-                    android:textSize="7pt"
-                    android:id="@+id/text_rate"
-                    />
-
+                    android:textSize="7pt" />
 
             </LinearLayout>
 
         </android.support.v7.widget.CardView>
 
+        <FrameLayout
+            android:id="@+id/comment_restaurant_content"
+            android:layout_width="match_parent"
+            android:layout_height="500dp"
+            android:layout_marginBottom="10dp"
+            android:layout_marginTop="10dp">
+
+        </FrameLayout>
 
     </LinearLayout>
 

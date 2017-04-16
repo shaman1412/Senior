@@ -13,6 +13,7 @@ import com.Senior.Faff.R;
 import com.Senior.Faff.model.Promotion;
 import com.Senior.Faff.model.PromotionPicture;
 import com.Senior.Faff.model.promotion_view_list;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
@@ -24,9 +25,9 @@ public class PromotionShowAdapter extends BaseAdapter{
 
     public static final String TAG = PromotionShowAdapter.class.getSimpleName();
     Context mContext;
-    ArrayList<promotion_view_list> promotions = new ArrayList<>();
+    ArrayList<Promotion> promotions = new ArrayList<>();
 
-    public PromotionShowAdapter(Context mContext, ArrayList<promotion_view_list> promotions) {
+    public PromotionShowAdapter(Context mContext, ArrayList<Promotion> promotions) {
         this.mContext = mContext;
         this.promotions = promotions;
     }
@@ -43,7 +44,7 @@ public class PromotionShowAdapter extends BaseAdapter{
 
     @Override
     public long getItemId(int position) {
-        return Integer.parseInt(promotions.get(position).getId());
+        return promotions.get(position).getId();
     }
 
     @Override
@@ -58,9 +59,10 @@ public class PromotionShowAdapter extends BaseAdapter{
         TextView textView2 = (TextView)convertView.findViewById(R.id.textView2);
         textView2.setText(promotions.get(position).getPromotionDetail());
 
-
         ImageView imageView = (ImageView)convertView.findViewById(R.id.imageView1);
-        imageView.setImageBitmap(promotions.get(position).getPicture().get(0));
+        String url = promotions.get(position).getPromotionpictureurl().split(",")[0];
+
+        Picasso.with(mContext).load(url).into(imageView);
 
         return convertView;
     }

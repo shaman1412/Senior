@@ -19,12 +19,12 @@ public class Comment {
     }
 
     private int id;
-    private int userID;
+    private String userID;
     private String comment;
     private String dateTime;
     private String name;
 
-    public Comment(int userID, String name, String comment, String dateTime){
+    public Comment(String userID, String name, String comment, String dateTime){
         this.userID = userID;
         this.name = name;
         this.comment = comment;
@@ -43,11 +43,11 @@ public class Comment {
         this.id = id;
     }
 
-    public int getUserID() {
+    public String getUserID() {
         return userID;
     }
 
-    public void setUserID(int userID) {
+    public void setUserID(String userID) {
         this.userID = userID;
     }
 
