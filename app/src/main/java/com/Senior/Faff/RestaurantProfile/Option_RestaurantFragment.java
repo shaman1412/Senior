@@ -10,8 +10,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.Senior.Faff.Fragment.Home.advice_restaurant_MainFragment;
 import com.Senior.Faff.Fragment.Party.Show_party_profile;
 import com.Senior.Faff.R;
 import com.Senior.Faff.UserProfile.ShowUserprofile;
@@ -28,20 +30,25 @@ public class Option_RestaurantFragment extends Fragment {
     }
         
     private Button add,edit,show;
-    private String id;
+    private String userid;
     private Context mconctext;
+    View root;
+    private LinearLayout object_set;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View root =  inflater.inflate(R.layout.fragment_option_restaurant, container, false);
+        root =  inflater.inflate(R.layout.fragment_option_restaurant, container, false);
+
+        object_set = (LinearLayout)root.findViewById(R.id.object_set);
 
         add = (Button)root.findViewById(R.id.add_restaurant);
         edit = (Button)root.findViewById(R.id.edit_restaurant);
         show = (Button)root.findViewById(R.id.show_restaurant);
-        id = getArguments().getString("userid");
+        userid = getArguments().getString("userid");
         TextView getdate  = (TextView)root.findViewById(R.id.get);
-        getdate.setText(id);
+        getdate.setText(userid);
         mconctext =  getContext();
 
         add.setOnClickListener(new View.OnClickListener(){
@@ -57,7 +64,7 @@ public class Option_RestaurantFragment extends Fragment {
                 edit.setVisibility(View.GONE);
                 show.setVisibility(View.GONE);*/
                 Intent  intent  = new Intent(getActivity(),Add_RestaurantProfile.class);
-                intent.putExtra(UserProfile.Column.UserID,id);
+                intent.putExtra(UserProfile.Column.UserID,userid);
                 startActivity(intent);
 
             }
@@ -73,7 +80,7 @@ public class Option_RestaurantFragment extends Fragment {
                 edit.setVisibility(view.GONE);
                 show.setVisibility(view.GONE);*/
                 Intent  intent  = new Intent(getActivity(),Show_party_profile.class);
-                intent.putExtra(UserProfile.Column.UserID,id);
+                intent.putExtra(UserProfile.Column.UserID,userid);
                 startActivity(intent);
 
             }
@@ -81,15 +88,22 @@ public class Option_RestaurantFragment extends Fragment {
         show.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view){
-/*                Bundle bundle = new Bundle();
-                bundle.putString("message",id);
-                Show_RestaurantFragment show_fragement = new Show_RestaurantFragment();
-                show_fragement.setArguments(bundle);
+
+                Bundle bundle = new Bundle();
+                bundle.putString(UserProfile.Column.UserID,userid);
+                advice_restaurant_MainFragment ad = new advice_restaurant_MainFragment();
+                ad.setArguments(bundle);
                 FragmentManager fragmentManager_show = getFragmentManager();
-                fragmentManager_show.beginTransaction().replace(R.id.frame,show_fragement).commit();*/
-                Intent  intent  = new Intent(getActivity(),Show_RestaurantProfile.class);
-                intent.putExtra(UserProfile.Column.UserID,id);
-                startActivity(intent);
+                fragmentManager_show.beginTransaction().replace(R.id.frame, ad).addToBackStack("frag_option_restaurant").commit();
+                object_set.setVisibility(View.GONE);
+
+//                Show_RestaurantFragment show_fragement = new Show_RestaurantFragment();
+//                show_fragement.setArguments(bundle);
+//                FragmentManager fragmentManager_show = getFragmentManager();
+//                fragmentManager_show.beginTransaction().replace(R.id.frame,show_fragement).commit();
+//                Intent  intent  = new Intent(getActivity(),Show_RestaurantProfile.class);
+//                intent.putExtra(UserProfile.Column.UserID,userid);
+//                startActivity(intent);
 
             }
         });

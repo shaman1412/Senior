@@ -133,17 +133,15 @@ public class Main2Activity extends AppCompatActivity {
         if((args = getIntent().getExtras()) != null) {
             args = getIntent().getExtras();
             //int id = profileManager.getID(args.getString(UserAuthen.Column.USERNAME));
-             String  id = args.getString(UserProfile.Column.UserID);
+             String id = args.getString(UserProfile.Column.UserID);
            // userProfile.setId(id);
             bundle = new Bundle();
             new getData().execute(id);
 
-
         }
 
-        MainHome_Fragment fragment_home = new MainHome_Fragment();
-        FragmentManager fragmentManager_home = getSupportFragmentManager();
-        fragmentManager_home.beginTransaction().replace(R.id.flContent,fragment_home).commit();
+
+
       /*tabLayout.getTabAt(0).setIcon(ICONS[0]);
         tabLayout.getTabAt(1).setIcon(ICONS[1]);
         tabLayout.getTabAt(2).setIcon(ICONS[2]);*/
@@ -186,7 +184,10 @@ public class Main2Activity extends AppCompatActivity {
 
                                 break;
                             case R.id.Home:
+                                Bundle b = new Bundle();
+
                                 MainHome_Fragment fragment_home = new MainHome_Fragment();
+                                Log.i("TEST:", "  uid in bundle in Main2 is : "+bundle.getString("userid"));
                                 fragment_home.setArguments(bundle);
                                 FragmentManager fragmentManager_home = getSupportFragmentManager();
                                 fragmentManager_home.beginTransaction()
@@ -274,7 +275,7 @@ public class Main2Activity extends AppCompatActivity {
                 bundle.putString("userid",userid);
                 //set Fragmentclass Arguments
 
-                Log.i(Tag, "  in Main2 userid is : "+id);
+                Log.i(Tag, "  in Main2 userid is : "+userid);
                 Option_RestaurantFragment option = new Option_RestaurantFragment();
                 option.setArguments(bundle);
                 FragmentManager manager = getSupportFragmentManager();
@@ -445,6 +446,11 @@ public class Main2Activity extends AppCompatActivity {
                 Toast.makeText(Main2Activity.this, message, Toast.LENGTH_SHORT).show();
             }
 
+            MainHome_Fragment fragment_home = new MainHome_Fragment();
+            Log.i("TEST:", "  uid in Main2 bewfoe click home is : "+bundle.getString(UserProfile.Column.UserID));
+            fragment_home.setArguments(bundle);
+            FragmentManager fragmentManager_home = getSupportFragmentManager();
+            fragmentManager_home.beginTransaction().replace(R.id.flContent,fragment_home).commit();
         }
 
     }

@@ -55,6 +55,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 
 public class Show_RestaurantProfile extends AppCompatActivity implements OnMapReadyCallback {
@@ -75,6 +76,7 @@ public class Show_RestaurantProfile extends AppCompatActivity implements OnMapRe
     private RatingBar rate;
     private TextView text_rate;
     private FloatingActionButton fab;
+    private String id;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -83,6 +85,9 @@ public class Show_RestaurantProfile extends AppCompatActivity implements OnMapRe
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
+
+        id = getIntent().getExtras().getString("userid");
+
         mcontext = this;
         name = (TextView)findViewById(R.id.name);
         telephone = (TextView)findViewById(R.id.telephone);
@@ -120,9 +125,8 @@ public class Show_RestaurantProfile extends AppCompatActivity implements OnMapRe
         rate.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
             public void onRatingChanged(RatingBar ratingBar, float rating,
                                         boolean fromUser) {
-                text_rate.setText(String.valueOf(rating));
+                text_rate.setText(String.valueOf(new DecimalFormat("#.##").format(rating)));
                 //ratingBar.getRating()
-
             }
         });
 
@@ -135,17 +139,17 @@ public class Show_RestaurantProfile extends AppCompatActivity implements OnMapRe
                 Log.i(TAG, " user is : "+user.toString());
 
                 Bundle b = new Bundle();
-                b.putString("id", userid);
+                b.putString("id", id);
                 b.putString("resid", resid);
                 b.putString("username", user.getName());
 
                 Comment_RestaurantFragment cmf = new Comment_RestaurantFragment();
                 cmf.setArguments(b);
                 FragmentManager fm = getSupportFragmentManager();
-                fm.beginTransaction().replace(R.id.comment_restaurant_content, cmf).commit();
+                fm.beginTransaction().replace(R.id.comment_restaurant_content, cmf).addToBackStack("frag_show_restaurant").commit();
             }
         });
-        getuser.execute(userid);
+        getuser.execute(id);
 
     }
 
