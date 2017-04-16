@@ -52,6 +52,8 @@ public class Comment_RestaurantFragment extends Fragment {
     private RatingBar rating_star;
     private TextView score;
     private DatabaseReference rate = storage.getReference("Restaurant").child("score");
+    private String resid;
+    private String username;
 
     public Comment_RestaurantFragment(){
 
@@ -62,7 +64,9 @@ public class Comment_RestaurantFragment extends Fragment {
                              Bundle savedInstanceState) {
 
         id = getArguments().getString("id");
-        comment = storage.getReference("Restaurant").child("Comment");
+        resid = getArguments().getString("resid");
+        username = getArguments().getString("username");
+        comment = storage.getReference("Restaurant").child("Comment").child(resid);
 
         View root = inflater.inflate(R.layout.comment_restaurant, container, false);
 
@@ -84,7 +88,7 @@ public class Comment_RestaurantFragment extends Fragment {
 
 //                ProfileManager pm = new ProfileManager(getActivity());
 //                String userName = pm.getUserName(id);
-                map1.put("name", "uid : "+id);
+                map1.put("name", username);
 
                 map2.put("comment", c);
 

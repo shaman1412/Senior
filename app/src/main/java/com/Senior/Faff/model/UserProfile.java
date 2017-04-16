@@ -132,4 +132,21 @@ public class UserProfile {
     }
 
     //endregion
+
+
+    @Override
+    public String toString() {
+        return "UserProfile{" +
+                "id='" + id + '\'' +
+                ", name='" + name + '\'' +
+                ", address='" + address + '\'' +
+                ", email='" + email + '\'' +
+                ", telephone='" + telephone + '\'' +
+                ", favourite_type='" + favourite_type + '\'' +
+                ", gender=" + gender +
+                ", age=" + age +
+                ", picture='" + picture + '\'' +
+                ", userid='" + userid + '\'' +
+                '}';
+    }
 }

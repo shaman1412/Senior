@@ -7,6 +7,7 @@ import android.content.pm.PackageManager;
 import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationManager;
+import android.nfc.Tag;
 import android.os.AsyncTask;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.FragmentManager;
@@ -28,11 +29,13 @@ import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.Senior.Faff.Promotion.PromotionShow;
 import com.Senior.Faff.R;
 import com.Senior.Faff.UserProfile.List_typeNodel;
 import com.Senior.Faff.UserProfile.ShowUserprofile;
 import com.Senior.Faff.model.Restaurant;
 import com.Senior.Faff.model.UserProfile;
+import com.Senior.Faff.utils.Helper;
 import com.Senior.Faff.utils.PermissionUtils;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -43,6 +46,9 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.gson.Gson;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.BufferedInputStream;
 import java.io.BufferedReader;
 import java.io.InputStream;
@@ -52,6 +58,7 @@ import java.net.URL;
 import java.util.ArrayList;
 
 public class Show_RestaurantProfile extends AppCompatActivity implements OnMapReadyCallback {
+    private static String TAG = Show_RestaurantProfile.class.getSimpleName();
     private GoogleMap mMap;
     private Location location;
     private static final int LOCATION_PERMISSION_REQUEST_CODE = 99;
@@ -62,7 +69,7 @@ public class Show_RestaurantProfile extends AppCompatActivity implements OnMapRe
     private RecyclerView mRecyclerView;
     private ArrayList<String> favourite_type;
     private List_typeNodel list_adapter;
-    private Context mcontext;
+    private static Context mcontext;
     private String userid,resid;
     private Toolbar toolbar;
     private RatingBar rate;
@@ -113,23 +120,34 @@ public class Show_RestaurantProfile extends AppCompatActivity implements OnMapRe
         rate.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
             public void onRatingChanged(RatingBar ratingBar, float rating,
                                         boolean fromUser) {
-
                 text_rate.setText(String.valueOf(rating));
-
                 //ratingBar.getRating()
 
             }
         });
 
-        Bundle b = new Bundle();
-        b.putString("id", userid);
-        Comment_RestaurantFragment cmf = new Comment_RestaurantFragment();
-        cmf.setArguments(b);
-        FragmentManager fm = getSupportFragmentManager();
-        fm.beginTransaction().replace(R.id.comment_restaurant_content, cmf).commit();
+
+        GetUser getuser = new GetUser(new GetUser.AsyncResponse() {
+            @Override
+            public void processFinish(String output) throws JSONException {
+                JSONObject item = new JSONObject(output);
+                UserProfile user = new Gson().fromJson(item.toString(), UserProfile.class);
+                Log.i(TAG, " user is : "+user.toString());
+
+                Bundle b = new Bundle();
+                b.putString("id", userid);
+                b.putString("resid", resid);
+                b.putString("username", user.getName());
+
+                Comment_RestaurantFragment cmf = new Comment_RestaurantFragment();
+                cmf.setArguments(b);
+                FragmentManager fm = getSupportFragmentManager();
+                fm.beginTransaction().replace(R.id.comment_restaurant_content, cmf).commit();
+            }
+        });
+        getuser.execute(userid);
 
     }
-
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
@@ -250,6 +268,53 @@ public class Show_RestaurantProfile extends AppCompatActivity implements OnMapRe
         }
 
     }
+
+    private static class GetUser extends AsyncTask<String, String, String> {
+
+        String result = "";
+
+        public interface AsyncResponse {
+            void processFinish(String output) throws JSONException;
+        }
+
+        public Show_RestaurantProfile.GetUser.AsyncResponse delegate = null;
+
+        public GetUser(Show_RestaurantProfile.GetUser.AsyncResponse delegate){
+            this.delegate = delegate;
+        }
+
+        @Override
+        protected String doInBackground(String... params) {
+            try {
+
+                Log.i(TAG, "  params [0] is : "+params[0]);
+                URL url = new URL("https://faff-1489402013619.appspot.com/user/"+params[0]);
+                //URL url = new URL("http://localhost:8080/promotion_list");
+
+                result = new Helper().getRequest(url.toString());
+
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
+            return result;
+        }
+
+        @Override
+        protected void onPostExecute(String result) {
+            if (result != "") {
+                Toast.makeText(mcontext, result, Toast.LENGTH_LONG).show();
+                try {
+                    delegate.processFinish(result);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            } else {
+                Toast.makeText(mcontext, "Fail", Toast.LENGTH_SHORT).show();
+            }
+        }
+    }
+
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {

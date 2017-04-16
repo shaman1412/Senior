@@ -273,6 +273,8 @@ public class Main2Activity extends AppCompatActivity {
                 Bundle bundle = new Bundle();
                 bundle.putString("userid",id);
                 //set Fragmentclass Arguments
+
+                Log.i(Tag, "  in Main2 userid is : "+id);
                 Option_RestaurantFragment option = new Option_RestaurantFragment();
                 option.setArguments(bundle);
                 FragmentManager manager = getSupportFragmentManager();
