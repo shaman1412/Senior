@@ -2,7 +2,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.Senior.Faff.Fragment.Party.party_member_request">
+    tools:context="com.Senior.Faff.Fragment.Party.party_member_accept">
 
     <!-- TODO: Update blank fragment layout -->
     <LinearLayout
@@ -10,14 +10,13 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
+
         <android.support.v7.widget.RecyclerView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id= "@+id/mRecyclerView">
+            android:id= "@+id/mRecyclerView1">
 
         </android.support.v7.widget.RecyclerView>
 
     </LinearLayout>
-
-
 </FrameLayout>

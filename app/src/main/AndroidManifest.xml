@@ -25,13 +25,10 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-
         </activity>
         <activity android:name=".RegisterActivity" />
         <activity android:name=".MainActivity" />
-        <activity android:name=".Promotion.PromotionActivity">
-
-        </activity>
+        <activity android:name=".Promotion.PromotionActivity"></activity>
         <activity android:name=".Promotion.PromotionView" />
 
         <!--
@@ -104,7 +101,8 @@
         <activity android:name=".UserProfile.UpdateUserProfile" />
         <activity android:name=".RestaurantProfile.Edit_RestaurantProfile" />
         <activity android:name=".Fragment.Party.Show_party_profile" />
-        <activity android:name=".Fragment.Party.list_party_member"></activity>
+        <activity android:name=".Fragment.Party.list_party_member" />
+        <activity android:name=".Fragment.Party.list_party_request"></activity>
     </application>
 
 </manifest>

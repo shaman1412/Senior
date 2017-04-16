@@ -95,7 +95,7 @@ public class Main2Activity extends AppCompatActivity {
     private ProfileManager profileManager;
     private UserProfile userProfile;
     private Bundle bundle;
-
+    private String userid;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -245,7 +245,7 @@ public class Main2Activity extends AppCompatActivity {
 
     public void selectDrawerItem(MenuItem menuItem) {
         // Create a new fragment and specify the fragment to show based on nav item clicked
-        String id = userProfile.getUserid();
+
         //String User_id = String.valueOf(id);        // ??? for what ??? ไม่บอก 5555
 
         switch(menuItem.getItemId()) {
@@ -258,7 +258,7 @@ public class Main2Activity extends AppCompatActivity {
                 break;
             case R.id.UserProfile:
                 Intent intent = new Intent(context, ShowUserprofile.class);
-                intent.putExtra(UserProfile.Column.UserID,id);
+                intent.putExtra(UserProfile.Column.UserID,userid);
                 startActivity(intent);
                 break;
             case R.id.Favourite:
@@ -271,7 +271,7 @@ public class Main2Activity extends AppCompatActivity {
                 break;
             case R.id.RestaurantProfile:
                 Bundle bundle = new Bundle();
-                bundle.putString("userid",id);
+                bundle.putString("userid",userid);
                 //set Fragmentclass Arguments
 
                 Log.i(Tag, "  in Main2 userid is : "+id);
@@ -434,6 +434,7 @@ public class Main2Activity extends AppCompatActivity {
             super.onPostExecute(userpro);
             if (userpro != null) {
                 userProfile = userpro;
+                userid = userProfile.getUserid();
                 bundle.putString(UserProfile.Column.UserID,userProfile.getUserid());
                 bundle.putString(UserProfile.Column.Name,userProfile.getName());
                 bundle.putInt(UserProfile.Column.Age,userProfile.getAge());
