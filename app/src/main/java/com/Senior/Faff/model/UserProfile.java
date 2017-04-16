@@ -12,7 +12,8 @@ public class UserProfile {
 
     public class Column {
         public static final String ID = BaseColumns._ID;
-        public static final String UserID = "userid";
+        public static final String UserID_request = "userid_request";
+        public static final String UserID_accept = "userid_accept";
         public static final String Name = "name";
         public static final String Address = "address";
         public static final String Email = "email";
@@ -21,7 +22,7 @@ public class UserProfile {
         public static final String Favourite_type = "favourite_type";
         public static final String Age = "age";
         public static final String Picture = "picture";
-        public static final String Userid = "userid";
+        public static final String UserID = "userid";
     }
 
     private String id;

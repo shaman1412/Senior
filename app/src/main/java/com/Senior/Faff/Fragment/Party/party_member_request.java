@@ -1,7 +1,8 @@
 package com.Senior.Faff.Fragment.Party;
 
-
 import android.content.Context;
+import android.graphics.Rect;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -14,6 +15,8 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.Senior.Faff.R;
+import com.Senior.Faff.UserProfile.List_typeNodel;
+import com.Senior.Faff.model.Restaurant;
 import com.Senior.Faff.model.UserProfile;
 import com.google.gson.Gson;
 
@@ -25,33 +28,33 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
 
-/**
- * A simple {@link Fragment} subclass.
- */
-public class party_member_accept extends Fragment {
+
+public class party_member_request extends Fragment {
 
 
-    public party_member_accept() {
+    public party_member_request() {
         // Required empty public constructor
     }
-
     private RecyclerView mRecyclerView;
-    private String group_userid;
+    private String group_userid_accept, group_userid_request;
     private String userid;
     private ArrayList<String> d;
-    private list_party_member list_adapter;
+    private list_party_request list_adapter;
     private Context mcontext;
     private String key;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View root = inflater.inflate(R.layout.fragment_party_member_accept2, container, false);
-        group_userid  = getArguments().getString(UserProfile.Column.UserID_accept);
+       View root=  inflater.inflate(R.layout.fragment_party_member_accept, container, false);
+        mcontext = getContext();
+
+        group_userid_request  = getArguments().getString(UserProfile.Column.UserID_request);
+        group_userid_accept  = getArguments().getString(UserProfile.Column.UserID_accept);
         key = getArguments().getString("key");
-        mRecyclerView = (RecyclerView)root.findViewById(R.id.mRecyclerView1);
+        mRecyclerView = (RecyclerView)root.findViewById(R.id.mRecyclerView);
         String b = "a1412,apee";
-        new getData().execute(group_userid);
+        new getData().execute(group_userid_request);
         return  root;
     }
     private class getData extends AsyncTask<String, String, ArrayList<UserProfile> > {
@@ -103,12 +106,11 @@ public class party_member_accept extends Fragment {
             super.onPostExecute(userpro);
             if (userpro != null) {
 
-                list_adapter = new list_party_member(userpro, mcontext, key);
-                LinearLayoutManager mLayoutManager  = new LinearLayoutManager(mcontext);
-                mLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
-                //mRecyclerView = (RecyclerView) getActivity().findViewById(R.id.mRecyclerView);
-                mRecyclerView.setLayoutManager(mLayoutManager);
-                mRecyclerView.setAdapter(list_adapter);
+                    list_adapter = new list_party_request(userpro, mcontext, key, group_userid_accept);
+                    LinearLayoutManager mLayoutManager  = new LinearLayoutManager(mcontext);
+                    mLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
+                    mRecyclerView.setLayoutManager(mLayoutManager);
+                    mRecyclerView.setAdapter(list_adapter);
 
 
 
@@ -120,6 +122,7 @@ public class party_member_accept extends Fragment {
         }
 
     }
+
 
 
 }

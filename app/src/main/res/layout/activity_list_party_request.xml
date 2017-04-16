@@ -6,9 +6,15 @@
     android:layout_height="wrap_content"
     android:orientation="horizontal"
     android:gravity="center"
-    android:padding="10dp"
-    tools:context="com.Senior.Faff.Fragment.Party.list_party_member">
-
+    tools:context="com.Senior.Faff.Fragment.Party.list_party_member"
+    >
+<LinearLayout
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:id= "@+id/mix"
+    android:orientation="horizontal"
+    android:gravity="center"
+    android:padding="10dp">
         <ImageView
             android:layout_width="0dp"
             android:layout_weight="0.3"
@@ -17,7 +23,7 @@
 
             />
         <TextView
-            android:layout_marginLeft="40dp"
+            android:layout_marginLeft="50dp"
             android:layout_width="0dp"
             android:layout_weight="0.4"
             android:layout_height="wrap_content"
@@ -25,11 +31,19 @@
             android:id="@+id/name"/>
 
         <Button
+            android:layout_marginLeft="50dp"
             android:layout_width="0dp"
             android:layout_weight="0.3"
             android:layout_height="wrap_content"
-            android:text="Kick"
-            android:id="@+id/kick"/>
-
+            android:text="Accept"
+            android:id="@+id/accept"/>
+        <Button
+            android:layout_marginLeft="20dp"
+            android:layout_width="0dp"
+            android:layout_weight="0.3"
+            android:layout_height="wrap_content"
+            android:text="Reject"
+            android:id="@+id/reject"/>
+</LinearLayout>
 
 </LinearLayout>

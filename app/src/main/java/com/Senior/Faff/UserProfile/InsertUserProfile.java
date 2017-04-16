@@ -156,19 +156,19 @@ public class InsertUserProfile extends AppCompatActivity {
         submit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
-           ArrayList<String>  list_get  = list_adapter.getlist();
-                for(int i = 0;i< list_get.size() ; i ++){
-                    if (i == 0) {
-                        type_check  = list_get.get(i);
-                    }
-                    else {
-                        type_check  = type_check + list_get.get(i);
-                    }
-                    if(i != list_get.size() -1 ){
-                        type_check = type_check + ",";
-                    }
-                }
+if(list_adapter != null) {
+    ArrayList<String> list_get = list_adapter.getlist();
+    for (int i = 0; i < list_get.size(); i++) {
+        if (i == 0) {
+            type_check = list_get.get(i);
+        } else {
+            type_check = type_check + list_get.get(i);
+        }
+        if (i != list_get.size() - 1) {
+            type_check = type_check + ",";
+        }
+    }
+}
                 UserProfile user = new UserProfile(userid, name.getText().toString(), address.getText().toString(),email.getText().toString(),Tel.getText().toString(),type_check ,genderid, Integer.parseInt(Age.getText().toString()),"asd");
                 new addprofile().execute(user);
             }
