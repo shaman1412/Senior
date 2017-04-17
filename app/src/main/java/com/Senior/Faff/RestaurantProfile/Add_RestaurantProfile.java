@@ -143,21 +143,24 @@ public class Add_RestaurantProfile extends AppCompatActivity implements OnMapRea
         next.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                ArrayList<String>  list_get  = list_adapter.getlist();
-                if(list_get != null) {
-                    for (int i = 0; i < list_get.size(); i++) {
-                        if (i == 0) {
-                            type_check = list_get.get(i);
-                        } else {
-                            type_check = type_check + list_get.get(i);
-                        }
-                        if (i != list_get.size() - 1) {
-                            type_check = type_check + ",";
+                if(list_adapter != null) {
+                    ArrayList<String> list_get = list_adapter.getlist();
+                    if (list_get != null) {
+                        for (int i = 0; i < list_get.size(); i++) {
+                            if (i == 0) {
+                                type_check = list_get.get(i);
+                            } else {
+                                type_check = type_check + list_get.get(i);
+                            }
+                            if (i != list_get.size() - 1) {
+                                type_check = type_check + ",";
+                            }
                         }
                     }
                 }
                 restaurant = new Restaurant(name.getText().toString(),address.getText().toString(),description.getText().toString(),period.getText().toString(),telephone.getText().toString(),user_id, type_check);
-                restaurant.setresId(user_id + "pee");
+                long unixTime = System.currentTimeMillis() / 1000L;
+                restaurant.setresId(user_id +String.valueOf(unixTime));
                 restaurant.setLocation(getlocation);
                 Timestamp timestamp = new Timestamp(System.currentTimeMillis());
                 restaurant.setCreate_time(timestamp);
