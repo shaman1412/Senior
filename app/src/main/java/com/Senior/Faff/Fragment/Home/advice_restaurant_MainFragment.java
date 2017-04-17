@@ -22,6 +22,8 @@ import com.Senior.Faff.RestaurantProfile.Restaurant_manager;
 import com.Senior.Faff.RestaurantProfile.Show_RestaurantProfile;
 import com.Senior.Faff.UserProfile.List_typeNodel;
 import com.Senior.Faff.model.Restaurant;
+import com.Senior.Faff.model.UserProfile;
+import com.Senior.Faff.utils.Helper;
 import com.google.gson.Gson;
 
 import java.io.BufferedInputStream;
@@ -43,12 +45,14 @@ public class advice_restaurant_MainFragment extends Fragment {
     }
     private Context mcontext;
     private ListView listview;
+    private String userid;
     private int[] resId =  {R.drawable.restaurant1,R.drawable.restaurant2,R.drawable.restaurant3};
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
         mcontext  = getContext();
+        userid = getArguments().getString("userid");
         View rootView = inflater.inflate(R.layout.fragment_advice_restaurant__main, container, false);
         listview = (ListView)rootView.findViewById(R.id.listView1);
 
@@ -61,6 +65,8 @@ public class advice_restaurant_MainFragment extends Fragment {
         int responseCode;
         HttpURLConnection connection;
         String resultjson;
+        String result;
+
         @Override
         protected Restaurant[] doInBackground(String... args) {
             StringBuilder result = new StringBuilder();
@@ -79,6 +85,17 @@ public class advice_restaurant_MainFragment extends Fragment {
                 while ((line = reader.readLine()) != null) {
                     result.append(line);
                 }
+//                try {
+//
+//                    URL url = new URL("https://faff-1489402013619.appspot.com/res_list/all");
+//                    //URL url = new URL("http://localhost:8080/promotion_list");
+//                    result = new Helper().getRequest(url.toString());
+//                    Log.i("TEST: ", "  result is : "+result+"  uid is : "+userid);
+//
+//
+//                } catch (Exception ex) {
+//                    ex.printStackTrace();
+//                }
 
             } catch (Exception e) {
                 e.printStackTrace();
@@ -94,6 +111,9 @@ public class advice_restaurant_MainFragment extends Fragment {
 
             }
 
+//            Gson gson = new Gson();
+//            Restaurant[] userPro  =  gson.fromJson(result.toString(),  Restaurant[].class);
+//            return userPro;
         }
         @Override
         protected void onPostExecute(final Restaurant[] respro) {
@@ -105,10 +125,10 @@ public class advice_restaurant_MainFragment extends Fragment {
                         Intent intent = new Intent(mcontext, Show_RestaurantProfile.class);
                         intent.putExtra(Restaurant.Column.ResID,respro[position].getresId());
                         intent.putExtra(Restaurant.Column.UserID,respro[position].getUserID());
+                        intent.putExtra(UserProfile.Column.UserID, userid);
                         startActivity(intent);
                     }
                 });
-
 
             }
             else{

@@ -4,9 +4,11 @@ package com.Senior.Faff.Fragment.Adapter;
  * Created by InFiNity on 09-Feb-17.
  */
 import android.content.Context;
+import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.util.Log;
 
 import com.Senior.Faff.Fragment.Home.promotion_restaurant_MainFragment;
 import com.Senior.Faff.Fragment.Home.top_resturant_MainFragment;
@@ -17,20 +19,27 @@ public class Home_adpater extends FragmentPagerAdapter   {
     private final int PAGE_NUM = 3;
     private String tabTitles[] = new String[] { "ร้านอาหารแนะนำ", "แนะนำโปรโมชั่น", "ร้านอาหารยอดนิยม" };
     private Context context;
+    private String userid;
     private int[] imageResId = {
             R.drawable.find_res,
             R.drawable.find_res,
             R.drawable.find_res
     };
-    public Home_adpater(FragmentManager fm, Context context) {
+    public Home_adpater(FragmentManager fm, Context context, String userid) {
         super(fm);
         this.context = context;
+        this.userid = userid;
     }
 
     @Override
     public Fragment getItem(int position) {
         if(position == 0){
-            return new advice_restaurant_MainFragment();
+            Bundle b = new Bundle();
+            b.putString("userid", userid);
+            Log.i("TEST:", "  uid in Home_adapter is : "+this.userid);
+            advice_restaurant_MainFragment ad = new advice_restaurant_MainFragment();
+            ad.setArguments(b);
+            return ad;
         }
         else if(position == 1) {
             return new promotion_restaurant_MainFragment();

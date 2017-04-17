@@ -50,8 +50,11 @@ public class Comment_RestaurantFragment extends Fragment {
     private ArrayList<Comment> list = new ArrayList<>();
     private CommentAdapter adapter;
     private RatingBar rating_star;
+    private RatingBar rating_total;
     private TextView score;
-    private DatabaseReference rate = storage.getReference("Restaurant").child("score");
+    private DatabaseReference rate;
+    private String resid;
+    private String username;
 
     public Comment_RestaurantFragment(){
 
@@ -62,7 +65,10 @@ public class Comment_RestaurantFragment extends Fragment {
                              Bundle savedInstanceState) {
 
         id = getArguments().getString("id");
-        comment = storage.getReference("Restaurant").child("Comment");
+        resid = getArguments().getString("resid");
+        username = getArguments().getString("username");
+        comment = storage.getReference("Restaurant").child("Comment").child(resid);
+        rate = storage.getReference("Restaurant").child("score").child(resid);
 
         View root = inflater.inflate(R.layout.comment_restaurant, container, false);
 
@@ -84,7 +90,7 @@ public class Comment_RestaurantFragment extends Fragment {
 
 //                ProfileManager pm = new ProfileManager(getActivity());
 //                String userName = pm.getUserName(id);
-                map1.put("name", "uid : "+id);
+                map1.put("name", username);
 
                 map2.put("comment", c);
 
@@ -181,6 +187,7 @@ public class Comment_RestaurantFragment extends Fragment {
         });
 
         rating_star = (RatingBar)root.findViewById(R.id.ratingBar);
+        rating_total = (RatingBar) getActivity().findViewById(R.id.rate);
 
         rate.addValueEventListener(new ValueEventListener() {
             @Override
@@ -199,8 +206,9 @@ public class Comment_RestaurantFragment extends Fragment {
                     }
 
                     rating_star.setOnRatingBarChangeListener(null);
-                    rating_star.setRating(sum/n);
-                    score.setText(String.valueOf(new DecimalFormat("#.##").format(sum/n)));
+                    float scor = sum/n;
+                    rating_total.setRating(scor);
+                    //score.setText(String.valueOf(new DecimalFormat("#.##").format(sum/n)));
                     rating_star.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
                         @Override
                         public void onRatingChanged(RatingBar ratingBar, float rating, boolean fromUser) {

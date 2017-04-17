@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -34,10 +35,16 @@ public class MainHome_Fragment extends Fragment  {
         // call the method setHasOptionsMenu, to have access to the menu from your fragment
         setHasOptionsMenu(true);
 
+        String userid = null;
+        if(getArguments()!=null)
+        {
+            userid  = getArguments().getString("userid");
+        }
         View rootView =  inflater.inflate(R.layout.fragment_main_home, container, false);
         tabLayout = (TabLayout)rootView.findViewById(R.id.tablayout);
         pager = (ViewPager)rootView.findViewById(R.id.pager);
-        Home_adpater adpater = new Home_adpater(getChildFragmentManager(),context);
+        Log.i("TEST:", "  uid in MainHome_Fragment is : "+userid);
+        Home_adpater adpater = new Home_adpater(getChildFragmentManager(),context,userid);
         pager.setAdapter(adpater);
         pager.setCurrentItem(1);
         tabLayout.setupWithViewPager(pager);
