@@ -62,6 +62,7 @@ router.post('/create', images.multer.array('picture'), images.sendUploadToGCS_Re
     period : json.period,
     address : json.address,
     location :  json.location,
+    picture : json.picture,
     score : 0,
     vote : 0,
     create_time : json.create_time

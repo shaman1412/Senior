@@ -1,6 +1,7 @@
 package com.Senior.Faff.Fragment.Party;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,6 +12,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.Senior.Faff.R;
+import com.Senior.Faff.UserProfile.ShowUserprofile;
 import com.Senior.Faff.model.UserProfile;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
@@ -23,6 +25,7 @@ public class list_party_request extends RecyclerView.Adapter<list_party_request.
     private String key;
     private String  setuserid;
     private String list_accept;
+    private  Context mcontext;
     public static class ViewHolder extends RecyclerView.ViewHolder {
         // each data item is just a string in this case
         public TextView list_name;
@@ -50,7 +53,7 @@ public class list_party_request extends RecyclerView.Adapter<list_party_request.
         View view = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.activity_list_party_request, parent, false);
        ViewHolder vh = new ViewHolder(view);
-
+        mcontext = view.getContext();
         return vh;
     }
 
@@ -58,6 +61,14 @@ public class list_party_request extends RecyclerView.Adapter<list_party_request.
     public void onBindViewHolder(final ViewHolder holder, final int position) {
 
         holder.list_name.setText(list.get(position).getName());
+        holder.mix.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(mcontext, ShowUserprofile.class);
+                intent.putExtra(UserProfile.Column.UserID,list.get(position).getUserid());
+                mcontext.startActivity(intent);
+            }
+        });
         holder.accept.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

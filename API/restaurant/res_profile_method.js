@@ -161,6 +161,7 @@ function createSchema (config) {
         \`userid\` VARCHAR(255) NULL,
 		\`picture\` TEXT NULL,
       \`name\` VARCHAR(255) NULL,
+       \`picture\` VARCHAR(255) NULL,
        \`type_food\` VARCHAR(255) NULL,
        \`description\` VARCHAR(255) NULL,
        \`period\` VARCHAR(255) NULL,

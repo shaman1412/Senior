@@ -69,7 +69,7 @@ public class UpdateUserProfile extends AppCompatActivity {
         name = (EditText)findViewById(R.id.name);
 
         telephone = (EditText)findViewById(R.id.telephone);
-
+        list_adapter = new List_type();
         address = (EditText)findViewById(R.id.address);
 
         type = (Spinner)findViewById(R.id.favourite_type);

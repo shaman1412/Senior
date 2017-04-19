@@ -73,6 +73,7 @@ public class Party_CreateNewParty_map extends AppCompatActivity implements OnMap
     private String appointment;
     private String telephone;
     private String createby;
+    private String getlocation;
     ////////////////////
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -113,8 +114,8 @@ public class Party_CreateNewParty_map extends AppCompatActivity implements OnMap
         add_location.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
-                if(position != null) {
-                    manager = new CreatePartyManager(roomid,name,description,people,address,appointment,telephone,position,rule_age, rule_gender,user_id,createby );
+                if(getlocation != null) {
+                    manager = new CreatePartyManager(roomid,name,description,people,address,appointment,telephone,getlocation,rule_age, rule_gender,user_id,createby );
                     manager.addroom();
                     Intent intent = new Intent(mcontext, Main2Activity.class);
                     intent.putExtra("userid",user_id);
@@ -144,13 +145,9 @@ public class Party_CreateNewParty_map extends AppCompatActivity implements OnMap
         mMap = googleMap;
 
         // Add a marker in Sydney and move the camera
-        LatLng sydney = new LatLng(37.62,-122.284);
-        mMap.addMarker(new MarkerOptions().position(sydney).title("PPAP"));
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
 
         mMap.setOnMyLocationButtonClickListener(this);
 
-        //enableMyLocation();
     }
     @Override
     public void onStart() {
@@ -169,47 +166,75 @@ public class Party_CreateNewParty_map extends AppCompatActivity implements OnMap
         }
     }
     private void enableMyLocation() {
+
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
                 != PackageManager.PERMISSION_GRANTED) {
             // Permission to access the location is missing.
-            PermissionUtils.requestPermission(this, LOCATION_PERMISSION_REQUEST_CODE,
-                    Manifest.permission.ACCESS_FINE_LOCATION, true);
+            ActivityCompat.requestPermissions(this,
+                    new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION}, LOCATION_PERMISSION_REQUEST_CODE);
         } else if (mMap != null) {
             // Access to the location has been granted to the app.
             mMap.setMyLocationEnabled(true);
-            LocationManager locationManager = (LocationManager)
-                    getSystemService(Context.LOCATION_SERVICE);
-            Criteria criteria = new Criteria();
 
-            location = locationManager.getLastKnownLocation(locationManager
-                    .getBestProvider(criteria, false));
+            LocationAvailability locationAvailability = LocationServices.FusedLocationApi.getLocationAvailability(googleApiClient);
+            if (locationAvailability != null) {
 
+
+                LocationRequest locationRequest = new LocationRequest()  // ใช้สำหรับ onlicationchange ทำเรื่อยๆ
+                        .setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY)
+                        .setInterval(2000)
+                        .setFastestInterval(2000);
+                if (ContextCompat.checkSelfPermission(this,
+                        Manifest.permission.ACCESS_FINE_LOCATION)
+                        == PackageManager.PERMISSION_GRANTED) {
+                    LocationServices.FusedLocationApi.requestLocationUpdates(googleApiClient, locationRequest, this);
+                }
+                location = LocationServices.FusedLocationApi.getLastLocation(googleApiClient);
+                if (location != null) {
+                    myLocation = new LatLng(location.getLatitude(),
+                            location.getLongitude());
+                    mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(myLocation,
+                            11));
+                    MarkerOptions markerOptions = new MarkerOptions();
+                    markerOptions.position(myLocation);
+                    markerOptions.title("Current Position");
+                    markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN));
+                    mCurrLocationMarker = mMap.addMarker(markerOptions);
+                    getlocation = location.getLatitude() + "," + location.getLongitude();
+                }
+
+            }
 
         }
     }
     @Override
     public boolean onMyLocationButtonClick() {
 
+        LocationManager locationManager = (LocationManager)
+                getSystemService(Context.LOCATION_SERVICE);
+        Criteria criteria = new Criteria();
 
-        if (location != null) {
-            myLocation = new LatLng(location.getLatitude(),
-                    location.getLongitude());
-            mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(myLocation,
-                    11));
-            position = location.getLatitude()+ "," + location.getLongitude();
-            MarkerOptions markerOptions = new MarkerOptions();
-            markerOptions.position(myLocation);
-            markerOptions.title("Current Position");
-            markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN));
-            lo.setText(position);
-            mCurrLocationMarker = mMap.addMarker(markerOptions);
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
+                != PackageManager.PERMISSION_GRANTED) {
+
+            location = locationManager.getLastKnownLocation(locationManager
+                    .getBestProvider(criteria, false));
+            if (location != null) {
+                myLocation = new LatLng(location.getLatitude(),
+                        location.getLongitude());
+                mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(myLocation,
+                        11));
+                MarkerOptions markerOptions = new MarkerOptions();
+                markerOptions.position(myLocation);
+                markerOptions.title("Current Position");
+                markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN));
+                mCurrLocationMarker = mMap.addMarker(markerOptions);
+                getlocation = location.getLatitude() + "," + location.getLongitude();
+                //description.setText(String.valueOf(myLocation.latitude));
+            }
+
+
         }
-
-
-        Toast.makeText(this, "MyLocation button clicked", Toast.LENGTH_SHORT).show();
-        // Return false so that we don't consume the event and the default behavior still occurs
-        // (the camera animates to the user's current position).
-
         return false;
     }
     @Override
@@ -243,75 +268,7 @@ public class Party_CreateNewParty_map extends AppCompatActivity implements OnMap
 
     @Override
     public void onConnected(@Nullable Bundle bundle) {
-        int check = ContextCompat.checkSelfPermission(Party_CreateNewParty_map.this, Manifest.permission.ACCESS_FINE_LOCATION);
-        if (check != PackageManager.PERMISSION_GRANTED) {
-
-
-            if (!ActivityCompat.shouldShowRequestPermissionRationale(Party_CreateNewParty_map.this,
-                    Manifest.permission.ACCESS_FINE_LOCATION)) {
-                new AlertDialog.Builder(this)
-                        .setTitle("Location Permission Needed")
-                        .setMessage("This app needs the Location permission, please accept to use location functionality")
-                        .setPositiveButton("OK",new DialogInterface.OnClickListener(){
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                ActivityCompat.requestPermissions(Party_CreateNewParty_map.this,new String[]{Manifest.permission.ACCESS_FINE_LOCATION},LOCATION_PERMISSION_REQUEST_CODE);
-                            }
-
-                        })
-                        .create()
-                        .show();
-            } else {
-
-                ActivityCompat.requestPermissions(Party_CreateNewParty_map.this,new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 99);
-            }
-        }
-        else {
-            ActivityCompat.requestPermissions(Party_CreateNewParty_map.this,new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 99);
-            //createLocationRequest();
-            //mMap.setMyLocationEnabled(true);
-            LocationAvailability locationAvailability = LocationServices.FusedLocationApi.getLocationAvailability(googleApiClient);
-            if (locationAvailability != null) {
-
-
-                LocationRequest locationRequest = new LocationRequest()  // ใช้สำหรับ onlicationchange ทำเรื่อยๆ
-                        .setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY)
-                        .setInterval(2000)
-                        .setFastestInterval(2000);
-                if (ContextCompat.checkSelfPermission(this,
-                        Manifest.permission.ACCESS_FINE_LOCATION)
-                        == PackageManager.PERMISSION_GRANTED) {
-                    LocationServices.FusedLocationApi.requestLocationUpdates(googleApiClient, locationRequest, this);
-                }
-
-                mLastLocation = LocationServices.FusedLocationApi.getLastLocation(googleApiClient);  // ใช้สำหรัรับตำแหน่งแรกเลย ครั้งเดียว
-                if (mLastLocation != null) {
-
-                    Location target = new Location("Target");
-                    target.setLatitude(37.5219983);
-                    target.setLongitude(-122.184);
-                    float d;
-                    //  d = location.distanceTo(target);
-                    //   la.setText(String.valueOf(d));
-                    if(location!=null)
-                        if(location.distanceTo(target) < 1000) {
-                            Toast.makeText(context, "Hi", Toast.LENGTH_SHORT).show();
-                        }
-                   /* if(location.distanceTo(target) < METERS_100) {
-                        // bingo!
-                    }*/
-
-                  /*  lo.setText(String.valueOf(mLastLocation.getLongitude()));
-                    la.setText(String.valueOf(mLastLocation.getLatitude()));*/
-
-                }
-
-                // LocationServices.FusedLocationApi.requestLocationUpdates(googleApiClient, locationRequest, this);
-            }
-
-
-
-        }
+        enableMyLocation();
     }
 
     @Override
@@ -321,6 +278,7 @@ public class Party_CreateNewParty_map extends AppCompatActivity implements OnMap
 
     @Override
     public void onLocationChanged(Location location) {
+/*
         mLastLocation = location;
         if (mCurrLocationMarker != null) {
             mCurrLocationMarker.remove();
@@ -335,6 +293,7 @@ public class Party_CreateNewParty_map extends AppCompatActivity implements OnMap
         lo.setText(position);
 
         mCurrLocationMarker = mMap.addMarker(markerOptions);
+*/
 
         //move map camera
         //mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));

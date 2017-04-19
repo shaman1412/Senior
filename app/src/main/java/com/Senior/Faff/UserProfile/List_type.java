@@ -36,6 +36,9 @@ public class List_type  extends RecyclerView.Adapter<List_type.ViewHolder>{
         this.list = list;
         this.context = context;
     }
+    public List_type(){
+
+    }
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())

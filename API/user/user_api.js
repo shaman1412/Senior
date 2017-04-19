@@ -75,6 +75,7 @@ router.post('/new_user',images.multer.array('picture'), images.sendUploadToGCS_U
 		userid : json.userid,
 		picture: json.picture,
 		name: json.name,
+    picture : json.picture,
 		address: json.address,
 		email: json.email,
 		telephone: json.telephone,

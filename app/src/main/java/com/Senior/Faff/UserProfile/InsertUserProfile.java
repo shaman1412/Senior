@@ -262,6 +262,7 @@ public class InsertUserProfile extends AppCompatActivity {
                 para.put(UserProfile.Column.Gender, params[0].getGender());
                 para.put(UserProfile.Column.Favourite_type, params[0].getFavourite_type());
                 para.put(UserProfile.Column.Age, params[0].getAge());
+                para.put(UserProfile.Column.Telephone, params[0].getTelephone());
 
                 URL url = new URL("https://faff-1489402013619.appspot.com/user/new_user");
                 connection = (HttpURLConnection) url.openConnection();

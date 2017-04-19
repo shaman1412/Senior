@@ -8,6 +8,9 @@ import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationManager;
 import android.os.AsyncTask;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -30,7 +33,12 @@ import com.Senior.Faff.UserProfile.List_type;
 import com.Senior.Faff.UserProfile.List_typeNodel;
 import com.Senior.Faff.model.Restaurant;
 import com.Senior.Faff.utils.PermissionUtils;
+import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.location.LocationAvailability;
+import com.google.android.gms.location.LocationListener;
+import com.google.android.gms.location.LocationRequest;
+import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -58,9 +66,13 @@ import java.util.ArrayList;
 import java.util.Iterator;
 
 public class Edit_RestaurantProfile extends AppCompatActivity implements OnMapReadyCallback,
-        GoogleMap.OnMyLocationButtonClickListener{
+        GoogleMap.OnMyLocationButtonClickListener,
+        GoogleApiClient.OnConnectionFailedListener,
+        GoogleApiClient.ConnectionCallbacks,LocationListener,
+        ActivityCompat.OnRequestPermissionsResultCallback{
 
     private com.google.android.gms.maps.model.Marker mCurrLocationMarker;
+    private GoogleApiClient googleApiClient;
     private LatLng myLocation;
     private EditText name,description,period,address,telephone;
     private Toolbar toolbar;
@@ -89,12 +101,17 @@ public class Edit_RestaurantProfile extends AppCompatActivity implements OnMapRe
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
+        favourite_type = new  ArrayList<String>();
         type = (Spinner) findViewById(R.id.favourite_type);
         ArrayAdapter<CharSequence> adapter_type = ArrayAdapter.createFromResource(this,R.array.type_food_dropdown, android.R.layout.simple_spinner_item);
         adapter_type.setDropDownViewResource(android.R.layout.simple_dropdown_item_1line);
         type.setAdapter(adapter_type);
         mcontext = this;
-
+        googleApiClient = new GoogleApiClient.Builder(this)
+                .addApi(LocationServices.API)
+                .addConnectionCallbacks(this)
+                .addOnConnectionFailedListener(this)
+                .build();
         Bundle arg = getIntent().getExtras();
         if(arg != null) {
             user_id = arg.getString(Restaurant.Column.UserID);
@@ -198,12 +215,12 @@ public class Edit_RestaurantProfile extends AppCompatActivity implements OnMapRe
         } else if (mMap != null) {
             // Access to the location has been granted to the app.
             mMap.setMyLocationEnabled(true);
-            LocationManager locationManager = (LocationManager)
+   /*         LocationManager locationManager = (LocationManager)
                     getSystemService(Context.LOCATION_SERVICE);
             Criteria criteria = new Criteria();
 
             location = locationManager.getLastKnownLocation(locationManager
-                    .getBestProvider(criteria, false));
+                    .getBestProvider(criteria, false));*/
             if(lola != null) {
                 String[] pos = lola.split(",");
                 myLocation = new LatLng(Double.parseDouble(pos[0]),
@@ -215,28 +232,117 @@ public class Edit_RestaurantProfile extends AppCompatActivity implements OnMapRe
                 markerOptions.title(res_name);
                 markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN));
                 mCurrLocationMarker = mMap.addMarker(markerOptions);
-                getlocation = location.getLatitude() + "," + location.getLongitude();
+                getlocation = lola;
             }
+        }
+    }
+    private void enableMyLocation() {
+
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
+                != PackageManager.PERMISSION_GRANTED) {
+            // Permission to access the location is missing.
+            ActivityCompat.requestPermissions(this,
+                    new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION}, LOCATION_PERMISSION_REQUEST_CODE);
+        } else if (mMap != null) {
+            // Access to the location has been granted to the app.
+            mMap.setMyLocationEnabled(true);
+
+            LocationAvailability locationAvailability = LocationServices.FusedLocationApi.getLocationAvailability(googleApiClient);
+            if (locationAvailability != null) {
+
+
+                LocationRequest locationRequest = new LocationRequest()  // ใช้สำหรับ onlicationchange ทำเรื่อยๆ
+                        .setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY)
+                        .setInterval(2000)
+                        .setFastestInterval(2000);
+                if (ContextCompat.checkSelfPermission(this,
+                        Manifest.permission.ACCESS_FINE_LOCATION)
+                        == PackageManager.PERMISSION_GRANTED) {
+                    LocationServices.FusedLocationApi.requestLocationUpdates(googleApiClient, locationRequest, this);
+                }
+                location = LocationServices.FusedLocationApi.getLastLocation(googleApiClient);
+                if (location != null) {
+                    myLocation = new LatLng(location.getLatitude(),
+                            location.getLongitude());
+                    mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(myLocation,
+                            11));
+                    MarkerOptions markerOptions = new MarkerOptions();
+                    markerOptions.position(myLocation);
+                    markerOptions.title("Current Position");
+                    markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN));
+                    mCurrLocationMarker = mMap.addMarker(markerOptions);
+                    getlocation = location.getLatitude() + "," + location.getLongitude();
+                }
+
+            }
+
         }
     }
 
     @Override
     public boolean onMyLocationButtonClick() {
-        if (location != null) {
-            myLocation = new LatLng(location.getLatitude(),
-                    location.getLongitude());
-            mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(myLocation,
-                    11));
-            MarkerOptions markerOptions = new MarkerOptions();
-            markerOptions.position(myLocation);
-            markerOptions.title("Current Position");
-            markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN));
-            mCurrLocationMarker = mMap.addMarker(markerOptions);
-            getlocation = location.getLatitude() + ","  + location.getLongitude();
+
+        LocationManager locationManager = (LocationManager)
+                getSystemService(Context.LOCATION_SERVICE);
+        Criteria criteria = new Criteria();
+
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
+                != PackageManager.PERMISSION_GRANTED) {
+
+            location = locationManager.getLastKnownLocation(locationManager
+                    .getBestProvider(criteria, false));
+            if (location != null) {
+                myLocation = new LatLng(location.getLatitude(),
+                        location.getLongitude());
+                mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(myLocation,
+                        11));
+                MarkerOptions markerOptions = new MarkerOptions();
+                markerOptions.position(myLocation);
+                markerOptions.title("Current Position");
+                markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN));
+                mCurrLocationMarker = mMap.addMarker(markerOptions);
+                getlocation = location.getLatitude() + "," + location.getLongitude();
+
+            }
+
 
         }
-
         return false;
+    }
+    @Override
+    public void onStart() {
+        super.onStart();
+
+        // Connect to Google API Client
+        googleApiClient.connect();
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        if (googleApiClient != null && googleApiClient.isConnected()) {
+            // Disconnect Google API Client if available and connected
+            googleApiClient.disconnect();
+        }
+    }
+    @Override
+    public void onConnected(@Nullable Bundle bundle) {
+        enableMyLocation();
+    }
+
+    @Override
+    public void onConnectionSuspended(int i) {
+
+    }
+
+    @Override
+    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
+
+    }
+
+    @Override
+    public void onLocationChanged(Location location) {
+
     }
 
     private class updaterestaurant extends AsyncTask<Restaurant ,String , Restaurant > {
