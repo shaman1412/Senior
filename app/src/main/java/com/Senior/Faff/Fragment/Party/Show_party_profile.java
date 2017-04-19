@@ -4,6 +4,7 @@ import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
 import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationManager;
@@ -20,10 +21,13 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.Senior.Faff.Main2Activity;
 import com.Senior.Faff.R;
+import com.Senior.Faff.UserProfile.ShowUserprofile;
 import com.Senior.Faff.model.Party;
 import com.Senior.Faff.model.Restaurant;
 import com.Senior.Faff.model.UserProfile;
@@ -67,7 +71,12 @@ public class Show_party_profile extends AppCompatActivity implements OnMapReadyC
     private Bundle save;
     private Bundle bundle;
     private boolean start;
-
+    private String partid;
+    private LinearLayout showcreate;
+    private int number_party = 0;
+    private int count = 0;
+    private TextView cmember,maxmember;
+    private  Button enter_chat,leave_group;
     @Override
     protected void onResume() {
         super.onResume();
@@ -88,6 +97,9 @@ public class Show_party_profile extends AppCompatActivity implements OnMapReadyC
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         mcontext= this;
+        enter_chat = (Button)findViewById(R.id.enter_room);
+        leave_group = (Button)findViewById(R.id.Leave_group);
+
         name = (TextView)findViewById(R.id.name);
         status=  (TextView)findViewById(R.id.status);
         appointment = (TextView)findViewById(R.id.appointment);
@@ -99,22 +111,18 @@ public class Show_party_profile extends AppCompatActivity implements OnMapReadyC
         address = (TextView)findViewById(R.id.address);
         telephone = (TextView)findViewById(R.id.telephone);
         sent_request = (Button)findViewById(R.id.sent_request);
+        showcreate = (LinearLayout)findViewById(R.id.showcreate);
+        cmember = (TextView)findViewById(R.id.people);
+        maxmember = (TextView)findViewById(R.id.max);
+        maxmember.setText(Integer.toString(number_party));
         bundle = new Bundle();
         Bundle args = getIntent().getExtras();
         start = true;
         if(args != null) {
             own_userid = args.getString(UserProfile.Column.UserID, null);
+            partyid = args.getString(Party.Column.RoomID,null);
             Userid =  own_userid;
         }
-
-
-        send_request.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                sendRequest();
-            }
-        });
-
 
     }
 
@@ -133,42 +141,7 @@ public class Show_party_profile extends AppCompatActivity implements OnMapReadyC
         protected Party doInBackground(String... args) {
             DatabaseReference mRootRef = FirebaseDatabase.getInstance().getReference().child("All_Room");
             mRootRef.orderByChild("roomID")
-                    .equalTo("a1412ppap").addValueEventListener(new ValueEventListener() {
-                @Override
-                public void onDataChange (DataSnapshot dataSnapshot){
-                    for (DataSnapshot postSnapshot: dataSnapshot.getChildren()) {
-                        key = postSnapshot.getKey();
-                        Party post= postSnapshot.getValue(Party.class);
-                        setvalue(post);
-                    }
-
-
-                    //showlist(listview, party_list, resId,gender,age);
-                    //Toast.makeText(getActivity(),"hi",Toast.LENGTH_SHORT).show();
-                }
-
-                @Override
-                public void onCancelled(DatabaseError databaseError) {
-                    //Toast.makeText(getActivity(),"Cant connect database",Toast.LENGTH_SHORT).show();
-                }
-
-            });
-            return null;
-        }
-
-    }
-    private class getDataRequest extends AsyncTask<String, String, Party > {
-
-        String pass;
-        int responseCode;
-        HttpURLConnection connection;
-        String resultjson;
-
-        @Override
-        protected Party doInBackground(String... args) {
-            DatabaseReference mRootRef = FirebaseDatabase.getInstance().getReference().child("All_Room");
-            mRootRef.orderByChild("roomID")
-                    .equalTo("a1412ppap").addValueEventListener(new ValueEventListener() {
+                    .equalTo(partyid).addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange (DataSnapshot dataSnapshot){
                     for (DataSnapshot postSnapshot: dataSnapshot.getChildren()) {
@@ -210,7 +183,7 @@ public class Show_party_profile extends AppCompatActivity implements OnMapReadyC
             if(lola != null) {
                 String[] pos = lola.split(",");
                 myLocation = new LatLng(Double.parseDouble(pos[0]),
-                        Double.parseDouble(pos[0]));
+                        Double.parseDouble(pos[1]));
                 mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(myLocation,
                         8));
                 MarkerOptions markerOptions = new MarkerOptions();
@@ -235,7 +208,7 @@ public class Show_party_profile extends AppCompatActivity implements OnMapReadyC
                 return super.onOptionsItemSelected(item);
         }
     }
-    public void  setvalue(Party partypro) {
+    public void  setvalue(final Party partypro) {
         name.setText(partypro.getName());
         description.setText(partypro.getDescription());
         appointment.setText(partypro.getAppointment());
@@ -246,7 +219,17 @@ public class Show_party_profile extends AppCompatActivity implements OnMapReadyC
         setTitle(partypro.getName());
         olduserid_request = partypro.getRequest();
         olduserid_accept = partypro.getAccept();
+        number_party = partypro.getPeople();
+        if(olduserid_accept != null){
+            String[] countsting =   olduserid_accept.split(",");
+            count = countsting.length;
+            cmember.setText(Integer.toString(count));
+        }else{
+            cmember.setText("0");
+        }
 
+        status.setText("None");
+        status.setTextColor(Color.GRAY);
         if (olduserid_request != null ) {
             String[] a = olduserid_request.split(",");
             for (int i = 0; i < a.length; i++) {
@@ -255,6 +238,8 @@ public class Show_party_profile extends AppCompatActivity implements OnMapReadyC
                     sd.setVisibility(View.GONE);
                     View st = findViewById(R.id.sent_request);
                     st.setVisibility(View.VISIBLE);
+                    status.setText("Request");
+                    status.setTextColor(Color.RED);
 
                 }
             }
@@ -266,10 +251,23 @@ public class Show_party_profile extends AppCompatActivity implements OnMapReadyC
                     View sd = findViewById(R.id.send_request);
                     sd.setVisibility(View.GONE);
                     View st = findViewById(R.id.sent_request);
-                    st.setVisibility(View.VISIBLE);
+                    st.setVisibility(View.GONE);
+                    View ec = findViewById(R.id.endandchat);
+                    ec.setVisibility(View.VISIBLE);
+                    status.setText("Joined");
+                    status.setTextColor(Color.GREEN);
+                    chatandleave();
                 }
             }
         }
+        showcreate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent  = new Intent(mcontext, ShowUserprofile.class);
+                intent.putExtra(UserProfile.Column.UserID, partypro.getCreateid());
+                startActivity(intent);
+            }
+        });
 
 
             bundle.putString(UserProfile.Column.UserID_accept, olduserid_accept);
@@ -291,41 +289,69 @@ public class Show_party_profile extends AppCompatActivity implements OnMapReadyC
                 start = false;
             }
 
-/*
-        if( findViewById(R.id.member) != null) {
-            FragmentManager fm = getSupportFragmentManager();
-            FragmentTransaction ft = fm.beginTransaction();
-            ft.remove(fragment_party);
-            ft.commit();
-        }*/
 
+        send_request.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                sendRequest();
+            }
+        });
 
         }
 
     public void sendRequest(){
-        View sd = findViewById(R.id.send_request);
-        sd.setVisibility(View.GONE);
-        DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference().child("All_Room");
-        if(olduserid_request != null){
-            Userid = olduserid_request + "," + Userid  ;
+
+        if( count < number_party) {
+            View sd = findViewById(R.id.send_request);
+            sd.setVisibility(View.GONE);
+            View st = findViewById(R.id.sent_request);
+            st.setVisibility(View.VISIBLE);
+            DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference().child("All_Room");
+            if (olduserid_request != null) {
+                Userid = olduserid_request + "," + Userid;
+            }
+            mDatabase.child(key).child("request").setValue(Userid);
+
         }
-        mDatabase.child(key).child("request").setValue(Userid);
-
-    /*    Intent intent = new Intent(mcontext, Main2Activity.class);
-        intent.putExtra(UserProfile.Column.UserID,own_userid);
-        startActivity(intent);
-*/
-/*
-        party_member_request fragment_party = new party_member_request();
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        FragmentTransaction fragtran = fragmentManager.beginTransaction();
-        fragment_party.setArguments(bundle);
-        fragtran.add(R.id.member,fragment_party).commit();
-*/
-
+        Toast.makeText(mcontext,"Member is full",Toast.LENGTH_SHORT);
     }
-    @Override
-    protected void onSaveInstanceState(Bundle outState) {
-        //No call for super(). Bug on API Level > 11.
+    public void chatandleave(){
+        enter_chat.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
+        leave_group.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference().child("All_Room");
+                if (olduserid_accept != null ) {
+                    boolean first = true;
+                    boolean change = false;
+                    String[] b = olduserid_accept.split(",");
+                    for (int j = 0; j < b.length; j++) {
+                        if (!(b[j].equals(own_userid))) {
+                            if(first) {
+                                Userid = b[j];
+                                first = false;
+                                change = true;
+                            }
+                            else {
+                                Userid = "," + Userid + b[j];
+                                change = true;
+                            }
+                        }
+                    }
+                    if(!change)
+                    {
+                        Userid = null;
+                    }
+                    mDatabase.child(key).child("accept").setValue(Userid);
+                }
+
+            }
+        });
+
     }
 }

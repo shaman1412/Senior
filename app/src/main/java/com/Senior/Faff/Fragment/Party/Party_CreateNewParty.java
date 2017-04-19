@@ -23,6 +23,7 @@ import com.Senior.Faff.utils.CreatePartyManager;
 import com.Senior.Faff.R;
 
 import java.util.ArrayList;
+import java.util.StringTokenizer;
 
 public class Party_CreateNewParty extends AppCompatActivity {
 
@@ -55,7 +56,8 @@ public class Party_CreateNewParty extends AppCompatActivity {
             createby = args.getString(UserProfile.Column.Name);
 
         }
-        roomid = userid+ "ppap";
+        long unixTime = System.currentTimeMillis() / 1000L;
+        roomid = userid+ "ppap" + String.valueOf(unixTime);
 
         add_rule.setOnClickListener(new View.OnClickListener() {
             @Override

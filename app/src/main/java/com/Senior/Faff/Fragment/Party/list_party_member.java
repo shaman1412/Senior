@@ -1,6 +1,7 @@
 package com.Senior.Faff.Fragment.Party;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,6 +12,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.Senior.Faff.R;
+import com.Senior.Faff.UserProfile.ShowUserprofile;
 import com.Senior.Faff.model.UserProfile;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
@@ -22,7 +24,7 @@ public class list_party_member extends RecyclerView.Adapter<list_party_member.Vi
     private Context context;
     private String key;
     private String  setuserid;
-
+    private  Context mcontext;
     public static class ViewHolder extends RecyclerView.ViewHolder {
                 // each data item is just a string in this case
 
@@ -50,14 +52,21 @@ public class list_party_member extends RecyclerView.Adapter<list_party_member.Vi
                 View view = LayoutInflater.from(parent.getContext())
                         .inflate(R.layout.activity_list_party_accept, parent, false);
                 ViewHolder vh = new ViewHolder(view);
-
+                mcontext = view.getContext();
                 return vh;
             }
 
             @Override
             public void onBindViewHolder(final ViewHolder holder, final int position) {
-
                 holder.list_name.setText(list.get(position).getName());
+                holder.mix.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Intent intent = new Intent(mcontext, ShowUserprofile.class);
+                        intent.putExtra(UserProfile.Column.UserID,list.get(position).getUserid());
+                        mcontext.startActivity(intent);
+                    }
+                });
                 holder.kick.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -65,17 +74,22 @@ public class list_party_member extends RecyclerView.Adapter<list_party_member.Vi
                         list.remove(position);
                         notifyDataSetChanged();
                         boolean first = true;
+                        boolean change = false;
                         for(int i =0 ;i<list.size(); i++){
                             if(first) {
                                 setuserid = list.get(i).getUserid();
                                 first =  false;
+                                change = true;
                             }
                             else {
                                 setuserid = setuserid + ",";
                                 setuserid = setuserid + list.get(i).getUserid();
+                                change = true;
                             }
                         }
-
+                        if (!change){
+                            setuserid = null;
+                        }
                         sendRequest(setuserid);
 
 

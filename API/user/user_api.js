@@ -46,6 +46,7 @@ router.post('/new_user',(req, res, next) => {
 	const user = {
 		userid : json.userid,
 		name: json.name,
+    picture : json.picture,
 		address: json.address,
 		email: json.email,
 		telephone: json.telephone,

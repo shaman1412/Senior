@@ -181,7 +181,7 @@ public class Show_RestaurantProfile extends AppCompatActivity implements OnMapRe
             if(lola != null) {
                 String[] pos = lola.split(",");
                 myLocation = new LatLng(Double.parseDouble(pos[0]),
-                        Double.parseDouble(pos[0]));
+                        Double.parseDouble(pos[1]));
                 mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(myLocation,
                         11));
                 MarkerOptions markerOptions = new MarkerOptions();
@@ -239,9 +239,9 @@ public class Show_RestaurantProfile extends AppCompatActivity implements OnMapRe
             super.onPostExecute(respro);
             if (respro != null) {
                 name.setText(respro.getRestaurantName());
-                address.setText(respro.getAddress());
+                address.setText("   "+respro.getAddress());
                 telephone.setText(respro.getTelephone());
-                description.setText(respro.getDescription());
+                description.setText("   "+respro.getDescription());
                 period.setText(respro.getPeriod());
                 rate.setRating(respro.getScore());
                 text_rate.setText(String.valueOf(respro.getScore()));

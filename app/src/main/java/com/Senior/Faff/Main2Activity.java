@@ -96,6 +96,7 @@ public class Main2Activity extends AppCompatActivity {
     private UserProfile userProfile;
     private Bundle bundle;
     private String userid;
+    private String id;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -133,37 +134,13 @@ public class Main2Activity extends AppCompatActivity {
         if((args = getIntent().getExtras()) != null) {
             args = getIntent().getExtras();
             //int id = profileManager.getID(args.getString(UserAuthen.Column.USERNAME));
-             String id = args.getString(UserProfile.Column.UserID);
+             id = args.getString(UserProfile.Column.UserID);
            // userProfile.setId(id);
             bundle = new Bundle();
             new getData().execute(id);
 
         }
 
-
-
-      /*tabLayout.getTabAt(0).setIcon(ICONS[0]);
-        tabLayout.getTabAt(1).setIcon(ICONS[1]);
-        tabLayout.getTabAt(2).setIcon(ICONS[2]);*/
-        //tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
-/*            @Override
-            public void onTabSelected(TabLayout.Tab tab) {
-                pager.setCurrentItem(tab.getPosition());
-
-
-            }
-
-            @Override
-            public void onTabUnselected(TabLayout.Tab tab) {
-
-            }
-
-            @Override
-            public void onTabReselected(TabLayout.Tab tab) {
-
-            }
-        });*/
-        //tabLayout.setupWithViewPager(pager);
         BottomNavigationView bottomNavigationView = (BottomNavigationView)
                 findViewById(R.id.bottom_navigation);
 
@@ -440,19 +417,25 @@ public class Main2Activity extends AppCompatActivity {
                 bundle.putString(UserProfile.Column.Name,userProfile.getName());
                 bundle.putInt(UserProfile.Column.Age,userProfile.getAge());
                 bundle.putInt(UserProfile.Column.Gender,userProfile.getGender());
+                MainHome_Fragment fragment_home = new MainHome_Fragment();
+                Log.i("TEST:", "  uid in Main2 bewfoe click home is : "+bundle.getString(UserProfile.Column.UserID));
+                fragment_home.setArguments(bundle);
+                FragmentManager fragmentManager_home = getSupportFragmentManager();
+                fragmentManager_home.beginTransaction().replace(R.id.flContent,fragment_home).commit();
             }
             else{
-                String message = getString(R.string.login_error_message);
-                Toast.makeText(Main2Activity.this, message, Toast.LENGTH_SHORT).show();
+                /*String message = getString(R.string.login_error_message);
+                Toast.makeText(Main2Activity.this, message, Toast.LENGTH_SHORT).show();*/
+                Intent intent = new Intent(context,InsertUserProfile.class);
+                intent.putExtra(UserProfile.Column.UserID,id);
+                startActivity(intent);
             }
 
-            MainHome_Fragment fragment_home = new MainHome_Fragment();
-            Log.i("TEST:", "  uid in Main2 bewfoe click home is : "+bundle.getString(UserProfile.Column.UserID));
-            fragment_home.setArguments(bundle);
-            FragmentManager fragmentManager_home = getSupportFragmentManager();
-            fragmentManager_home.beginTransaction().replace(R.id.flContent,fragment_home).commit();
+
+
         }
 
     }
+
 
 }

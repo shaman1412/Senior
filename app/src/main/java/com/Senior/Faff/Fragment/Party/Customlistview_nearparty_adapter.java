@@ -23,14 +23,15 @@ import java.util.ArrayList;
 public class Customlistview_nearparty_adapter extends ArrayAdapter<Party> {
 
     Context mcontext;
-    int[] res_id;
-    ArrayList<Party> res_name;
+    int[] room_id;
+    ArrayList<Party> room_name;
     LayoutInflater inflater;
     private String type_result;
+    private int count =0;
     public Customlistview_nearparty_adapter(Context context,int tv, ArrayList<Party> res_name,int[] res_id) {
         super(context,tv,res_name);
-        this.res_id = res_id;
-        this.res_name = res_name;
+        this.room_id = res_id;
+        this.room_name = res_name;
         inflater = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
     }
@@ -53,41 +54,35 @@ public class Customlistview_nearparty_adapter extends ArrayAdapter<Party> {
             }
         }
         //imageView.setImageBitmap(null);
-        async_image asyn2 = new async_image(getContext(),imageView,res_id[0]);
+        async_image asyn2 = new async_image(getContext(),imageView,room_id[0]);
         asyn2.execute();
         imageView.setTag(R.id.imageView1, asyn2);
 
-
-        viewHolder.ResName.setText(res_name.get(position).getName());
-        //viewHolder.ResType.setText(changeTypeResID(res_name.get(position).getTypeID()));
-        viewHolder.ResLo.setText(res_name.get(position).getLocation());
-
+        if(room_name.get(position).getAccept() !=null) {
+            String[] people = room_name.get(position).getAccept().split(",");
+            count  = people.length;
+        }
+        viewHolder.RoomName.setText(room_name.get(position).getName());
+        viewHolder.appointment.setText(room_name.get(position).getAppointment());
+        viewHolder.maxpeople.setText(Integer.toString(room_name.get(position).getPeople()));
+        viewHolder.currentpeople.setText(Integer.toString(count));
+        viewHolder.detail.setText("     "+room_name.get(position).getDescription());
         return convertView;
     }
     private class ViewHolder {
-        public TextView ResName;
-        public TextView ResLo;
+        public TextView RoomName;
+        public TextView appointment;
+        public TextView maxpeople;
+        public TextView currentpeople;
+        public TextView detail;
 
         public ViewHolder(View convertView) {
-            ResName = (TextView)convertView.findViewById(R.id.textView1);
-            ResLo = (TextView)convertView.findViewById(R.id.Location_text);
+            RoomName = (TextView)convertView.findViewById(R.id.textView1);
+            appointment = (TextView)convertView.findViewById(R.id.Location_text);
+            maxpeople = (TextView)convertView.findViewById(R.id.max);
+            currentpeople = (TextView)convertView.findViewById(R.id.people);
+            detail = (TextView)convertView.findViewById(R.id.detail);
         }
     }
-    public String changeTypeResID(int typeID) {
-        switch (typeID) {
-            case (0):
-                type_result = "Food on Order";
-                break;
-            case (1):
-                type_result = "Steak";
-                break;
-            case (2):
-                type_result = "Pizza";
-                break;
-            case (3):
-                type_result = "Noodle";
-                break;
-        }
-        return type_result;
-    }
+
 }

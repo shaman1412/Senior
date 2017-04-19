@@ -66,11 +66,13 @@ function calculateNearby(lat,long, results){
 	let list = [];
 	for(let i = 0; i < results.length; i++)
 	{
-		let check_latlo = results[i].location.split(",");
-		let distance =	getDistanceFromLatLonInKm(check_latlo[0],check_latlo[1],lat,long);
-		if(distance < 10)
-		{
+		if(results[i].location != null){
+			let check_latlo = results[i].location.split(",");
+			let distance =	getDistanceFromLatLonInKm(check_latlo[0],check_latlo[1],lat,long);
+			if(distance < 10)
+			{
 			list.push(results[i]);
+			}
 		}
 	}
 	debugger;

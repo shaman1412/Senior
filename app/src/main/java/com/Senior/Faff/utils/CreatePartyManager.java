@@ -67,6 +67,7 @@ public class CreatePartyManager {
         party.setCreateid(userid);
         party.setCreatename(createby);
         party.setRule(rule);
+        party.setAccept(userid);
       allroom.push().setValue(party);
     }
 

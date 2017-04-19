@@ -231,9 +231,9 @@ public class Room_fragment extends Fragment implements GoogleApiClient.OnConnect
         int distance;
         int countcheck = 0;
         float latitude, longtitude;
-        mLastLocation  = new Location("Target");
+/*        mLastLocation  = new Location("Target");
         mLastLocation.setLatitude(37.421998);
-        mLastLocation.setLongitude(-122.084);
+        mLastLocation.setLongitude(-122.084);*/
         ArrayList<Party> res = new ArrayList<>();
         for (int i = 0; i < listRes.size(); i++) {
             String[] position = listRes.get(i).getLocation().split(",");
@@ -242,32 +242,38 @@ public class Room_fragment extends Fragment implements GoogleApiClient.OnConnect
             Location target = new Location("Target");
             target.setLatitude(latitude);
             target.setLongitude(longtitude);
-            distance = (int) mLastLocation.distanceTo(target);
-            if (distance <= de_distance) {
+            if (mLastLocation != null) {
+                distance = (int) mLastLocation.distanceTo(target);
+                if (distance <= de_distance) {
 
-                for (Map.Entry<String, String> check_rule : rule_gender.entrySet()) {
-                    String check = listRes.get(i).getRule().get(check_rule.getKey());
-                    String a = check_rule.getValue();
-                    if (check != null) {
-                        String[] sp = check.split(",");
-                        for (int j = 0; j < sp.length; j++)
-                            if (sp[j].equals(a)) {
-                                countcheck++;
-                            }
-                    }
-                }
-                for (Map.Entry<String, Integer> check_rule : rule_age.entrySet()) {
-                    String check = listRes.get(i).getRule().get(check_rule.getKey());
-                    int a = check_rule.getValue();
-                    if (check != null) {
-                        int b = Integer.valueOf(check);
-                        if (a < b) {
+                    for (Map.Entry<String, String> check_rule : rule_gender.entrySet()) {
+                        String check = listRes.get(i).getRule().get(check_rule.getKey());
+                        String a = check_rule.getValue();
+                        if (check != null) {
+                            String[] sp = check.split(",");
+                            for (int j = 0; j < sp.length; j++)
+                                if (sp[j].equals(a)) {
+                                    countcheck++;
+                                }
+                        } else {
                             countcheck++;
                         }
                     }
-                    if (countcheck == 2) {
-                        countcheck = 0;
-                        res.add(listRes.get(i));
+                    for (Map.Entry<String, Integer> check_rule : rule_age.entrySet()) {
+                        String check = listRes.get(i).getRule().get(check_rule.getKey());
+                        int a = check_rule.getValue();
+                        if (check != null) {
+                            int b = Integer.valueOf(check);
+                            if (a < b) {
+                                countcheck++;
+                            }
+                        } else {
+                            countcheck++;
+                        }
+                        if (countcheck == 2) {
+                            countcheck = 0;
+                            res.add(listRes.get(i));
+                        }
                     }
                 }
             }
@@ -286,21 +292,20 @@ public class Room_fragment extends Fragment implements GoogleApiClient.OnConnect
         }
         Map<String, Integer> rule_age = new HashMap<>();
         rule_age.put("age", age);
-
         // Restaurant_manager res_manager = new Restaurant_manager(mcontext);
         if (Pary_list != null) {
-            re_list = calculatedistance(900, rule_gender,rule_age, Pary_list);
-            listview.setAdapter(new Customlistview_nearparty_adapter(getContext(), 0, re_list, resId));
-            listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                public void onItemClick(AdapterView<?> arg0, View view, int position, long id) {
-                    if (position == 0) {
-                        Toast.makeText(getContext(), "position 0", Toast.LENGTH_SHORT).show();
+            re_list = calculatedistance(900, rule_gender,rule_age, Pary_list); // 900 meter
+            if(re_list != null) {
+                listview.setAdapter(new Customlistview_nearparty_adapter(getContext(), 0, re_list, resId));
+                listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                    public void onItemClick(AdapterView<?> arg0, View view, int position, long id) {
+                        Intent intent = new Intent(mcontext, Show_party_profile.class);
+                        intent.putExtra(Party.Column.RoomID, re_list.get(position).getRoomID());
+                        intent.putExtra(UserProfile.Column.UserID, userid);
+                        startActivity(intent);
                     }
-                    if (position == 1) {
-                        Toast.makeText(getContext(), "position 1", Toast.LENGTH_SHORT).show();
-                    }
-                }
-            });
+                });
+            }
         }
         else{
             Toast.makeText(getActivity(),"Dont have party",Toast.LENGTH_SHORT);

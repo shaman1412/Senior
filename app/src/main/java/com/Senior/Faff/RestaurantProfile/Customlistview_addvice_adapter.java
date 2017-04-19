@@ -55,38 +55,22 @@ public class Customlistview_addvice_adapter extends ArrayAdapter<Restaurant> {
 
 
         viewHolder.ResName.setText(res_name[position].getRestaurantName());
-        viewHolder.ResType.setText(res_name[position].getTypefood());
-        viewHolder.ResLo.setText(res_name[position].getLocation());
+        viewHolder.detail.setText( "        "+res_name[position].getDescription());
+        viewHolder.period.setText(res_name[position].getPeriod());
+
 
         return convertView;
     }
     private class ViewHolder {
         public TextView ResName;
-        public TextView ResType;
-        public TextView ResLo;
+        public TextView detail;
+        public TextView period;
 
         public ViewHolder(View convertView) {
-           ResName = (TextView)convertView.findViewById(R.id.textView1);
-            ResType = (TextView)convertView.findViewById(R.id.type_text);
-            ResLo = (TextView)convertView.findViewById(R.id.Location_text);
+            ResName = (TextView)convertView.findViewById(R.id.textView1);
+            detail = (TextView)convertView.findViewById(R.id.detail);
+            period = (TextView)convertView.findViewById(R.id.open_text);
         }
-    }
-    public String changeTypeResID(int typeID) {
-        switch (typeID) {
-            case (0):
-                type_result = "Food on Order";
-                break;
-            case (1):
-                type_result = "Steak";
-                break;
-            case (2):
-                type_result = "Pizza";
-                break;
-            case (3):
-                type_result = "Noodle";
-                break;
-        }
-        return type_result;
     }
 
 }

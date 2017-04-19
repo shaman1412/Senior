@@ -8,6 +8,8 @@ import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationManager;
 import android.os.AsyncTask;
+import android.os.Build;
+import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
@@ -37,7 +39,9 @@ import com.Senior.Faff.model.UserProfile;
 import com.Senior.Faff.utils.PermissionUtils;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.location.LocationAvailability;
 import com.google.android.gms.location.LocationListener;
+import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -67,7 +71,7 @@ public class Add_RestaurantProfile extends AppCompatActivity implements OnMapRea
         GoogleMap.OnMyLocationButtonClickListener,
         GoogleApiClient.OnConnectionFailedListener,
         GoogleApiClient.ConnectionCallbacks,LocationListener,
-        ActivityCompat.OnRequestPermissionsResultCallback{
+        ActivityCompat.OnRequestPermissionsResultCallback {
 
     private com.google.android.gms.maps.model.Marker mCurrLocationMarker;
     private LatLng myLocation;
@@ -79,7 +83,7 @@ public class Add_RestaurantProfile extends AppCompatActivity implements OnMapRea
     private String get_user_id;
     private String user_id;
     private int type_food;
-    private EditText name,description,period,address,telephone;
+    private EditText name, description, period, address, telephone;
     private Button picture;
     private Button next;
     private Context mcontext;
@@ -91,8 +95,9 @@ public class Add_RestaurantProfile extends AppCompatActivity implements OnMapRea
     private boolean first = true;
     private List_type list_adapter;
     private RecyclerView mRecyclerView;
-    private  Restaurant restaurant;
+    private Restaurant restaurant;
     private String type_check;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -108,8 +113,8 @@ public class Add_RestaurantProfile extends AppCompatActivity implements OnMapRea
                 .build();
 
 
-       type = (Spinner) findViewById(R.id.favourite_type);
-        ArrayAdapter<CharSequence> adapter_type = ArrayAdapter.createFromResource(this,R.array.type_food_dropdown, android.R.layout.simple_spinner_item);
+        type = (Spinner) findViewById(R.id.favourite_type);
+        ArrayAdapter<CharSequence> adapter_type = ArrayAdapter.createFromResource(this, R.array.type_food_dropdown, android.R.layout.simple_spinner_item);
         adapter_type.setDropDownViewResource(android.R.layout.simple_dropdown_item_1line);
         type.setAdapter(adapter_type);
         mcontext = this;
@@ -121,7 +126,7 @@ public class Add_RestaurantProfile extends AppCompatActivity implements OnMapRea
                 showlocation.setText(getlocation);
             }
         }*/
-        if(getIntent().getStringExtra("userid") != null) {
+        if (getIntent().getStringExtra("userid") != null) {
             user_id = getIntent().getStringExtra("userid");
         }
 
@@ -132,10 +137,10 @@ public class Add_RestaurantProfile extends AppCompatActivity implements OnMapRea
         toolbar.setTitle(getString(R.string.Add_Restaurant_title));
 
         name = (EditText) findViewById(R.id.name);
-        description = (EditText)findViewById(R.id.description);
-        period = (EditText)findViewById(R.id.period);
-        address = (EditText)findViewById(R.id.address);
-        telephone = (EditText)findViewById(R.id.telephone);
+        description = (EditText) findViewById(R.id.description);
+        period = (EditText) findViewById(R.id.period);
+        address = (EditText) findViewById(R.id.address);
+        telephone = (EditText) findViewById(R.id.telephone);
         type_list = new ArrayList<>();
         next = (Button) findViewById(R.id.next);
         picture = (Button) findViewById(R.id.picture);
@@ -143,7 +148,7 @@ public class Add_RestaurantProfile extends AppCompatActivity implements OnMapRea
         next.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(list_adapter != null) {
+                if (list_adapter != null) {
                     ArrayList<String> list_get = list_adapter.getlist();
                     if (list_get != null) {
                         for (int i = 0; i < list_get.size(); i++) {
@@ -158,9 +163,9 @@ public class Add_RestaurantProfile extends AppCompatActivity implements OnMapRea
                         }
                     }
                 }
-                restaurant = new Restaurant(name.getText().toString(),address.getText().toString(),description.getText().toString(),period.getText().toString(),telephone.getText().toString(),user_id, type_check);
+                restaurant = new Restaurant(name.getText().toString(), address.getText().toString(), description.getText().toString(), period.getText().toString(), telephone.getText().toString(), user_id, type_check);
                 long unixTime = System.currentTimeMillis() / 1000L;
-                restaurant.setresId(user_id +String.valueOf(unixTime));
+                restaurant.setresId(user_id + String.valueOf(unixTime));
                 restaurant.setLocation(getlocation);
                 Timestamp timestamp = new Timestamp(System.currentTimeMillis());
                 restaurant.setCreate_time(timestamp);
@@ -175,24 +180,24 @@ public class Add_RestaurantProfile extends AppCompatActivity implements OnMapRea
                                        long id) {
                 String text = type.getSelectedItem().toString();
                 boolean same = false;
-                if(type_list != null) {
+                if (type_list != null) {
                     for (int i = 0; i < type_list.size(); i++) {
                         if (text.equals(type_list.get(i))) {
                             same = true;
                         }
                     }
                 }
-                if(same == false && first == false) {
+                if (same == false && first == false) {
                     type_list.add(text);
                     list_adapter = new List_type(type_list, mcontext);
-                    LinearLayoutManager mLayoutManager  = new LinearLayoutManager(mcontext);
+                    LinearLayoutManager mLayoutManager = new LinearLayoutManager(mcontext);
                     mLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
                     mRecyclerView = (RecyclerView) findViewById(R.id.list_show);
                     mRecyclerView.setLayoutManager(mLayoutManager);
                     mRecyclerView.setAdapter(list_adapter);
 
                 }
-                if(first == true){
+                if (first == true) {
                     first = false;
                 }
 
@@ -228,18 +233,20 @@ public class Add_RestaurantProfile extends AppCompatActivity implements OnMapRea
         });*/
 
     }
-        @Override
-        public boolean onOptionsItemSelected(MenuItem item) {
-            switch (item.getItemId()) {
-                case android.R.id.home:
-                    // this takes the user 'back', as if they pressed the left-facing triangle icon on the main android toolbar.
-                    // if this doesn't work as desired, another possibility is to call `finish()` here.
-                    finish();
-                    return true;
-                default:
-                    return super.onOptionsItemSelected(item);
-            }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                // this takes the user 'back', as if they pressed the left-facing triangle icon on the main android toolbar.
+                // if this doesn't work as desired, another possibility is to call `finish()` here.
+                finish();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
         }
+    }
+
     @Override
     public void onStart() {
         super.onStart();
@@ -256,8 +263,10 @@ public class Add_RestaurantProfile extends AppCompatActivity implements OnMapRea
             googleApiClient.disconnect();
         }
     }
+
     @Override
     public void onConnected(@Nullable Bundle bundle) {
+        enableMyLocation();
 
     }
 
@@ -274,11 +283,30 @@ public class Add_RestaurantProfile extends AppCompatActivity implements OnMapRea
     @Override
     public void onLocationChanged(Location location) {
 
+/*        myLocation = new LatLng(location.getLatitude(),
+                location.getLongitude());
+        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(myLocation,
+                11));
+        MarkerOptions markerOptions = new MarkerOptions();
+        markerOptions.position(myLocation);
+        markerOptions.title("Current Position");
+        markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN));
+        mCurrLocationMarker = mMap.addMarker(markerOptions);
+        getlocation = location.getLatitude() + "," + location.getLongitude();*/
     }
 
     @Override
     public boolean onMyLocationButtonClick() {
 
+        LocationManager locationManager = (LocationManager)
+                getSystemService(Context.LOCATION_SERVICE);
+        Criteria criteria = new Criteria();
+
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
+                != PackageManager.PERMISSION_GRANTED) {
+
+        location = locationManager.getLastKnownLocation(locationManager
+                .getBestProvider(criteria, false));
         if (location != null) {
             myLocation = new LatLng(location.getLatitude(),
                     location.getLongitude());
@@ -291,58 +319,59 @@ public class Add_RestaurantProfile extends AppCompatActivity implements OnMapRea
             mCurrLocationMarker = mMap.addMarker(markerOptions);
             getlocation = location.getLatitude() + "," + location.getLongitude();
             //description.setText(String.valueOf(myLocation.latitude));
-
+            Toast.makeText(this, "getlocation = get ", Toast.LENGTH_SHORT).show();
+        }else {
+            Toast.makeText(this, "getlocation = null ", Toast.LENGTH_SHORT).show();
+        }
         }
 
 
-        Toast.makeText(this, "MyLocation button clicked", Toast.LENGTH_SHORT).show();
+       // Toast.makeText(this, "MyLocation button clicked", Toast.LENGTH_SHORT).show();
         return false;
     }
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
-
-        // Add a marker in Sydney and move the camera
-/*        LatLng sydney = new LatLng(37.62,-122.284);
-        mMap.addMarker(new MarkerOptions().position(sydney).title("PPAP"));
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));*/
-
         mMap.setOnMyLocationButtonClickListener(this);
-        enableMyLocation();
-
     }
+
     private void enableMyLocation() {
+
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
                 != PackageManager.PERMISSION_GRANTED) {
             // Permission to access the location is missing.
-            PermissionUtils.requestPermission(this, LOCATION_PERMISSION_REQUEST_CODE,
-                    Manifest.permission.ACCESS_FINE_LOCATION, true);
+            ActivityCompat.requestPermissions(this,
+                    new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION}, LOCATION_PERMISSION_REQUEST_CODE);
         } else if (mMap != null) {
             // Access to the location has been granted to the app.
             mMap.setMyLocationEnabled(true);
-            LocationManager locationManager = (LocationManager)
-                    getSystemService(Context.LOCATION_SERVICE);
-            Criteria criteria = new Criteria();
 
-            location = locationManager.getLastKnownLocation(locationManager
-                    .getBestProvider(criteria, true));
+            LocationAvailability locationAvailability = LocationServices.FusedLocationApi.getLocationAvailability(googleApiClient);
+            if (locationAvailability != null) {
 
-            if(location != null) {
-                myLocation = new LatLng(location.getLatitude(),
-                        location.getLongitude());
-                mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(myLocation,
-                        11));
-                MarkerOptions markerOptions = new MarkerOptions();
-                markerOptions.position(myLocation);
-                markerOptions.title("Current Position");
-                markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN));
-                mCurrLocationMarker = mMap.addMarker(markerOptions);
-                getlocation = location.getLatitude() + "," + location.getLongitude();
+                Toast.makeText(this, "set location ", Toast.LENGTH_SHORT).show();
+                LocationRequest locationRequest = new LocationRequest()  // ใช้สำหรับ onlicationchange ทำเรื่อยๆ
+                        .setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY)
+                        .setInterval(2000)
+                        .setFastestInterval(2000);
+                if (ContextCompat.checkSelfPermission(this,
+                        Manifest.permission.ACCESS_FINE_LOCATION)
+                        == PackageManager.PERMISSION_GRANTED) {
+                    LocationServices.FusedLocationApi.requestLocationUpdates(googleApiClient, locationRequest, this);
+                }
+                location = LocationServices.FusedLocationApi.getLastLocation(googleApiClient);
+                if (location != null) {
+                    getlocation = location.getLatitude() + "," + location.getLongitude();
+                    Toast.makeText(this," set getlocation ", Toast.LENGTH_SHORT).show();
+                }
+
             }
+            Toast.makeText(this, "cant set location", Toast.LENGTH_SHORT).show();
 
         }
     }
+
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
                                            @NonNull int[] grantResults) {
