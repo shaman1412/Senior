@@ -15,7 +15,7 @@ public class Restaurant {
     public class Column {
         public static final String ResID = "resid";
         public static final String RestaurantName = "name";
-        public static final String RestaurantPicture = "RestaurantPicture";
+        public static final String RestaurantPicture = "picture";
         public static final String TypeFood = "type_food";
         public static final String Description = "description";
         public static final String Period = "period";
@@ -30,7 +30,7 @@ public class Restaurant {
 
     private String resid;
     private String name;
-    private String restaurantPicture;
+    private String picture;
     private String type_food;
     private String description;
     private String period;
@@ -76,12 +76,12 @@ public class Restaurant {
         this.name = restaurantName;
     }
 
-    public String getRestaurantPicture() {
-        return restaurantPicture;
+    public String getPicture() {
+        return picture;
     }
 
-    public void setRestaurantPicture(String restaurantPicture) {
-        this.restaurantPicture = restaurantPicture;
+    public void setPicture(String picture) {
+        this.picture = picture;
     }
 
     public String getLocation() {
@@ -146,6 +146,6 @@ public class Restaurant {
 
     public String getPeriod(){ return  period;}
 
-
+    //endregion
 
 }

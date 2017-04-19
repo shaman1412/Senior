@@ -60,7 +60,7 @@ public class PromotionActivity extends AppCompatActivity {
 
     public static ArrayList<Bitmap> bmap = new ArrayList<>();           //keep bitmap data
     public static ArrayList<String> imgPath = new ArrayList<>();        //keep uri
-    public static ArrayList<byte[]> imgByte = new ArrayList<>();        //keep byte data
+//    public static ArrayList<byte[]> imgByte = new ArrayList<>();        //keep byte data
 
     public static int image_count = 0;                                    //number of images
 
@@ -171,7 +171,7 @@ public class PromotionActivity extends AppCompatActivity {
 
                 bmap.clear();
                 imgPath.clear();
-                imgByte.clear();
+//                imgByte.clear();
                 image_count = 0;
             }
         });
@@ -209,10 +209,10 @@ public class PromotionActivity extends AppCompatActivity {
                 //convert to byte
                 ByteArrayOutputStream stream = new ByteArrayOutputStream();
                 bmap.get(image_count).compress(Bitmap.CompressFormat.PNG, 100, stream);
-                imgByte.add(stream.toByteArray());
+//                imgByte.add(stream.toByteArray());
                 image_count++;
 
-                adapter = new PromotionRecyclerViewAdapter(this, bmap, bmap);
+                adapter = new PromotionRecyclerViewAdapter(this, bmap);
                 RecyclerView lv = (RecyclerView) findViewById(R.id.rlist1);
                 lv.setNestedScrollingEnabled(false);
                 lv.setAdapter(adapter);

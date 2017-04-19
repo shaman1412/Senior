@@ -29,7 +29,7 @@ public class PromotionRecyclerViewAdapter extends RecyclerView.Adapter<Promotion
     private final ArrayList<Bitmap> bitmap;
     private Button cancel;
 
-    public PromotionRecyclerViewAdapter(Context context,ArrayList<Bitmap> bitmap, ArrayList<Bitmap> bm) {
+    public PromotionRecyclerViewAdapter(Context context,ArrayList<Bitmap> bitmap) {
         inflater = LayoutInflater.from(context);
         this.context = context;
         this.bitmap = bitmap;

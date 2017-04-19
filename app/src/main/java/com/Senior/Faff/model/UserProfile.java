@@ -33,7 +33,7 @@ public class UserProfile {
     private String favourite_type;
     private int gender;
     private int age;
-    private String picture;
+    private String picture;             //picture url
     private String userid;
 
     public UserProfile(String userid, String name, String address, String email, String telephone, String favourite_type, int gender, int age, String picture) {
