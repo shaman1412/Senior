@@ -9,4 +9,5 @@
     <color name="dialog_filter">#ffa500</color>
     <color name="custom_orange1">#fab811</color>
     <color name="sent_request">#D3D3D3</color>
+    <color name="black_tab">#000000</color>
 </resources>

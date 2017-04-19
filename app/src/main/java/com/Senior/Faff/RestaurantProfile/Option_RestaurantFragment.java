@@ -3,21 +3,35 @@ package com.Senior.Faff.RestaurantProfile;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.Senior.Faff.Fragment.Home.advice_restaurant_MainFragment;
 import com.Senior.Faff.Fragment.Party.Show_party_profile;
 import com.Senior.Faff.R;
 import com.Senior.Faff.UserProfile.ShowUserprofile;
+import com.Senior.Faff.model.Restaurant;
 import com.Senior.Faff.model.UserProfile;
+import com.google.gson.Gson;
+
+import java.io.BufferedInputStream;
+import java.io.BufferedReader;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -30,8 +44,10 @@ public class Option_RestaurantFragment extends Fragment {
     }
         
     private Button add,edit,show;
+    private Context mcontext;
+    private ListView listview;
     private String userid;
-    private Context mconctext;
+    private int[] resId =  {R.drawable.restaurant1,R.drawable.restaurant2,R.drawable.restaurant3};
     View root;
     private LinearLayout object_set;
 
@@ -41,15 +57,12 @@ public class Option_RestaurantFragment extends Fragment {
         // Inflate the layout for this fragment
         root =  inflater.inflate(R.layout.fragment_option_restaurant, container, false);
 
-        object_set = (LinearLayout)root.findViewById(R.id.object_set);
-
         add = (Button)root.findViewById(R.id.add_restaurant);
-        edit = (Button)root.findViewById(R.id.edit_restaurant);
-        show = (Button)root.findViewById(R.id.show_restaurant);
         userid = getArguments().getString("userid");
-        TextView getdate  = (TextView)root.findViewById(R.id.get);
-        getdate.setText(userid);
-        mconctext =  getContext();
+        mcontext =  getContext();
+        listview = (ListView)root.findViewById(R.id.listView1);
+
+        new getData().execute();
 
         add.setOnClickListener(new View.OnClickListener(){
             @Override
@@ -70,50 +83,88 @@ public class Option_RestaurantFragment extends Fragment {
             }
 
         });
-        edit.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-               /* Edit_RestaurantFragment edit_fragment = new Edit_RestaurantFragment();
-                FragmentManager fragmentManager_edit = getFragmentManager();
-                fragmentManager_edit.beginTransaction().replace(R.id.frame,edit_fragment).commit();
-                add.setVisibility(view.GONE);
-                edit.setVisibility(view.GONE);
-                show.setVisibility(view.GONE);*/
-                Intent  intent  = new Intent(getActivity(),Show_party_profile.class);
-                intent.putExtra(UserProfile.Column.UserID,userid);
-                startActivity(intent);
-
-            }
-        });
-        show.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View view){
-
-                Bundle bundle = new Bundle();
-                bundle.putString(UserProfile.Column.UserID,userid);
-                advice_restaurant_MainFragment ad = new advice_restaurant_MainFragment();
-                ad.setArguments(bundle);
-                FragmentManager fragmentManager_show = getFragmentManager();
-                fragmentManager_show.beginTransaction().replace(R.id.frame, ad).addToBackStack("frag_option_restaurant").commit();
-                object_set.setVisibility(View.GONE);
-
-//                Show_RestaurantFragment show_fragement = new Show_RestaurantFragment();
-//                show_fragement.setArguments(bundle);
-//                FragmentManager fragmentManager_show = getFragmentManager();
-//                fragmentManager_show.beginTransaction().replace(R.id.frame,show_fragement).commit();
-//                Intent  intent  = new Intent(getActivity(),Show_RestaurantProfile.class);
-//                intent.putExtra(UserProfile.Column.UserID,userid);
-//                startActivity(intent);
-
-            }
-        });
-
-
-
-
-
 
         return root;
+    }
+    private class getData extends AsyncTask<String, String, Restaurant[] > {
+
+        String pass;
+        int responseCode;
+        HttpURLConnection connection;
+        String resultjson;
+        String result;
+
+        @Override
+        protected Restaurant[] doInBackground(String... args) {
+            StringBuilder result = new StringBuilder();
+            String url_api = "https://faff-1489402013619.appspot.com/res_list/all" ;
+            try {
+                URL url = new URL(url_api);
+                connection = (HttpURLConnection) url.openConnection();
+                connection.setRequestMethod("GET");
+
+                InputStream in = new BufferedInputStream(connection.getInputStream());
+
+                BufferedReader reader = new BufferedReader(new InputStreamReader(in));
+
+                responseCode = connection.getResponseCode();
+                String line;
+                while ((line = reader.readLine()) != null) {
+                    result.append(line);
+                }
+//                try {
+//
+//                    URL url = new URL("https://faff-1489402013619.appspot.com/res_list/all");
+//                    //URL url = new URL("http://localhost:8080/promotion_list");
+//                    result = new Helper().getRequest(url.toString());
+//                    Log.i("TEST: ", "  result is : "+result+"  uid is : "+userid);
+//
+//
+//                } catch (Exception ex) {
+//                    ex.printStackTrace();
+//                }
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            if (responseCode == 200) {
+                Log.i("Request Status", "This is success response status from server: " + responseCode);
+                Gson gson = new Gson();
+                Restaurant[] userPro  =  gson.fromJson(result.toString(),  Restaurant[].class);
+                return userPro;
+            } else {
+                Log.i("Request Status", "This is failure response status from server: " + responseCode);
+                return null ;
+
+            }
+
+//            Gson gson = new Gson();
+//            Restaurant[] userPro  =  gson.fromJson(result.toString(),  Restaurant[].class);
+//            return userPro;
+        }
+        @Override
+        protected void onPostExecute(final Restaurant[] respro) {
+            super.onPostExecute(respro);
+            if (respro != null) {
+                listview.setAdapter( new Customlistview_addvice_adapter(mcontext,0,respro,resId));
+                listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                    public void onItemClick(AdapterView<?> arg0, View view, int position, long id) {
+                        Intent intent = new Intent(mcontext, Show_RestaurantProfile.class);
+                        intent.putExtra(Restaurant.Column.ResID,respro[position].getresId());
+                        intent.putExtra(Restaurant.Column.UserID,respro[position].getUserID());
+                        intent.putExtra(UserProfile.Column.UserID, userid);
+                        startActivity(intent);
+                    }
+                });
+
+            }
+            else{
+                String message = getString(R.string.login_error_message);
+                Toast.makeText(mcontext, message, Toast.LENGTH_SHORT).show();
+            }
+
+        }
+
     }
 
 }
