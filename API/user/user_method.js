@@ -122,6 +122,7 @@ function createSchema (config) {
     USE \`faff\`;
     CREATE TABLE IF NOT EXISTS \`faff\`.\`user_profile\` (
       \`userid\` VARCHAR(255) NOT NULL,
+	  \`picture\` TEXT NULL,
       \`name\` VARCHAR(255) NULL,
       \`address\`TEXT NULL,
       \`email\` VARCHAR(255) NULL,

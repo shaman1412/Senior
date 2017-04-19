@@ -17,11 +17,16 @@ const Storage = require('@google-cloud/storage');
 const config = require('../config');
 
 const CLOUD_BUCKET = config.get('CLOUD_BUCKET');
+const CLOUD_BUCKET_USER_PROFILE_PIC = "user_profile_list";
+const CLOUD_BUCKET_REST_PROFILE_PIC = "resteraunt_profile_list";
 
 const storage = Storage({
   projectId: config.get('GCLOUD_PROJECT')
 });
 const bucket = storage.bucket(CLOUD_BUCKET);
+const bucket_user_pro = storage.bucket(CLOUD_BUCKET_USER_PROFILE_PIC);
+const bucket_rest_pro = storage.bucket(CLOUD_BUCKET_REST_PROFILE_PIC);
+
 
 // Returns the public, anonymously accessable URL to a given Cloud Storage
 // object.
@@ -29,6 +34,16 @@ const bucket = storage.bucket(CLOUD_BUCKET);
 // [START public_url]
 function getPublicUrl (filename) {
   return `https://storage.googleapis.com/${CLOUD_BUCKET}/${filename}`;
+}
+
+function getUserProfileUrl (filename)
+{
+	return `https://storage.googleapis.com/${CLOUD_BUCKET_USER_PROFILE_PIC}/${filename}`;
+}
+
+function getRestProfileUrl(filename)
+{
+	return `https://storage.googleapis.com/${CLOUD_BUCKET_REST_PROFILE_PIC}/${filename}`;
 }
 // [END public_url]
 
@@ -77,9 +92,98 @@ function sendUploadToGCS (req, res, next) {
 	
 	console.log("\n"+item.cloudStoragePublicUrl+ " : done");
 	
-  });
-
+  });	
+	
 }
+
+function sendUploadToGCS_UserProfile(req, res, next)
+{
+	var data = req.body;
+	console.log(data);
+	
+	if (!(req.file || req.files)) {
+    return next();
+  }
+ 
+ var tmp = req.files;
+  //console.log(tmp);
+  
+  tmp.forEach(function (item)
+  {
+    var x = item.originalname;
+	const gcsname = Date.now() + x;
+	const file = bucket_user_pro.file(gcsname);
+	
+	item.cloudStorageObject = gcsname;
+	item.cloudStoragePublicUrl = getUserProfileUrl(gcsname);
+	
+    const stream = file.createWriteStream({
+		metadata: {
+		  contentType: item.mimetype
+		}
+	});
+
+	stream.on('error', (err) => {
+		item.cloudStorageError = err;
+		next(err);
+	});
+
+	stream.on('finish', () => {
+		next();
+	});
+	
+	stream.end(item.buffer);
+	
+	console.log("\n"+item.cloudStoragePublicUrl+ " : done");
+	
+  }); 
+	
+}
+
+function sendUploadToGCS_RestaurantProfile(req, res, next)
+{
+	var data = req.body;
+	console.log(data);
+	
+	if (!(req.file || req.files)) {
+    return next();
+  }
+ 
+ var tmp = req.files;
+  //console.log(tmp);
+  
+  tmp.forEach(function (item)
+  {
+    var x = item.originalname;
+	const gcsname = Date.now() + x;
+	const file = bucket_rest_pro.file(gcsname);
+	
+	item.cloudStorageObject = gcsname;
+	item.cloudStoragePublicUrl = getRestProfileUrl(gcsname);
+	
+    const stream = file.createWriteStream({
+		metadata: {
+		  contentType: item.mimetype
+		}
+	});
+
+	stream.on('error', (err) => {
+		item.cloudStorageError = err;
+		next(err);
+	});
+
+	stream.on('finish', () => {
+		next();
+	});
+	
+	stream.end(item.buffer);
+	
+	console.log("\n"+item.cloudStoragePublicUrl+ " : done");
+	
+  }); 
+	
+}
+
 
 
 // [END process]
@@ -100,5 +204,7 @@ const multer = Multer({
 module.exports = {
   getPublicUrl,
   sendUploadToGCS,
-  multer
+  multer,
+  sendUploadToGCS_UserProfile,
+  sendUploadToGCS_RestaurantProfile
 };
