@@ -130,7 +130,7 @@ public class InsertUserProfile extends AppCompatActivity {
         //
         //
         //This line set for debug
-        userid = "11";
+        userid = "a1412";
 
 
         type.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
