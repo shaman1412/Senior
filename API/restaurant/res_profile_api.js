@@ -29,7 +29,7 @@ router.get('/:resid', (req, res, next) => {
     res.json(entity);
   });
 });
-router.post('/create', images.multer.array('picture'), images.sendUploadToGCS_RestaurantProfile, (req,res,next) => {
+router.post('/create', images.multer.array('image'), images.sendUploadToGCS_RestaurantProfile, (req,res,next) => {
   const json = req.body;
   if (req.file && req.file.cloudStoragePublicUrl) {
 		json.picture = req.file.cloudStoragePublicUrl;

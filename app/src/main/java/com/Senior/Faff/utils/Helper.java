@@ -11,6 +11,7 @@ import android.widget.ImageView;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.ByteArrayOutputStream;
 import java.io.DataOutputStream;
 import java.io.File;
@@ -20,6 +21,8 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
@@ -115,6 +118,7 @@ public class Helper {
                     String[] q = filepath.split("/");
                     int idx = q.length - 1;
 
+                    Log.e("TEST: "," filepath is : " +filepath);
                     File file = new File(filepath);
                     fileInputStream = new FileInputStream(file);
 
@@ -141,17 +145,23 @@ public class Helper {
                     fileInputStream.close();
                 }
 
+
+                OutputStreamWriter ow = new OutputStreamWriter(outputStream, "UTF-8");
+                BufferedWriter bf = new BufferedWriter(ow);
+
                 // Upload POST Data
                 Iterator<String> keys = parmas.keySet().iterator();
                 while (keys.hasNext()) {
                     String key = keys.next();
                     String value = parmas.get(key);
-
+                    Log.i("TEST: ",key+" : "+value);
                     outputStream.writeBytes(twoHyphens + boundary + lineEnd);
                     outputStream.writeBytes("Content-Disposition: form-data; name=\"" + key + "\"" + lineEnd);
                     outputStream.writeBytes("Content-Type: text/plain" + lineEnd);
                     outputStream.writeBytes(lineEnd);
-                    outputStream.writeBytes(value);
+                    bf.write(value);
+                    bf.flush();
+                    //outputStream.writeBytes(value);
                     outputStream.writeBytes(lineEnd);
                 }
 
@@ -161,10 +171,11 @@ public class Helper {
                     throw new Exception("Failed to upload code:" + connection.getResponseCode() + " " + connection.getResponseMessage());
                 }
 
-
                 inputStream = connection.getInputStream();
                 result = this.convertStreamToString(inputStream);
                 inputStream.close();
+                bf.close();
+                ow.close();
                 outputStream.flush();
                 outputStream.close();
 

@@ -4,11 +4,16 @@ import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationManager;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
+import android.provider.MediaStore;
 import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -33,9 +38,11 @@ import android.widget.Toast;
 import com.Senior.Faff.Main2Activity;
 import com.Senior.Faff.R;
 import com.Senior.Faff.UserProfile.InsertUserProfile;
+import com.Senior.Faff.UserProfile.InsertUserProfileRecyclerView;
 import com.Senior.Faff.UserProfile.List_type;
 import com.Senior.Faff.model.Restaurant;
 import com.Senior.Faff.model.UserProfile;
+import com.Senior.Faff.utils.Helper;
 import com.Senior.Faff.utils.PermissionUtils;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -50,11 +57,13 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.gson.Gson;
 
 import org.json.JSONObject;
 
 import java.io.BufferedOutputStream;
 import java.io.BufferedWriter;
+import java.io.ByteArrayOutputStream;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
@@ -65,13 +74,22 @@ import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Map;
 
 public class Add_RestaurantProfile extends AppCompatActivity implements OnMapReadyCallback,
         GoogleMap.OnMyLocationButtonClickListener,
         GoogleApiClient.OnConnectionFailedListener,
-        GoogleApiClient.ConnectionCallbacks,LocationListener,
+        GoogleApiClient.ConnectionCallbacks, LocationListener,
         ActivityCompat.OnRequestPermissionsResultCallback {
+
+    private static final int request_code = 1;                          //request code for OnClick result
+
+    public static ArrayList<Bitmap> bmap = new ArrayList<>();           //keep bitmap data
+    public static ArrayList<String> imgPath = new ArrayList<>();        //keep uri
+
+    public static int image_count = 0;                                    //number of images
 
     private com.google.android.gms.maps.model.Marker mCurrLocationMarker;
     private LatLng myLocation;
@@ -84,8 +102,7 @@ public class Add_RestaurantProfile extends AppCompatActivity implements OnMapRea
     private String user_id;
     private int type_food;
     private EditText name, description, period, address, telephone;
-    private Button picture;
-    private Button next;
+    private Button next, upload;
     private Context mcontext;
     private Toolbar toolbar;
     private String getlocation;
@@ -97,6 +114,7 @@ public class Add_RestaurantProfile extends AppCompatActivity implements OnMapRea
     private RecyclerView mRecyclerView;
     private Restaurant restaurant;
     private String type_check;
+    private Add_RestaurantProfile_RecyclerView adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -143,7 +161,18 @@ public class Add_RestaurantProfile extends AppCompatActivity implements OnMapRea
         telephone = (EditText) findViewById(R.id.telephone);
         type_list = new ArrayList<>();
         next = (Button) findViewById(R.id.next);
-        picture = (Button) findViewById(R.id.picture);
+        upload = (Button) findViewById(R.id.upload_button);
+
+        upload.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent sdintent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                //sdintent.setType("image/*");
+                startActivityForResult(sdintent, request_code);
+                Log.i("TEST: ", "Click upload");
+
+            }
+        });
 
         next.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -169,7 +198,14 @@ public class Add_RestaurantProfile extends AppCompatActivity implements OnMapRea
                 restaurant.setLocation(getlocation);
                 Timestamp timestamp = new Timestamp(System.currentTimeMillis());
                 restaurant.setCreate_time(timestamp);
-                new addrestaurant().execute(restaurant);
+
+                String img_path_tmp = new Gson().toJson(imgPath);
+                restaurant.setPicture(img_path_tmp);
+
+                Add_RestaurantProfile.AddRestProfile add_pro = new Add_RestaurantProfile.AddRestProfile();
+                add_pro.execute(restaurant);
+
+
                 //Intent intent = new Intent(getApplicationContext(), RestaurantMapsActivity.class);
                 //intent.putExtra(UserProfile.Column.UserID,user_id);
                 //startActivity(intent);
@@ -305,28 +341,28 @@ public class Add_RestaurantProfile extends AppCompatActivity implements OnMapRea
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
                 != PackageManager.PERMISSION_GRANTED) {
 
-        location = locationManager.getLastKnownLocation(locationManager
-                .getBestProvider(criteria, false));
-        if (location != null) {
-            myLocation = new LatLng(location.getLatitude(),
-                    location.getLongitude());
-            mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(myLocation,
-                    11));
-            MarkerOptions markerOptions = new MarkerOptions();
-            markerOptions.position(myLocation);
-            markerOptions.title("Current Position");
-            markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN));
-            mCurrLocationMarker = mMap.addMarker(markerOptions);
-            getlocation = location.getLatitude() + "," + location.getLongitude();
-            //description.setText(String.valueOf(myLocation.latitude));
-            Toast.makeText(this, "getlocation = get ", Toast.LENGTH_SHORT).show();
-        }else {
-            Toast.makeText(this, "getlocation = null ", Toast.LENGTH_SHORT).show();
-        }
+            location = locationManager.getLastKnownLocation(locationManager
+                    .getBestProvider(criteria, false));
+            if (location != null) {
+                myLocation = new LatLng(location.getLatitude(),
+                        location.getLongitude());
+                mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(myLocation,
+                        11));
+                MarkerOptions markerOptions = new MarkerOptions();
+                markerOptions.position(myLocation);
+                markerOptions.title("Current Position");
+                markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN));
+                mCurrLocationMarker = mMap.addMarker(markerOptions);
+                getlocation = location.getLatitude() + "," + location.getLongitude();
+                //description.setText(String.valueOf(myLocation.latitude));
+                Toast.makeText(this, "getlocation = get ", Toast.LENGTH_SHORT).show();
+            } else {
+                Toast.makeText(this, "getlocation = null ", Toast.LENGTH_SHORT).show();
+            }
         }
 
 
-       // Toast.makeText(this, "MyLocation button clicked", Toast.LENGTH_SHORT).show();
+        // Toast.makeText(this, "MyLocation button clicked", Toast.LENGTH_SHORT).show();
         return false;
     }
 
@@ -363,7 +399,7 @@ public class Add_RestaurantProfile extends AppCompatActivity implements OnMapRea
                 location = LocationServices.FusedLocationApi.getLastLocation(googleApiClient);
                 if (location != null) {
                     getlocation = location.getLatitude() + "," + location.getLongitude();
-                    Toast.makeText(this," set getlocation ", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this, " set getlocation ", Toast.LENGTH_SHORT).show();
                 }
 
             }
@@ -388,96 +424,83 @@ public class Add_RestaurantProfile extends AppCompatActivity implements OnMapRea
             mPermissionDenied = true;
         }
     }
-    private class addrestaurant extends AsyncTask<Restaurant ,String , Restaurant > {
 
-        int responseCode;
-        HttpURLConnection connection;
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == RESULT_OK) {
+            if (requestCode == request_code && data != null) {
+                Uri selectedImg = data.getData();
+                String[] filePathColumn = {MediaStore.Images.Media.DATA};
+                Cursor cur = getContentResolver().query(selectedImg, filePathColumn, null, null, null);
+                if (cur == null) imgPath.add(null);
+                else {
+                    int column_index = cur.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
+                    cur.moveToFirst();
+                    imgPath.add(cur.getString(column_index));
+                    cur.close();
+                }
+                bmap.add(BitmapFactory.decodeFile(imgPath.get(image_count)));
+                //convert to byte
+                ByteArrayOutputStream stream = new ByteArrayOutputStream();
+                bmap.get(image_count).compress(Bitmap.CompressFormat.PNG, 100, stream);
+//                imgByte.add(stream.toByteArray());
+                image_count++;
+
+                adapter = new Add_RestaurantProfile_RecyclerView(this, bmap);
+                RecyclerView lv = (RecyclerView) findViewById(R.id.rlist1);
+                lv.setNestedScrollingEnabled(false);
+                lv.setAdapter(adapter);
+            }
+        }
+    }
+
+    private class AddRestProfile extends AsyncTask<Restaurant, String, String> {
+
+        private ArrayList<String> imgPath = new ArrayList<>();
+        String result = "";
+
         @Override
-        protected Restaurant doInBackground(Restaurant... params) {
+        protected String doInBackground(Restaurant... params) {
+            try {
+                Map<String, String> paras = new HashMap<>();
+                paras.put(Restaurant.Column.UserID, params[0].getUserID());
+                paras.put(Restaurant.Column.ResID, params[0].getresId());
+                paras.put(Restaurant.Column.RestaurantName, params[0].getRestaurantName());
+                paras.put(Restaurant.Column.Address, params[0].getAddress());
+                paras.put(Restaurant.Column.TypeFood, params[0].getTypefood());
+                paras.put(Restaurant.Column.Description, params[0].getDescription());
+                paras.put(Restaurant.Column.Telephone, params[0].getTelephone());
+                paras.put(Restaurant.Column.Period, params[0].getPeriod());
+                paras.put(Restaurant.Column.Location, params[0].getLocation());
+                paras.put(Restaurant.Column.CreateTime, params[0].getCreate_time().toString());
 
-            try{
-
-                JSONObject para = new JSONObject();
-                para.put(Restaurant.Column.UserID,params[0].getUserID());
-                para.put(Restaurant.Column.ResID, params[0].getresId());
-                para.put(Restaurant.Column.RestaurantName, params[0].getRestaurantName());
-                para.put(Restaurant.Column.Address, params[0].getAddress());
-                para.put(Restaurant.Column.TypeFood, params[0].getTypefood());
-                para.put(Restaurant.Column.Description, params[0].getDescription());
-                para.put(Restaurant.Column.Telephone, params[0].getTelephone());
-                para.put(Restaurant.Column.Period, params[0].getPeriod());
-                para.put(Restaurant.Column.Location, params[0].getLocation());
-                para.put(Restaurant.Column.CreateTime, params[0].getCreate_time());
-
+                String img_path_tmp = params[0].getPicture();
+                Add_RestaurantProfile.AddRestProfile.this.imgPath = new Gson().fromJson(img_path_tmp, ArrayList.class);
 
                 URL url = new URL("https://faff-1489402013619.appspot.com/res_profile/create");
-                connection = (HttpURLConnection)url.openConnection();
-                connection.setRequestMethod("POST");
-                connection.setDoOutput(true);
 
-                OutputStream out = new BufferedOutputStream(connection.getOutputStream());
-                BufferedWriter buffer = new BufferedWriter(new OutputStreamWriter(out, "UTF-8"));
-                buffer.write(getPostDataString(para));
-                buffer.flush();
-                buffer.close();
-                out.close();
+                Log.i("TEST: ", "  background size : " + Add_RestaurantProfile.AddRestProfile.this.imgPath.size());
+                result = new Helper().multipartRequest(url.toString(),paras, Add_RestaurantProfile.AddRestProfile.this.imgPath, "image", "image/jpeg");
+                Log.i("TEST: ", "  result for multipartRequest(url.toString(), paras, imgPath.get(0), \"image\", \"image/jpeg\");   :   " + result);
 
-                responseCode = connection.getResponseCode();
-
-            }catch (Exception e){
-                e.printStackTrace();
+            } catch (Exception ex) {
+                ex.printStackTrace();
             }
-            if (responseCode == 200) {
-                Log.i("Request Status", "This is success response status from server: " + responseCode);
 
-                return params[0];
-            } else {
-                Log.i("Request Status", "This is failure response status from server: " + responseCode);
-                return null;
-
-            }
+            return result;
         }
 
         @Override
-        protected void onPostExecute(Restaurant restaurant) {
-            if(restaurant != null){
-
-                Intent intent = new Intent(Add_RestaurantProfile.this, Main2Activity.class);
-                intent.putExtra(Restaurant.Column.UserID,restaurant.getUserID());
-                intent.putExtra(Restaurant.Column.ResID,restaurant.getresId());
-                startActivity(intent);
-                //Toast.makeText(mcontext,type_check,Toast.LENGTH_LONG).show();
-            }
-            else{
-                Toast.makeText(mcontext,"Fail",Toast.LENGTH_SHORT).show();
+        protected void onPostExecute(String result) {
+            if (result != "") {
+                finish();
+                Toast.makeText(mcontext, result, Toast.LENGTH_LONG).show();
+            } else {
+                Toast.makeText(mcontext, "Fail on retrieve result", Toast.LENGTH_SHORT).show();
             }
         }
     }
-    public String getPostDataString(JSONObject params) throws Exception {
-
-        StringBuilder result = new StringBuilder();
-        boolean first = true;
-
-        Iterator<String> itr = params.keys();
-
-        while (itr.hasNext()) {
-
-            String key = itr.next();
-            Object value = params.get(key);
-
-            if (first)
-                first = false;
-            else
-                result.append("&");
-
-            result.append(URLEncoder.encode(key, "UTF-8"));
-            result.append("=");
-            result.append(URLEncoder.encode(value.toString(), "UTF-8"));
-
-        }
-        return result.toString();
-    }
-
 
 }
 
