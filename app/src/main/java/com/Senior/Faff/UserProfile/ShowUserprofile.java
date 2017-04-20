@@ -113,17 +113,16 @@ public class ShowUserprofile extends AppCompatActivity {
 
         final NestedScrollView childScroll = (NestedScrollView) findViewById(R.id.scroll);
 
-
         ShowUserPro sh = new ShowUserPro(new ShowUserPro.AsyncResponse() {
             @Override
-            public void processFinish(String output) throws JSONException {
+            public void processFinish(final String output) throws JSONException {
                 JSONObject item = new JSONObject(output);
 
                 ArrayList<String[]> bitmap_url_list = new ArrayList<>();
 
                 String[] arr_url = item.getString("picture").split(",");
                 bitmap_url_list.add(arr_url);
-                UserProfile userpro = new Gson().fromJson(item.toString(), UserProfile.class);
+                final UserProfile userpro = new Gson().fromJson(item.toString(), UserProfile.class);
                 userid = userpro.getUserid();
                 if (userid != null) {
                     Log.i("TEST: ", "   interface data from GET is : " + userpro.toString() + "     arr length is : " + arr_url.length);
@@ -161,20 +160,24 @@ public class ShowUserprofile extends AppCompatActivity {
                         mRecyclerView.setAdapter(list_adapter);
                     }
 
+                    fab.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+
+                            Intent intent = new Intent(mcontext, UpdateUserProfile.class);
+                            intent.putExtra("user_profile", output);
+                            intent.putExtra(UserProfile.Column.UserID, userid);
+                            startActivity(intent);
+                        }
+                    });
+
                 }
             }
         });
         sh.execute(userid);
 
 
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(mcontext, UpdateUserProfile.class);
-                intent.putExtra(UserProfile.Column.UserID, userid);
-                startActivity(intent);
-            }
-        });
+
 
     }
 

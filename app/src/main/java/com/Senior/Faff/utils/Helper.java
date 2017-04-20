@@ -37,6 +37,16 @@ import java.util.Map;
 public class Helper {
     private static final String TAG = Helper.class.getSimpleName();
 
+    String request_method = "POST";
+
+    public String getRequest_method() {
+        return request_method;
+    }
+
+    public void setRequest_method(String request_method) {
+        this.request_method = request_method;
+    }
+
     public byte[] ConvertBitmapToArrayOfByte(Bitmap bmp) {
         ByteArrayOutputStream stream = new ByteArrayOutputStream();
         bmp.compress(Bitmap.CompressFormat.PNG, 100, stream);
@@ -105,7 +115,7 @@ public class Helper {
                 connection.setDoOutput(true);
                 connection.setUseCaches(false);
 
-                connection.setRequestMethod("POST");
+                connection.setRequestMethod(request_method);
                 connection.setRequestProperty("Connection", "Keep-Alive");
                 connection.setRequestProperty("User-Agent", "Android Multipart HTTP Client 1.0");
                 connection.setRequestProperty("Content-Type", "multipart/form-data; boundary=" + boundary);

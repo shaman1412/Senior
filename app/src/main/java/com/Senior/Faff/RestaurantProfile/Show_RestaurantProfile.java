@@ -4,35 +4,30 @@ import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Point;
 import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationManager;
-import android.nfc.Tag;
 import android.os.AsyncTask;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
-import android.support.v4.widget.NestedScrollView;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Display;
 import android.view.MenuItem;
-import android.view.MotionEvent;
 import android.view.View;
-import android.widget.FrameLayout;
-import android.widget.ListView;
+import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.Senior.Faff.Promotion.PromotionShow;
 import com.Senior.Faff.R;
 import com.Senior.Faff.UserProfile.List_typeNodel;
-import com.Senior.Faff.UserProfile.ShowUserprofile;
 import com.Senior.Faff.model.Restaurant;
 import com.Senior.Faff.model.UserProfile;
 import com.Senior.Faff.utils.Helper;
@@ -77,6 +72,10 @@ public class Show_RestaurantProfile extends AppCompatActivity implements OnMapRe
     private TextView text_rate;
     private FloatingActionButton fab;
     private String id;
+    ImageView imageView;
+    RecyclerView recyclerView;
+    private int width;
+    private int height;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -88,7 +87,13 @@ public class Show_RestaurantProfile extends AppCompatActivity implements OnMapRe
 
         id = getIntent().getExtras().getString("userid");
 
-        mcontext = this;
+        Display display = getWindowManager().getDefaultDisplay();
+        Point size = new Point();
+        display.getSize(size);
+        width = size.x;
+        height = size.y;
+
+        mcontext = getApplicationContext();
         name = (TextView)findViewById(R.id.name);
         telephone = (TextView)findViewById(R.id.telephone);
         period = (TextView)findViewById(R.id.period);
@@ -96,6 +101,7 @@ public class Show_RestaurantProfile extends AppCompatActivity implements OnMapRe
         address = (TextView)findViewById(R.id.address);
         type_food = (TextView)findViewById(R.id.address);
         mRecyclerView = (RecyclerView)findViewById(R.id.mRecyclerView);
+        imageView = (ImageView) findViewById(R.id.image);
 
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         rate = (RatingBar)findViewById(R.id.rate);
@@ -194,8 +200,7 @@ public class Show_RestaurantProfile extends AppCompatActivity implements OnMapRe
             }
         }
     }
-    private class getData extends AsyncTask<String, String, Restaurant >{
-
+    private class getData extends AsyncTask<String, String, Restaurant>{
         String pass;
         int responseCode;
         HttpURLConnection connection;
@@ -261,8 +266,14 @@ public class Show_RestaurantProfile extends AppCompatActivity implements OnMapRe
                     mRecyclerView = (RecyclerView) findViewById(R.id.mRecyclerView);
                     mRecyclerView.setLayoutManager(mLayoutManager);
                     mRecyclerView.setAdapter(list_adapter);
-                }
 
+                    String[] img_path = respro.getPicture().toString().split(",");
+                    Log.i("TEST: ", "pes loc is : "+img_path[0] + " : "+img_path[1]);
+                    recyclerView = (RecyclerView) findViewById(R.id.recyclerview);
+                    Show_Res_Rec_Adapter sh = new Show_Res_Rec_Adapter(mcontext, img_path, width);
+                    recyclerView.setAdapter(sh);
+
+                }
             }
             else{
                 String message = getString(R.string.login_error_message);

@@ -2,9 +2,6 @@ package com.Senior.Faff.Promotion;
 
 import android.content.Context;
 import android.content.Intent;
-import android.database.Cursor;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -15,18 +12,13 @@ import android.widget.Toast;
 
 import com.Senior.Faff.R;
 import com.Senior.Faff.model.Promotion;
-import com.Senior.Faff.model.promotion_view_list;
-import com.Senior.Faff.utils.DatabaseManager;
 import com.Senior.Faff.utils.Helper;
 import com.google.gson.Gson;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.w3c.dom.Text;
 
 import java.net.URL;
-import java.util.ArrayList;
 
 public class PromotionView extends AppCompatActivity {
     public static final String TAG = PromotionView.class.getSimpleName();
