@@ -46,7 +46,7 @@ router.get('/:userid', (req, res, next) => {
 });
 
 
-router.post('/new_user',images.multer.array('picture'), images.sendUploadToGCS_UserProfile,(req, res, next) => {
+router.post('/new_user',images.multer.array('image'), images.sendUploadToGCS_UserProfile,(req, res, next) => {
 	const json  = req.body;
 	console.log(json);
 	

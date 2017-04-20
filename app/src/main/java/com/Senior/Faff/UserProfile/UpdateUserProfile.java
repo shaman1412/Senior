@@ -43,80 +43,81 @@ import java.util.Iterator;
 public class UpdateUserProfile extends AppCompatActivity {
     private int genderid;
     private int Userid;
-    private EditText name,email,telephone,age,address;
-    private Spinner gender,type;
+    private EditText name, email, telephone, age, address;
+    private Spinner gender, type;
     private Button submit;
     private String userid;
     private Context mcontext;
     private RecyclerView mRecyclerView;
     private RecyclerView.Adapter mAdapter;
-    private  ArrayList<String> type_list;
+    private ArrayList<String> type_list;
     private String type_check;
     private List_type list_adapter;
     private ArrayList<String> favourite_type;
     private boolean first = true;
+    private String user_profile;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_update_user_profile);
-        String[] values = {"Femail","Male"};
-        Toolbar toolbar = (Toolbar)findViewById(R.id.toolbar);
+        String[] values = {"Femail", "Male"};
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         mcontext = this;
         type_list = new ArrayList<>();
-        name = (EditText)findViewById(R.id.name);
+        name = (EditText) findViewById(R.id.name);
 
-        telephone = (EditText)findViewById(R.id.telephone);
+        telephone = (EditText) findViewById(R.id.telephone);
         list_adapter = new List_type();
-        address = (EditText)findViewById(R.id.address);
+        address = (EditText) findViewById(R.id.address);
 
-        type = (Spinner)findViewById(R.id.favourite_type);
-        submit = (Button)findViewById(R.id.submit);
+        type = (Spinner) findViewById(R.id.favourite_type);
+        submit = (Button) findViewById(R.id.submit);
 
         favourite_type = new ArrayList<>();
-        ArrayAdapter<CharSequence> adapter_type = ArrayAdapter.createFromResource(this,R.array.type_food_dropdown, android.R.layout.simple_spinner_item);
+        ArrayAdapter<CharSequence> adapter_type = ArrayAdapter.createFromResource(this, R.array.type_food_dropdown, android.R.layout.simple_spinner_item);
         adapter_type.setDropDownViewResource(android.R.layout.simple_dropdown_item_1line);
         type.setAdapter(adapter_type);
 
 
-        Bundle arg  = getIntent().getExtras();
-        String userid_column = getString(R.string.userid);
+        Bundle arg = getIntent().getExtras();
 
-        if(arg!=null){
-            userid = arg.getString(userid_column);
+        if (arg != null) {
+            userid = arg.getString("userid");
+            user_profile = arg.getString("user_profile");
         }
+
 
         new getData().execute(userid);
 
-
-
-        type.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener(){
+        type.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 String text = type.getSelectedItem().toString();
                 boolean same = false;
-                if(favourite_type!=null) {
+                if (favourite_type != null) {
                     for (int i = 0; i < favourite_type.size(); i++) {
                         if (text.equals(favourite_type.get(i))) {
                             same = true;
                         }
                     }
                 }
-                    if (same == false && first == false) {
-                        favourite_type.add(text);
-                        list_adapter = new List_type(favourite_type, mcontext);
-                        LinearLayoutManager mLayoutManager = new LinearLayoutManager(mcontext);
-                        mLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
-                        mRecyclerView = (RecyclerView) findViewById(R.id.list_show);
-                        mRecyclerView.setLayoutManager(mLayoutManager);
-                        mRecyclerView.setAdapter(list_adapter);
+                if (same == false && first == false) {
+                    favourite_type.add(text);
+                    list_adapter = new List_type(favourite_type, mcontext);
+                    LinearLayoutManager mLayoutManager = new LinearLayoutManager(mcontext);
+                    mLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
+                    mRecyclerView = (RecyclerView) findViewById(R.id.list_show);
+                    mRecyclerView.setLayoutManager(mLayoutManager);
+                    mRecyclerView.setAdapter(list_adapter);
 
-                    }
-                    if (first == true) {
-                        first = false;
-                    }
+                }
+                if (first == true) {
+                    first = false;
+                }
 
 
             }
@@ -128,8 +129,6 @@ public class UpdateUserProfile extends AppCompatActivity {
 
 
         });
-
-
 
         //Userid  = arg.getInt(UserAuthen.Column.ID);
         submit.setOnClickListener(new View.OnClickListener() {
@@ -148,12 +147,13 @@ public class UpdateUserProfile extends AppCompatActivity {
                         }
                     }
                 }
-                    UserProfile user = new UserProfile(userid, name.getText().toString(), address.getText().toString(), email.getText().toString(), telephone.getText().toString(), type_check, genderid, Integer.parseInt(age.getText().toString()), "asd");
-                    new addprofile().execute(user);
+                UserProfile user = new UserProfile(userid, name.getText().toString(), address.getText().toString(), email.getText().toString(), telephone.getText().toString(), type_check, genderid, Integer.parseInt(age.getText().toString()), "asd");
+                new addprofile().execute(user);
 
             }
         });
     }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
@@ -166,14 +166,17 @@ public class UpdateUserProfile extends AppCompatActivity {
                 return super.onOptionsItemSelected(item);
         }
     }
-    private class addprofile extends AsyncTask<UserProfile ,String , UserProfile > {
+
+
+    private class addprofile extends AsyncTask<UserProfile, String, UserProfile> {
 
         int responseCode;
         HttpURLConnection connection;
+
         @Override
         protected UserProfile doInBackground(UserProfile... params) {
 
-            try{
+            try {
 
                 JSONObject para = new JSONObject();
                 para.put(UserProfile.Column.Name, params[0].getName());
@@ -184,7 +187,7 @@ public class UpdateUserProfile extends AppCompatActivity {
 
                 String urls = "https://faff-1489402013619.appspot.com/user/" + params[0].getUserid();
                 URL url = new URL(urls);
-                connection = (HttpURLConnection)url.openConnection();
+                connection = (HttpURLConnection) url.openConnection();
                 connection.setRequestMethod("PUT");
                 connection.setDoOutput(true);
                 connection.setDoInput(true);
@@ -198,7 +201,7 @@ public class UpdateUserProfile extends AppCompatActivity {
 
                 responseCode = connection.getResponseCode();
 
-            }catch (Exception e){
+            } catch (Exception e) {
                 e.printStackTrace();
             }
             if (responseCode == 200) {
@@ -214,15 +217,15 @@ public class UpdateUserProfile extends AppCompatActivity {
 
         @Override
         protected void onPostExecute(UserProfile userProfile) {
-            if(userProfile != null){
-                Toast.makeText(mcontext,type_check,Toast.LENGTH_LONG).show();
-                ((Activity)mcontext).finish();
-            }
-            else{
-                Toast.makeText(mcontext,"Fail",Toast.LENGTH_SHORT).show();
+            if (userProfile != null) {
+                Toast.makeText(mcontext, type_check, Toast.LENGTH_LONG).show();
+                ((Activity) mcontext).finish();
+            } else {
+                Toast.makeText(mcontext, "Fail", Toast.LENGTH_SHORT).show();
             }
         }
     }
+
     public String getPostDataString(JSONObject params) throws Exception {
 
         StringBuilder result = new StringBuilder();
@@ -247,12 +250,14 @@ public class UpdateUserProfile extends AppCompatActivity {
         }
         return result.toString();
     }
+
     private class getData extends AsyncTask<String, String, UserProfile> {
 
         String pass;
         int responseCode;
         HttpURLConnection connection;
         String resultjson;
+
         @Override
         protected UserProfile doInBackground(String... args) {
             StringBuilder result = new StringBuilder();
@@ -278,15 +283,16 @@ public class UpdateUserProfile extends AppCompatActivity {
             if (responseCode == 200) {
                 Log.i("Request Status", "This is success response status from server: " + responseCode);
                 Gson gson = new Gson();
-                UserProfile userPro  =  gson.fromJson(result.toString(),  UserProfile.class);
+                UserProfile userPro = gson.fromJson(result.toString(), UserProfile.class);
                 return userPro;
             } else {
                 Log.i("Request Status", "This is failure response status from server: " + responseCode);
-                return null ;
+                return null;
 
             }
 
         }
+
         @Override
         protected void onPostExecute(UserProfile userpro) {
             super.onPostExecute(userpro);
@@ -302,13 +308,13 @@ public class UpdateUserProfile extends AppCompatActivity {
                         gender.setSelection(1);
                         break;
                 }*/
-                if(userpro.getFavourite_type() != null){
+                if (userpro.getFavourite_type() != null) {
                     String[] list = userpro.getFavourite_type().split(",");
-                    for(int i = 0; i < list.length; i++){
+                    for (int i = 0; i < list.length; i++) {
                         favourite_type.add(list[i]);
                     }
                     list_adapter = new List_type(favourite_type, mcontext);
-                    LinearLayoutManager mLayoutManager  = new LinearLayoutManager(mcontext);
+                    LinearLayoutManager mLayoutManager = new LinearLayoutManager(mcontext);
                     mLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
                     mRecyclerView = (RecyclerView) findViewById(R.id.list_show);
                     mRecyclerView.setLayoutManager(mLayoutManager);
@@ -316,9 +322,7 @@ public class UpdateUserProfile extends AppCompatActivity {
                 }
 
 
-
-            }
-            else{
+            } else {
                 String message = getString(R.string.login_error_message);
                 Toast.makeText(mcontext, message, Toast.LENGTH_SHORT).show();
             }

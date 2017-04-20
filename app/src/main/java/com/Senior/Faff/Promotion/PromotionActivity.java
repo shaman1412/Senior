@@ -26,6 +26,7 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.Senior.Faff.Main2Activity;
+import com.Senior.Faff.Main3Activity;
 import com.Senior.Faff.R;
 import com.Senior.Faff.UserProfile.List_type;
 import com.Senior.Faff.model.Promotion;

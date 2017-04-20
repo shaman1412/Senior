@@ -2,6 +2,7 @@ package com.Senior.Faff.UserProfile;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Point;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.support.annotation.RequiresApi;
@@ -17,7 +18,9 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.DisplayMetrics;
 import android.util.Log;
+import android.view.Display;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
@@ -25,11 +28,17 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.Senior.Faff.Main2Activity;
+import com.Senior.Faff.Promotion.PromotionActivity;
 import com.Senior.Faff.R;
 import com.Senior.Faff.model.UserAuthen;
 import com.Senior.Faff.model.UserProfile;
 import com.Senior.Faff.utils.BitmapImageManager;
+import com.Senior.Faff.utils.Helper;
 import com.google.gson.Gson;
+import com.squareup.picasso.Picasso;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedReader;
@@ -40,6 +49,7 @@ import java.net.URL;
 import java.util.ArrayList;
 
 public class ShowUserprofile extends AppCompatActivity {
+
     private Toolbar toolbar;
     private DrawerLayout mDrawer;
     private NavigationView nvDrawer;
@@ -48,12 +58,15 @@ public class ShowUserprofile extends AppCompatActivity {
     private ProfileManager profileManager;
     private UserProfile userProfile;
     private String userid;
-    private Context mcontext;
-    private TextView name,age,address,email,telephone,gender;
+    private static Context mcontext;
+    private TextView name, age, address, email, telephone, gender;
     private ArrayList<String> favourite_type;
     private RecyclerView mRecyclerView;
     private List_typeNodel list_adapter;
     private FloatingActionButton fab;
+    private int width;
+    private int height;
+
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
@@ -61,22 +74,29 @@ public class ShowUserprofile extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_show_userprofile);
         setTitle("Profile");
+
+        Display display = getWindowManager().getDefaultDisplay();
+        Point size = new Point();
+        display.getSize(size);
+        width = size.x;
+        height = size.y;
+
         mcontext = this;
         Bundle args = getIntent().getExtras();
-        userid = args.getString(UserProfile.Column.UserID,null);
+        userid = args.getString(UserProfile.Column.UserID, null);
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
 
-        name = (TextView)findViewById(R.id.name);
-        age = (TextView)findViewById(R.id.age);
-        address = (TextView)findViewById(R.id.address);
-        email = (TextView)findViewById(R.id.gemail);
-        telephone = (TextView)findViewById(R.id.gtelephone);
-        gender = (TextView)findViewById(R.id.ggender);
-        mRecyclerView = (RecyclerView)findViewById(R.id.mRecyclerView);
-        fab = (FloatingActionButton)findViewById(R.id.fab);
+        name = (TextView) findViewById(R.id.name);
+        age = (TextView) findViewById(R.id.age);
+        address = (TextView) findViewById(R.id.address);
+        email = (TextView) findViewById(R.id.gemail);
+        telephone = (TextView) findViewById(R.id.gtelephone);
+        gender = (TextView) findViewById(R.id.ggender);
+        mRecyclerView = (RecyclerView) findViewById(R.id.mRecyclerView);
+        fab = (FloatingActionButton) findViewById(R.id.fab);
 /*        CollapsingToolbarLayout collapsingToolbar =
                 (CollapsingToolbarLayout) findViewById(R.id.toolbar_layout);
         collapsingToolbar.setTitle("Title");*/
@@ -88,105 +108,215 @@ public class ShowUserprofile extends AppCompatActivity {
         //  String json = profileManager.getUserProfile(id);
         // text.setText(json);
         BitmapImageManager bitmap = new BitmapImageManager();
-        ImageView image = (ImageView) findViewById(R.id.profile_image);
-        image.setImageBitmap(bitmap.decodeSampledBitmapFromResource(getResources(), R.drawable.woman, 100, 100));
+        final ImageView image = (ImageView) findViewById(R.id.profile_image);
+//        image.setImageBitmap(bitmap.decodeSampledBitmapFromResource(getResources(), R.drawable.woman, 100, 100));
 
         final NestedScrollView childScroll = (NestedScrollView) findViewById(R.id.scroll);
-        if(userid != null){
-           new getData().execute(userid);
-        }
-        fab.setOnClickListener(new View.OnClickListener() {
+
+        ShowUserPro sh = new ShowUserPro(new ShowUserPro.AsyncResponse() {
             @Override
-            public void onClick(View v) {
-                Intent intent  =  new Intent(mcontext,UpdateUserProfile.class);
-                intent.putExtra(UserProfile.Column.UserID,userid);
-                startActivity(intent);
+            public void processFinish(final String output) throws JSONException {
+                JSONObject item = new JSONObject(output);
+
+                ArrayList<String[]> bitmap_url_list = new ArrayList<>();
+
+                String[] arr_url = item.getString("picture").split(",");
+                bitmap_url_list.add(arr_url);
+                final UserProfile userpro = new Gson().fromJson(item.toString(), UserProfile.class);
+                userid = userpro.getUserid();
+                if (userid != null) {
+                    Log.i("TEST: ", "   interface data from GET is : " + userpro.toString() + "     arr length is : " + arr_url.length);
+
+                    name.setText(userpro.getName());
+                    age.setText(String.valueOf(userpro.getAge()));
+                    address.setText(userpro.getAddress());
+                    email.setText(userpro.getEmail());
+                    telephone.setText(userpro.getTelephone());
+
+                    String img_path_tmp = userpro.getPicture();
+                    String[] img_path = img_path_tmp.split(",");
+
+                    Picasso.with(mcontext).load(img_path[0]).resize(width, 500).into(image);
+
+                    switch (userpro.getGender()) {
+                        case 0:
+                            gender.setText("Female");
+                            break;
+                        case 1:
+                            gender.setText("Male");
+                            break;
+                    }
+                    if (userpro.getFavourite_type() != null) {
+                        String[] list = userpro.getFavourite_type().split(",");
+                        favourite_type = new ArrayList<String>();
+                        for (int i = 0; i < list.length; i++) {
+                            favourite_type.add(list[i]);
+                        }
+                        list_adapter = new List_typeNodel(favourite_type, mcontext);
+                        LinearLayoutManager mLayoutManager = new LinearLayoutManager(mcontext);
+                        mLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
+                        mRecyclerView = (RecyclerView) findViewById(R.id.mRecyclerView);
+                        mRecyclerView.setLayoutManager(mLayoutManager);
+                        mRecyclerView.setAdapter(list_adapter);
+                    }
+
+                    fab.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+
+                            Intent intent = new Intent(mcontext, UpdateUserProfile.class);
+                            intent.putExtra("user_profile", output);
+                            intent.putExtra(UserProfile.Column.UserID, userid);
+                            startActivity(intent);
+                        }
+                    });
+
+                }
             }
         });
+        sh.execute(userid);
+
+
+
 
     }
-    private class getData extends AsyncTask<String, String, UserProfile> {
 
-        String pass;
-        int responseCode;
-        HttpURLConnection connection;
-        String resultjson;
+
+    private static class ShowUserPro extends AsyncTask<String, String, String> {
+
+        String result = "";
+
+        public interface AsyncResponse {
+            void processFinish(String output) throws JSONException;
+        }
+
+        public AsyncResponse delegate = null;
+
+        public ShowUserPro(AsyncResponse delegate) {
+            this.delegate = delegate;
+        }
+
         @Override
-        protected UserProfile doInBackground(String... args) {
-            StringBuilder result = new StringBuilder();
-            String url_api = "https://faff-1489402013619.appspot.com/user/" + args[0];
+        protected String doInBackground(String... params) {
             try {
-                URL url = new URL(url_api);
-                connection = (HttpURLConnection) url.openConnection();
-                connection.setRequestMethod("GET");
 
-                InputStream in = new BufferedInputStream(connection.getInputStream());
+                URL url = new URL("https://faff-1489402013619.appspot.com/user/" + params[0].toString());
+                //URL url = new URL("http://localhost:8080/promotion_list");
 
-                BufferedReader reader = new BufferedReader(new InputStreamReader(in));
+                result = new Helper().getRequest(url.toString());
 
-                responseCode = connection.getResponseCode();
-                String line;
-                while ((line = reader.readLine()) != null) {
-                    result.append(line);
-                }
-
-            } catch (Exception e) {
-                e.printStackTrace();
+            } catch (Exception ex) {
+                ex.printStackTrace();
             }
-            if (responseCode == 200) {
-                Log.i("Request Status", "This is success response status from server: " + responseCode);
-                Gson gson = new Gson();
-                UserProfile userPro  =  gson.fromJson(result.toString(),  UserProfile.class);
-                return userPro;
-            } else {
-                Log.i("Request Status", "This is failure response status from server: " + responseCode);
-                return null ;
-
-            }
-
+            return result;
         }
+
         @Override
-        protected void onPostExecute(UserProfile userpro) {
-            super.onPostExecute(userpro);
-            if (userpro != null) {
-                name.setText(userpro.getName());
-                age.setText(String.valueOf(userpro.getAge()));
-                address.setText(userpro.getAddress());
-                email.setText(userpro.getEmail());
-                telephone.setText(userpro.getTelephone());
-                switch (userpro.getGender()){
-                    case 0:
-                        gender.setText("Female");
-                        break;
-                    case 1:
-                        gender.setText("Male");
-                        break;
+        protected void onPostExecute(String result) {
+            if (result != "") {
+                Toast.makeText(mcontext, result, Toast.LENGTH_LONG).show();
+                try {
+                    delegate.processFinish(result);
+                } catch (JSONException e) {
+                    e.printStackTrace();
                 }
-                if(userpro.getFavourite_type() != null){
-                    String[] list = userpro.getFavourite_type().split(",");
-                    favourite_type = new ArrayList<String>();
-                    for(int i = 0; i < list.length; i++){
-                        favourite_type.add(list[i]);
-                    }
-                    list_adapter = new List_typeNodel(favourite_type, mcontext);
-                    LinearLayoutManager mLayoutManager  = new LinearLayoutManager(mcontext);
-                    mLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
-                    mRecyclerView = (RecyclerView) findViewById(R.id.mRecyclerView);
-                    mRecyclerView.setLayoutManager(mLayoutManager);
-                    mRecyclerView.setAdapter(list_adapter);
-                }
-
-
-
+            } else {
+                Toast.makeText(mcontext, "Fail to retrieve from server", Toast.LENGTH_SHORT).show();
             }
-            else{
-                String message = getString(R.string.login_error_message);
-                Toast.makeText(mcontext, message, Toast.LENGTH_SHORT).show();
-            }
-
         }
-
     }
+
+
+//    private class getData extends AsyncTask<String, String, UserProfile> {
+//
+//        String pass;
+//        int responseCode;
+//        HttpURLConnection connection;
+//        String resultjson;
+//        @Override
+//        protected UserProfile doInBackground(String... args) {
+//            StringBuilder result = new StringBuilder();
+//            String url_api = "https://faff-1489402013619.appspot.com/user/" + args[0];
+//            try {
+//                URL url = new URL(url_api);
+//                connection = (HttpURLConnection) url.openConnection();
+//                connection.setRequestMethod("GET");
+//
+//                InputStream in = new BufferedInputStream(connection.getInputStream());
+//
+//                BufferedReader reader = new BufferedReader(new InputStreamReader(in));
+//
+//                responseCode = connection.getResponseCode();
+//                String line;
+//                while ((line = reader.readLine()) != null) {
+//                    result.append(line);
+//                }
+//
+//            } catch (Exception e) {
+//                e.printStackTrace();
+//            }
+//            if (responseCode == 200) {
+//                Log.i("Request Status", "This is success response status from server: " + responseCode);
+//                Gson gson = new Gson();
+//                UserProfile userPro  =  gson.fromJson(result.toString(),  UserProfile.class);
+//                return userPro;
+//            } else {
+//                Log.i("Request Status", "This is failure response status from server: " + responseCode);
+//                return null ;
+//
+//            }
+//
+//        }
+//        @Override
+//        protected void onPostExecute(UserProfile userpro) {
+//            super.onPostExecute(userpro);
+//            if (userpro != null) {
+//                name.setText(userpro.getName());
+//                age.setText(String.valueOf(userpro.getAge()));
+//                address.setText(userpro.getAddress());
+//                email.setText(userpro.getEmail());
+//                telephone.setText(userpro.getTelephone());
+//
+//                String img_path_tmp = userpro.getPicture();
+//                String[] img_path = img_path_tmp.split(",");
+//                for(String s:img_path)
+//                {
+//                    Log.i("TEST: ", "  String s is : "+s);
+//                }
+//
+//                switch (userpro.getGender()){
+//                    case 0:
+//                        gender.setText("Female");
+//                        break;
+//                    case 1:
+//                        gender.setText("Male");
+//                        break;
+//                }
+//                if(userpro.getFavourite_type() != null){
+//                    String[] list = userpro.getFavourite_type().split(",");
+//                    favourite_type = new ArrayList<String>();
+//                    for(int i = 0; i < list.length; i++){
+//                        favourite_type.add(list[i]);
+//                    }
+//                    list_adapter = new List_typeNodel(favourite_type, mcontext);
+//                    LinearLayoutManager mLayoutManager  = new LinearLayoutManager(mcontext);
+//                    mLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
+//                    mRecyclerView = (RecyclerView) findViewById(R.id.mRecyclerView);
+//                    mRecyclerView.setLayoutManager(mLayoutManager);
+//                    mRecyclerView.setAdapter(list_adapter);
+//                }
+//
+//
+//
+//            }
+//            else{
+//                String message = getString(R.string.login_error_message);
+//                Toast.makeText(mcontext, message, Toast.LENGTH_SHORT).show();
+//            }
+//
+//        }
+//
+//    }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {

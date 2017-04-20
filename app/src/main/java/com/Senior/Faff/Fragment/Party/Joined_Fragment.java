@@ -63,7 +63,7 @@ public class Joined_Fragment extends Fragment {
         mcontext = getContext();
         re_list = new  ArrayList<>();
         listview = (ListView) root.findViewById(R.id.listView12);
-        new getData().execute();
+       // new getData().execute();
     return  root;
     }
     public void showlist(ListView listview, ArrayList<Party> Pary_list, int[] resId, int gender, int age) {

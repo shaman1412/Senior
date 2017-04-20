@@ -27,10 +27,14 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.Senior.Faff.Main2Activity;
+import com.Senior.Faff.Promotion.PromotionActivity;
 import com.Senior.Faff.Promotion.PromotionRecyclerViewAdapter;
 import com.Senior.Faff.R;
+import com.Senior.Faff.model.Promotion;
 import com.Senior.Faff.model.UserAuthen;
 import com.Senior.Faff.model.UserProfile;
+import com.Senior.Faff.utils.Helper;
+import com.google.gson.Gson;
 
 import org.json.JSONObject;
 
@@ -43,7 +47,9 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Map;
 
 public class InsertUserProfile extends AppCompatActivity {
     private ViewPager pager;
@@ -68,7 +74,7 @@ public class InsertUserProfile extends AppCompatActivity {
 
     public static int image_count = 0;                                    //number of images
 
-    public static PromotionRecyclerViewAdapter adapter;
+    public static InsertUserProfileRecyclerView adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -101,19 +107,30 @@ public class InsertUserProfile extends AppCompatActivity {
         upload_picture.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent sdintent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-                //sdintent.setType("image/*");
-                startActivityForResult(sdintent, request_code);
-                Log.i("TEST: ", "Click upload");
+                if(image_count<1)
+                {
+                    Log.i("TEST: ", " image count" + image_count);
+                    Intent sdintent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                    //sdintent.setType("image/*");
+                    startActivityForResult(sdintent, request_code);
+                }
+                else
+                {
+                    Log.i("TEST: ", "Click upload");
+                }
             }
         });
 
         Bundle arg = getIntent().getExtras();
-        String userid_column = getString(R.string.userid);
 
         if (arg != null) {
-            userid = arg.getString(userid_column);
+            userid = arg.getString("userid");
         }
+
+        //
+        //
+        //This line set for debug
+        userid = "a1412";
 
 
         type.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -195,8 +212,19 @@ public class InsertUserProfile extends AppCompatActivity {
                         }
                     }
                 }
+
+                String img_path_tmp = new Gson().toJson(imgPath);
+
                 UserProfile user = new UserProfile(userid, name.getText().toString(), address.getText().toString(), email.getText().toString(), Tel.getText().toString(), type_check, genderid, Integer.parseInt(Age.getText().toString()), "asd");
-                new addprofile().execute(user);
+                user.setPicture(img_path_tmp);
+
+                InsertUserProfile.AddUserProfile add_pro = new InsertUserProfile.AddUserProfile();
+                add_pro.execute(user);
+
+                bmap.clear();
+                imgPath.clear();
+                image_count = 0;
+                //new addprofile().execute(user);
             }
         });
     }
@@ -236,7 +264,7 @@ public class InsertUserProfile extends AppCompatActivity {
 //                imgByte.add(stream.toByteArray());
                 image_count++;
 
-                adapter = new PromotionRecyclerViewAdapter(this, bmap);
+                adapter = new InsertUserProfileRecyclerView(this, bmap);
                 RecyclerView lv = (RecyclerView) findViewById(R.id.rlist1);
                 lv.setNestedScrollingEnabled(false);
                 lv.setAdapter(adapter);
@@ -244,91 +272,50 @@ public class InsertUserProfile extends AppCompatActivity {
         }
     }
 
-    private class addprofile extends AsyncTask<UserProfile, String, UserProfile> {
+    private class AddUserProfile extends AsyncTask<UserProfile, String, String> {
 
-        int responseCode;
-        HttpURLConnection connection;
+        private ArrayList<String> imgPath = new ArrayList<>();
+        String result = "";
 
         @Override
-        protected UserProfile doInBackground(UserProfile... params) {
-
+        protected String doInBackground(UserProfile... params) {
             try {
+                Map<String, String> paras = new HashMap<>();
+                paras.put(UserProfile.Column.UserID, params[0].getUserid());
+                paras.put(UserProfile.Column.Name, params[0].getName());
+                paras.put(UserProfile.Column.Address, params[0].getAddress());
+                paras.put(UserProfile.Column.Email, params[0].getEmail());
+                paras.put(UserProfile.Column.Gender, String.valueOf(params[0].getGender()));
+                paras.put(UserProfile.Column.Favourite_type, params[0].getFavourite_type());
+                paras.put(UserProfile.Column.Age, String.valueOf(params[0].getAge()));
+                paras.put(UserProfile.Column.Telephone, params[0].getTelephone());
 
-                JSONObject para = new JSONObject();
-                para.put(UserProfile.Column.UserID, params[0].getUserid());
-                para.put(UserProfile.Column.Name, params[0].getName());
-                para.put(UserProfile.Column.Address, params[0].getAddress());
-                para.put(UserProfile.Column.Email, params[0].getEmail());
-                para.put(UserProfile.Column.Gender, params[0].getGender());
-                para.put(UserProfile.Column.Favourite_type, params[0].getFavourite_type());
-                para.put(UserProfile.Column.Age, params[0].getAge());
-                para.put(UserProfile.Column.Telephone, params[0].getTelephone());
+                String img_path_tmp = params[0].getPicture();
+                InsertUserProfile.AddUserProfile.this.imgPath = new Gson().fromJson(img_path_tmp, ArrayList.class);
+                Log.i("TEST: "," Pic url is : "+imgPath.toString());
 
                 URL url = new URL("https://faff-1489402013619.appspot.com/user/new_user");
-                connection = (HttpURLConnection) url.openConnection();
-                connection.setRequestMethod("POST");
-                connection.setDoOutput(true);
 
-                OutputStream out = new BufferedOutputStream(connection.getOutputStream());
-                BufferedWriter buffer = new BufferedWriter(new OutputStreamWriter(out, "UTF-8"));
-                buffer.write(getPostDataString(para));
-                buffer.flush();
-                buffer.close();
-                out.close();
+                Log.i("TEST: ", "  background size : " + InsertUserProfile.AddUserProfile.this.imgPath.size());
+                result = new Helper().multipartRequest(url.toString(),paras, InsertUserProfile.AddUserProfile.this.imgPath, "image", "image/jpeg");
+                Log.i("TEST: ", "  result for multipartRequest(url.toString(), paras, imgPath.get(0), \"image\", \"image/jpeg\");   :   " + result);
 
-                responseCode = connection.getResponseCode();
-
-            } catch (Exception e) {
-                e.printStackTrace();
+            } catch (Exception ex) {
+                ex.printStackTrace();
             }
-            if (responseCode == 200) {
-                Log.i("Request Status", "This is success response status from server: " + responseCode);
 
-                return params[0];
-            } else {
-                Log.i("Request Status", "This is failure response status from server: " + responseCode);
-                return null;
-
-            }
+            return result;
         }
 
         @Override
-        protected void onPostExecute(UserProfile userProfile) {
-            if (userProfile != null) {
-                Intent intent = new Intent(InsertUserProfile.this, Main2Activity.class);
-                intent.putExtra(UserProfile.Column.UserID, userProfile.getUserid());
-                startActivity(intent);
-                Toast.makeText(mcontext, type_check, Toast.LENGTH_LONG).show();
+        protected void onPostExecute(String result) {
+            if (result != "") {
+                finish();
+                Toast.makeText(mcontext, result, Toast.LENGTH_LONG).show();
             } else {
                 Toast.makeText(mcontext, "Fail", Toast.LENGTH_SHORT).show();
             }
         }
     }
-
-    public String getPostDataString(JSONObject params) throws Exception {
-
-        StringBuilder result = new StringBuilder();
-        boolean first = true;
-
-        Iterator<String> itr = params.keys();
-
-        while (itr.hasNext()) {
-
-            String key = itr.next();
-            Object value = params.get(key);
-
-            if (first)
-                first = false;
-            else
-                result.append("&");
-
-            result.append(URLEncoder.encode(key, "UTF-8"));
-            result.append("=");
-            result.append(URLEncoder.encode(value.toString(), "UTF-8"));
-
-        }
-        return result.toString();
-    }
-
 
 }
