@@ -2,6 +2,7 @@ package com.Senior.Faff;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.provider.ContactsContract;
@@ -15,6 +16,7 @@ import android.widget.Toast;
 
 import com.Senior.Faff.UserProfile.InsertUserProfile;
 import com.Senior.Faff.model.UserAuthen;
+import com.Senior.Faff.model.UserProfile;
 import com.Senior.Faff.utils.DatabaseManager;
 import com.google.gson.Gson;
 
@@ -39,7 +41,14 @@ public class LoginActivity extends ActionBarActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        SharedPreferences sp = getSharedPreferences("CHECK_LOGIN", Context.MODE_PRIVATE);
+        String user_id = sp.getString(UserProfile.Column.UserID,"nothing");
+       if(!(user_id.equals("nothing"))) {
+             Intent intent = new Intent(LoginActivity.this,Main2Activity.class);
+           intent.putExtra(UserProfile.Column.UserID,user_id);
+           startActivity(intent);
+           finish();
+       }
         setContentView(R.layout.activity_login);
 
         mManager = new DatabaseManager(this);
@@ -70,6 +79,7 @@ public class LoginActivity extends ActionBarActivity {
     private void checkLogin() {
         String username = mUsername.getText().toString().trim().toLowerCase();
         String password = mPassword.getText().toString().trim();
+        mLogin.setEnabled(false);
         new getData().execute(username,password);
     }
     private class getData extends AsyncTask<String, String, UserAuthen> {
@@ -122,14 +132,17 @@ public class LoginActivity extends ActionBarActivity {
                     //intent.putExtra(UserAuthen.Column.USERNAME, userAuthen.getUsername());
                     intent.putExtra(UserAuthen.Column.USERID, userAuthen.getUserid());
                     startActivity(intent);
+                    finish();
                 }else{
                     String message = getString(R.string.login_error_message);
                     Toast.makeText(mContext, message, Toast.LENGTH_SHORT).show();
+                    mLogin.setEnabled(true);
                 }
             }
             else{
                 String message = getString(R.string.login_error_message);
                 Toast.makeText(mContext, message, Toast.LENGTH_SHORT).show();
+                mLogin.setEnabled(true);
             }
 
         }

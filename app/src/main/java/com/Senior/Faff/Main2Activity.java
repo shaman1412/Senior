@@ -3,6 +3,7 @@ package com.Senior.Faff;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.net.Uri;
 import android.os.AsyncTask;
@@ -104,6 +105,8 @@ public class Main2Activity extends AppCompatActivity {
 
         setContentView(R.layout.activity_main2);
         setTitle("");
+        SharedPreferences sp = getSharedPreferences("CHECK_LOGIN", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sp.edit();
 
         //get map key-value of this activity in args
         //pager = (ViewPager)findViewById(R.id.pager);
@@ -133,9 +136,9 @@ public class Main2Activity extends AppCompatActivity {
         Bundle args;
         if((args = getIntent().getExtras()) != null) {
             args = getIntent().getExtras();
-            //int id = profileManager.getID(args.getString(UserAuthen.Column.USERNAME));
              id = args.getString(UserProfile.Column.UserID);
-           // userProfile.setId(id);
+            editor.putString(UserProfile.Column.UserID,id);
+            editor.commit();
             bundle = new Bundle();
             new getData().execute(id);
 
@@ -272,7 +275,13 @@ public class Main2Activity extends AppCompatActivity {
 
                 break;
             case R.id.Logout:
-
+                SharedPreferences sp = getSharedPreferences("CHECK_LOGIN", Context.MODE_PRIVATE);
+                SharedPreferences.Editor editor = sp.edit();
+                editor.putString(UserProfile.Column.UserID,"nothing");
+                editor.commit();
+                Intent logout = new Intent(context,LoginActivity.class);
+                startActivity(logout);
+                finish();
                 break;
 
             default:

@@ -18,7 +18,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="1dp"
-            android:textSize="7pt"
+            android:textSize="10pt"
             android:textColor="#000000" />
         <TextView
             android:id= "@+id/k"
@@ -28,7 +28,7 @@
             android:layout_margin="1dp"
             android:layout_marginLeft="20dp"
             android:text=","
-            android:textSize="7pt"
+            android:textSize="10pt"
             android:textColor="#000000" />
         <TextView
             android:id="@+id/age"
@@ -37,7 +37,7 @@
             android:layout_marginLeft="20dp"
             android:layout_toRightOf="@+id/k"
             android:layout_margin="1dp"
-            android:textSize="7pt"
+            android:textSize="10pt"
             android:textColor="#000000" />
         <TextView
             android:id="@+id/address"
@@ -47,7 +47,7 @@
             android:layout_margin="1dp"
             android:gravity="center"
             android:text="391/8 Bankok"
-            android:textSize="5pt"
+            android:textSize="7pt"
             android:textColor="#000000" />
 
         <!--   <android.support.v7.widget.CardView
@@ -95,18 +95,20 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/gender"
+            android:layout_toRightOf="@+id/email_img"
             android:layout_marginTop="20dp"
+            android:layout_marginLeft="5dp"
             android:text="Email"
             android:textSize="7pt"
             android:textColor="#000000" />
         <TextView
+
             android:id="@+id/gemail"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/gender"
+            android:layout_above="@+id/gtelephone"
             android:layout_toRightOf="@+id/email"
-            android:gravity="right"
-            android:layout_alignParentRight="true"
+            android:layout_alignLeft="@+id/gtelephone"
             android:layout_marginTop="20dp"
             android:text="Peeranat1234@hotmail.com"
             android:textSize="7pt"
@@ -116,6 +118,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/email"
+            android:layout_toRightOf="@+id/email_img"
+            android:layout_marginLeft="5dp"
             android:layout_marginTop="20dp"
             android:text="Telephone No."
             android:textSize="7pt"
@@ -126,15 +130,38 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/email"
             android:layout_toRightOf="@+id/telephone"
-            android:layout_alignParentRight="true"
-            android:gravity="right"
+            android:layout_marginLeft="15dp"
             android:layout_marginTop="20dp"
             android:text="02342424242"
             android:textSize="7pt"
             android:textColor="#000000" />
+        <ImageView
+            android:id="@+id/email_img"
+            android:layout_below="@+id/gender"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_marginTop="20dp"
+            android:background="@drawable/email_user"
+            />
+        <ImageView
+            android:id="@+id/sex_img"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_marginTop="20dp"
+            android:layout_below="@+id/address"
+            android:background="@drawable/sex_email"/>
+        <ImageView
+            android:id="@+id/tele_img"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:background="@drawable/telephone_user"
+            android:layout_marginTop="20dp"
+            android:layout_below="@+id/email_img"/>
         <TextView
+            android:layout_marginLeft="5dp"
             android:id="@+id/gender"
             android:layout_below="@+id/address"
+            android:layout_toRightOf="@+id/sex_img"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
@@ -146,10 +173,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/address"
-            android:layout_toRightOf="@+id/telephone"
-            android:layout_alignParentRight="true"
-            android:gravity="right"
+            android:layout_toRightOf="@+id/gender"
+
             android:layout_marginTop="20dp"
+            android:layout_alignLeft="@+id/gtelephone"
             android:text="Male"
             android:textSize="7pt"
             android:textColor="#000000" />

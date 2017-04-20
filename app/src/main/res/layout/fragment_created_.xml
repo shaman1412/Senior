@@ -4,28 +4,12 @@
     android:layout_height="match_parent"
     tools:context="com.Senior.Faff.Fragment.Party.Created_Fragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <LinearLayout
-        android:layout_gravity="center"
-        android:layout_width="match_parent"
-        android:layout_height="100dp">
+    <ListView
+        android:id="@+id/listView12"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+    </ListView>
 
-        <EditText
-            android:layout_width="1dp"
-            android:layout_height="match_parent"
-            android:id="@+id/AddRoomText"
-            android:layout_alignParentLeft="true"
-            android:layout_weight="0.7"
-            android:hint="Add Room"/>
 
-        <Button
-            android:layout_width="1dp"
-            android:layout_height="match_parent"
-            android:layout_alignRight="@+id/AddRoomText"
-            android:layout_weight="0.3"
-            android:text="Add Room"
-            android:id="@+id/AddRoomButton"/>
-
-    </LinearLayout>
 
 </FrameLayout>

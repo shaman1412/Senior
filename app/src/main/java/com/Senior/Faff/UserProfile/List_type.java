@@ -24,11 +24,11 @@ public class List_type  extends RecyclerView.Adapter<List_type.ViewHolder>{
     public static class ViewHolder extends RecyclerView.ViewHolder {
         // each data item is just a string in this case
 
-        public Button type_list;
+        public TextView type_list;
         public ViewHolder(View v) {
             super(v);
 
-            type_list = (Button ) v.findViewById(R.id.type_list);
+            type_list = (TextView) v.findViewById(R.id.type_list);
         }
     }
 
