@@ -12,6 +12,7 @@ import android.os.AsyncTask;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -21,6 +22,7 @@ import android.util.Log;
 import android.view.Display;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
@@ -28,6 +30,9 @@ import android.widget.Toast;
 
 import com.Senior.Faff.R;
 import com.Senior.Faff.UserProfile.List_typeNodel;
+import com.Senior.Faff.model.Bookmark;
+import com.Senior.Faff.model.BookmarkList;
+import com.Senior.Faff.model.Party;
 import com.Senior.Faff.model.Restaurant;
 import com.Senior.Faff.model.UserProfile;
 import com.Senior.Faff.utils.Helper;
@@ -39,6 +44,11 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.gson.Gson;
 
 import org.json.JSONException;
@@ -76,7 +86,9 @@ public class Show_RestaurantProfile extends AppCompatActivity implements OnMapRe
     RecyclerView recyclerView;
     private int width;
     private int height;
-
+    private Button fav_click,fav_unclick;
+    private String key;
+    private BookmarkList book;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -102,15 +114,14 @@ public class Show_RestaurantProfile extends AppCompatActivity implements OnMapRe
         type_food = (TextView)findViewById(R.id.address);
         mRecyclerView = (RecyclerView)findViewById(R.id.mRecyclerView);
         imageView = (ImageView) findViewById(R.id.image);
+        fav_click = (Button)findViewById(R.id.fav_click);
+        fav_unclick = (Button)findViewById(R.id.fav_unclick);
 
-        toolbar = (Toolbar) findViewById(R.id.toolbar);
+
         rate = (RatingBar)findViewById(R.id.rate);
         text_rate = (TextView)findViewById(R.id.text_rate);
         fab = (FloatingActionButton)findViewById(R.id.fab);
 
-        setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setDisplayShowHomeEnabled(true);
         Bundle args = getIntent().getExtras();
         if(args != null) {
             userid = args.getString(Restaurant.Column.UserID, null);
@@ -118,7 +129,12 @@ public class Show_RestaurantProfile extends AppCompatActivity implements OnMapRe
         }
         if(userid != null){
             new getData().execute(resid);
+            new getBookmark().execute();
         }
+
+
+
+
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -158,6 +174,42 @@ public class Show_RestaurantProfile extends AppCompatActivity implements OnMapRe
         getuser.execute(id);
 
     }
+    private class getBookmark extends AsyncTask<String, String, Void> {
+
+        String pass;
+        int responseCode;
+        HttpURLConnection connection;
+        String resultjson;
+
+        @Override
+        protected Void doInBackground(String... args) {
+            DatabaseReference mRootRef = FirebaseDatabase.getInstance().getReference().child("All_Bookmark");
+            mRootRef.orderByChild("userID")
+                    .equalTo(userid).addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange (DataSnapshot dataSnapshot){
+                    for (DataSnapshot postSnapshot: dataSnapshot.getChildren()) {
+                        key = postSnapshot.getKey();
+                        book = postSnapshot.getValue(BookmarkList.class);
+                        setbookmark();
+                    }
+
+
+                    //showlist(listview, party_list, resId,gender,age);
+                    //Toast.makeText(getActivity(),"hi",Toast.LENGTH_SHORT).show();
+                }
+
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+                    //Toast.makeText(getActivity(),"Cant connect database",Toast.LENGTH_SHORT).show();
+                }
+
+            });
+          return null;
+        }
+
+    }
+
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
@@ -253,7 +305,12 @@ public class Show_RestaurantProfile extends AppCompatActivity implements OnMapRe
                 enableMyLocation(respro.getLocation(),respro.getRestaurantName());
                 userid = respro.getUserID();
                 resid =  respro.getresId();
-                setTitle(respro.getRestaurantName());
+                toolbar = (Toolbar) findViewById(R.id.toolbar);
+                setSupportActionBar(toolbar);
+                getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+                getSupportActionBar().setDisplayShowHomeEnabled(true);
+                getSupportActionBar().setDisplayShowTitleEnabled(true);
+                getSupportActionBar().setTitle(respro.getRestaurantName());
                 if(respro.getTypefood() != null){
                     String[] list = respro.getTypefood().split(",");
                     favourite_type = new ArrayList<String>();
@@ -341,5 +398,78 @@ public class Show_RestaurantProfile extends AppCompatActivity implements OnMapRe
             default:
                 return super.onOptionsItemSelected(item);
         }
+    }
+    public void setbookmark(){
+        boolean have = false;
+        if(book  == null) {
+            DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference().child("All_Bookmark");
+            BookmarkList bookmark = new BookmarkList(userid);
+            mDatabase.push().setValue(bookmark);
+        }else{
+            if(book.getBookmarkID() != null) {
+                String[] list = book.getBookmarkID().split(",");
+                boolean first = true;
+                for (int i = 0; i < list.length; i++) {
+                    if (resid.equals(list[i])) {
+                        have = true;
+                        break;
+                    }
+                }
+            }
+            if(have){
+                View sd = findViewById(R.id.fav_unclick);
+                sd.setVisibility(View.GONE);
+                View sv = findViewById(R.id.fav_click);
+                sv.setVisibility(View.VISIBLE);
+            }else{
+                View sd = findViewById(R.id.fav_unclick);
+                sd.setVisibility(View.VISIBLE);
+                View sv = findViewById(R.id.fav_click);
+                sv.setVisibility(View.GONE);
+            }
+
+        }
+
+
+        fav_click.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String[] list   =  book.getBookmarkID().split(",");
+                boolean first = true;
+                String getlist = null;
+                for(int i = 0; i<list.length; i++){
+                    if(!resid.equals(list[i])) {
+                        if(first) {
+                            getlist = list[i];
+                            first = false;
+                        }
+                        else{
+                            getlist = getlist + "," + list[i];
+                        }
+                    }
+                }
+                DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference().child("All_Bookmark");
+                mDatabase.child(key).child("bookmarkID").setValue(getlist);
+                fav_click.setEnabled(false);
+                fav_unclick.setEnabled(true);
+                Toast.makeText(mcontext,"Remove to Whitelist",Toast.LENGTH_SHORT).show();
+            }});
+
+        fav_unclick.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String getlist = null;
+                if(book.getBookmarkID() != null){
+                     getlist =  book.getBookmarkID() + "," + resid;
+                }else{
+                    getlist = resid;
+                }
+                DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference().child("All_Bookmark");
+                mDatabase.child(key).child("bookmarkID").setValue(getlist);
+                fav_click.setEnabled(true);
+                fav_unclick.setEnabled(false);
+                Toast.makeText(mcontext,"Add to Whitelist",Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 }

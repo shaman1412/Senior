@@ -56,7 +56,15 @@ router.get('/all' , (req, res, next )=>{
 		res.json(entity);
 	})
 })
-
+router.get('/:group_resid' , (req, res, next )=>{
+	getModel().getdetail_resid(req.params.group_resid , (err,entity) =>{
+		if(err){
+			next(err);
+			return;
+		}
+		res.json(entity);
+	})
+})
 
 
 

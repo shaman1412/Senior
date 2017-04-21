@@ -25,6 +25,7 @@ public class list_party_member extends RecyclerView.Adapter<list_party_member.Vi
     private String key;
     private String  setuserid;
     private  Context mcontext;
+    private boolean host;
     public static class ViewHolder extends RecyclerView.ViewHolder {
                 // each data item is just a string in this case
 
@@ -41,17 +42,21 @@ public class list_party_member extends RecyclerView.Adapter<list_party_member.Vi
         }
     }
 
-    public list_party_member(ArrayList<UserProfile> list, Context context, String key){
+    public list_party_member(ArrayList<UserProfile> list, Context context, String key, boolean host){
                 this.list = list;
                 this.context = context;
                 this.key = key;
-
+                this.host = host;
             }
             @Override
             public list_party_member.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType ) {
                 View view = LayoutInflater.from(parent.getContext())
                         .inflate(R.layout.activity_list_party_accept, parent, false);
                 ViewHolder vh = new ViewHolder(view);
+                if(!host) {
+                    View ac = view.findViewById(R.id.kick);
+                    ac.setVisibility(View.INVISIBLE);
+                }
                 mcontext = view.getContext();
                 return vh;
             }

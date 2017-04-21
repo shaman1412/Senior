@@ -40,7 +40,7 @@ public class Show_Res_Rec_Adapter extends RecyclerView.Adapter<Show_Res_Rec_Adap
     public void onBindViewHolder(ViewHolder holder, int position) {
         holder.imageView.setTag(position);
         Log.i("TEST: ", "image_pth is : "+img_path[position]);
-        Picasso.with(context).load(img_path[position]).resize(width, 600).into(holder.imageView);
+        Picasso.with(context).load(img_path[position]).resize(width, 1080).into(holder.imageView);
     }
 
     @Override

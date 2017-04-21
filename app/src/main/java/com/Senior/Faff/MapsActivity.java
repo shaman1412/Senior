@@ -12,6 +12,7 @@ import android.content.Context;
 import android.support.v4.app.ActivityCompat;
 import android.os.Bundle;
 
+import com.Senior.Faff.model.Party;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationAvailability;
@@ -48,6 +49,7 @@ public class MapsActivity extends AppCompatActivity implements  OnMyLocationButt
     private Location location;
     private LatLng myLocation;
     private Button buttonNone;
+    private String getlocation;
     private TextView la,lo;
     protected Location mLastLocation;
     private static final int LOCATION_PERMISSION_REQUEST_CODE = 1;
@@ -62,7 +64,6 @@ public class MapsActivity extends AppCompatActivity implements  OnMyLocationButt
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
-         buttonNone = (Button)findViewById(R.id.buttonNone);
        la = (TextView)findViewById(R.id.la);
        lo = (TextView)findViewById(R.id.lo);
         googleApiClient = new GoogleApiClient.Builder(this)
@@ -71,11 +72,12 @@ public class MapsActivity extends AppCompatActivity implements  OnMyLocationButt
                 .addOnConnectionFailedListener(this)
                 .build();
 
-        buttonNone.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                mMap.setMapType(GoogleMap.MAP_TYPE_TERRAIN);
-            }
-        });
+
+        Bundle args = getIntent().getExtras();
+        if(args != null){
+         getlocation  = args.getString(Party.Column.Location);
+        }
+
 
     }
 
@@ -95,32 +97,22 @@ public class MapsActivity extends AppCompatActivity implements  OnMyLocationButt
         //marker = new Marker("pee","sdfsdf","16.820,100.34");
        // mManager.addMarker(marker);
 
-        List<Marker> m = mManager.getMarker();
+       // List<Marker> m = mManager.getMarker();
         mMap.setOnMyLocationButtonClickListener(this);
 
-        //enableMyLocation();
-        /*double a = -34;
-        double b = 151;
-            LatLng sydney = new LatLng(a,b);
-            mMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
-            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(sydney,10.0f));
-*/
-
-        for(int i = 0 ;i < m.size();i++){
-            String[] Eslat = m.get(i).getMarkerPostion().split(",");
+            String[] Eslat = getlocation.split(",");
             double a = Double.parseDouble(Eslat[0]);
             double b = Double.parseDouble(Eslat[1]);
             LatLng location = new LatLng(a,b);
             mMap.addMarker(new MarkerOptions()
-                    .title(m.get(i).getMarkerTitle())
-                    .snippet(m.get(i).getMarkerSnippet())
+                    .title("This Place")
                     .position(location)
 
             );
-            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(location,10.0f));
+            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(location,13.0f));
 
 
-        }
+
         enableMyLocation();
 
 
@@ -154,11 +146,10 @@ public class MapsActivity extends AppCompatActivity implements  OnMyLocationButt
                     11));
             MarkerOptions markerOptions = new MarkerOptions();
             markerOptions.position(myLocation);
-            markerOptions.title("Current Position");
+            markerOptions.title("Your Current Position");
             markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN));
             mCurrLocationMarker = mMap.addMarker(markerOptions);
         }
-
 
         Toast.makeText(this, "MyLocation button clicked", Toast.LENGTH_SHORT).show();
         // Return false so that we don't consume the event and the default behavior still occurs
@@ -290,12 +281,12 @@ public class MapsActivity extends AppCompatActivity implements  OnMyLocationButt
         if (mCurrLocationMarker != null) {
             mCurrLocationMarker.remove();
         }
-        Toast.makeText(this,"On changed",Toast.LENGTH_SHORT);
+        //Toast.makeText(this,"On changed",Toast.LENGTH_SHORT);
         //Place current location marker
         LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
         MarkerOptions markerOptions = new MarkerOptions();
         markerOptions.position(latLng);
-        //markerOptions.title("Current Position");
+        markerOptions.title("Your Current Position");
 
         lo.setText(String.valueOf(mLastLocation.getLongitude()));
         la.setText(String.valueOf(mLastLocation.getLatitude()));

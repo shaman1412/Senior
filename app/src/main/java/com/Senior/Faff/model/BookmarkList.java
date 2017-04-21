@@ -17,11 +17,10 @@ public class BookmarkList {
     }
 
     private int id;
-    private int bookmarkID;
-    private int userID;
+    private String bookmarkID;
+    private String userID;
 
-    public BookmarkList(int bookmarkID, int userID){
-        this.bookmarkID = bookmarkID;
+    public BookmarkList(String userID){
         this.userID = userID;
     }
 
@@ -39,19 +38,19 @@ public class BookmarkList {
         this.id = id;
     }
 
-    public int getBookmarkID() {
+    public String getBookmarkID() {
         return bookmarkID;
     }
 
-    public void setBookmarkID(int bookmarkID) {
+    public void setBookmarkID(String bookmarkID) {
         this.bookmarkID = bookmarkID;
     }
 
-    public int getUserID() {
+    public String getUserID() {
         return userID;
     }
 
-    public void setUserID(int userID) {
+    public void setUserID(String userID) {
         this.userID = userID;
     }
 

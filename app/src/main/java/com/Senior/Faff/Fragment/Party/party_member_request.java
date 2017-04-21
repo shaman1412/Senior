@@ -42,6 +42,7 @@ public class party_member_request extends Fragment {
     private list_party_request list_adapter;
     private Context mcontext;
     private String key;
+    private boolean host;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -52,6 +53,7 @@ public class party_member_request extends Fragment {
         group_userid_request  = getArguments().getString(UserProfile.Column.UserID_request);
         group_userid_accept  = getArguments().getString(UserProfile.Column.UserID_accept);
         key = getArguments().getString("key");
+        host = getArguments().getBoolean("host");
         mRecyclerView = (RecyclerView)root.findViewById(R.id.mRecyclerView);
         String b = "a1412,apee";
         new getData().execute(group_userid_request);
@@ -106,7 +108,7 @@ public class party_member_request extends Fragment {
             super.onPostExecute(userpro);
             if (userpro != null) {
 
-                    list_adapter = new list_party_request(userpro, mcontext, key, group_userid_accept);
+                    list_adapter = new list_party_request(userpro, mcontext, key, group_userid_accept,host);
                     LinearLayoutManager mLayoutManager  = new LinearLayoutManager(mcontext);
                     mLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
                     mRecyclerView.setLayoutManager(mLayoutManager);

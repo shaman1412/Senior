@@ -30,7 +30,6 @@ public class Customlistview_addvice_adapter extends ArrayAdapter<Restaurant> {
 
     public Customlistview_addvice_adapter(Context context, int tv, Restaurant[] res_name, int[] res_id) {
         super(context, tv, res_name);
-        this.res_id = res_id;
         this.res_name = res_name;
         inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 

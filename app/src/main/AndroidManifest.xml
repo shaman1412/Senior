@@ -8,7 +8,7 @@
          location permissions for the 'MyLocation' functionality.
     -->
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="com.google.android.providers.gsf.permission.READ_GSERVICES" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
@@ -29,7 +29,7 @@
         </activity>
         <activity android:name=".RegisterActivity" />
         <activity android:name=".MainActivity" />
-        <activity android:name=".Promotion.PromotionActivity"></activity>
+        <activity android:name=".Promotion.PromotionActivity" />
         <activity android:name=".Promotion.PromotionView" />
 
         <!--
@@ -103,7 +103,9 @@
         <activity android:name=".RestaurantProfile.Edit_RestaurantProfile" />
         <activity android:name=".Fragment.Party.Show_party_profile" />
         <activity android:name=".Fragment.Party.list_party_member" />
-        <activity android:name=".Fragment.Party.list_party_request"></activity>
+        <activity android:name=".Fragment.Party.list_party_request" />
+        <activity android:name=".UserProfile.favorite_restaurant" />
+        <activity android:name=".UserProfile.list_bookmark"></activity>
     </application>
 
 </manifest>

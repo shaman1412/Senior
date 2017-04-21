@@ -26,6 +26,7 @@ public class list_party_request extends RecyclerView.Adapter<list_party_request.
     private String  setuserid;
     private String list_accept;
     private  Context mcontext;
+    private boolean host;
     public static class ViewHolder extends RecyclerView.ViewHolder {
         // each data item is just a string in this case
         public TextView list_name;
@@ -42,18 +43,26 @@ public class list_party_request extends RecyclerView.Adapter<list_party_request.
         }
     }
 
-    public list_party_request(ArrayList<UserProfile> list, Context context, String key, String list_accept){
+    public list_party_request(ArrayList<UserProfile> list, Context context, String key, String list_accept, boolean host){
         this.list = list;
         this.context = context;
         this.key = key;
         this.list_accept = list_accept;
+        this.host = host;
     }
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.activity_list_party_request, parent, false);
        ViewHolder vh = new ViewHolder(view);
+        if(!host) {
+            View ac = view.findViewById(R.id.accept);
+            ac.setVisibility(View.INVISIBLE);
+            View re = view.findViewById(R.id.reject);
+            re.setVisibility(View.INVISIBLE);
+        }
         mcontext = view.getContext();
+
         return vh;
     }
 

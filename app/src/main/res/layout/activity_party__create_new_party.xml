@@ -86,6 +86,20 @@
                 android:background="@drawable/edittextbox"
                 android:scrollbars="vertical"
                 />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Location"
+                android:textSize="15sp"
+                android:textColor="#000000"
+                android:layout_marginBottom="5dp"/>
+            <fragment
+                android:id="@+id/map_party"
+                android:name="com.google.android.gms.maps.SupportMapFragment"
+                android:layout_width="match_parent"
+                android:layout_height="150dp"
+                android:layout_marginBottom="5dp"
+                />
 
             <TextView
                 android:layout_width="match_parent"

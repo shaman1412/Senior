@@ -20,12 +20,14 @@ import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.Senior.Faff.Main2Activity;
+import com.Senior.Faff.MapsActivity;
 import com.Senior.Faff.R;
 import com.Senior.Faff.UserProfile.ShowUserprofile;
 import com.Senior.Faff.model.Party;
@@ -77,6 +79,8 @@ public class Show_party_profile extends AppCompatActivity implements OnMapReadyC
     private int count = 0;
     private TextView cmember,maxmember;
     private  Button enter_chat,leave_group;
+    private String send_location;
+
     @Override
     protected void onResume() {
         super.onResume();
@@ -91,7 +95,7 @@ public class Show_party_profile extends AppCompatActivity implements OnMapReadyC
         setContentView(R.layout.activity_show_party_profile);
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map_party);
-        mapFragment.getMapAsync(this);
+     mapFragment.getMapAsync(this);
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -99,6 +103,7 @@ public class Show_party_profile extends AppCompatActivity implements OnMapReadyC
         mcontext= this;
         enter_chat = (Button)findViewById(R.id.enter_room);
         leave_group = (Button)findViewById(R.id.Leave_group);
+
 
         name = (TextView)findViewById(R.id.name);
         status=  (TextView)findViewById(R.id.status);
@@ -114,7 +119,7 @@ public class Show_party_profile extends AppCompatActivity implements OnMapReadyC
         showcreate = (LinearLayout)findViewById(R.id.showcreate);
         cmember = (TextView)findViewById(R.id.people);
         maxmember = (TextView)findViewById(R.id.max);
-        maxmember.setText(Integer.toString(number_party));
+
         bundle = new Bundle();
         Bundle args = getIntent().getExtras();
         start = true;
@@ -124,11 +129,22 @@ public class Show_party_profile extends AppCompatActivity implements OnMapReadyC
             Userid =  own_userid;
         }
 
+
     }
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
+        if (send_location == null) {
+            mMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
+                @Override
+                public void onMapClick(LatLng latLng) {
+                    Intent intent = new Intent(Show_party_profile.this, MapsActivity.class);
+                    intent.putExtra(Party.Column.Location, send_location);
+                    startActivity(intent);
+                }
+            });
+        }
     }
     private class getDataMember extends AsyncTask<String, String, Party > {
 
@@ -210,16 +226,18 @@ public class Show_party_profile extends AppCompatActivity implements OnMapReadyC
     }
     public void  setvalue(final Party partypro) {
         name.setText(partypro.getName());
-        description.setText(partypro.getDescription());
-        appointment.setText(partypro.getAppointment());
+        description.setText("       "+partypro.getDescription());
+        appointment.setText("       "+partypro.getAppointment());
+        send_location  = partypro.getLocation();
         enableMyLocation(partypro.getLocation(), partypro.getName());
-        address.setText(partypro.getAddress());
+        address.setText("       "+partypro.getAddress());
         createby.setText(partypro.getCreatename());
-        telephone.setText(partypro.getTelephone());
+        telephone.setText("       "+partypro.getTelephone());
         setTitle(partypro.getName());
         olduserid_request = partypro.getRequest();
         olduserid_accept = partypro.getAccept();
         number_party = partypro.getPeople();
+        maxmember.setText(Integer.toString(number_party));
         if(olduserid_accept != null){
             String[] countsting =   olduserid_accept.split(",");
             count = countsting.length;
@@ -268,24 +286,35 @@ public class Show_party_profile extends AppCompatActivity implements OnMapReadyC
                 startActivity(intent);
             }
         });
-
-
+        if(partypro.getCreateid().equals(own_userid)) {
+            bundle.putBoolean("host", true);
+        }else{
+            bundle.putBoolean("host", false);
+        }
             bundle.putString(UserProfile.Column.UserID_accept, olduserid_accept);
             bundle.putString(UserProfile.Column.UserID_request, olduserid_request);
             bundle.putString("key", key);
 
             if (start) {
-                party_member_request fragment_party = new party_member_request();
-                FragmentManager fragmentManager = getSupportFragmentManager();
-                FragmentTransaction fragtran = fragmentManager.beginTransaction();
-                fragment_party.setArguments(bundle);
-                fragtran.add(R.id.request, fragment_party).commit();
+                if(partypro.getCreateid().equals(own_userid)) {
+                    party_member_request fragment_party = new party_member_request();
+                    FragmentManager fragmentManager = getSupportFragmentManager();
+                    FragmentTransaction fragtran = fragmentManager.beginTransaction();
+                    fragment_party.setArguments(bundle);
+                    fragtran.add(R.id.request, fragment_party).commit();
+                }else{
 
-                party_member_accept fragment_accept = new party_member_accept();
-                FragmentManager fragmentManager1 = getSupportFragmentManager();
-                FragmentTransaction fragtran1 = fragmentManager1.beginTransaction();
-                fragment_accept.setArguments(bundle);
-                fragtran1.add(R.id.member, fragment_accept).commit();
+                    View ec = findViewById(R.id.card_request);
+                    ec.setVisibility(View.GONE);
+                }
+
+                    party_member_accept fragment_accept = new party_member_accept();
+                    FragmentManager fragmentManager1 = getSupportFragmentManager();
+                    FragmentTransaction fragtran1 = fragmentManager1.beginTransaction();
+                    fragment_accept.setArguments(bundle);
+                    fragtran1.add(R.id.member, fragment_accept).commit();
+
+
                 start = false;
             }
 

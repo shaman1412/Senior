@@ -140,7 +140,7 @@ public class Created_Fragment extends Fragment {
     public ArrayList<Party> getcreate(ArrayList<Party> get_list){
         ArrayList<Party> list = new ArrayList<Party>();
         for(int i =0 ;i < get_list.size(); i++){
-            if(userid.equals( get_list.get(i).getCreatename())){
+            if(userid.equals( get_list.get(i).getCreateid())){
                 list.add(get_list.get(i));
             }
         }

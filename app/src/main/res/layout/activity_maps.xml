@@ -21,11 +21,7 @@
         android:layout_alignParentTop="true"
         android:orientation="vertical" >
 
-        <Button
-            android:id="@+id/buttonNone"
-            android:layout_width="80dp"
-            android:layout_height="50dp"
-            android:text="None" />
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

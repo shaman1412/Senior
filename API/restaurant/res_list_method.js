@@ -120,6 +120,35 @@ function all_restaurant(cb){
 	})
 	connection.end();
 }
+function  getdetail_resid (group_resid, cb) {
+  const connection = getConnection();
+  if(group_resid != null){
+	const userid = group_resid.split(",");
+	let sql = 'SELECT * FROM `restaurant_profile`  WHERE  resid IN (';
+	for(let i = 0; i< userid.length; i++){
+		sql = sql + '\'' + userid[i] + '\'' ;
+		let check = i + 1;
+		if(check != userid.length)
+		{
+			sql = sql + ',' ;
+		}
+	}
+	sql = sql + ') ;' ; 
+  connection.query(
+    sql , (err, results) => {
+      if (err) {
+        cb(err);
+        return;
+      }
+      cb(null, results);
+    });
+
+  connection.end();
+}else{
+	 cb(err);
+     return;
+}
+};
 
 
 
@@ -127,5 +156,6 @@ module.exports = {
  nearby_list:  nearby_list,
  all_restaurant : all_restaurant,
  top_list : top_list,
- recommend_list : recommend_list
+ recommend_list : recommend_list,
+ getdetail_resid : getdetail_resid
 };
