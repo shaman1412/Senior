@@ -1,6 +1,9 @@
 package com.Senior.Faff.Fragment.Party;
 
 import android.content.Context;
+import android.net.Uri;
+import android.support.annotation.NonNull;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,6 +16,11 @@ import com.Senior.Faff.RestaurantProfile.Customlistview_addvice_adapter;
 import com.Senior.Faff.RestaurantProfile.async_image;
 import com.Senior.Faff.model.Party;
 import com.Senior.Faff.model.Restaurant;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
@@ -48,15 +56,42 @@ public class Customlistview_nearparty_adapter extends ArrayAdapter<Party> {
         else{
             viewHolder = ( Customlistview_nearparty_adapter.ViewHolder)convertView.getTag();
             imageView  = (ImageView)convertView.findViewById(R.id.imageView1);
-            async_image asyn1 = (async_image)imageView.getTag(R.id.imageView1);
-            if(asyn1 == null){
-                asyn1.cancel(true);
-            }
+            //async_image asyn1 = (async_image)imageView.getTag(R.id.imageView1);
+//            if(asyn1 == null){
+//                asyn1.cancel(true);
+//            }
         }
         //imageView.setImageBitmap(null);
         async_image asyn2 = new async_image(getContext(),imageView,room_id[0]);
         asyn2.execute();
         imageView.setTag(R.id.imageView1, asyn2);
+
+        String pic_url = room_name.get(position).getPicture();
+        if(pic_url!=null)
+        {
+            String[] tmp = pic_url.split("\\/");
+
+            //StorageReference load = FirebaseStorage.getInstance().getReference().child(tmp[0]).child(tmp[1]);
+
+//            load.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+//                @Override
+//                public void onSuccess(Uri uri) {
+//                    // Got the download URL for 'users/me/profile.png'
+//                    // Pass it to Picasso to download, show in ImageView and caching
+//                    //Picasso.with(context).load(uri.toString()).into(imageView);
+//                    Log.i("TEST: ", uri.toString());
+//                }
+//            }).addOnFailureListener(new OnFailureListener() {
+//                @Override
+//                public void onFailure(@NonNull Exception exception) {
+//                    // Handle any errors
+//                    exception.printStackTrace();
+//                }
+//            });
+
+
+        }
+
 
         if(room_name.get(position).getAccept() !=null) {
             String[] people = room_name.get(position).getAccept().split(",");

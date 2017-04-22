@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.ContextWrapper;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Matrix;
 import android.os.AsyncTask;
 import android.util.Log;
 import android.widget.ImageView;
@@ -164,7 +165,6 @@ public class Helper {
                 while (keys.hasNext()) {
                     String key = keys.next();
                     String value = parmas.get(key);
-                    Log.i("TEST: ",key+" : "+value);
                     outputStream.writeBytes(twoHyphens + boundary + lineEnd);
                     outputStream.writeBytes("Content-Disposition: form-data; name=\"" + key + "\"" + lineEnd);
                     outputStream.writeBytes("Content-Type: text/plain" + lineEnd);
@@ -246,5 +246,22 @@ public class Helper {
             }
         }
         return sb.toString();
+    }
+
+    public Bitmap getResizedBitmap(Bitmap bm, int newWidth, int newHeight) {
+        int width = bm.getWidth();
+        int height = bm.getHeight();
+        float scaleWidth = ((float) newWidth) / width;
+        float scaleHeight = ((float) newHeight) / height;
+        // CREATE A MATRIX FOR THE MANIPULATION
+        Matrix matrix = new Matrix();
+        // RESIZE THE BIT MAP
+        matrix.postScale(scaleWidth, scaleHeight);
+
+        // "RECREATE" THE NEW BITMAP
+        Bitmap resizedBitmap = Bitmap.createBitmap(
+                bm, 0, 0, width, height, matrix, false);
+        bm.recycle();
+        return resizedBitmap;
     }
 }

@@ -35,6 +35,7 @@ public class TestFirebaseStorageActivity extends AppCompatActivity {
 
 // Create a reference to "mountains.jpg"
         mountainsRef = storageRef.child("/img/mountains.jpg");
+        mountainImagesRef = storageRef.child("mountains.jpg");
 
 // While the file names are the same, the references point to different files
         mountainsRef.getName().equals(mountainImagesRef.getName());    // true

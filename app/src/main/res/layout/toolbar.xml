@@ -11,4 +11,15 @@
     android:background="?attr/colorPrimary"
     android:elevation="4dp">
 
+<!--    <EditText
+        android:id="@+id/serach_box"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:background="@drawable/search_box"
+        android:layout_marginLeft="10dp"/>
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"/>-->
+
 </android.support.v7.widget.Toolbar>

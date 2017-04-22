@@ -329,7 +329,6 @@ public class Room_fragment extends Fragment implements GoogleApiClient.OnConnect
                     for (DataSnapshot postSnapshot: dataSnapshot.child("All_Room").getChildren()) {
                         Party post= postSnapshot.getValue(Party.class);
                         party_list.add(post);
-
                     }
                     showlist(listview, party_list, resId,gender,age);
                     //Toast.makeText(getActivity(),"hi",Toast.LENGTH_SHORT).show();

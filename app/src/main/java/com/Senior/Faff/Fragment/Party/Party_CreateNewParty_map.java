@@ -15,6 +15,7 @@ import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -39,6 +40,9 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.gson.Gson;
+
+import java.util.ArrayList;
 
 public class Party_CreateNewParty_map extends AppCompatActivity implements OnMapReadyCallback,
         GoogleMap.OnMyLocationButtonClickListener,
@@ -47,6 +51,7 @@ public class Party_CreateNewParty_map extends AppCompatActivity implements OnMap
         ActivityCompat.OnRequestPermissionsResultCallback{
 
     private GoogleMap mMap;
+    private int MAP_REQUEST_CODE = 20;
     private GoogleApiClient googleApiClient;
     private static final int LOCATION_PERMISSION_REQUEST_CODE = 99;
     private Location mLastLocation;
@@ -73,7 +78,9 @@ public class Party_CreateNewParty_map extends AppCompatActivity implements OnMap
     private String appointment;
     private String telephone;
     private String createby;
+    private String picture;
     private String getlocation;
+
     ////////////////////
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -110,12 +117,13 @@ public class Party_CreateNewParty_map extends AppCompatActivity implements OnMap
             appointment = getIntent().getStringExtra(Party.Column.Appointment);
             telephone = getIntent().getStringExtra(Party.Column.Telephone);
             createby = getIntent().getStringExtra(UserProfile.Column.Name);
+            picture = getIntent().getStringExtra(Party.Column.picture);
         }
         add_location.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
                 if(getlocation != null) {
-                    manager = new CreatePartyManager(roomid,name,description,people,address,appointment,telephone,getlocation,rule_age, rule_gender,user_id,createby );
+                    manager = new CreatePartyManager(roomid,name,description,people,address,appointment,telephone,getlocation,rule_age, rule_gender,user_id,createby,picture);
                     manager.addroom();
                     Intent intent = new Intent(mcontext, Main2Activity.class);
                     intent.putExtra("userid",user_id);
@@ -124,6 +132,7 @@ public class Party_CreateNewParty_map extends AppCompatActivity implements OnMap
                 else{
                     Toast.makeText(mcontext, "Error", Toast.LENGTH_SHORT).show();
                 }
+
             }
         });
 

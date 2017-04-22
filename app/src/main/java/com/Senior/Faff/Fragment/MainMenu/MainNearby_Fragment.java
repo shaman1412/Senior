@@ -6,6 +6,8 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -55,5 +57,9 @@ public class MainNearby_Fragment extends Fragment {
         });
     return root;
     }
-
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        menu.findItem(R.id.dialog_filter).setVisible(true);
+        super.onCreateOptionsMenu(menu, inflater);
+    }
 }

@@ -8,23 +8,32 @@ import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationManager;
 import android.support.annotation.NonNull;
+import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
+import android.provider.MediaStore;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.Senior.Faff.Main2Activity;
+import com.Senior.Faff.Promotion.PromotionRecyclerViewAdapter;
 import com.Senior.Faff.model.Party;
 import com.Senior.Faff.model.Restaurant;
 import com.Senior.Faff.model.UserProfile;
@@ -33,6 +42,8 @@ import com.Senior.Faff.utils.CreatePartyManager;
 import com.Senior.Faff.R;
 import com.Senior.Faff.utils.PermissionUtils;
 import com.google.android.gms.common.ConnectionResult;
+import com.Senior.Faff.utils.Helper;
+import com.google.gson.Gson;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationAvailability;
 import com.google.android.gms.location.LocationListener;
@@ -46,25 +57,32 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 import java.util.StringTokenizer;
 
-public class Party_CreateNewParty extends AppCompatActivity implements OnMapReadyCallback,
-        GoogleMap.OnMyLocationButtonClickListener,
-        GoogleApiClient.OnConnectionFailedListener,
-        GoogleApiClient.ConnectionCallbacks, LocationListener,
-        ActivityCompat.OnRequestPermissionsResultCallback{
+public class Party_CreateNewParty extends AppCompatActivity {
     private com.google.android.gms.maps.model.Marker mCurrLocationMarker;
+    private int MAP_REQUEST_CODE = 20;
     private LatLng myLocation;
     private GoogleApiClient googleApiClient;
     private Location location;
+    private static final int request_code = 1;                          //request code for OnClick result
+
+    public static ArrayList<Bitmap> bmap = new ArrayList<>();           //keep bitmap data
+    public static ArrayList<String> imgPath = new ArrayList<>();        //keep uri
+
+    public static int image_count = 0;                                    //number of images
+
     private boolean mPermissionDenied = false;
     private static final int LOCATION_PERMISSION_REQUEST_CODE = 99;
     private GoogleMap mMap;
     private EditText name,description,people,address,appointment,telephone;
+    private ImageView party_pic;
     private Spinner spinner1;
     private String getlocation;
     private Button add_rule,create,rule;
+    private Button add_pic, cancle_pic;
     private CreatePartyManager manager;
     private String roomid,userid;
     private Party party;
@@ -76,16 +94,6 @@ public class Party_CreateNewParty extends AppCompatActivity implements OnMapRead
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_party__create_new_party);
-        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
-                .findFragmentById(R.id.map_party);
-        mapFragment.getMapAsync(this);
-        googleApiClient = new GoogleApiClient.Builder(this)
-                .addApi(LocationServices.API)
-                .addConnectionCallbacks(this)
-                .addOnConnectionFailedListener(this)
-                .build();
-
-
         name = (EditText)findViewById(R.id.name);
         description = (EditText)findViewById(R.id.description);
         people = (EditText)findViewById(R.id.people);
@@ -94,6 +102,8 @@ public class Party_CreateNewParty extends AppCompatActivity implements OnMapRead
         telephone = (EditText)findViewById(R.id.telephone);
         add_rule = (Button)findViewById(R.id.rule);
         create = (Button)findViewById(R.id.next);
+        add_pic = (Button) findViewById(R.id.picture);
+        party_pic = (ImageView) findViewById(R.id.image_view);
         rule_gender = new ArrayList<>();
         Bundle args = getIntent().getExtras();
         if(args != null){
@@ -104,6 +114,20 @@ public class Party_CreateNewParty extends AppCompatActivity implements OnMapRead
         long unixTime = System.currentTimeMillis() / 1000L;
         roomid = userid+ "ppap" + String.valueOf(unixTime);
 
+        add_pic.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(image_count<1)
+                {
+                    Intent sdintent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                    //sdintent.setType("image/*");
+                    startActivityForResult(sdintent, request_code);
+
+
+                }
+            }
+        });
+
         add_rule.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -111,6 +135,7 @@ public class Party_CreateNewParty extends AppCompatActivity implements OnMapRead
 
             }
         });
+
         create.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -137,11 +162,55 @@ public class Party_CreateNewParty extends AppCompatActivity implements OnMapRead
                 intent.putExtra(Party.Column.Rule_age,rule_age);
                 intent.putExtra(UserProfile.Column.UserID,userid);
                 intent.putExtra(UserProfile.Column.Name,createby);
-                startActivity(intent);
+                String[] st = imgPath.get(0).split("/");
+                String path = new Gson().toJson(imgPath);
+                intent.putExtra(Party.Column.picture, path);
+                startActivityForResult(intent, MAP_REQUEST_CODE);
             }
         });
 
 
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == RESULT_OK) {
+            if (requestCode == request_code && data != null) {
+                Uri selectedImg = data.getData();
+                String[] filePathColumn = {MediaStore.Images.Media.DATA};
+                Cursor cur = getContentResolver().query(selectedImg, filePathColumn, null, null, null);
+                if (cur == null) imgPath.add(null);
+                else {
+                    int column_index = cur.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
+                    cur.moveToFirst();
+                    imgPath.add(cur.getString(column_index));
+                    cur.close();
+                }
+                Bitmap b = BitmapFactory.decodeFile(imgPath.get(image_count));
+                bmap.add(b);
+                //convert to byte
+                party_pic.setVisibility(View.VISIBLE);
+                Bitmap b_tmp = new Helper().getResizedBitmap(b, 400, 400);
+                party_pic.setImageBitmap(b_tmp);
+
+                cancle_pic = (Button) findViewById(R.id.cancle_image) ;
+                cancle_pic.setVisibility(View.VISIBLE);
+                cancle_pic.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        party_pic.setVisibility(View.GONE);
+                        image_count--;
+                        bmap.clear();
+                        imgPath.clear();
+                        cancle_pic.setVisibility(View.GONE);
+                    }
+                });
+//                imgByte.add(stream.toByteArray());
+                image_count++;
+
+            }
+        }
     }
 
     @Override
@@ -218,119 +287,5 @@ public class Party_CreateNewParty extends AppCompatActivity implements OnMapRead
         alert.show();
 
     }
-    public void kk(CheckBox chk1, CheckBox chk2){
 
-
-    }
-
-    @Override
-    public void onConnected(@Nullable Bundle bundle) {
-        enableMyLocation();
-    }
-
-    @Override
-    public void onConnectionSuspended(int i) {
-
-    }
-
-    @Override
-    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
-
-    }
-
-    @Override
-    public void onLocationChanged(Location location) {
-
-    }
-
-    @Override
-    public boolean onMyLocationButtonClick() {
-        LocationManager locationManager = (LocationManager)
-                getSystemService(Context.LOCATION_SERVICE);
-        Criteria criteria = new Criteria();
-
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
-                != PackageManager.PERMISSION_GRANTED) {
-
-            location = locationManager.getLastKnownLocation(locationManager
-                    .getBestProvider(criteria, false));
-            if (location != null) {
-                myLocation = new LatLng(location.getLatitude(),
-                        location.getLongitude());
-                mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(myLocation,
-                        11));
-                MarkerOptions markerOptions = new MarkerOptions();
-                markerOptions.position(myLocation);
-                markerOptions.title("Current Position");
-                markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN));
-                mCurrLocationMarker = mMap.addMarker(markerOptions);
-                getlocation = location.getLatitude() + "," + location.getLongitude();
-                //description.setText(String.valueOf(myLocation.latitude));
-                Toast.makeText(this, "getlocation = get ", Toast.LENGTH_SHORT).show();
-            } else {
-                Toast.makeText(this, "getlocation = null ", Toast.LENGTH_SHORT).show();
-            }
-        }
-
-
-        // Toast.makeText(this, "MyLocation button clicked", Toast.LENGTH_SHORT).show();
-        return false;
-    }
-
-    @Override
-    public void onMapReady(GoogleMap googleMap) {
-        mMap = googleMap;
-        mMap.setOnMyLocationButtonClickListener(this);
-    }
-    private void enableMyLocation() {
-
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
-                != PackageManager.PERMISSION_GRANTED) {
-            // Permission to access the location is missing.
-            ActivityCompat.requestPermissions(this,
-                    new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION}, LOCATION_PERMISSION_REQUEST_CODE);
-        } else if (mMap != null) {
-            // Access to the location has been granted to the app.
-            mMap.setMyLocationEnabled(true);
-
-            LocationAvailability locationAvailability = LocationServices.FusedLocationApi.getLocationAvailability(googleApiClient);
-            if (locationAvailability != null) {
-
-                Toast.makeText(this, "set location ", Toast.LENGTH_SHORT).show();
-                LocationRequest locationRequest = new LocationRequest()  // ใช้สำหรับ onlicationchange ทำเรื่อยๆ
-                        .setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY)
-                        .setInterval(2000)
-                        .setFastestInterval(2000);
-                if (ContextCompat.checkSelfPermission(this,
-                        Manifest.permission.ACCESS_FINE_LOCATION)
-                        == PackageManager.PERMISSION_GRANTED) {
-                    LocationServices.FusedLocationApi.requestLocationUpdates(googleApiClient, locationRequest, this);
-                }
-                location = LocationServices.FusedLocationApi.getLastLocation(googleApiClient);
-                if (location != null) {
-                    getlocation = location.getLatitude() + "," + location.getLongitude();
-                    Toast.makeText(this, " set getlocation ", Toast.LENGTH_SHORT).show();
-                }
-
-            }
-            Toast.makeText(this, "cant set location", Toast.LENGTH_SHORT).show();
-
-        }
-    }
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
-                                           @NonNull int[] grantResults) {
-        if (requestCode != LOCATION_PERMISSION_REQUEST_CODE) {
-            return;
-        }
-
-        if (PermissionUtils.isPermissionGranted(permissions, grantResults,
-                Manifest.permission.ACCESS_FINE_LOCATION)) {
-            // Enable the my location layer if the permission has been granted.
-            enableMyLocation();
-        } else {
-            // Display the missing permission error dialog when the fragments resume.
-            mPermissionDenied = true;
-        }
-    }
 }

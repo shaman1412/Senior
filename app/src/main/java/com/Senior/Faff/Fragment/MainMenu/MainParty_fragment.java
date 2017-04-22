@@ -68,7 +68,6 @@ public class MainParty_fragment extends Fragment {
         pager.setAdapter(adapter);
         pager.setCurrentItem(1);
 
-
         Log.i(Tag, "Alert!!!! index of item in Party_adapter is "+pager.getCurrentItem());
 
         FloatingActionButton fab = (FloatingActionButton)root.findViewById(R.id.fab);
@@ -105,11 +104,7 @@ public class MainParty_fragment extends Fragment {
     return root;
     }
 
-    @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        menu.findItem(R.id.dialog_filter).setVisible(false);
-        super.onCreateOptionsMenu(menu, inflater);
-    }
+
 
 
 }

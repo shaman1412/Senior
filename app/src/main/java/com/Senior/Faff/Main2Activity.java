@@ -24,11 +24,13 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -98,11 +100,12 @@ public class Main2Activity extends AppCompatActivity {
     private UserProfile userProfile;
     private Bundle bundle;
     private String userid;
-    private String id;
+    private String id, search_name;
+    private EditText serach_box;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-       firebase a  = new firebase();
+        firebase a  = new firebase();
 
         setContentView(R.layout.activity_main2);
         setTitle("");
@@ -112,6 +115,27 @@ public class Main2Activity extends AppCompatActivity {
         //get map key-value of this activity in args
         //pager = (ViewPager)findViewById(R.id.pager);
         context = this;
+
+
+       // serach_box = (EditText)findViewById(R.id.serach_box);
+/*        serach_box.setOnKeyListener(new View.OnKeyListener() {
+            @Override
+            public boolean onKey(View v, int keyCode, KeyEvent event) {
+                if (event.getAction() == KeyEvent.ACTION_DOWN)
+                {
+                    switch (keyCode)
+                    {
+                        case KeyEvent.KEYCODE_ENTER:
+                            search_name    =  serach_box.getText().toString();
+                            search_name();
+                            return true;
+                        default:
+                            break;
+                    }
+                }
+                return false;
+            }
+        });*/
 
         // Set a Toolbar to replace the ActionBar.
         toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -168,7 +192,6 @@ public class Main2Activity extends AppCompatActivity {
                                 Bundle b = new Bundle();
 
                                 MainHome_Fragment fragment_home = new MainHome_Fragment();
-                                Log.i("TEST:", "  uid in bundle in Main2 is : "+bundle.getString("userid"));
                                 fragment_home.setArguments(bundle);
                                 FragmentManager fragmentManager_home = getSupportFragmentManager();
                                 fragmentManager_home.beginTransaction()
@@ -429,7 +452,6 @@ public class Main2Activity extends AppCompatActivity {
                 bundle.putInt(UserProfile.Column.Age,userProfile.getAge());
                 bundle.putInt(UserProfile.Column.Gender,userProfile.getGender());
                 MainHome_Fragment fragment_home = new MainHome_Fragment();
-                Log.i("TEST:", "  uid in Main2 bewfoe click home is : "+bundle.getString(UserProfile.Column.UserID));
                 fragment_home.setArguments(bundle);
                 FragmentManager fragmentManager_home = getSupportFragmentManager();
                 fragmentManager_home.beginTransaction().replace(R.id.flContent,fragment_home).commit();
@@ -445,6 +467,10 @@ public class Main2Activity extends AppCompatActivity {
 
 
         }
+
+    }
+    public void search_name(){
+        Toast.makeText(context,"searched", Toast.LENGTH_SHORT);
 
     }
 

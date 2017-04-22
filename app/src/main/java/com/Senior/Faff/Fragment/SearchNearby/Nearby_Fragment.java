@@ -20,6 +20,8 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -319,5 +321,10 @@ public class Nearby_Fragment extends Fragment implements GoogleApiClient.OnConne
         lo.add(Location.convert(location.getLatitude(), Location.FORMAT_DEGREES));
         lo.add(Location.convert(location.getLongitude(), Location.FORMAT_DEGREES));
         return  lo;
+    }
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        menu.findItem(R.id.dialog_filter).setVisible(true);
+        super.onCreateOptionsMenu(menu, inflater);
     }
 }
