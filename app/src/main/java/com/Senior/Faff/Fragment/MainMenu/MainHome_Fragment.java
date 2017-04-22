@@ -43,7 +43,6 @@ public class MainHome_Fragment extends Fragment  {
         View rootView =  inflater.inflate(R.layout.fragment_main_home, container, false);
         tabLayout = (TabLayout)rootView.findViewById(R.id.tablayout);
         pager = (ViewPager)rootView.findViewById(R.id.pager);
-        Log.i("TEST:", "  uid in MainHome_Fragment is : "+userid);
         Home_adpater adpater = new Home_adpater(getChildFragmentManager(),context,userid);
         pager.setAdapter(adpater);
         pager.setCurrentItem(1);

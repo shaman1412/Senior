@@ -169,8 +169,6 @@ public class Add_RestaurantProfile extends AppCompatActivity implements OnMapRea
                 Intent sdintent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
                 //sdintent.setType("image/*");
                 startActivityForResult(sdintent, request_code);
-                Log.i("TEST: ", "Click upload");
-
             }
         });
 
@@ -480,9 +478,7 @@ public class Add_RestaurantProfile extends AppCompatActivity implements OnMapRea
 
                 URL url = new URL("https://faff-1489402013619.appspot.com/res_profile/create");
 
-                Log.i("TEST: ", "  background size : " + Add_RestaurantProfile.AddRestProfile.this.imgPath.size());
                 result = new Helper().multipartRequest(url.toString(),paras, Add_RestaurantProfile.AddRestProfile.this.imgPath, "image", "image/jpeg");
-                Log.i("TEST: ", "  result for multipartRequest(url.toString(), paras, imgPath.get(0), \"image\", \"image/jpeg\");   :   " + result);
 
             } catch (Exception ex) {
                 ex.printStackTrace();

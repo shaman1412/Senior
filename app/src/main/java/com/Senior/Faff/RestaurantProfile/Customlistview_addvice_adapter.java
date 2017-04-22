@@ -51,7 +51,6 @@ public class Customlistview_addvice_adapter extends ArrayAdapter<Restaurant> {
         }
 
         String[] img_path = res_name[position].getPicture().split(",");
-        Log.i("TEST: ", img_path[0]);
         Picasso.with(getContext()).load(img_path[0]).resize(300, 300).into(imageView);
 
         viewHolder.ResName.setText(res_name[position].getRestaurantName());

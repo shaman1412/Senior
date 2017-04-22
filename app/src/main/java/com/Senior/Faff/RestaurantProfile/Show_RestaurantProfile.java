@@ -268,7 +268,6 @@ public class Show_RestaurantProfile extends AppCompatActivity implements OnMapRe
                     mRecyclerView.setAdapter(list_adapter);
 
                     String[] img_path = respro.getPicture().toString().split(",");
-                    Log.i("TEST: ", "pes loc is : "+img_path[0] + " : "+img_path[1]);
                     recyclerView = (RecyclerView) findViewById(R.id.recyclerview);
                     Show_Res_Rec_Adapter sh = new Show_Res_Rec_Adapter(mcontext, img_path, width);
                     recyclerView.setAdapter(sh);

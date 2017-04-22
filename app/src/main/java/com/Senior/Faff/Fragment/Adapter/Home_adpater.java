@@ -36,7 +36,6 @@ public class Home_adpater extends FragmentPagerAdapter   {
         if(position == 0){
             Bundle b = new Bundle();
             b.putString("userid", userid);
-            Log.i("TEST:", "  uid in Home_adapter is : "+this.userid);
             advice_restaurant_MainFragment ad = new advice_restaurant_MainFragment();
             ad.setArguments(b);
             return ad;

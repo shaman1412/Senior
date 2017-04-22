@@ -1,35 +1,56 @@
 package com.Senior.Faff.Fragment.Party;
 
 import android.content.Intent;
+import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
+import android.provider.MediaStore;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.Senior.Faff.Main2Activity;
+import com.Senior.Faff.Promotion.PromotionRecyclerViewAdapter;
 import com.Senior.Faff.model.Party;
 import com.Senior.Faff.model.Restaurant;
 import com.Senior.Faff.model.UserProfile;
 import com.Senior.Faff.utils.CreatePartyManager;
 
 import com.Senior.Faff.R;
+import com.Senior.Faff.utils.Helper;
+import com.google.gson.Gson;
 
+import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 import java.util.StringTokenizer;
 
 public class Party_CreateNewParty extends AppCompatActivity {
 
+    private static final int request_code = 1;                          //request code for OnClick result
+
+    public static ArrayList<Bitmap> bmap = new ArrayList<>();           //keep bitmap data
+    public static ArrayList<String> imgPath = new ArrayList<>();        //keep uri
+
+    public static int image_count = 0;                                    //number of images
+
     private EditText name,description,people,address,appointment,telephone;
+    private ImageView party_pic;
     private Spinner spinner1;
     private Button add_rule,create,rule;
+    private Button add_pic, cancle_pic;
     private CreatePartyManager manager;
     private String roomid,userid;
     private Party party;
@@ -49,6 +70,8 @@ public class Party_CreateNewParty extends AppCompatActivity {
         telephone = (EditText)findViewById(R.id.telephone);
         add_rule = (Button)findViewById(R.id.rule);
         create = (Button)findViewById(R.id.next);
+        add_pic = (Button) findViewById(R.id.picture);
+        party_pic = (ImageView) findViewById(R.id.image_view);
         rule_gender = new ArrayList<>();
         Bundle args = getIntent().getExtras();
         if(args != null){
@@ -59,6 +82,20 @@ public class Party_CreateNewParty extends AppCompatActivity {
         long unixTime = System.currentTimeMillis() / 1000L;
         roomid = userid+ "ppap" + String.valueOf(unixTime);
 
+        add_pic.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(image_count<1)
+                {
+                    Intent sdintent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                    //sdintent.setType("image/*");
+                    startActivityForResult(sdintent, request_code);
+
+
+                }
+            }
+        });
+
         add_rule.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -66,6 +103,7 @@ public class Party_CreateNewParty extends AppCompatActivity {
 
             }
         });
+
         create.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -92,11 +130,55 @@ public class Party_CreateNewParty extends AppCompatActivity {
                 intent.putExtra(Party.Column.Rule_age,rule_age);
                 intent.putExtra(UserProfile.Column.UserID,userid);
                 intent.putExtra(UserProfile.Column.Name,createby);
+                String[] st = imgPath.get(0).split("/");
+                String path = new Gson().toJson(imgPath);
+                intent.putExtra(Party.Column.picture, path);
                 startActivity(intent);
             }
         });
 
 
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == RESULT_OK) {
+            if (requestCode == request_code && data != null) {
+                Uri selectedImg = data.getData();
+                String[] filePathColumn = {MediaStore.Images.Media.DATA};
+                Cursor cur = getContentResolver().query(selectedImg, filePathColumn, null, null, null);
+                if (cur == null) imgPath.add(null);
+                else {
+                    int column_index = cur.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
+                    cur.moveToFirst();
+                    imgPath.add(cur.getString(column_index));
+                    cur.close();
+                }
+                Bitmap b = BitmapFactory.decodeFile(imgPath.get(image_count));
+                bmap.add(b);
+                //convert to byte
+                party_pic.setVisibility(View.VISIBLE);
+                Bitmap b_tmp = new Helper().getResizedBitmap(b, 400, 400);
+                party_pic.setImageBitmap(b_tmp);
+
+                cancle_pic = (Button) findViewById(R.id.cancle_image) ;
+                cancle_pic.setVisibility(View.VISIBLE);
+                cancle_pic.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        party_pic.setVisibility(View.GONE);
+                        image_count--;
+                        bmap.clear();
+                        imgPath.clear();
+                        cancle_pic.setVisibility(View.GONE);
+                    }
+                });
+//                imgByte.add(stream.toByteArray());
+                image_count++;
+
+            }
+        }
     }
 
     @Override

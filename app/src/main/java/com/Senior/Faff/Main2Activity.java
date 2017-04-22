@@ -101,7 +101,7 @@ public class Main2Activity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-       firebase a  = new firebase();
+        firebase a  = new firebase();
 
         setContentView(R.layout.activity_main2);
         setTitle("");
@@ -167,7 +167,6 @@ public class Main2Activity extends AppCompatActivity {
                                 Bundle b = new Bundle();
 
                                 MainHome_Fragment fragment_home = new MainHome_Fragment();
-                                Log.i("TEST:", "  uid in bundle in Main2 is : "+bundle.getString("userid"));
                                 fragment_home.setArguments(bundle);
                                 FragmentManager fragmentManager_home = getSupportFragmentManager();
                                 fragmentManager_home.beginTransaction()
@@ -427,7 +426,6 @@ public class Main2Activity extends AppCompatActivity {
                 bundle.putInt(UserProfile.Column.Age,userProfile.getAge());
                 bundle.putInt(UserProfile.Column.Gender,userProfile.getGender());
                 MainHome_Fragment fragment_home = new MainHome_Fragment();
-                Log.i("TEST:", "  uid in Main2 bewfoe click home is : "+bundle.getString(UserProfile.Column.UserID));
                 fragment_home.setArguments(bundle);
                 FragmentManager fragmentManager_home = getSupportFragmentManager();
                 fragmentManager_home.beginTransaction().replace(R.id.flContent,fragment_home).commit();

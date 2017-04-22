@@ -109,15 +109,11 @@ public class InsertUserProfile extends AppCompatActivity {
             public void onClick(View v) {
                 if(image_count<1)
                 {
-                    Log.i("TEST: ", " image count" + image_count);
                     Intent sdintent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
                     //sdintent.setType("image/*");
                     startActivityForResult(sdintent, request_code);
                 }
-                else
-                {
-                    Log.i("TEST: ", "Click upload");
-                }
+
             }
         });
 
@@ -292,13 +288,9 @@ public class InsertUserProfile extends AppCompatActivity {
 
                 String img_path_tmp = params[0].getPicture();
                 InsertUserProfile.AddUserProfile.this.imgPath = new Gson().fromJson(img_path_tmp, ArrayList.class);
-                Log.i("TEST: "," Pic url is : "+imgPath.toString());
-
                 URL url = new URL("https://faff-1489402013619.appspot.com/user/new_user");
 
-                Log.i("TEST: ", "  background size : " + InsertUserProfile.AddUserProfile.this.imgPath.size());
                 result = new Helper().multipartRequest(url.toString(),paras, InsertUserProfile.AddUserProfile.this.imgPath, "image", "image/jpeg");
-                Log.i("TEST: ", "  result for multipartRequest(url.toString(), paras, imgPath.get(0), \"image\", \"image/jpeg\");   :   " + result);
 
             } catch (Exception ex) {
                 ex.printStackTrace();

@@ -12,171 +12,201 @@
         layout="@layout/toolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
+
     <android.support.v4.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
             android:gravity="center"
-            android:padding="20dp"
-            >
+            android:orientation="vertical"
+            android:padding="20dp">
 
             <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Profile Picture:"
-                android:textSize="15sp"
                 android:id="@+id/picture_txt"
-                android:textColor="#000000"
-
-                android:layout_marginBottom="5dp"/>
-            <android.support.v7.widget.LinearLayoutCompat
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="start"
-                >
-                <View
-                    android:layout_width="100dp"
-                    android:layout_height="100dp"
-                    android:layout_marginRight="10dp"
-                    android:background="@drawable/examplepicture"
-                    ></View>
-                <Button
-                    android:layout_width="100dp"
-                    android:layout_height="100dp"
-                    android:id="@+id/picture"
-                    android:background="@drawable/adduserphoto"/>
-
-            </android.support.v7.widget.LinearLayoutCompat>
-
-            <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Name:"
-                android:textSize="15sp"
-                android:id="@+id/name_txt"
+                android:layout_marginBottom="5dp"
+                android:text="Profile Picture:"
                 android:textColor="#000000"
-                android:layout_marginBottom="5dp"/>
+
+                android:textSize="15sp" />
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="start">
+
+                <Button
+                    android:id="@+id/cancle_image"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_toRightOf="@+id/image_view"
+                    android:layout_alignParentTop="true"
+                    android:background="@drawable/cancel"
+                    android:visibility="gone">
+                </Button>
+
+                <ImageView
+                    android:id="@+id/image_view"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginRight="10dp"
+                    android:layout_below="@+id/cancle_image"
+                    android:visibility="gone"
+                    android:scaleType="centerCrop">
+
+                </ImageView>
+
+                <Button
+                    android:id="@+id/picture"
+                    android:layout_width="200dp"
+                    android:layout_height="60dp"
+                    android:layout_below="@+id/image_view"
+                    android:layout_centerHorizontal="true"
+                    android:text="Choose Partty Picture"/>
+                    <!--android:background="@drawable/adduserphoto" />-->
+
+            </RelativeLayout>
+
+            <TextView
+                android:id="@+id/name_txt"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="5dp"
+                android:text="Name:"
+                android:textColor="#000000"
+                android:textSize="15sp" />
+
             <EditText
+                android:id="@+id/name"
                 android:layout_width="match_parent"
                 android:layout_height="30dp"
-                android:id="@+id/name"
                 android:layout_marginBottom="5dp"
-                android:padding="2dip"
-                android:background="@drawable/edittextbox"/>
+                android:background="@drawable/edittextbox"
+                android:padding="2dip" />
+
             <TextView
+                android:id="@+id/address_txt"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginBottom="5dp"
                 android:text="Adddress:"
-                android:textSize="15sp"
-                android:id="@+id/address_txt"
                 android:textColor="#000000"
-                android:layout_marginBottom="5dp"/>
+                android:textSize="15sp" />
+
             <EditText
+                android:id="@+id/address"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="5dp"
+                android:background="@drawable/edittextbox"
                 android:inputType="textMultiLine"
                 android:lines="2"
                 android:maxLines="3"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/address"
-                android:layout_marginBottom="5dp"
                 android:padding="2dip"
-                android:background="@drawable/edittextbox"
-                android:scrollbars="vertical"
-                />
+                android:scrollbars="vertical" />
 
             <TextView
+                android:id="@+id/description_txt"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginBottom="5dp"
                 android:text="Description:"
-                android:textSize="15sp"
-                android:id="@+id/description_txt"
                 android:textColor="#000000"
-                android:layout_marginBottom="5dp"/>
+                android:textSize="15sp" />
+
             <EditText
+                android:id="@+id/description"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="5dp"
+                android:background="@drawable/edittextbox"
                 android:inputType="textMultiLine"
                 android:lines="4"
                 android:maxLines="6"
-                android:layout_height="wrap_content"
-                android:layout_width="fill_parent"
-                android:id="@+id/description"
-                android:scrollbars="vertical"
-                android:layout_marginBottom="5dp"
                 android:padding="2dip"
-                android:background="@drawable/edittextbox"/>
+                android:scrollbars="vertical" />
+
             <TextView
+                android:id="@+id/people_txt"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginBottom="5dp"
                 android:text="People:"
-                android:textSize="15sp"
-                android:id="@+id/people_txt"
                 android:textColor="#000000"
-                android:layout_marginBottom="5dp"/>
+                android:textSize="15sp" />
+
             <EditText
+                android:id="@+id/people"
                 android:layout_width="50dp"
                 android:layout_height="30dp"
-                android:id="@+id/people"
                 android:layout_marginBottom="5dp"
-                android:padding="2dip"
-                android:background="@drawable/edittextbox"/>
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Period:"
-                android:textSize="15sp"
-                android:id="@+id/period_txt"
-                android:textColor="#000000"
-                android:layout_marginBottom="5dp"/>
-            <EditText
-                android:layout_width="match_parent"
-                android:layout_height="30dp"
-                android:id="@+id/period"
-                android:layout_marginBottom="5dp"
-                android:padding="2dip"
-                android:background="@drawable/edittextbox"/>
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Telephone No:"
-                android:textSize="15sp"
-                android:id="@+id/telephone_txt"
-                android:textColor="#000000"
-                android:layout_marginBottom="5dp"/>
-            <EditText
-                android:layout_width="match_parent"
-                android:layout_height="30dp"
-                android:id="@+id/telephone"
-                android:layout_marginBottom="5dp"
-                android:padding="2dip"
-                android:background="@drawable/edittextbox"/>
+                android:background="@drawable/edittextbox"
+                android:padding="2dip" />
 
             <TextView
+                android:id="@+id/period_txt"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Rule:"
-                android:textSize="15sp"
-                android:id="@+id/type_txt"
+                android:layout_marginBottom="5dp"
+                android:text="Period:"
                 android:textColor="#000000"
-                android:layout_marginBottom="5dp"/>
+                android:textSize="15sp" />
+
+            <EditText
+                android:id="@+id/period"
+                android:layout_width="match_parent"
+                android:layout_height="30dp"
+                android:layout_marginBottom="5dp"
+                android:background="@drawable/edittextbox"
+                android:padding="2dip" />
+
+            <TextView
+                android:id="@+id/telephone_txt"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="5dp"
+                android:text="Telephone No:"
+                android:textColor="#000000"
+                android:textSize="15sp" />
+
+            <EditText
+                android:id="@+id/telephone"
+                android:layout_width="match_parent"
+                android:layout_height="30dp"
+                android:layout_marginBottom="5dp"
+                android:background="@drawable/edittextbox"
+                android:padding="2dip" />
+
+            <TextView
+                android:id="@+id/type_txt"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="5dp"
+                android:text="Rule:"
+                android:textColor="#000000"
+                android:textSize="15sp" />
+
             <Button
+                android:id="@+id/rule"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/rule"
                 android:layout_marginBottom="5dp"
                 android:text="Add Rule"
-                android:textSize="15sp"/>
-
+                android:textSize="15sp" />
 
 
             <Button
+                android:id="@+id/next"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/next"
                 android:layout_centerHorizontal="true"
-                android:text="Next"
-                android:background="@color/ButtonUserProfile"/>
+                android:background="@color/ButtonUserProfile"
+                android:text="Next" />
 
 
         </LinearLayout>

@@ -125,8 +125,6 @@ public class ShowUserprofile extends AppCompatActivity {
                 final UserProfile userpro = new Gson().fromJson(item.toString(), UserProfile.class);
                 userid = userpro.getUserid();
                 if (userid != null) {
-                    Log.i("TEST: ", "   interface data from GET is : " + userpro.toString() + "     arr length is : " + arr_url.length);
-
                     name.setText(userpro.getName());
                     age.setText(String.valueOf(userpro.getAge()));
                     address.setText(userpro.getAddress());

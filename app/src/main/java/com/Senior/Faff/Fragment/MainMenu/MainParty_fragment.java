@@ -68,7 +68,6 @@ public class MainParty_fragment extends Fragment {
         pager.setAdapter(adapter);
         pager.setCurrentItem(1);
 
-
         Log.i(Tag, "Alert!!!! index of item in Party_adapter is "+pager.getCurrentItem());
 
         FloatingActionButton fab = (FloatingActionButton)root.findViewById(R.id.fab);

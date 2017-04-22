@@ -28,6 +28,7 @@ public class Party {
         public static final String Rule_age = "age";
         public static final String Create_by = "userid";
         public static final String Create_by_name = "create_by_name";
+        public static final String picture = "picture";
 
     }
 
@@ -45,6 +46,7 @@ public class Party {
     private Map<String, String> rule = new HashMap<>();
     private String rule_gender;
     private String rule_age;
+    private String picture;
     private String create_by_name;
     private String create_by_id;
 
@@ -62,6 +64,15 @@ public class Party {
     }
 
     //region getter setter
+
+    public String getPicture() {
+        return picture;
+    }
+
+    public void setPicture(String picture) {
+        this.picture = picture;
+    }
+
     public String getCreateid(){ return  create_by_id;}
 
     public void setCreateid(String create_by_id){
@@ -138,6 +149,8 @@ public class Party {
     public void setAddress(String address){ this.address = address; }
 
     public  String getAddress(){ return  address; }
+
+
 
     //endregion
 }
