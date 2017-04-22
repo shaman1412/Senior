@@ -45,6 +45,7 @@ import com.Senior.Faff.UserProfile.InsertUserProfile;
 import com.Senior.Faff.UserProfile.List_typeNodel;
 import com.Senior.Faff.UserProfile.ProfileManager;
 import com.Senior.Faff.UserProfile.ShowUserprofile;
+import com.Senior.Faff.UserProfile.favorite_restaurant;
 import com.Senior.Faff.chat.ChatMainActivity;
 import com.Senior.Faff.model.Party;
 import com.Senior.Faff.model.UserAuthen;
@@ -234,22 +235,23 @@ public class Main2Activity extends AppCompatActivity {
                 Intent Home_intent = new Intent(context, InsertUserProfile.class);
                 startActivity(Home_intent);
                 break;
-            case R.id.NotificationUser:
+/*            case R.id.NotificationUser:
 
-                break;
+                break;*/
             case R.id.UserProfile:
                 Intent intent = new Intent(context, ShowUserprofile.class);
                 intent.putExtra(UserProfile.Column.UserID,userid);
                 startActivity(intent);
                 break;
             case R.id.Favourite:
-                Intent b = new Intent(context,ChatMainActivity.class);
+                Intent b = new Intent(context,favorite_restaurant.class);
+                b.putExtra(UserProfile.Column.UserID,userid);
                 startActivity(b);
                 break;
-            case R.id.ShowPromotion:
+   /*         case R.id.ShowPromotion:
                 Intent i = new Intent(context, PromotionShow.class);
                 startActivity(i);
-                break;
+                break;*/
             case R.id.RestaurantProfile:
                 Bundle bundle = new Bundle();
                 bundle.putString("userid",userid);
@@ -261,11 +263,11 @@ public class Main2Activity extends AppCompatActivity {
                 FragmentManager manager = getSupportFragmentManager();
                 manager.beginTransaction().replace(R.id.flContent,option).commit();
                 break;
-            case R.id.AddPromotion:
+     /*       case R.id.AddPromotion:
                 Intent ii = new Intent(context, PromotionActivity.class);
                 startActivity(ii);
-                break;
-            case R.id.NotificationRe:
+                break;*/
+/*            case R.id.NotificationRe:
 
                 break;
             case R.id.Setting:
@@ -273,7 +275,7 @@ public class Main2Activity extends AppCompatActivity {
                 break;
             case R.id.Contact:
 
-                break;
+                break;*/
             case R.id.Logout:
                 SharedPreferences sp = getSharedPreferences("CHECK_LOGIN", Context.MODE_PRIVATE);
                 SharedPreferences.Editor editor = sp.edit();

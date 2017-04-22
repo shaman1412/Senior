@@ -97,7 +97,7 @@ public class Edit_RestaurantProfile extends AppCompatActivity implements OnMapRe
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit__restaurant_profile);
-
+        setTitle("Edit Restaurant");
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
@@ -224,7 +224,7 @@ public class Edit_RestaurantProfile extends AppCompatActivity implements OnMapRe
             if(lola != null) {
                 String[] pos = lola.split(",");
                 myLocation = new LatLng(Double.parseDouble(pos[0]),
-                        Double.parseDouble(pos[0]));
+                        Double.parseDouble(pos[1]));
                 mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(myLocation,
                         11));
                 MarkerOptions markerOptions = new MarkerOptions();

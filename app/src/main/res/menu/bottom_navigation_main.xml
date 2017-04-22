@@ -21,7 +21,7 @@
         android:id="@+id/Nearby"
         android:enabled="true"
         android:icon="@drawable/nearby_bottom_main"
-        android:title="Nearby"
+        android:title="Search"
         app:showAsAction="ifRoom" />
 
 </menu>

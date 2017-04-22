@@ -54,7 +54,7 @@ public class Customlistview_addvice_adapter extends ArrayAdapter<Restaurant> {
         Picasso.with(getContext()).load(img_path[0]).resize(300, 300).into(imageView);
 
         viewHolder.ResName.setText(res_name[position].getRestaurantName());
-        viewHolder.detail.setText("        " + res_name[position].getDescription());
+        viewHolder.detail.setText("   " + res_name[position].getDescription());
         viewHolder.period.setText(res_name[position].getPeriod());
 
         return convertView;

@@ -186,7 +186,7 @@ public class Comment_RestaurantFragment extends Fragment {
             }
         });
 
-        rating_star = (RatingBar)root.findViewById(R.id.ratingBar);
+        //rating_star = (RatingBar)root.findViewById(R.id.ratingBar);
         rating_total = (RatingBar) getActivity().findViewById(R.id.rate);
 
         rate.addValueEventListener(new ValueEventListener() {
@@ -227,16 +227,16 @@ public class Comment_RestaurantFragment extends Fragment {
             }
         });
 
-        score = (TextView)root.findViewById(R.id.comment_score);
+        //score = (TextView)root.findViewById(R.id.comment_score);
 
-        rating_star.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
+/*        rating_star.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
             @Override
             public void onRatingChanged(RatingBar ratingBar, float rating, boolean fromUser) {
                 String tmp = String.valueOf(rating);
                 score.setText(tmp);
                 rate.child(id).setValue(tmp);
             }
-        });
+        });*/
 
         return root;
     }

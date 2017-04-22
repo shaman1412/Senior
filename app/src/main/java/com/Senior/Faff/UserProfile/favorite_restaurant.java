@@ -59,64 +59,9 @@ public class favorite_restaurant extends AppCompatActivity {
         userid   = args.getString(UserProfile.Column.UserID);
         }
         mRecyclerView = (RecyclerView)findViewById(R.id.mRecyclerView1);
-
-    }
-    private class getDataMember extends AsyncTask<String, String, BookmarkList > {
-
-        String pass;
-        int responseCode;
-        HttpURLConnection connection;
-        String resultjson;
-        BookmarkList bookmark;
-        @Override
-        protected BookmarkList doInBackground(String... args) {
-            DatabaseReference mRootRef = FirebaseDatabase.getInstance().getReference().child("All_Bookmark");
-            mRootRef.orderByChild("userID")
-                    .equalTo(userid).addValueEventListener(new ValueEventListener() {
-                @Override
-                public void onDataChange (DataSnapshot dataSnapshot){
-                    for (DataSnapshot postSnapshot: dataSnapshot.getChildren()) {
-                       // key = postSnapshot.getKey();
-                        bookmark= postSnapshot.getValue(BookmarkList.class);
-
-                    }
-
-
-                    //showlist(listview, party_list, resId,gender,age);
-                    //Toast.makeText(getActivity(),"hi",Toast.LENGTH_SHORT).show();
-                }
-
-                @Override
-                public void onCancelled(DatabaseError databaseError) {
-                    //Toast.makeText(getActivity(),"Cant connect database",Toast.LENGTH_SHORT).show();
-                }
-
-            });
-            return bookmark;
-        }
-        @Override
-        protected void onPostExecute(final BookmarkList bookmark) {
-            super.onPostExecute(bookmark);
-            if (bookmark != null) {
-                if(!bookmark.getBookmarkID().isEmpty()) {
-                    new getBookmark().execute(bookmark.getBookmarkID());
-                }
-            }
-            else{
-                String message = getString(R.string.login_error_message);
-                Toast.makeText(mcontext, message, Toast.LENGTH_SHORT).show();
-            }
-
-        }
-
+         new getBookmark().execute();
     }
 
-    public void setvalue(BookmarkList bookmark) {
-        if (!(bookmark.getBookmarkID().isEmpty())) {
-            String[] booklist = bookmark.getBookmarkID().split(",");
-
-        }
-    }
     private class getBookmark extends AsyncTask<String, String, Void> {
 
         String pass;
@@ -153,14 +98,14 @@ public class favorite_restaurant extends AppCompatActivity {
 
     }
 
-    private class getData extends AsyncTask<String, String, ArrayList<BookmarkList> > {
+    private class getData extends AsyncTask<String, String, ArrayList<Restaurant> > {
 
         String pass;
         int responseCode;
         HttpURLConnection connection;
         String resultjson;
         @Override
-        protected ArrayList<BookmarkList> doInBackground(String... args) {
+        protected ArrayList<Restaurant> doInBackground(String... args) {
             StringBuilder result = new StringBuilder();
             String url_api = "https://faff-1489402013619.appspot.com/res_list/" + args[0];
             try {
@@ -185,7 +130,7 @@ public class favorite_restaurant extends AppCompatActivity {
                 Log.i("Request Status", "This is success response status from server: " + responseCode);
                 Gson gson = new Gson();
                 Restaurant[] userPro  =  gson.fromJson(result.toString(),  Restaurant[].class);
-                ArrayList<BookmarkList> getuserpro= new ArrayList<>();
+                ArrayList<Restaurant> getuserpro= new ArrayList<>();
                 for(int i = 0; i< userPro.length; i++){
                     getuserpro.add(userPro[i]);
                 }
@@ -198,7 +143,7 @@ public class favorite_restaurant extends AppCompatActivity {
 
         }
         @Override
-        protected void onPostExecute(ArrayList<BookmarkList> userpro) {
+        protected void onPostExecute(ArrayList<Restaurant> userpro) {
             super.onPostExecute(userpro);
             if (userpro != null) {
 

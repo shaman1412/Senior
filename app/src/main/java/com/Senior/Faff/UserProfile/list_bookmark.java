@@ -17,6 +17,7 @@ import android.widget.TextView;
 
 import com.Senior.Faff.Fragment.Party.list_party_member;
 import com.Senior.Faff.R;
+import com.Senior.Faff.RestaurantProfile.Show_RestaurantProfile;
 import com.Senior.Faff.model.Bookmark;
 import com.Senior.Faff.model.BookmarkList;
 import com.Senior.Faff.model.Restaurant;
@@ -27,7 +28,7 @@ import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
-public class list_bookmark extends RecyclerView.Adapter<list_party_member.ViewHolder>{
+public class list_bookmark extends RecyclerView.Adapter<list_bookmark.ViewHolder>{
     private ArrayList<Restaurant> list ;
     private Context context;
     private String key;
@@ -37,15 +38,16 @@ public class list_bookmark extends RecyclerView.Adapter<list_party_member.ViewHo
     public static class ViewHolder extends RecyclerView.ViewHolder {
         // each data item is just a string in this case
 
-        public TextView list_name;
+        public TextView list_name,detail,open_text;
         public ImageView image;
         public Button kick;
         public LinearLayout mix;
         public ViewHolder(View v) {
             super(v);
-            list_name = (TextView)v.findViewById(R.id.name);
+            list_name = (TextView)v.findViewById(R.id.textView1);
             image =  (ImageView)v.findViewById(R.id.image);
-            kick = (Button) v.findViewById(R.id.kick);
+            detail = (TextView) v.findViewById(R.id.detail);
+            open_text = (TextView)v.findViewById(R.id.open_text);
             mix = (LinearLayout)v.findViewById(R.id.mix);
         }
     }
@@ -57,25 +59,23 @@ public class list_bookmark extends RecyclerView.Adapter<list_party_member.ViewHo
         this.host = host;
     }
     @Override
-    public list_party_member.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType ) {
+    public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType ) {
         View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.activity_list_party_accept, parent, false);
-        list_party_member.ViewHolder vh = new list_party_member.ViewHolder(view);
-        if(!host) {
-            View ac = view.findViewById(R.id.kick);
-            ac.setVisibility(View.INVISIBLE);
-        }
+                .inflate(R.layout.activity_listview_bookanark_adapter, parent, false);
+        ViewHolder vh = new ViewHolder(view);
         mcontext = view.getContext();
         return vh;
     }
 
     @Override
-    public void onBindViewHolder(final list_party_member.ViewHolder holder, final int position) {
+    public void onBindViewHolder(final ViewHolder holder, final int position) {
         holder.list_name.setText(list.get(position).getRestaurantName());
+        holder.detail.setText(list.get(position).getDescription());
+        holder.open_text.setText(list.get(position).getPeriod());
         holder.mix.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(mcontext, ShowUserprofile.class);
+                Intent intent = new Intent(mcontext, Show_RestaurantProfile.class);
                 intent.putExtra(UserProfile.Column.UserID,list.get(position).getresId());
                 mcontext.startActivity(intent);
             }

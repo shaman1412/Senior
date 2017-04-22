@@ -120,7 +120,7 @@ public class Add_RestaurantProfile extends AppCompatActivity implements OnMapRea
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_res_respro);
-
+        setTitle("Add Restaurant Profile");
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);

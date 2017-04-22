@@ -77,7 +77,7 @@ public class Party_CreateNewParty extends AppCompatActivity implements OnMapRead
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_party__create_new_party);
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
-                .findFragmentById(R.id.map);
+                .findFragmentById(R.id.map_party);
         mapFragment.getMapAsync(this);
         googleApiClient = new GoogleApiClient.Builder(this)
                 .addApi(LocationServices.API)

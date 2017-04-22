@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/TabUserProfile"
+
     tools:context="com.Senior.Faff.RestaurantProfile.Show_RestaurantProfile">
 
     <LinearLayout
@@ -17,21 +17,35 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_gravity="center"
-            android:background="@color/yellow"
+
             android:backgroundTint="@android:color/transparent">
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:id="@+id/enter_comment"
+                android:text="Add Comment"
+                android:textColor="#ffffffff"
+                android:background="@color/ButtonUserProfile"/>
 
             <TextView
                 android:id="@+id/comment_title"
+                android:layout_below="@+id/enter_comment"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
-                android:background="@color/custom_orange1"
                 android:gravity="center"
                 android:text="Comment"
                 android:textAppearance="@style/TextAppearance.AppCompat.Headline"
-                android:textColor="@android:color/holo_red_dark" />
-
-            <TextView
+                android:textColor="#d3d3d3" />
+            <View
+                android:id="@+id/line"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginTop="5dp"
+                android:layout_below="@+id/comment_title"
+                android:background="@drawable/line" />
+         <!--   <TextView
                 android:id="@+id/comment_score"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -41,31 +55,32 @@
                 android:layout_marginLeft="15dp"
                 android:layout_marginRight="15dp"
                 android:layout_marginTop="15dp"
-                android:layout_toLeftOf="@+id/ratingBar"
+                android:layout_below="@+id/comment_title"
                 android:background="@android:color/transparent"
                 android:gravity="right"
                 android:textAlignment="center"
                 android:textAppearance="@style/TextAppearance.AppCompat.Headline"
                 android:textColor="@android:color/holo_red_dark"
-                android:textSize="30sp" />
+                android:textSize="30sp" />-->
 
-            <RatingBar
+           <!-- <RatingBar
                 android:id="@+id/ratingBar"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
                 android:layout_below="@+id/comment_title"
                 android:numStars="5"
-                android:background="@color/TabUserProfile" />
+                android:background="@color/TabUserProfile" />-->
 
             <ListView
+                android:layout_marginTop="15dp"
                 android:id="@id/listView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_above="@+id/comment_send"
-                android:layout_below="@+id/ratingBar"
+                android:layout_below="@+id/line"
                 android:layout_centerHorizontal="true"
-                android:background="@color/custom_yellow1" />
+                />
 
 
             <EditText
