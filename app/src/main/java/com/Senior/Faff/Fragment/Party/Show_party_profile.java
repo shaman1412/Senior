@@ -8,7 +8,9 @@ import android.graphics.Color;
 import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationManager;
+import android.net.Uri;
 import android.os.AsyncTask;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -17,6 +19,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -31,6 +34,7 @@ import com.Senior.Faff.UserProfile.ShowUserprofile;
 import com.Senior.Faff.model.Party;
 import com.Senior.Faff.model.Restaurant;
 import com.Senior.Faff.model.UserProfile;
+import com.Senior.Faff.utils.Helper;
 import com.Senior.Faff.utils.PermissionUtils;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -39,13 +43,23 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.gson.Gson;
+import com.squareup.picasso.Picasso;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.ArrayList;
 
 public class Show_party_profile extends AppCompatActivity implements OnMapReadyCallback {
@@ -54,10 +68,11 @@ public class Show_party_profile extends AppCompatActivity implements OnMapReadyC
     private static final int LOCATION_PERMISSION_REQUEST_CODE = 99;
     private LatLng myLocation;
     private com.google.android.gms.maps.model.Marker mCurrLocationMarker;
-    private Context mcontext;
+    private static Context mcontext;
     private Toolbar toolbar;
     private TextView name,status,appointment,description,address,telephone;
     private ImageView create_image;
+    private ImageView party_image;
     private TextView createby;
     private Button send_request;
     private RecyclerView mRecyclerView;
@@ -106,6 +121,7 @@ public class Show_party_profile extends AppCompatActivity implements OnMapReadyC
         description = (TextView)findViewById(R.id.description);
         createby = (TextView)findViewById(R.id.createby);
         create_image = (ImageView) findViewById(R.id.create_image);
+        party_image = (ImageView) findViewById(R.id.profile_image);
         send_request = (Button)findViewById(R.id.send_request);
         mRecyclerView = (RecyclerView)findViewById(R.id.mRecyclerView);
         address = (TextView)findViewById(R.id.address);
@@ -228,6 +244,51 @@ public class Show_party_profile extends AppCompatActivity implements OnMapReadyC
             cmember.setText("0");
         }
 
+        String pic_url = partypro.getPicture();
+        Log.i("TEST: ", pic_url);
+        if(pic_url!=null)
+        {
+            String[] tmp = pic_url.split("/");
+            StorageReference load = FirebaseStorage.getInstance().getReference().child(tmp[1]).child(tmp[2]);
+
+            load.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                @Override
+                public void onSuccess(Uri uri) {
+                    // Got the download URL for 'users/me/profile.png'
+                    // Pass it to Picasso to download, show in ImageView and caching
+                    //Log.i("TEST: ", "  sss : "+uri.toString()+" x : "+party_image.getWidth()+"  y : "+party_image.getHeight());
+                    Picasso.with(mcontext).load(uri.toString()).resize(500,500).into(party_image);
+                }
+            }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception exception) {
+                    // Handle any errors
+                    Log.i("TEST: ", "  sss : error");
+                    exception.printStackTrace();
+                }
+            });
+        }
+
+        ShowParty sh = new ShowParty(new ShowParty.AsyncResponse() {
+            @Override
+            public void processFinish(String output) throws JSONException {
+                JSONObject item = new JSONObject(output);
+
+                ArrayList<String[]> bitmap_url_list = new ArrayList<>();
+
+                String[] arr_url = item.getString("picture").split(",");
+
+                if(arr_url!=null)
+                {
+                    Picasso.with(mcontext).load(arr_url[0]).resize(500, 500).into(create_image);
+                }
+
+
+            }
+        });
+        sh.execute(own_userid);
+
+
         status.setText("None");
         status.setTextColor(Color.GRAY);
         if (olduserid_request != null ) {
@@ -298,6 +359,50 @@ public class Show_party_profile extends AppCompatActivity implements OnMapReadyC
         });
 
         }
+
+    private static class ShowParty extends AsyncTask<String, String, String> {
+
+        String result = "";
+
+        public interface AsyncResponse {
+            void processFinish(String output) throws JSONException;
+        }
+
+        public Show_party_profile.ShowParty.AsyncResponse delegate = null;
+
+        public ShowParty(Show_party_profile.ShowParty.AsyncResponse delegate) {
+            this.delegate = delegate;
+        }
+
+        @Override
+        protected String doInBackground(String... params) {
+            try {
+
+                URL url = new URL("https://faff-1489402013619.appspot.com/user/" + params[0].toString());
+                //URL url = new URL("http://localhost:8080/promotion_list");
+
+                result = new Helper().getRequest(url.toString());
+
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
+            return result;
+        }
+
+        @Override
+        protected void onPostExecute(String result) {
+            if (result != "") {
+                Toast.makeText(mcontext, result, Toast.LENGTH_LONG).show();
+                try {
+                    delegate.processFinish(result);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            } else {
+                Toast.makeText(mcontext, "Fail to retrieve from server", Toast.LENGTH_SHORT).show();
+            }
+        }
+    }
 
     public void sendRequest(){
 
