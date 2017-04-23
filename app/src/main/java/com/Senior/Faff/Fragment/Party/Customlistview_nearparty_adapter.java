@@ -30,6 +30,7 @@ import java.util.ArrayList;
 
 public class Customlistview_nearparty_adapter extends ArrayAdapter<Party> {
 
+    static ImageView imageView;
     Context mcontext;
     int[] room_id;
     ArrayList<Party> room_name;
@@ -45,7 +46,7 @@ public class Customlistview_nearparty_adapter extends ArrayAdapter<Party> {
     }
 
     public View getView(int position, View convertView, ViewGroup parent){
-        ImageView imageView = null;
+        imageView = null;
         Customlistview_nearparty_adapter.ViewHolder viewHolder;
         if(convertView == null){
             convertView  = inflater.inflate(R.layout.list_view_near_party,parent,false);
@@ -72,13 +73,12 @@ public class Customlistview_nearparty_adapter extends ArrayAdapter<Party> {
             String[] tmp = pic_url.split("/");
             StorageReference load = FirebaseStorage.getInstance().getReference().child(tmp[1]).child(tmp[2]);
 
-            final ImageView finalImageView = imageView;
             load.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                 @Override
                 public void onSuccess(Uri uri) {
                     // Got the download URL for 'users/me/profile.png'
                     // Pass it to Picasso to download, show in ImageView and caching
-                    Picasso.with(mcontext).load(uri.toString()).resize(250,250).into(finalImageView);
+                    Picasso.with(mcontext).load(uri.toString()).resize(250,250).into(imageView);
                 }
             }).addOnFailureListener(new OnFailureListener() {
                 @Override

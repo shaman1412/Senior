@@ -275,20 +275,15 @@ public class Show_party_profile extends AppCompatActivity implements OnMapReadyC
         {
             String[] tmp = pic_url.split("/");
             StorageReference load = FirebaseStorage.getInstance().getReference().child(tmp[1]).child(tmp[2]);
-
             load.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                 @Override
                 public void onSuccess(Uri uri) {
-                    // Got the download URL for 'users/me/profile.png'
-                    // Pass it to Picasso to download, show in ImageView and caching
-                    //Log.i("TEST: ", "  sss : "+uri.toString()+" x : "+party_image.getWidth()+"  y : "+party_image.getHeight());
                     Picasso.with(mcontext).load(uri.toString()).resize(500,500).into(party_image);
                 }
             }).addOnFailureListener(new OnFailureListener() {
                 @Override
                 public void onFailure(@NonNull Exception exception) {
                     // Handle any errors
-                    Log.i("TEST: ", "  sss : error");
                     exception.printStackTrace();
                 }
             });
