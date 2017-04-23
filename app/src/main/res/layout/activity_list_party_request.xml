@@ -14,7 +14,7 @@
     android:id= "@+id/mix"
     android:orientation="horizontal"
     android:gravity="center"
-    android:padding="10dp">
+    android:padding="5dp">
         <ImageView
             android:layout_width="0dp"
             android:layout_weight="0.3"

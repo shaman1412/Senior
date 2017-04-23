@@ -111,10 +111,6 @@ public class Show_party_profile extends AppCompatActivity implements OnMapReadyC
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map_party);
      mapFragment.getMapAsync(this);
-        toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setDisplayShowHomeEnabled(true);
         mcontext= this;
         enter_chat = (Button)findViewById(R.id.enter_room);
         leave_group = (Button)findViewById(R.id.Leave_group);

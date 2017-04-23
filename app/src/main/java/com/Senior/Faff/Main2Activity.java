@@ -274,8 +274,8 @@ public class Main2Activity extends AppCompatActivity {
                 startActivity(b);
                 break;
             case R.id.ShowPromotion:
-//                Intent i = new Intent(context, PromotionShow.class);
-//                startActivity(i);
+               Intent i = new Intent(context, ChatMainActivity.class);
+                startActivity(i);
                 break;
             case R.id.RestaurantProfile:
                 Bundle bundle = new Bundle();

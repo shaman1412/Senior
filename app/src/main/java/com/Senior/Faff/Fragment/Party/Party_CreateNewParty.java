@@ -20,6 +20,7 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -90,6 +91,7 @@ public class Party_CreateNewParty extends AppCompatActivity {
     private String rule_age;
     private String createby;
     private String getrule;
+    private Toolbar toolbar;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -111,6 +113,12 @@ public class Party_CreateNewParty extends AppCompatActivity {
             createby = args.getString(UserProfile.Column.Name);
 
         }
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        getSupportActionBar().setDisplayShowTitleEnabled(true);
+        getSupportActionBar().setTitle("Create Party");
         long unixTime = System.currentTimeMillis() / 1000L;
         roomid = userid+ "ppap" + String.valueOf(unixTime);
 

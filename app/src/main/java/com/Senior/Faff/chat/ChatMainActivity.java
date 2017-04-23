@@ -51,8 +51,8 @@ public class ChatMainActivity extends AppCompatActivity {
     private ArrayList<String> list_of_rooms = new ArrayList<>();
     private String name;
 
-    private DatabaseReference party = FirebaseDatabase.getInstance().getReference("Party").child("party_list");
-    private DatabaseReference root = FirebaseDatabase.getInstance().getReference("Party").child("chat-room");
+    private DatabaseReference party = FirebaseDatabase.getInstance().getReference("Party").child("party_list");     //party_list
+    private DatabaseReference root = FirebaseDatabase.getInstance().getReference("Party").child("chat-room");       //chat-room
 
     private FirebaseAuth mAuth;
     private FirebaseAuth.AuthStateListener mAuthListener;
@@ -120,53 +120,7 @@ public class ChatMainActivity extends AppCompatActivity {
             }
         });
 
-        party.addValueEventListener(new ValueEventListener() {
-
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                Set<String> set = new HashSet<String>();
-                Iterator i = dataSnapshot.getChildren().iterator();
-
-                while (i.hasNext()) {
-                    set.add(((DataSnapshot) i.next()).getKey());
-                }
-
-                list_of_rooms.clear();
-                list_of_rooms.addAll(set);
-
-                arrayAdapter.notifyDataSetChanged();
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
-
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                String tmp = ((TextView) view).getText().toString();
-                party.child(tmp).addValueEventListener(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(DataSnapshot dataSnapshot) {
-                        Intent intent = new Intent(getApplicationContext(), ParttyDetail.class);
-                        intent.putExtra("name", dataSnapshot.child("name").getValue().toString());
-                        intent.putExtra("member_size", dataSnapshot.child("member_size").getValue().toString());
-                        intent.putExtra("detail", dataSnapshot.child("detail").getValue().toString());
-                        intent.putExtra("appointment", dataSnapshot.child("appointment").getValue().toString());
-                        startActivity(intent);
-                    }
-
-                    @Override
-                    public void onCancelled(DatabaseError databaseError) {
-
-                    }
-                });
-            }
-        });
-
-//        root.addValueEventListener(new ValueEventListener() {
+//        party.addValueEventListener(new ValueEventListener() {
 //
 //            @Override
 //            public void onDataChange(DataSnapshot dataSnapshot) {
@@ -192,12 +146,58 @@ public class ChatMainActivity extends AppCompatActivity {
 //        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 //            @Override
 //            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-//                Intent intent = new Intent(getApplicationContext(), Chat_Room.class);
-//                intent.putExtra("room_name", ((TextView) view).getText().toString());
-//                intent.putExtra("user_name", name);
-//                startActivity(intent);
+//                String tmp = ((TextView) view).getText().toString();
+//                party.child(tmp).addValueEventListener(new ValueEventListener() {
+//                    @Override
+//                    public void onDataChange(DataSnapshot dataSnapshot) {
+//                        Intent intent = new Intent(getApplicationContext(), ParttyDetail.class);
+//                        intent.putExtra("name", dataSnapshot.child("name").getValue().toString());
+//                        intent.putExtra("member_size", dataSnapshot.child("member_size").getValue().toString());
+//                        intent.putExtra("detail", dataSnapshot.child("detail").getValue().toString());
+//                        intent.putExtra("appointment", dataSnapshot.child("appointment").getValue().toString());
+//                        startActivity(intent);
+//                    }
+//
+//                    @Override
+//                    public void onCancelled(DatabaseError databaseError) {
+//
+//                    }
+//                });
 //            }
 //        });
+
+        root.addValueEventListener(new ValueEventListener() {
+
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                Set<String> set = new HashSet<String>();
+                Iterator i = dataSnapshot.getChildren().iterator();
+
+                while (i.hasNext()) {
+                    set.add(((DataSnapshot) i.next()).getKey());
+                }
+
+                list_of_rooms.clear();
+                list_of_rooms.addAll(set);
+
+                arrayAdapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                Intent intent = new Intent(getApplicationContext(), Chat_Room.class);
+                intent.putExtra("room_name", ((TextView) view).getText().toString());
+                intent.putExtra("user_name", name);
+                startActivity(intent);
+            }
+        });
 
     }
 
