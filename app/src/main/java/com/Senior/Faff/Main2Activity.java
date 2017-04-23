@@ -102,10 +102,11 @@ public class Main2Activity extends AppCompatActivity {
     private String userid;
     private String id, search_name;
     private EditText serach_box;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        firebase a  = new firebase();
+        firebase a = new firebase();
 
         setContentView(R.layout.activity_main2);
         setTitle("");
@@ -117,7 +118,7 @@ public class Main2Activity extends AppCompatActivity {
         context = this;
 
 
-       // serach_box = (EditText)findViewById(R.id.serach_box);
+        // serach_box = (EditText)findViewById(R.id.serach_box);
 /*        serach_box.setOnKeyListener(new View.OnKeyListener() {
             @Override
             public boolean onKey(View v, int keyCode, KeyEvent event) {
@@ -150,7 +151,7 @@ public class Main2Activity extends AppCompatActivity {
         setupDrawerContent(nvDrawer);
 
 
-        pager = (ViewPager)findViewById(R.id.pager);
+        pager = (ViewPager) findViewById(R.id.pager);
         tabLayout = (TabLayout) findViewById(R.id.sliding_tabs);
 
         //tabLayout = (TabLayout) findViewById(R.id.sliding_tabs);
@@ -159,10 +160,10 @@ public class Main2Activity extends AppCompatActivity {
         profileManager = new ProfileManager(this);
         userProfile = new UserProfile();
         Bundle args;
-        if((args = getIntent().getExtras()) != null) {
+        if ((args = getIntent().getExtras()) != null) {
             args = getIntent().getExtras();
-             id = args.getString(UserProfile.Column.UserID);
-            editor.putString(UserProfile.Column.UserID,id);
+            id = args.getString(UserProfile.Column.UserID);
+            editor.putString(UserProfile.Column.UserID, id);
             editor.commit();
             bundle = new Bundle();
             new getData().execute(id);
@@ -184,7 +185,7 @@ public class Main2Activity extends AppCompatActivity {
                                 FragmentManager fragmentManager_party = getSupportFragmentManager();
                                 fragmentManager_party.beginTransaction()
                                         .setCustomAnimations(R.anim.fade_in, R.anim.fade_out)
-                                        .replace(R.id.flContent,fragment_party)
+                                        .replace(R.id.flContent, fragment_party)
                                         .commit();
 
                                 break;
@@ -196,7 +197,7 @@ public class Main2Activity extends AppCompatActivity {
                                 FragmentManager fragmentManager_home = getSupportFragmentManager();
                                 fragmentManager_home.beginTransaction()
                                         .setCustomAnimations(R.anim.fade_in, R.anim.fade_out)
-                                        .replace(R.id.flContent,fragment_home)
+                                        .replace(R.id.flContent, fragment_home)
                                         .commit();
                                 break;
                             case R.id.Nearby:
@@ -205,7 +206,7 @@ public class Main2Activity extends AppCompatActivity {
                                 fragment_nearby.setArguments(bundle);
                                 fragmentManager_nearby.beginTransaction()
                                         .setCustomAnimations(R.anim.fade_in, R.anim.fade_out)
-                                        .replace(R.id.flContent,fragment_nearby)
+                                        .replace(R.id.flContent, fragment_nearby)
                                         .commit();
                                 break;
                         }
@@ -230,13 +231,14 @@ public class Main2Activity extends AppCompatActivity {
             return true;
         }
         int id = item.getItemId();
-        if(id == R.id.dialog_filter){
+        if (id == R.id.dialog_filter) {
             showInputDialog();
             return true;
         }
 
         return super.onOptionsItemSelected(item);
     }
+
     private void setupDrawerContent(NavigationView navigationView) {
         navigationView.setNavigationItemSelectedListener(
                 new NavigationView.OnNavigationItemSelectedListener() {
@@ -253,7 +255,7 @@ public class Main2Activity extends AppCompatActivity {
 
         //String User_id = String.valueOf(id);        // ??? for what ??? ไม่บอก 5555
 
-        switch(menuItem.getItemId()) {
+        switch (menuItem.getItemId()) {
             case R.id.Home:
                 Intent Home_intent = new Intent(context, InsertUserProfile.class);
                 startActivity(Home_intent);
@@ -263,33 +265,33 @@ public class Main2Activity extends AppCompatActivity {
                 break;*/
             case R.id.UserProfile:
                 Intent intent = new Intent(context, ShowUserprofile.class);
-                intent.putExtra(UserProfile.Column.UserID,userid);
+                intent.putExtra(UserProfile.Column.UserID, userid);
                 startActivity(intent);
                 break;
             case R.id.Favourite:
-                Intent b = new Intent(context,favorite_restaurant.class);
-                b.putExtra(UserProfile.Column.UserID,userid);
+                Intent b = new Intent(context, favorite_restaurant.class);
+                b.putExtra(UserProfile.Column.UserID, userid);
                 startActivity(b);
                 break;
-   /*         case R.id.ShowPromotion:
-                Intent i = new Intent(context, PromotionShow.class);
-                startActivity(i);
-                break;*/
+//            case R.id.ShowPromotion:
+//                Intent i = new Intent(context, PromotionShow.class);
+//                startActivity(i);
+//                break;
             case R.id.RestaurantProfile:
                 Bundle bundle = new Bundle();
-                bundle.putString("userid",userid);
+                bundle.putString("userid", userid);
                 //set Fragmentclass Arguments
 
-                Log.i(Tag, "  in Main2 userid is : "+userid);
+                Log.i(Tag, "  in Main2 userid is : " + userid);
                 Option_RestaurantFragment option = new Option_RestaurantFragment();
                 option.setArguments(bundle);
                 FragmentManager manager = getSupportFragmentManager();
-                manager.beginTransaction().replace(R.id.flContent,option).commit();
+                manager.beginTransaction().replace(R.id.flContent, option).commit();
                 break;
-     /*       case R.id.AddPromotion:
-                Intent ii = new Intent(context, PromotionActivity.class);
-                startActivity(ii);
-                break;*/
+//            case R.id.AddPromotion:
+//                Intent ii = new Intent(context, PromotionActivity.class);
+//                startActivity(ii);
+//                break;
 /*            case R.id.NotificationRe:
 
                 break;
@@ -302,9 +304,9 @@ public class Main2Activity extends AppCompatActivity {
             case R.id.Logout:
                 SharedPreferences sp = getSharedPreferences("CHECK_LOGIN", Context.MODE_PRIVATE);
                 SharedPreferences.Editor editor = sp.edit();
-                editor.putString(UserProfile.Column.UserID,"nothing");
+                editor.putString(UserProfile.Column.UserID, "nothing");
                 editor.commit();
-                Intent logout = new Intent(context,LoginActivity.class);
+                Intent logout = new Intent(context, LoginActivity.class);
                 startActivity(logout);
                 finish();
                 break;
@@ -323,7 +325,7 @@ public class Main2Activity extends AppCompatActivity {
     private ActionBarDrawerToggle setupDrawerToggle() {
         // NOTE: Make sure you pass in a valid toolbar reference.  ActionBarDrawToggle() does not require it
         // and will not render the hamburger icon without it.
-        return new ActionBarDrawerToggle(this, mDrawer, toolbar, R.string.drawer_open,  R.string.drawer_close);
+        return new ActionBarDrawerToggle(this, mDrawer, toolbar, R.string.drawer_open, R.string.drawer_close);
     }
 
     @Override
@@ -347,8 +349,7 @@ public class Main2Activity extends AppCompatActivity {
                 .setIcon(android.R.drawable.ic_dialog_alert)
                 .setTitle("Exit")
                 .setMessage("Are you sure you want to close this app?")
-                .setPositiveButton("Yes", new DialogInterface.OnClickListener()
-                {
+                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         finish();
@@ -366,8 +367,8 @@ public class Main2Activity extends AppCompatActivity {
         View promptView = layoutInflater.inflate(R.layout.main_dialog_filter, null);
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(Main2Activity.this);
         alertDialogBuilder.setView(promptView);
-      final  AlertDialog alert = alertDialogBuilder.create();
-       // final EditText editText = (EditText) promptView.findViewById(R.id.edittext);
+        final AlertDialog alert = alertDialogBuilder.create();
+        // final EditText editText = (EditText) promptView.findViewById(R.id.edittext);
         // setup a dialog window
       /*  alertDialogBuilder.setCancelable(false)
                 .setPositiveButton("OK", new DialogInterface.OnClickListener() {
@@ -381,7 +382,7 @@ public class Main2Activity extends AppCompatActivity {
                                 dialog.cancel();
                             }
                         });*/
-        TextView btn_1 = (TextView)promptView.findViewById(R.id.btn1);
+        TextView btn_1 = (TextView) promptView.findViewById(R.id.btn1);
         TextView btn_2 = (TextView) promptView.findViewById(R.id.btn2);
         btn_1.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
@@ -401,12 +402,14 @@ public class Main2Activity extends AppCompatActivity {
         alert.show();
 
     }
+
     private class getData extends AsyncTask<String, String, UserProfile> {
 
         String pass;
         int responseCode;
         HttpURLConnection connection;
         String resultjson;
+
         @Override
         protected UserProfile doInBackground(String... args) {
             StringBuilder result = new StringBuilder();
@@ -432,45 +435,45 @@ public class Main2Activity extends AppCompatActivity {
             if (responseCode == 200) {
                 Log.i("Request Status", "This is success response status from server: " + responseCode);
                 Gson gson = new Gson();
-                UserProfile userPro  =  gson.fromJson(result.toString(),  UserProfile.class);
+                UserProfile userPro = gson.fromJson(result.toString(), UserProfile.class);
                 return userPro;
             } else {
                 Log.i("Request Status", "This is failure response status from server: " + responseCode);
-                return null ;
+                return null;
 
             }
 
         }
+
         @Override
         protected void onPostExecute(UserProfile userpro) {
             super.onPostExecute(userpro);
             if (userpro != null) {
                 userProfile = userpro;
                 userid = userProfile.getUserid();
-                bundle.putString(UserProfile.Column.UserID,userProfile.getUserid());
-                bundle.putString(UserProfile.Column.Name,userProfile.getName());
-                bundle.putInt(UserProfile.Column.Age,userProfile.getAge());
-                bundle.putInt(UserProfile.Column.Gender,userProfile.getGender());
+                bundle.putString(UserProfile.Column.UserID, userProfile.getUserid());
+                bundle.putString(UserProfile.Column.Name, userProfile.getName());
+                bundle.putInt(UserProfile.Column.Age, userProfile.getAge());
+                bundle.putInt(UserProfile.Column.Gender, userProfile.getGender());
                 MainHome_Fragment fragment_home = new MainHome_Fragment();
                 fragment_home.setArguments(bundle);
                 FragmentManager fragmentManager_home = getSupportFragmentManager();
-                fragmentManager_home.beginTransaction().replace(R.id.flContent,fragment_home).commit();
-            }
-            else{
+                fragmentManager_home.beginTransaction().replace(R.id.flContent, fragment_home).commit();
+            } else {
                 /*String message = getString(R.string.login_error_message);
                 Toast.makeText(Main2Activity.this, message, Toast.LENGTH_SHORT).show();*/
-                Intent intent = new Intent(context,InsertUserProfile.class);
-                intent.putExtra(UserProfile.Column.UserID,id);
+                Intent intent = new Intent(context, InsertUserProfile.class);
+                intent.putExtra(UserProfile.Column.UserID, id);
                 startActivity(intent);
             }
-
 
 
         }
 
     }
-    public void search_name(){
-        Toast.makeText(context,"searched", Toast.LENGTH_SHORT);
+
+    public void search_name() {
+        Toast.makeText(context, "searched", Toast.LENGTH_SHORT);
 
     }
 
