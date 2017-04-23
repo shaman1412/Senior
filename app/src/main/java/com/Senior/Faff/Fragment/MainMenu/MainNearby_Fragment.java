@@ -30,6 +30,7 @@ public class MainNearby_Fragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
+        setHasOptionsMenu(true);
         View root =  inflater.inflate(R.layout.fragment_main_nearby_, container, false);
         tabLayout = (TabLayout)root.findViewById(R.id.tablayout);
         pager = (ViewPager)root.findViewById(R.id.pager);
@@ -57,9 +58,5 @@ public class MainNearby_Fragment extends Fragment {
         });
     return root;
     }
-    @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        menu.findItem(R.id.dialog_filter).setVisible(true);
-        super.onCreateOptionsMenu(menu, inflater);
-    }
+
 }

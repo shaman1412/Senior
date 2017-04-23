@@ -63,7 +63,7 @@ public class Requested_Fragment extends Fragment {
         mcontext = getContext();
         re_list = new  ArrayList<>();
         listview = (ListView) root.findViewById(R.id.listView12);
-
+        new getData().execute();
         return root;
     }
     public void showlist(ListView listview, ArrayList<Party> Pary_list, int[] resId, int gender, int age) {
@@ -80,7 +80,7 @@ public class Requested_Fragment extends Fragment {
         if (Pary_list != null) {
             re_list = getcreate(Pary_list);
             if(re_list != null) {
-                listview.setAdapter(new Customlistview_nearparty_adapter(getContext(), 0, re_list, resId));
+                listview.setAdapter(new Customlistview_nearparty_adapter(mcontext, 0, re_list, resId));
                 listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                     public void onItemClick(AdapterView<?> arg0, View view, int position, long id) {
                         Intent intent = new Intent(mcontext, Show_party_profile.class);

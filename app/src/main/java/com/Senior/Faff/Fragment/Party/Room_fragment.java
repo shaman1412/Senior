@@ -178,8 +178,9 @@ public class Room_fragment extends Fragment implements GoogleApiClient.OnConnect
                     LocationServices.FusedLocationApi.requestLocationUpdates(googleApiClient, locationRequest, this);
                 }
                // showlist(listview,party_list, resId);
-               new getData().execute();
                 mLastLocation = LocationServices.FusedLocationApi.getLastLocation(googleApiClient);  // ใช้สำหรัรับตำแหน่งแรกเลย ครั้งเดียว
+               new getData().execute();
+
                 if (mLastLocation != null) {
 
                     Location target = new Location("Target");
@@ -229,11 +230,11 @@ public class Room_fragment extends Fragment implements GoogleApiClient.OnConnect
 
     public ArrayList<Party> calculatedistance(int de_distance,   Map<String, String> rule_gender,Map<String, Integer> rule_age, ArrayList<Party> listRes) {
         int distance;
-        int countcheck = 0;
+
         float latitude, longtitude;
-/*        mLastLocation  = new Location("Target");
-        mLastLocation.setLatitude(37.421998);
-        mLastLocation.setLongitude(-122.084);*/
+       mLastLocation  = new Location("Target");
+        mLastLocation.setLatitude(13.6529);
+        mLastLocation.setLongitude(100.486);
         ArrayList<Party> res = new ArrayList<>();
         for (int i = 0; i < listRes.size(); i++) {
             String[] position = listRes.get(i).getLocation().split(",");
@@ -245,7 +246,7 @@ public class Room_fragment extends Fragment implements GoogleApiClient.OnConnect
             if (mLastLocation != null) {
                 distance = (int) mLastLocation.distanceTo(target);
                 if (distance <= de_distance) {
-
+                    int countcheck = 0;
                     for (Map.Entry<String, String> check_rule : rule_gender.entrySet()) {
                         String check = listRes.get(i).getRule().get(check_rule.getKey());
                         String a = check_rule.getValue();
@@ -296,7 +297,7 @@ public class Room_fragment extends Fragment implements GoogleApiClient.OnConnect
         if (Pary_list != null) {
             re_list = calculatedistance(900, rule_gender,rule_age, Pary_list); // 900 meter
             if(re_list != null) {
-                listview.setAdapter(new Customlistview_nearparty_adapter(getContext(), 0, re_list, resId));
+                listview.setAdapter(new Customlistview_nearparty_adapter(mcontext, 0, re_list, resId));
                 listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                     public void onItemClick(AdapterView<?> arg0, View view, int position, long id) {
                         Intent intent = new Intent(mcontext, Show_party_profile.class);

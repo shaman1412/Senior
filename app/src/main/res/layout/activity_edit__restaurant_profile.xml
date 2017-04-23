@@ -187,8 +187,25 @@
                 android:layout_height="wrap_content"
                 android:id="@+id/next"
                 android:layout_centerHorizontal="true"
-                android:text="Next"
+                android:text="Edit"
                 android:background="@color/ButtonUserProfile"/>
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/add_promotion"
+                android:layout_centerHorizontal="true"
+                android:text="Add Promotion"
+                android:textColor="#ffffff"
+                android:background="@color/black_tab"/>
+
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/delete"
+                android:layout_centerHorizontal="true"
+                android:text="Delete Restaurant"
+                android:textColor="#000000"
+                android:background="#d3d3d3"/>
 
 
         </LinearLayout>

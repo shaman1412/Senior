@@ -271,10 +271,10 @@ public class Main2Activity extends AppCompatActivity {
                 b.putExtra(UserProfile.Column.UserID,userid);
                 startActivity(b);
                 break;
-   /*         case R.id.ShowPromotion:
+            case R.id.ShowPromotion:
                 Intent i = new Intent(context, PromotionShow.class);
                 startActivity(i);
-                break;*/
+                break;
             case R.id.RestaurantProfile:
                 Bundle bundle = new Bundle();
                 bundle.putString("userid",userid);
@@ -286,10 +286,10 @@ public class Main2Activity extends AppCompatActivity {
                 FragmentManager manager = getSupportFragmentManager();
                 manager.beginTransaction().replace(R.id.flContent,option).commit();
                 break;
-     /*       case R.id.AddPromotion:
+            case R.id.AddPromotion:
                 Intent ii = new Intent(context, PromotionActivity.class);
                 startActivity(ii);
-                break;*/
+                break;
 /*            case R.id.NotificationRe:
 
                 break;

@@ -78,7 +78,7 @@ public class Nearby_Fragment extends Fragment implements GoogleApiClient.OnConne
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View root =  inflater.inflate(R.layout.fragment_nearby_, container, false);
-
+        setHasOptionsMenu(true);
         mcontext  = getContext();
 
         Restaurant model = new Restaurant();

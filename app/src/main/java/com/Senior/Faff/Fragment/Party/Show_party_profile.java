@@ -254,6 +254,13 @@ public class Show_party_profile extends AppCompatActivity implements OnMapReadyC
         olduserid_accept = partypro.getAccept();
         number_party = partypro.getPeople();
         maxmember.setText(Integer.toString(number_party));
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        getSupportActionBar().setDisplayShowTitleEnabled(true);
+        getSupportActionBar().setTitle(partypro.getName());
+
         if(olduserid_accept != null){
             String[] countsting =   olduserid_accept.split(",");
             count = countsting.length;
