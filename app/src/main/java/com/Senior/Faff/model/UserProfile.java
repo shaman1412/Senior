@@ -23,6 +23,7 @@ public class UserProfile {
         public static final String Age = "age";
         public static final String Picture = "picture";
         public static final String UserID = "userid";
+        public static final String Ownerid = "ownerid";
     }
 
     private String id;

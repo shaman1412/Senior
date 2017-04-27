@@ -14,9 +14,9 @@ function getModel () {
   return require('./res_list_method');
 }
 
-router.get('/nearby/:lat/:long', (req, res, next) => {
+router.get('/nearby/:dis/:type/:lat/:long', (req, res, next) => {
 
-  getModel().nearby_list(req.params.lat,req.params.long, (err, entity) => {
+  getModel().nearby_list(req.params.dis,req.params.type,req.params.lat,req.params.long, (err, entity) => {
     if (err) {
       next(err);
       return;

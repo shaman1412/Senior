@@ -29,11 +29,14 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import com.Senior.Faff.Fragment.Home.top_resturant_MainFragment;
+import com.Senior.Faff.Main2Activity;
+import com.Senior.Faff.Main3Activity;
 import com.Senior.Faff.R;
 import com.Senior.Faff.RestaurantProfile.Customlistview_addvice_adapter;
 import com.Senior.Faff.RestaurantProfile.Restaurant_manager;
 import com.Senior.Faff.RestaurantProfile.Show_RestaurantProfile;
 import com.Senior.Faff.model.Restaurant;
+import com.Senior.Faff.model.filter_nearby_restaurant;
 import com.Senior.Faff.utils.PermissionUtils;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -71,6 +74,7 @@ public class Nearby_Fragment extends Fragment implements GoogleApiClient.OnConne
     private Location location;
     private ArrayList<Restaurant> re_list;
     private ListView listview;
+    private filter_nearby_restaurant filter;
     private  ArrayList<String> lalo;
     int[] resId =  {R.drawable.restaurant1,R.drawable.restaurant2,R.drawable.restaurant3};
     @Override
@@ -82,8 +86,13 @@ public class Nearby_Fragment extends Fragment implements GoogleApiClient.OnConne
         mcontext  = getContext();
 
         Restaurant model = new Restaurant();
-
-       listview = (ListView)root.findViewById(R.id.listView12);
+        Bundle bundle = getArguments();
+        if(bundle != null) {
+            filter = (filter_nearby_restaurant) bundle.getSerializable(Restaurant.Column.TypeFood);
+        }else{
+            filter = new filter_nearby_restaurant();
+        }
+        listview = (ListView)root.findViewById(R.id.listView12);
         googleApiClient = new GoogleApiClient.Builder(getContext())
                 .addApi(LocationServices.API)
                 .addConnectionCallbacks(this)
@@ -158,30 +167,12 @@ public class Nearby_Fragment extends Fragment implements GoogleApiClient.OnConne
                         == PackageManager.PERMISSION_GRANTED) {
                     LocationServices.FusedLocationApi.requestLocationUpdates(googleApiClient, locationRequest, this);
                 }
-
+                //new getData().execute(filter.getDistance(),filter.getType(),"13.6531361","100.4864236");
                 mLastLocation = LocationServices.FusedLocationApi.getLastLocation(googleApiClient);  // ใช้สำหรัรับตำแหน่งแรกเลย ครั้งเดียว
                 if (mLastLocation != null) {
                      lalo =  locationStringFromLocation(mLastLocation);
-                    new getData().execute(lalo.get(0),lalo.get(1));
-                   /* Location target = new Location("Target");
-                    target.setLatitude(37.5219983);
-                    target.setLongitude(-122.184);
-                    float d = mLastLocation.distanceTo(target);
-                    //  d = location.distanceTo(target);
-                    //   la.setText(String.valueOf(d));
-                    if( mLastLocation!=null)
-                        if( mLastLocation.distanceTo(target) > 1000) {
-                            Toast.makeText(getContext(), "Hi", Toast.LENGTH_SHORT).show();
-                        }
-                   *//* if(location.distanceTo(target) < METERS_100) {
-                        // bingo!
-                    }*//*
+                    new getData().execute(filter.getDistance(),filter.getType(),lalo.get(0),lalo.get(1));
 
-                  *//*  lo.setText(String.valueOf(mLastLocation.getLongitude()));
-                    la.setText(String.valueOf(mLastLocation.getLatitude()));*//*
-
-                    showlist(listview,re_list,resId);
-*/
                 }
 
                 // LocationServices.FusedLocationApi.requestLocationUpdates(googleApiClient, locationRequest, this);
@@ -261,7 +252,7 @@ public class Nearby_Fragment extends Fragment implements GoogleApiClient.OnConne
         @Override
         protected Restaurant[] doInBackground(String... args) {
             StringBuilder result = new StringBuilder();
-            String url_api = "https://faff-1489402013619.appspot.com/res_list/nearby/" + args[0] + "/" + args[1] ;
+            String url_api = "https://faff-1489402013619.appspot.com/res_list/nearby/" + Float.parseFloat(args[0]) + "/"+ args[1] + "/" + args[2] + "/" + args[3] ;
             try {
                 URL url = new URL(url_api);
                 connection = (HttpURLConnection) url.openConnection();

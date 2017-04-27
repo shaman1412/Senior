@@ -44,7 +44,7 @@ debugger;
   connection.end();
 };
 /////////////////////////////////////////////// nearby list ///////////////////////////////////////////////////////////////////////////
-function nearby_list(lat,long,cb){
+function nearby_list(dis,type,lat,long,cb){
 	const connection = getConnection();
 	let getresult = [];
 	let sql = 'SELECT * FROM `restaurant_profile`  ';
@@ -54,24 +54,46 @@ function nearby_list(lat,long,cb){
 			return;
 		}
 		debugger;
-		 getresult = calculateNearby(lat,long, results);
+		 getresult = calculateNearby(dis,type,lat,long, results);
 
 		cb(null, getresult);
 	});
 	connection.end();
 
 };
-function calculateNearby(lat,long, results){
+function calculateNearby(dis,type,lat,long, results){
 	
 	let list = [];
+	let typef = type.split(",");
 	for(let i = 0; i < results.length; i++)
 	{
-		if(results[i].location != null){
+		let have = false;
+		if(results[i].type_food != null){
 			let check_latlo = results[i].location.split(",");
+			let check_type = results[i].type_food.split(",");
 			let distance =	getDistanceFromLatLonInKm(check_latlo[0],check_latlo[1],lat,long);
-			if(distance < 10)
+			if(distance < dis)
 			{
-			list.push(results[i]);
+
+					
+				if(type.localeCompare("all") != 0){
+				for(let j = 0; j < typef.length ; j++){
+					for(let k = 0 ; k < check_type.length; k ++){
+						let check = typef[j].localeCompare(check_type[k])
+						let y=  typef[j];
+						 if(check == 0){
+						 	have = true;
+						 }
+					}
+				
+				}
+			}
+			else{
+				list.push(results[i]);
+			}
+
+			if(have == true)	
+				list.push(results[i]);
 			}
 		}
 	}

@@ -63,4 +63,5 @@
         <item>Japanese Food</item>
         <item>Chinese Food</item>
     </string-array>
+    <string name="title_activity_add_map">Map</string>
 </resources>

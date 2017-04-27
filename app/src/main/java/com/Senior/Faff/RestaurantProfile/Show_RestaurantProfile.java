@@ -28,6 +28,8 @@ import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.Senior.Faff.Fragment.Party.Show_party_profile;
+import com.Senior.Faff.MapsActivity;
 import com.Senior.Faff.R;
 import com.Senior.Faff.UserProfile.List_typeNodel;
 import com.Senior.Faff.model.Bookmark;
@@ -89,6 +91,8 @@ public class Show_RestaurantProfile extends AppCompatActivity implements OnMapRe
     private Button fav_click,fav_unclick;
     private String key;
     private BookmarkList book;
+    private String send_location;
+    private String ownerid;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -104,6 +108,7 @@ public class Show_RestaurantProfile extends AppCompatActivity implements OnMapRe
         display.getSize(size);
         width = size.x;
         height = size.y;
+
 
         mcontext = getApplicationContext();
         name = (TextView)findViewById(R.id.name);
@@ -126,6 +131,7 @@ public class Show_RestaurantProfile extends AppCompatActivity implements OnMapRe
         if(args != null) {
             userid = args.getString(Restaurant.Column.UserID, null);
             resid = args.getString(Restaurant.Column.ResID,null);
+            //ownerid =args.getString(UserProfile.Column.Ownerid,null);
         }
         if(userid != null){
             new getData().execute(resid);
@@ -219,7 +225,14 @@ public class Show_RestaurantProfile extends AppCompatActivity implements OnMapRe
             LatLng sydney = new LatLng(a,b);
             mMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
             mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(sydney,10.0f));
-
+            mMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
+            @Override
+            public void onMapClick(LatLng latLng) {
+                Intent intent = new Intent(Show_RestaurantProfile.this, MapsActivity.class);
+                intent.putExtra(Party.Column.Location, send_location);
+                startActivity(intent);
+            }
+        });
     }
     private void enableMyLocation(String lola,String res_name) {
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
@@ -237,6 +250,7 @@ public class Show_RestaurantProfile extends AppCompatActivity implements OnMapRe
             location = locationManager.getLastKnownLocation(locationManager
                     .getBestProvider(criteria, false));
             if(lola != null) {
+                send_location = lola;
                 String[] pos = lola.split(",");
                 myLocation = new LatLng(Double.parseDouble(pos[0]),
                         Double.parseDouble(pos[1]));
@@ -303,7 +317,7 @@ public class Show_RestaurantProfile extends AppCompatActivity implements OnMapRe
                 rate.setRating(respro.getScore());
                 text_rate.setText(String.valueOf(respro.getScore()));
                 enableMyLocation(respro.getLocation(),respro.getRestaurantName());
-                userid = respro.getUserID();
+                ownerid = respro.getUserID();
                 resid =  respro.getresId();
                 toolbar = (Toolbar) findViewById(R.id.toolbar);
                 setSupportActionBar(toolbar);
@@ -311,6 +325,12 @@ public class Show_RestaurantProfile extends AppCompatActivity implements OnMapRe
                 getSupportActionBar().setDisplayShowHomeEnabled(true);
                 getSupportActionBar().setDisplayShowTitleEnabled(true);
                 getSupportActionBar().setTitle(respro.getRestaurantName());
+
+                if(userid.equals(ownerid)) {
+                    View a = findViewById(R.id.fab);
+                    a.setVisibility(View.VISIBLE);
+                }
+
                 if(respro.getTypefood() != null){
                     String[] list = respro.getTypefood().split(",");
                     favourite_type = new ArrayList<String>();

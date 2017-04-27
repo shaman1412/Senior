@@ -14,6 +14,8 @@ import android.view.ViewGroup;
 import com.Senior.Faff.Fragment.Adapter.Search_adapter;
 import com.Senior.Faff.R;
 
+import java.util.ArrayList;
+
 /**
  * A simple {@link Fragment} subclass.
  */
@@ -26,6 +28,7 @@ public class MainNearby_Fragment extends Fragment {
 
     private TabLayout tabLayout;
     private ViewPager pager;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -34,15 +37,19 @@ public class MainNearby_Fragment extends Fragment {
         View root =  inflater.inflate(R.layout.fragment_main_nearby_, container, false);
         tabLayout = (TabLayout)root.findViewById(R.id.tablayout);
         pager = (ViewPager)root.findViewById(R.id.pager);
-        Search_adapter adapter = new Search_adapter(getChildFragmentManager());
+        Bundle bundle = getArguments();
+        Search_adapter adapter = new Search_adapter(getChildFragmentManager(), bundle);
         pager.setAdapter(adapter);
-        pager.setCurrentItem(0);
+        if(bundle != null) {
+            pager.setCurrentItem(bundle.getInt("Postition"));
+        }else {
+            pager.setCurrentItem(0);
+        }
         tabLayout.setupWithViewPager(pager);
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
                 pager.setCurrentItem(tab.getPosition());
-
 
             }
 

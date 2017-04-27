@@ -35,11 +35,14 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.Senior.Faff.Add_map;
 import com.Senior.Faff.Main2Activity;
+import com.Senior.Faff.MapsActivity;
 import com.Senior.Faff.R;
 import com.Senior.Faff.UserProfile.InsertUserProfile;
 import com.Senior.Faff.UserProfile.InsertUserProfileRecyclerView;
 import com.Senior.Faff.UserProfile.List_type;
+import com.Senior.Faff.model.Party;
 import com.Senior.Faff.model.Restaurant;
 import com.Senior.Faff.model.UserProfile;
 import com.Senior.Faff.utils.Helper;
@@ -90,7 +93,7 @@ public class Add_RestaurantProfile extends AppCompatActivity implements OnMapRea
     public static ArrayList<String> imgPath = new ArrayList<>();        //keep uri
 
     public static int image_count = 0;                                    //number of images
-
+    private final int MAP_REQUEST_CODE = 20;
     private com.google.android.gms.maps.model.Marker mCurrLocationMarker;
     private LatLng myLocation;
     private GoogleApiClient googleApiClient;
@@ -114,6 +117,7 @@ public class Add_RestaurantProfile extends AppCompatActivity implements OnMapRea
     private RecyclerView mRecyclerView;
     private Restaurant restaurant;
     private String type_check;
+    private String send_location;
     private Add_RestaurantProfile_RecyclerView adapter;
 
     @Override
@@ -316,7 +320,7 @@ public class Add_RestaurantProfile extends AppCompatActivity implements OnMapRea
 
     @Override
     public void onLocationChanged(Location location) {
-
+      //  send_location = location.getLatitude() + "," + location.getLongitude();
 /*        myLocation = new LatLng(location.getLatitude(),
                 location.getLongitude());
         mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(myLocation,
@@ -368,6 +372,14 @@ public class Add_RestaurantProfile extends AppCompatActivity implements OnMapRea
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
         mMap.setOnMyLocationButtonClickListener(this);
+        mMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
+            @Override
+            public void onMapClick(LatLng latLng) {
+                Intent intent = new Intent(Add_RestaurantProfile.this, Add_map.class);
+                intent.putExtra(Party.Column.Location, send_location);
+                startActivityForResult(intent, MAP_REQUEST_CODE);
+            }
+        });
     }
 
     private void enableMyLocation() {
@@ -395,7 +407,9 @@ public class Add_RestaurantProfile extends AppCompatActivity implements OnMapRea
                     LocationServices.FusedLocationApi.requestLocationUpdates(googleApiClient, locationRequest, this);
                 }
                 location = LocationServices.FusedLocationApi.getLastLocation(googleApiClient);
+
                 if (location != null) {
+                    send_location = location.getLatitude() + "," + location.getLongitude();
                     getlocation = location.getLatitude() + "," + location.getLongitude();
                     Toast.makeText(this, " set getlocation ", Toast.LENGTH_SHORT).show();
                 }
@@ -449,6 +463,17 @@ public class Add_RestaurantProfile extends AppCompatActivity implements OnMapRea
                 RecyclerView lv = (RecyclerView) findViewById(R.id.rlist1);
                 lv.setNestedScrollingEnabled(false);
                 lv.setAdapter(adapter);
+            }else if(requestCode == MAP_REQUEST_CODE) {
+                getlocation = data.getStringExtra(Restaurant.Column.Location);
+               String[] split = getlocation.split(",");
+               LatLng lola =  new LatLng(Double.parseDouble(split[0]),Double.parseDouble(split[1]));
+                mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(lola,11));
+                MarkerOptions markerOptions = new MarkerOptions();
+                markerOptions.position(lola);
+                markerOptions.title("Current Position");
+                markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN));
+                mCurrLocationMarker = mMap.addMarker(markerOptions);
+                Toast.makeText(Add_RestaurantProfile.this,getlocation,Toast.LENGTH_SHORT).show();
             }
         }
     }

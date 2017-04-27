@@ -105,7 +105,11 @@
         <activity android:name=".Fragment.Party.list_party_member" />
         <activity android:name=".Fragment.Party.list_party_request" />
         <activity android:name=".UserProfile.favorite_restaurant" />
-        <activity android:name=".UserProfile.list_bookmark"></activity>
+        <activity android:name=".UserProfile.list_bookmark" />
+        <activity
+            android:name=".Add_map"
+            android:label="@string/title_activity_add_map" />
+        <activity android:name=".UserProfile.Change_password"></activity>
     </application>
 
 </manifest>

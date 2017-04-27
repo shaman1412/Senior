@@ -30,7 +30,9 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -43,6 +45,7 @@ import com.Senior.Faff.Fragment.MainMenu.MainParty_fragment;
 import com.Senior.Faff.Promotion.PromotionActivity;
 import com.Senior.Faff.Promotion.PromotionShow;
 import com.Senior.Faff.RestaurantProfile.Option_RestaurantFragment;
+import com.Senior.Faff.UserProfile.Change_password;
 import com.Senior.Faff.UserProfile.InsertUserProfile;
 import com.Senior.Faff.UserProfile.List_typeNodel;
 import com.Senior.Faff.UserProfile.ProfileManager;
@@ -50,8 +53,10 @@ import com.Senior.Faff.UserProfile.ShowUserprofile;
 import com.Senior.Faff.UserProfile.favorite_restaurant;
 import com.Senior.Faff.chat.ChatMainActivity;
 import com.Senior.Faff.model.Party;
+import com.Senior.Faff.model.Restaurant;
 import com.Senior.Faff.model.UserAuthen;
 import com.Senior.Faff.model.UserProfile;
+import com.Senior.Faff.model.filter_nearby_restaurant;
 import com.Senior.Faff.utils.firebase;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -102,6 +107,8 @@ public class Main2Activity extends AppCompatActivity {
     private String userid;
     private String id, search_name;
     private EditText serach_box;
+    private ArrayList<String> type_food;
+    private float distance = 10;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -203,7 +210,6 @@ public class Main2Activity extends AppCompatActivity {
                             case R.id.Nearby:
                                 MainNearby_Fragment fragment_nearby = new MainNearby_Fragment();
                                 FragmentManager fragmentManager_nearby = getSupportFragmentManager();
-                                fragment_nearby.setArguments(bundle);
                                 fragmentManager_nearby.beginTransaction()
                                         .setCustomAnimations(R.anim.fade_in, R.anim.fade_out)
                                         .replace(R.id.flContent, fragment_nearby)
@@ -266,6 +272,7 @@ public class Main2Activity extends AppCompatActivity {
             case R.id.UserProfile:
                 Intent intent = new Intent(context, ShowUserprofile.class);
                 intent.putExtra(UserProfile.Column.UserID, userid);
+                intent.putExtra(UserProfile.Column.Ownerid,userid);
                 startActivity(intent);
                 break;
             case R.id.Favourite:
@@ -288,19 +295,12 @@ public class Main2Activity extends AppCompatActivity {
                 FragmentManager manager = getSupportFragmentManager();
                 manager.beginTransaction().replace(R.id.flContent, option).commit();
                 break;
-            case R.id.AddPromotion:
-//                Intent ii = new Intent(context, PromotionActivity.class);
-//                startActivity(ii);
+            case R.id.change_pass:
+                Intent ii = new Intent(context, Change_password.class);
+                ii.putExtra(UserProfile.Column.UserID,id);
+               startActivity(ii);
                 break;
-/*            case R.id.NotificationRe:
 
-                break;
-            case R.id.Setting:
-
-                break;
-            case R.id.Contact:
-
-                break;*/
             case R.id.Logout:
                 SharedPreferences sp = getSharedPreferences("CHECK_LOGIN", Context.MODE_PRIVATE);
                 SharedPreferences.Editor editor = sp.edit();
@@ -368,6 +368,7 @@ public class Main2Activity extends AppCompatActivity {
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(Main2Activity.this);
         alertDialogBuilder.setView(promptView);
         final AlertDialog alert = alertDialogBuilder.create();
+        type_food = new ArrayList<>();
         // final EditText editText = (EditText) promptView.findViewById(R.id.edittext);
         // setup a dialog window
       /*  alertDialogBuilder.setCancelable(false)
@@ -382,8 +383,35 @@ public class Main2Activity extends AppCompatActivity {
                                 dialog.cancel();
                             }
                         });*/
+      final TextView getseek = (TextView)promptView.findViewById(R.id.getseek);
+         SeekBar seek = (SeekBar)promptView.findViewById(R.id.seek);
+        seek.setProgress(Math.round(distance));
+        getseek.setText(String.valueOf(distance) + " Km");
+        seek.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            float progresValue;
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                progresValue = (float)progress;
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+
+                distance = progresValue;
+                getseek.setText(String.valueOf(distance) + " Km");
+            }
+        });
         TextView btn_1 = (TextView) promptView.findViewById(R.id.btn1);
         TextView btn_2 = (TextView) promptView.findViewById(R.id.btn2);
+        //type_food = new ArrayList<>();
+
+
+
         btn_1.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 alert.cancel();
@@ -394,7 +422,26 @@ public class Main2Activity extends AppCompatActivity {
         btn_2.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 Toast.makeText(Main2Activity.this, "MyLocation button clicked", Toast.LENGTH_SHORT).show();
-
+                filter_nearby_restaurant filter = new filter_nearby_restaurant();
+                if(type_food != null){
+                    filter.setType(type_food);
+                }
+                if(distance != 0){
+                    filter.setDistnace(distance);
+                }
+                MainNearby_Fragment fragment_nearby = new MainNearby_Fragment();
+                Bundle bundle = new Bundle();
+                bundle.putSerializable(Restaurant.Column.TypeFood,filter);
+                bundle.putInt("Postition",1);
+/*                bundle.putStringArrayList(Restaurant.Column.TypeFood,type_food);
+                bundle.putFloat("distance", distance);*/
+                FragmentManager fragmentManager_nearby = getSupportFragmentManager();
+                fragment_nearby.setArguments(bundle);
+                fragmentManager_nearby.beginTransaction()
+                        .setCustomAnimations(R.anim.fade_in, R.anim.fade_out)
+                        .replace(R.id.flContent, fragment_nearby)
+                        .commit();
+                alert.cancel();
             }
         });
         // create an alert dialog
@@ -402,6 +449,23 @@ public class Main2Activity extends AppCompatActivity {
         alert.show();
 
     }
+
+    public void onCheckbox(View v) {
+        boolean checked = ((CheckBox) v).isChecked();
+        CheckBox check_type = (CheckBox) v.findViewById(v.getId());
+
+        if (checked) {
+            type_food.add(check_type.getText().toString());
+        } else {
+            for (int i = 0; i < type_food.size(); i++) {
+                if (type_food.get(i) == check_type.getText().toString()) {
+                    type_food.remove(i);
+                }
+            }
+        }
+    }
+
+
 
     private class getData extends AsyncTask<String, String, UserProfile> {
 

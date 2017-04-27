@@ -66,7 +66,7 @@ public class ShowUserprofile extends AppCompatActivity {
     private FloatingActionButton fab;
     private int width;
     private int height;
-
+    private String ownerid;
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
@@ -83,7 +83,12 @@ public class ShowUserprofile extends AppCompatActivity {
 
         mcontext = this;
         Bundle args = getIntent().getExtras();
-        userid = args.getString(UserProfile.Column.UserID, null);
+        userid = args.getString(UserProfile.Column.UserID, null); // id เข้าของ profile ที่ดู
+        ownerid = args.getString(UserProfile.Column.Ownerid,null); // id ของเข้าของบัญชีขณะนั้น
+        if(userid.equals(ownerid)) {
+            View a = findViewById(R.id.fab);
+            a.setVisibility(View.VISIBLE);
+        }
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -124,6 +129,7 @@ public class ShowUserprofile extends AppCompatActivity {
                 bitmap_url_list.add(arr_url);
                 final UserProfile userpro = new Gson().fromJson(item.toString(), UserProfile.class);
                 userid = userpro.getUserid();
+
                 if (userid != null) {
                     name.setText(userpro.getName());
                     age.setText(String.valueOf(userpro.getAge()));

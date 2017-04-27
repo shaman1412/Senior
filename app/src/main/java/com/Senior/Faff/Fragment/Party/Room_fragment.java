@@ -179,33 +179,13 @@ public class Room_fragment extends Fragment implements GoogleApiClient.OnConnect
                 }
                // showlist(listview,party_list, resId);
                 mLastLocation = LocationServices.FusedLocationApi.getLastLocation(googleApiClient);  // ใช้สำหรัรับตำแหน่งแรกเลย ครั้งเดียว
-               new getData().execute();
+              // new getData().execute();
 
                 if (mLastLocation != null) {
-
-                    Location target = new Location("Target");
-                    target.setLatitude(37.5219983);
-                    target.setLongitude(-122.184);
-                    float d = mLastLocation.distanceTo(target);
-                    //  d = location.distanceTo(target);
-                    //   la.setText(String.valueOf(d));
-                    String a = "found location" + mLastLocation + "and" + target;
-                    if (mLastLocation != null)
-                        if (mLastLocation.distanceTo(target) > 1000) {
-                           // Toast.makeText(getContext(), a, Toast.LENGTH_SHORT).show();
-                        }
-                   /* if(location.distanceTo(target) < METERS_100) {
-                        // bingo!
-                    }*/
-
-                  /*  lo.setText(String.valueOf(mLastLocation.getLongitude()));
-                    la.setText(String.valueOf(mLastLocation.getLatitude()));*/
-
-                   // showlist(listview, party_list, resId);
+                    new getData().execute();
 
                 }
 
-                // LocationServices.FusedLocationApi.requestLocationUpdates(googleApiClient, locationRequest, this);
             }
 
 
@@ -224,7 +204,7 @@ public class Room_fragment extends Fragment implements GoogleApiClient.OnConnect
 
     @Override
     public void onLocationChanged(Location location) {
-        //mLastLocation = location;
+        mLastLocation = location;
         //showlist(listview, re_list, resId);
     }
 
@@ -232,9 +212,9 @@ public class Room_fragment extends Fragment implements GoogleApiClient.OnConnect
         int distance;
 
         float latitude, longtitude;
-       mLastLocation  = new Location("Target");
+       /*mLastLocation  = new Location("Target");
         mLastLocation.setLatitude(13.6529);
-        mLastLocation.setLongitude(100.486);
+        mLastLocation.setLongitude(100.486);*/
         ArrayList<Party> res = new ArrayList<>();
         for (int i = 0; i < listRes.size(); i++) {
             String[] position = listRes.get(i).getLocation().split(",");

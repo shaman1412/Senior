@@ -257,6 +257,10 @@ public class Show_party_profile extends AppCompatActivity implements OnMapReadyC
         getSupportActionBar().setDisplayShowTitleEnabled(true);
         getSupportActionBar().setTitle(partypro.getName());
 
+        if(own_userid.equals(createby)) {
+            View a = findViewById(R.id.request);
+            a.setVisibility(View.VISIBLE);
+        }
         if(olduserid_accept != null){
             String[] countsting =   olduserid_accept.split(",");
             count = countsting.length;
@@ -342,6 +346,7 @@ public class Show_party_profile extends AppCompatActivity implements OnMapReadyC
             public void onClick(View v) {
                 Intent intent  = new Intent(mcontext, ShowUserprofile.class);
                 intent.putExtra(UserProfile.Column.UserID, partypro.getCreateid());
+                intent.putExtra(UserProfile.Column.Ownerid,own_userid);
                 startActivity(intent);
             }
         });

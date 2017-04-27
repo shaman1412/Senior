@@ -38,6 +38,25 @@ function read (id, cb) {
     });
   connection.end();
 }
+function read_userid (id, cb) {
+  const connection = getConnection();
+  connection.query(
+    'SELECT * FROM `user_login` WHERE `userid` = ?', id, (err, results) => {
+      if (err) {
+        cb(err);
+        return;
+      }
+      if (!results.length) {
+        cb({
+          code: 404,
+          message: 'Not found'
+        });
+        return;
+      }
+      cb(null, results[0]);
+    });
+  connection.end();
+}
 
 
 function create (data, cb) {
@@ -55,6 +74,8 @@ module.exports = {
   createSchema: createSchema,
   create: create,
   read: read,
+  update: update,
+  read_userid : read_userid
 };
 
 if (module === require.main) {
@@ -72,6 +93,18 @@ if (module === require.main) {
     createSchema(result);
   });
 }
+
+function update(userid, data, cb){
+  const connection = getConnection();
+   connection.query('UPDATE `user_login` SET ? WHERE `userid` = ?' ,[data,userid] , (err, res) => {
+    if(err){
+      cb(err);
+      return;
+    }
+    cb(null,res);
+});
+   connection.end();
+ }
 
 function createSchema (config) {
   const connection = mysql.createConnection(extend({

@@ -1,27 +1,34 @@
 package com.Senior.Faff;
+
+import android.*;
+import android.content.Context;
+import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationManager;
+import android.support.annotation.NonNull;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.FragmentActivity;
+import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
-import android.content.Context;
-import android.support.v4.app.ActivityCompat;
-import android.os.Bundle;
 
+import com.Senior.Faff.model.Marker;
 import com.Senior.Faff.model.Party;
+import com.Senior.Faff.model.Restaurant;
+import com.Senior.Faff.utils.MapManager;
+import com.Senior.Faff.utils.PermissionUtils;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationAvailability;
 import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
-import com.google.android.gms.maps.GoogleMap.OnMyLocationButtonClickListener;
-import android.Manifest;
-import com.Senior.Faff.model.Marker;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -29,13 +36,8 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
-import android.content.pm.PackageManager;
-import android.support.annotation.NonNull;
-import com.Senior.Faff.utils.PermissionUtils;
-import java.util.List;
 
-import com.Senior.Faff.utils.MapManager;
-public class MapsActivity extends AppCompatActivity implements  OnMyLocationButtonClickListener,
+public class Add_map extends AppCompatActivity implements GoogleMap.OnMyLocationButtonClickListener,
         OnMapReadyCallback,GoogleApiClient.ConnectionCallbacks,
         GoogleApiClient.OnConnectionFailedListener, LocationListener,
         ActivityCompat.OnRequestPermissionsResultCallback {
@@ -57,15 +59,15 @@ public class MapsActivity extends AppCompatActivity implements  OnMyLocationButt
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_maps);
+        setContentView(R.layout.activity_add_map);
 
         mManager = new MapManager(this);
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
-       la = (TextView)findViewById(R.id.la);
-       lo = (TextView)findViewById(R.id.lo);
+        la = (TextView)findViewById(R.id.la);
+        lo = (TextView)findViewById(R.id.lo);
         googleApiClient = new GoogleApiClient.Builder(this)
                 .addApi(LocationServices.API)
                 .addConnectionCallbacks(this)
@@ -75,9 +77,22 @@ public class MapsActivity extends AppCompatActivity implements  OnMyLocationButt
 
         Bundle args = getIntent().getExtras();
         if(args != null){
-         getlocation  = args.getString(Party.Column.Location);
+            getlocation  = args.getString(Party.Column.Location);
         }
-
+        Button add_place = (Button)findViewById(R.id.add_place);
+        add_place.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent  =  new Intent();
+                if(getlocation != null) {
+                    intent.putExtra(Restaurant.Column.Location, getlocation);
+                    setResult(RESULT_OK, intent);
+                    finish();
+                }else {
+                    Toast.makeText(Add_map.this,"Please select location",Toast.LENGTH_SHORT);
+                }
+            }
+        });
 
     }
 
@@ -95,22 +110,35 @@ public class MapsActivity extends AppCompatActivity implements  OnMyLocationButt
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
         //marker = new Marker("pee","sdfsdf","16.820,100.34");
-       // mManager.addMarker(marker);
+        // mManager.addMarker(marker);
 
-       // List<Marker> m = mManager.getMarker();
+        // List<Marker> m = mManager.getMarker();
         mMap.setOnMyLocationButtonClickListener(this);
+if(getlocation!=null) {
+    String[] Eslat = getlocation.split(",");
+    double a = Double.parseDouble(Eslat[0]);
+    double b = Double.parseDouble(Eslat[1]);
+    LatLng location = new LatLng(a, b);
+    mMap.addMarker(new MarkerOptions()
+            .title("This Place")
+            .position(location)
 
-            String[] Eslat = getlocation.split(",");
-            double a = Double.parseDouble(Eslat[0]);
-            double b = Double.parseDouble(Eslat[1]);
-            LatLng location = new LatLng(a,b);
-            mMap.addMarker(new MarkerOptions()
-                    .title("This Place")
-                    .position(location)
 
-            );
-            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(location,13.0f));
+    );
+    mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(location, 13.0f));
+}
+        mMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
 
+            @Override
+            public void onMapClick(LatLng point) {
+                // TODO Auto-generated method stub
+               // LatLngs.add(point);
+                mMap.clear();
+                mMap.addMarker(new MarkerOptions().position(point));
+                getlocation = point.latitude + "," + point.longitude;
+                Toast.makeText(Add_map.this,getlocation,Toast.LENGTH_SHORT).show();
+            }
+        });
 
 
         enableMyLocation();
@@ -119,11 +147,11 @@ public class MapsActivity extends AppCompatActivity implements  OnMyLocationButt
 
     }
     private void enableMyLocation() {
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
+        if (ContextCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION)
                 != PackageManager.PERMISSION_GRANTED) {
             // Permission to access the location is missing.
             PermissionUtils.requestPermission(this, LOCATION_PERMISSION_REQUEST_CODE,
-                    Manifest.permission.ACCESS_FINE_LOCATION, true);
+                    android.Manifest.permission.ACCESS_FINE_LOCATION, true);
         } else if (mMap != null) {
             // Access to the location has been granted to the app.
             mMap.setMyLocationEnabled(true);
@@ -140,7 +168,7 @@ public class MapsActivity extends AppCompatActivity implements  OnMyLocationButt
     public boolean onMyLocationButtonClick() {
 
         if (location != null) {
-          myLocation = new LatLng(location.getLatitude(),
+            myLocation = new LatLng(location.getLatitude(),
                     location.getLongitude());
             mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(myLocation,
                     11));
@@ -203,19 +231,19 @@ public class MapsActivity extends AppCompatActivity implements  OnMyLocationButt
     public void onConnected(Bundle bundle) {
         // Do something when connected with Google API Client
 
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
+        if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION)
                 != PackageManager.PERMISSION_GRANTED) {
             // Check Permissions Now
 
 
             if (ActivityCompat.shouldShowRequestPermissionRationale(this,
-                    Manifest.permission.ACCESS_FINE_LOCATION)) {
+                    android.Manifest.permission.ACCESS_FINE_LOCATION)) {
                 // Display UI and wait for user interaction
             } else {
                 /*      ActivityCompat.requestPermissions(
                         this, new String[]{Manifest.permission.LOCATION_FINE},
                         ACCESS_FINE_LOCATION);*/
-                ActivityCompat.requestPermissions(this,new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
+                ActivityCompat.requestPermissions(this,new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION}, 1);
             }
         }
         else {
@@ -230,34 +258,18 @@ public class MapsActivity extends AppCompatActivity implements  OnMyLocationButt
                         .setInterval(2000)
                         .setFastestInterval(2000);
                 if (ContextCompat.checkSelfPermission(this,
-                        Manifest.permission.ACCESS_FINE_LOCATION)
+                        android.Manifest.permission.ACCESS_FINE_LOCATION)
                         == PackageManager.PERMISSION_GRANTED) {
                     LocationServices.FusedLocationApi.requestLocationUpdates(googleApiClient, locationRequest, this);
                 }
 
                 mLastLocation = LocationServices.FusedLocationApi.getLastLocation(googleApiClient);  // ใช้สำหรัรับตำแหน่งแรกเลย ครั้งเดียว
                 if (mLastLocation != null) {
-
-                    Location target = new Location("Target");
-                    target.setLatitude(37.5219983);
-                    target.setLongitude(-122.184);
-                    float d;
-                  //  d = location.distanceTo(target);
-                 //   la.setText(String.valueOf(d));
-                    if(location!=null)
-                    if(location.distanceTo(target) < 1000) {
-                        Toast.makeText(context, "Hi", Toast.LENGTH_SHORT).show();
-                    }
-                   /* if(location.distanceTo(target) < METERS_100) {
-                        // bingo!
-                    }*/
-
-                  /*  lo.setText(String.valueOf(mLastLocation.getLongitude()));
-                    la.setText(String.valueOf(mLastLocation.getLatitude()));*/
+                    getlocation = mLastLocation.getLatitude() + "," + mLastLocation.getLongitude();
 
                 }
 
-               // LocationServices.FusedLocationApi.requestLocationUpdates(googleApiClient, locationRequest, this);
+
             }
 
 
@@ -277,7 +289,7 @@ public class MapsActivity extends AppCompatActivity implements  OnMyLocationButt
 
     @Override
     public void onLocationChanged(Location location) {
-        mLastLocation = location;
+/*        mLastLocation = location;
         if (mCurrLocationMarker != null) {
             mCurrLocationMarker.remove();
         }
@@ -287,14 +299,14 @@ public class MapsActivity extends AppCompatActivity implements  OnMyLocationButt
         MarkerOptions markerOptions = new MarkerOptions();
         markerOptions.position(latLng);
         markerOptions.title("Your Current Position");
-
+        markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN));
         lo.setText(String.valueOf(mLastLocation.getLongitude()));
         la.setText(String.valueOf(mLastLocation.getLatitude()));
         mCurrLocationMarker = mMap.addMarker(markerOptions);
 
         //move map camera
-/*        mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));*/
-       mMap.animateCamera(CameraUpdateFactory.zoomTo(11));
+*//*        mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));*//*
+        mMap.animateCamera(CameraUpdateFactory.zoomTo(11));*/
     }
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
@@ -304,7 +316,7 @@ public class MapsActivity extends AppCompatActivity implements  OnMyLocationButt
         }
 
         if (PermissionUtils.isPermissionGranted(permissions, grantResults,
-                Manifest.permission.ACCESS_FINE_LOCATION)) {
+                android.Manifest.permission.ACCESS_FINE_LOCATION)) {
             // Enable the my location layer if the permission has been granted.
             enableMyLocation();
 

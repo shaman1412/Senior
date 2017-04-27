@@ -21,6 +21,7 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.Senior.Faff.Add_map;
 import com.Senior.Faff.Main2Activity;
 import com.Senior.Faff.R;
 import com.Senior.Faff.model.Party;
@@ -156,6 +157,18 @@ public class Party_CreateNewParty_map extends AppCompatActivity implements OnMap
         // Add a marker in Sydney and move the camera
 
         mMap.setOnMyLocationButtonClickListener(this);
+        mMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
+
+            @Override
+            public void onMapClick(LatLng point) {
+                // TODO Auto-generated method stub
+                // LatLngs.add(point);
+                mMap.clear();
+                mMap.addMarker(new MarkerOptions().position(point));
+                getlocation = point.latitude + "," + point.longitude;
+                Toast.makeText(Party_CreateNewParty_map.this,getlocation,Toast.LENGTH_SHORT).show();
+            }
+        });
 
     }
     @Override

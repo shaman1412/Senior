@@ -59,7 +59,8 @@
         app:layout_anchor="@id/app_bar"
         app:layout_anchorGravity="bottom|end"
         app:backgroundTint="?android:attr/colorPressedHighlight"
-        app:elevation="12dp" />
+        app:elevation="12dp"
+        android:visibility="gone"/>
 
 </android.support.design.widget.CoordinatorLayout>
 

@@ -16,10 +16,33 @@ function getModel () {
   return require(`./login_method`);
 }
 
-
+router.put('/change_pass/:userid', (req, res, next) => {
+  const json = req.body;
+  const data = {
+    password: json.password
+  }
+  getModel().update(req.params.userid, data, (err, entity) => {
+    if (err) {
+      next(err);
+      return;
+    }
+    res.json(entity);
+  });
+});
 
 router.get('/:username', (req, res, next) => {
   getModel().read(req.params.username, (err, entity) => {
+    if (err) {
+      next(err);
+      return;
+    }
+    res.json(entity);
+  });
+});
+
+
+router.get('/userid/:userid', (req, res, next) => {
+  getModel().read_userid(req.params.userid, (err, entity) => {
     if (err) {
       next(err);
       return;

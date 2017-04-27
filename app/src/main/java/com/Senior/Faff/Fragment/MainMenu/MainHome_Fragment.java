@@ -20,11 +20,10 @@ import com.Senior.Faff.R;
 public class MainHome_Fragment extends Fragment  {
 
 
-
     public MainHome_Fragment() {
-        // Required empty public constructor
-    }
 
+    }
+    private int setCurrentItem = 0;
     private TabLayout tabLayout;
     private ViewPager pager;
     private Context context;
