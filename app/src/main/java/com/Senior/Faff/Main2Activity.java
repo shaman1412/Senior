@@ -1,5 +1,6 @@
 package com.Senior.Faff;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -58,8 +59,13 @@ import com.Senior.Faff.model.UserAuthen;
 import com.Senior.Faff.model.UserProfile;
 import com.Senior.Faff.model.filter_nearby_restaurant;
 import com.Senior.Faff.utils.firebase;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -87,6 +93,9 @@ import java.util.Set;
 public class Main2Activity extends AppCompatActivity {
 
     private static final String Tag = Main2Activity.class.getSimpleName();
+
+    private FirebaseAuth mAuth;
+    private FirebaseAuth.AuthStateListener mAuthListener;
 
     ViewPager pager;
     private Context context;
@@ -123,6 +132,37 @@ public class Main2Activity extends AppCompatActivity {
         //get map key-value of this activity in args
         //pager = (ViewPager)findViewById(R.id.pager);
         context = this;
+
+        mAuth = FirebaseAuth.getInstance();
+
+        mAuthListener = new FirebaseAuth.AuthStateListener() {
+            @Override
+            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
+                FirebaseUser user = firebaseAuth.getCurrentUser();
+                if (user != null) {
+                    // User is signed in
+                    Log.i("TEST:", "onAuthStateChanged:signed_in:" + user.getUid());
+                } else {
+                    // User is signed out
+                    Log.i("TEST:s", "onAuthStateChanged:signed_out");
+                }
+            }
+        };
+
+        mAuth.signInAnonymously().addOnCompleteListener((Activity) context, new OnCompleteListener<AuthResult>() {
+            @Override
+            public void onComplete(@NonNull Task<AuthResult> task) {
+                Log.i("TEST:", "signInAnonymously:onComplete:" + task.isSuccessful());
+                // If sign in fails, display a message to the user. If sign in succeeds
+                // the auth state listener will be notified and logic to handle the
+                // signed in user can be handled in the listener.
+                if (!task.isSuccessful()) {
+                    Log.i("TEST:", "signInAnonymously", task.getException());
+                    Toast.makeText(context, "Authentication failed.",
+                            Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
 
 
         // serach_box = (EditText)findViewById(R.id.serach_box);
@@ -226,6 +266,13 @@ public class Main2Activity extends AppCompatActivity {
     }
 
     @Override
+    public void onStart() {
+        super.onStart();
+
+        mAuth.addAuthStateListener(mAuthListener);
+    }
+
+    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.main_toolbar_filter, menu);
         return true;
@@ -302,6 +349,9 @@ public class Main2Activity extends AppCompatActivity {
                 break;
 
             case R.id.Logout:
+                if (mAuthListener != null) {
+                    mAuth.removeAuthStateListener(mAuthListener);
+                }
                 SharedPreferences sp = getSharedPreferences("CHECK_LOGIN", Context.MODE_PRIVATE);
                 SharedPreferences.Editor editor = sp.edit();
                 editor.putString(UserProfile.Column.UserID, "nothing");
