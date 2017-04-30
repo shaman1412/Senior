@@ -109,7 +109,8 @@
         <activity
             android:name=".Add_map"
             android:label="@string/title_activity_add_map" />
-        <activity android:name=".UserProfile.Change_password"></activity>
+        <activity android:name=".UserProfile.Change_password" />
+        <activity android:name=".RestaurantProfile.Add_Comment"></activity>
     </application>
 
 </manifest>
