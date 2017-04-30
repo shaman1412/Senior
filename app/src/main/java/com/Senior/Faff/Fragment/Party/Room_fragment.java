@@ -98,8 +98,6 @@ public class Room_fragment extends Fragment implements GoogleApiClient.OnConnect
         Restaurant model = new Restaurant();
 
         listview = (ListView) root.findViewById(R.id.listView12);
-        cus = new Customlistview_nearparty_adapter(mcontext, re_list);
-        listview.setAdapter(cus);
 
 
         googleApiClient = new GoogleApiClient.Builder(getContext())
@@ -277,7 +275,7 @@ public class Room_fragment extends Fragment implements GoogleApiClient.OnConnect
         return res;
     }
 
-    public void showlist(ListView listview, ArrayList<Party> Pary_list, int[] resId, int gender, int age) {
+    public void showlist_r(ListView listview, ArrayList<Party> Pary_list, int[] resId, int gender, int age) {
 
         Map<String, String> rule_gender = new HashMap<>();
         if (gender == 0) {
@@ -295,11 +293,8 @@ public class Room_fragment extends Fragment implements GoogleApiClient.OnConnect
 //                listview.setAdapter(new Customlistview_nearparty_adapter(mcontext, 0, re_list, resId));
 
 
-                /////  this
-                cus.notifyDataSetChanged();
-
-
-                Log.i("TEST:", "size list : "+cus.getCount());
+                cus = new Customlistview_nearparty_adapter(mcontext, re_list);
+                listview.setAdapter(cus);
 
                 listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                     public void onItemClick(AdapterView<?> arg0, View view, int position, long id) {
@@ -333,7 +328,7 @@ public class Room_fragment extends Fragment implements GoogleApiClient.OnConnect
                         Party post = postSnapshot.getValue(Party.class);
                         party_list.add(post);
                     }
-                    showlist(listview, party_list, resId, gender, age);
+                    showlist_r(listview, party_list, resId, gender, age);
                     //Toast.makeText(getActivity(),"hi",Toast.LENGTH_SHORT).show();
                 }
 

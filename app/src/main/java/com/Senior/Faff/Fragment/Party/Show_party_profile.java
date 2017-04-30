@@ -100,7 +100,6 @@ public class Show_party_profile extends AppCompatActivity implements OnMapReadyC
     protected void onResume() {
         super.onResume();
         new getDataMember().execute();
-
     }
 
     @Override
@@ -326,7 +325,6 @@ public class Show_party_profile extends AppCompatActivity implements OnMapReadyC
                     st.setVisibility(View.VISIBLE);
                     status.setText("Request");
                     status.setTextColor(Color.RED);
-
                 }
             }
         }

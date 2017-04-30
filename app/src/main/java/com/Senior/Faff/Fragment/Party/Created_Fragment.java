@@ -46,6 +46,8 @@ public class Created_Fragment extends Fragment {
     private Button addRoom;
     private EditText roomName;
     int[] resId =  {R.drawable.restaurant1,R.drawable.restaurant2,R.drawable.restaurant3};
+    private Customlistview_nearparty_adapter cus;
+
     public Created_Fragment() {
         // Required empty public constructor
     }
@@ -66,11 +68,14 @@ public class Created_Fragment extends Fragment {
         mcontext = getContext();
         re_list = new  ArrayList<>();
         listview = (ListView) root.findViewById(R.id.listView12);
-        new getData().execute();
+        cus = new Customlistview_nearparty_adapter(mcontext, re_list);
+        listview.setAdapter(cus);
+
+        new getData_c().execute();
     return root;
     }
 
-    public void showlist(ListView listview, ArrayList<Party> Pary_list, int[] resId, int gender, int age) {
+    public void showlist_c(ListView listview, ArrayList<Party> Pary_list, int[] resId, int gender, int age) {
 
         Map<String, String> rule_gender = new HashMap<>();
         if(gender == 0){
@@ -85,7 +90,13 @@ public class Created_Fragment extends Fragment {
             re_list = getcreate(Pary_list);
             if(re_list != null) {
 //                listview.setAdapter(new Customlistview_nearparty_adapter(mcontext, 0, re_list, resId));
-                listview.setAdapter(new Customlistview_nearparty_adapter(mcontext, re_list));
+
+                debug("In Created : ");
+
+                cus = new Customlistview_nearparty_adapter(mcontext, re_list);
+                listview.setAdapter(cus);
+
+                //listview.setAdapter(new Customlistview_nearparty_adapter(mcontext, re_list));
                 listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                     public void onItemClick(AdapterView<?> arg0, View view, int position, long id) {
                         Intent intent = new Intent(mcontext, Show_party_profile.class);
@@ -101,7 +112,8 @@ public class Created_Fragment extends Fragment {
         }
 
     }
-    private class getData extends AsyncTask<Void, Integer, Void> {
+
+    private class getData_c extends AsyncTask<Void, Integer, Void> {
         protected Void doInBackground(Void... params)   {
             DatabaseReference mRootRef = FirebaseDatabase.getInstance().getReference();
             mRootRef.addValueEventListener(new ValueEventListener() {
@@ -114,7 +126,7 @@ public class Created_Fragment extends Fragment {
                         party_list.add(post);
 
                     }
-                    showlist(listview, party_list, resId,gender,age);
+                    showlist_c(listview, party_list, resId,gender,age);
                     //Toast.makeText(getActivity(),"hi",Toast.LENGTH_SHORT).show();
                 }
 
@@ -147,4 +159,10 @@ public class Created_Fragment extends Fragment {
         }
         return list;
     }
+
+    private void debug(String d)
+    {
+        Log.i("TEST:", " debug : "+d);
+    }
+
 }

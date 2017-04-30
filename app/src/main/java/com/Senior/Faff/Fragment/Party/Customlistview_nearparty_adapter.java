@@ -58,7 +58,7 @@ public class Customlistview_nearparty_adapter extends BaseAdapter {
     }
 
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
+    public View getView(final int position, View convertView, ViewGroup parent) {
 
         LayoutInflater mInflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         if (convertView == null)
@@ -83,7 +83,7 @@ public class Customlistview_nearparty_adapter extends BaseAdapter {
                     Log.i("TEST:", " count : "+ccc);
                     ccc++;
                     Picasso.with(mContext).load(uri.toString()).resize(250, 250).into(imageView);
-                    Log.i("TEST:", " uri " + " : " + uri.toString());
+                    Log.i("TEST:", " uri " + " : " + uri.toString() + " postition : "+position);
 
                 }
             }).addOnFailureListener(new OnFailureListener() {
