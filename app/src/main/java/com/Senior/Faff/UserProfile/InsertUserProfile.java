@@ -121,13 +121,8 @@ public class InsertUserProfile extends AppCompatActivity {
 
         if (arg != null) {
             userid = arg.getString("userid");
+            Log.i("TEST:", " userid in InsertUSer is : "+userid);
         }
-
-        //
-        //
-        //This line set for debug
-        userid = "a1412";
-
 
         type.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
