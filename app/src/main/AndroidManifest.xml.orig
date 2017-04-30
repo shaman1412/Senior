@@ -8,6 +8,7 @@
          location permissions for the 'MyLocation' functionality.
     -->
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="com.google.android.providers.gsf.permission.READ_GSERVICES" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
@@ -19,14 +20,12 @@
         android:theme="@style/AppTheme">
         <activity
             android:name=".LoginActivity"
-            android:label="Faff" >
-
+            android:label="Faff">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-
         </activity>
         <activity android:name=".RegisterActivity" />
         <activity android:name=".MainActivity" />
@@ -69,21 +68,19 @@
         <!-- android:name=".ServerSocketActivity" -->
         <!-- android:label="@string/title_activity_server_socket" -->
         <!-- android:theme="@style/AppTheme"></activity> -->
-        <activity android:name=".UserProfile.ShowUserprofile" >
-
+        <activity
+            android:name=".UserProfile.ShowUserprofile"
+            android:parentActivityName=".Main2Activity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".Main2Activity" />
         </activity>
         <activity android:name=".ServerSocketActivity" />
         <activity android:name=".ClientSocketActivity" />
         <activity android:name=".FilterActivity" />
         <activity android:name=".ImagerActivity" />
         <activity android:name=".utils.PlacePicker" />
-        <activity android:name=".chat.ChatMainActivity">
-
-
-
-
-
-        </activity>
+        <activity android:name=".chat.ChatMainActivity" />
         <activity android:name=".chat.Chat_Room" />
         <activity
             android:name=".RestaurantProfile.RestaurantMapsActivity"
@@ -97,26 +94,32 @@
         <activity
             android:name=".Fragment.Party.Party_CreateNewParty_map"
             android:label="@string/title_activity_party__create_new_party_map" />
-<<<<<<< HEAD
-        <activity android:name=".RestaurantProfile.Show_RestaurantProfile" />
-        <activity
-            android:name=".testlife"
-            android:configChanges="orientation|screenSize|keyboardHidden">
-
-
-        </activity>
-        <activity android:name=".Main3Activity" />
-        <activity android:name=".TestAPI">
-
-
-
-        </activity>
-=======
         <activity android:name=".Promotion.PromotionShow" />
         <activity android:name=".chat.TestFirebaseStorageActivity" />
         <activity android:name=".chat.CreateParty" />
-        <activity android:name=".chat.ParttyDetail"></activity>
->>>>>>> origin/master
+        <activity android:name=".chat.ParttyDetail" />
+        <activity android:name=".RestaurantProfile.Show_RestaurantProfile" />
+        <activity
+            android:name=".testlife"
+            android:configChanges="orientation|screenSize|keyboardHidden" />
+        <activity android:name=".Main3Activity" />
+        <activity android:name=".TestAPI" />
+        <activity android:name=".UserProfile.UpdateUserProfile" />
+        <activity android:name=".RestaurantProfile.Edit_RestaurantProfile" />
+        <activity android:name=".Fragment.Party.Show_party_profile" />
+        <activity android:name=".UserProfile.favorite_restaurant" />
+        <activity
+            android:name=".Add_map"
+            android:label="@string/title_activity_add_map" />
+        <activity android:name=".UserProfile.Change_password" />
+<<<<<<< HEAD
+        <activity android:name=".testnoti" />
+        <activity android:name=".test_callservice"></activity>
+
+        <service android:name=".server_service" />
+=======
+        <activity android:name=".RestaurantProfile.Add_Comment"></activity>
+>>>>>>> bab3d733fdf074b93c348b56455a48f24d8ed06f
     </application>
 
 </manifest>

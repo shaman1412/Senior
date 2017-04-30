@@ -66,6 +66,16 @@ router.get('/:group_resid' , (req, res, next )=>{
 	})
 })
 
+router.get('/:res_name' , (req, res, next )=>{
+	getModel().search_name(req.params.res_name , (err,entity) =>{
+		if(err){
+			next(err);
+			return;
+		}
+		res.json(entity);
+	})
+})
+
 
 
 
