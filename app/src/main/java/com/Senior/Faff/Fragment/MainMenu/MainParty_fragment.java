@@ -62,13 +62,13 @@ public class MainParty_fragment extends Fragment {
         bundle.putString(UserProfile.Column.Name,name);
 
 
-        Party_adapter adapter = new Party_adapter(getChildFragmentManager(),context,bundle);
+        final Party_adapter adapter = new Party_adapter(getChildFragmentManager(),context,bundle);
         pager = (ViewPager)root.findViewById(R.id.pager);
         tabLayout = (CustomTabLayout)root.findViewById(R.id.tablayout);
         pager.setAdapter(adapter);
         pager.setCurrentItem(1);
 
-        Log.i(Tag, "Alert!!!! index of item in Party_adapter is "+pager.getCurrentItem());
+        //Log.i(Tag, "Alert!!!! index of item in Party_adapter is "+pager.getCurrentItem());
 
         FloatingActionButton fab = (FloatingActionButton)root.findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -104,7 +104,13 @@ public class MainParty_fragment extends Fragment {
     return root;
     }
 
-
+//    @Override
+//    public void onResume(){
+//        super.onResume();
+//        int i = pager.getCurrentItem();
+//        Log.i(Tag, "Alert!!!! index of item in Party_adapter is "+i);
+//        pager.setCurrentItem(i);
+//    }
 
 
 }
