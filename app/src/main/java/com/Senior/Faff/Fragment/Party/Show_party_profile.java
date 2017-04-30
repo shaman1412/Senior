@@ -310,7 +310,8 @@ public class Show_party_profile extends AppCompatActivity implements OnMapReadyC
                 }
             }
         });
-        sh.execute(own_userid);
+        String host_id = partypro.getCreateid();
+        sh.execute(host_id);
 
 
         status.setText("None");
