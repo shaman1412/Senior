@@ -1,5 +1,6 @@
 package com.Senior.Faff.RestaurantProfile;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -55,6 +56,7 @@ public class Comment_RestaurantFragment extends Fragment {
     private DatabaseReference rate;
     private String resid;
     private String username;
+    private Button enter_comment;
 
     public Comment_RestaurantFragment(){
 
@@ -72,37 +74,47 @@ public class Comment_RestaurantFragment extends Fragment {
 
         View root = inflater.inflate(R.layout.comment_restaurant, container, false);
 
-        add_comment = (Button)root.findViewById(R.id.comment_send);
-        comment_text = (TextView)root.findViewById(R.id.comment_text);
+//        add_comment = (Button)root.findViewById(R.id.comment_send);
+//        comment_text = (TextView)root.findViewById(R.id.comment_text);
 
-        add_comment.setOnClickListener(new View.OnClickListener() {
+//        add_comment.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                String c = comment_text.getText().toString();
+//                Map<String, Object> map = new HashMap<String, Object>();
+//                Map<String, Object> map1 = new HashMap<String, Object>();
+//                Map<String, Object> map2 = new HashMap<String, Object>();
+//                Map<String, Object> map3 = new HashMap<String, Object>();
+//
+//                String tmp = comment.push().getKey();
+//
+//                map.put("id", id);
+//
+//                map1.put("name", username);
+//
+//                map2.put("comment", c);
+//
+//                DateFormat dateformat = DateFormat.getDateTimeInstance();
+//                dateformat.setTimeZone(TimeZone.getTimeZone("GMT+7"));
+//                Date date = new Date();
+//                map3.put("date", dateformat.format(date));
+//
+//                comment.child(tmp).updateChildren(map);
+//                comment.child(tmp).updateChildren(map1);
+//                comment.child(tmp).updateChildren(map2);
+//                comment.child(tmp).updateChildren(map3);
+//            }
+//        });
+
+        enter_comment = (Button) root.findViewById(R.id.enter_comment);
+        enter_comment.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String c = comment_text.getText().toString();
-                Map<String, Object> map = new HashMap<String, Object>();
-                Map<String, Object> map1 = new HashMap<String, Object>();
-                Map<String, Object> map2 = new HashMap<String, Object>();
-                Map<String, Object> map3 = new HashMap<String, Object>();
-
-                String tmp = comment.push().getKey();
-
-                map.put("id", id);
-
-//                ProfileManager pm = new ProfileManager(getActivity());
-//                String userName = pm.getUserName(id);
-                map1.put("name", username);
-
-                map2.put("comment", c);
-
-                DateFormat dateformat = DateFormat.getDateTimeInstance();
-                dateformat.setTimeZone(TimeZone.getTimeZone("GMT+7"));
-                Date date = new Date();
-                map3.put("date", dateformat.format(date));
-
-                comment.child(tmp).updateChildren(map);
-                comment.child(tmp).updateChildren(map1);
-                comment.child(tmp).updateChildren(map2);
-                comment.child(tmp).updateChildren(map3);
+                Intent i = new Intent(getActivity(), Add_Comment.class);
+                i.putExtra("resid", resid);
+                i.putExtra("id", id);
+                i.putExtra("username", username);
+                startActivity(i);
             }
         });
 
@@ -188,6 +200,7 @@ public class Comment_RestaurantFragment extends Fragment {
 
         //rating_star = (RatingBar)root.findViewById(R.id.ratingBar);
         rating_total = (RatingBar) getActivity().findViewById(R.id.rate);
+        score = (TextView) getActivity().findViewById(R.id.text_rate);
 
         rate.addValueEventListener(new ValueEventListener() {
             @Override
@@ -205,18 +218,18 @@ public class Comment_RestaurantFragment extends Fragment {
                         sum+=tmp;
                     }
 
-                    rating_star.setOnRatingBarChangeListener(null);
+//                    rating_star.setOnRatingBarChangeListener(null);
                     float scor = sum/n;
                     rating_total.setRating(scor);
-                    //score.setText(String.valueOf(new DecimalFormat("#.##").format(sum/n)));
-                    rating_star.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
-                        @Override
-                        public void onRatingChanged(RatingBar ratingBar, float rating, boolean fromUser) {
-                            String tmp = String.valueOf(rating);
-                            score.setText(tmp);
-                            rate.child(id).setValue(tmp);
-                        }
-                    });
+                    score.setText(String.valueOf(new DecimalFormat("#.##").format(sum/n)));
+//                    rating_star.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
+//                        @Override
+//                        public void onRatingChanged(RatingBar ratingBar, float rating, boolean fromUser) {
+//                            String tmp = String.valueOf(rating);
+//                            score.setText(tmp);
+//                            rate.child(id).setValue(tmp);
+//                        }
+//                    });
 
                 }
             }

@@ -140,7 +140,6 @@ public class Show_RestaurantProfile extends AppCompatActivity implements OnMapRe
 
 
 
-
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

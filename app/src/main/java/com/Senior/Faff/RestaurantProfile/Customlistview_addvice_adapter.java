@@ -2,6 +2,7 @@ package com.Senior.Faff.RestaurantProfile;
 
 import android.content.Context;
 import android.graphics.Point;
+import android.net.Uri;
 import android.util.Log;
 import android.view.Display;
 import android.view.LayoutInflater;
@@ -13,6 +14,7 @@ import android.widget.TextView;
 
 import com.Senior.Faff.R;
 import com.Senior.Faff.model.Restaurant;
+import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -50,7 +52,27 @@ public class Customlistview_addvice_adapter extends ArrayAdapter<Restaurant> {
         }
 
         String[] img_path = res_name[position].getPicture().split(",");
-        Picasso.with(getContext()).load(img_path[0]).resize(300, 300).into(imageView);
+//        Picasso.with(getContext()).load(img_path[0]).resize(300, 300).into(imageView);
+        Picasso.Builder builder = new Picasso.Builder(getContext());
+        builder.listener(new Picasso.Listener()
+        {
+            @Override
+            public void onImageLoadFailed(Picasso picasso, Uri uri, Exception exception)
+            {
+                exception.printStackTrace();
+                Log.i("TEST:", "Picasso failed : "+exception.toString()+" Uri is : "+uri.toString());
+            }
+        });
+        if(img_path[0].contains(" "))
+        {
+            String tmp = img_path[0].replaceAll(" ", "%20");
+            builder.build().load(tmp).resize(300, 300).into(imageView);
+        }
+        else
+        {
+            builder.build().load(img_path[0]).resize(300, 300).into(imageView);
+        }
+
 
         viewHolder.ResName.setText(res_name[position].getRestaurantName());
         viewHolder.detail.setText("   " + res_name[position].getDescription());

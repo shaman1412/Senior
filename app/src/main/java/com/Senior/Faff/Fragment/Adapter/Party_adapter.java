@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.util.Log;
 
 import com.Senior.Faff.Fragment.Party.Created_Fragment;
 import com.Senior.Faff.Fragment.Party.Joined_Fragment;
@@ -30,21 +31,25 @@ public class Party_adapter extends FragmentPagerAdapter {
     @Override
     public Fragment getItem(int position) {
         if(position == 0){
+            debug("In party adapter postion 0");
             Room_fragment room = new Room_fragment();
             room.setArguments(bundle);
             return  room;
         }
         else if(position == 1){
+            debug("In party adapter postion 1");
             Joined_Fragment join = new Joined_Fragment();
             join.setArguments(bundle);
             return  join;
         }
         else if(position == 2){
+            debug("In party adapter postion 2");
             Requested_Fragment request = new Requested_Fragment();
             request.setArguments(bundle);
             return  request;
         }
         else if(position == 3){
+            debug("In party adapter postion 3");
             Created_Fragment create = new Created_Fragment();
             create.setArguments(bundle);
             return  create;
@@ -60,5 +65,10 @@ public class Party_adapter extends FragmentPagerAdapter {
     @Override
     public CharSequence  getPageTitle(int position){
         return Tabtitle[position];
+    }
+
+    private void debug(String d)
+    {
+        Log.i("TEST:", " debug : "+d);
     }
 }

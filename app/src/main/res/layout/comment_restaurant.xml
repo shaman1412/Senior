@@ -82,26 +82,26 @@
                 />
 
 
-            <EditText
-                android:id="@+id/comment_text"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_alignParentBottom="true"
-                android:layout_below="@+id/listView"
-                android:layout_toLeftOf="@+id/comment_send"
-                android:background="@color/custom_gray1"
-                android:hint="add comment"
-                android:inputType="text" />
+            <!--<EditText-->
+                <!--android:id="@+id/comment_text"-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_alignParentBottom="true"-->
+                <!--android:layout_below="@+id/listView"-->
+                <!--android:layout_toLeftOf="@+id/comment_send"-->
+                <!--android:background="@color/custom_gray1"-->
+                <!--android:hint="add comment"-->
+                <!--android:inputType="text" />-->
 
-            <Button
-                android:id="@+id/comment_send"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentBottom="true"
-                android:layout_alignParentEnd="true"
-                android:layout_alignParentRight="true"
-                android:backgroundTint="@android:color/darker_gray"
-                android:text="Send" />
+            <!--<Button-->
+                <!--android:id="@+id/comment_send"-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_alignParentBottom="true"-->
+                <!--android:layout_alignParentEnd="true"-->
+                <!--android:layout_alignParentRight="true"-->
+                <!--android:backgroundTint="@android:color/darker_gray"-->
+                <!--android:text="Send" />-->
 
         </RelativeLayout>
 

@@ -100,7 +100,6 @@ public class Show_party_profile extends AppCompatActivity implements OnMapReadyC
     protected void onResume() {
         super.onResume();
         new getDataMember().execute();
-
     }
 
     @Override
@@ -110,7 +109,7 @@ public class Show_party_profile extends AppCompatActivity implements OnMapReadyC
         setContentView(R.layout.activity_show_party_profile);
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map_party);
-     mapFragment.getMapAsync(this);
+        mapFragment.getMapAsync(this);
         mcontext= this;
         enter_chat = (Button)findViewById(R.id.enter_room);
         leave_group = (Button)findViewById(R.id.Leave_group);
@@ -270,7 +269,7 @@ public class Show_party_profile extends AppCompatActivity implements OnMapReadyC
         }
 
         String pic_url = partypro.getPicture();
-        Log.i("TEST: ", pic_url);
+        Log.i("TEST: ", "pic_url : "+pic_url);
         if(pic_url!=null)
         {
             String[] tmp = pic_url.split("/");
@@ -279,6 +278,13 @@ public class Show_party_profile extends AppCompatActivity implements OnMapReadyC
                 @Override
                 public void onSuccess(Uri uri) {
                     Picasso.with(mcontext).load(uri.toString()).resize(500,500).into(party_image);
+                    if(party_image.getDrawable() == null)
+                    {
+                        Log.i("TEST: ", "NOT NULL");
+                    }
+                    else {
+                        Log.i("TEST: ", "NULL");
+                    }
                 }
             }).addOnFailureListener(new OnFailureListener() {
                 @Override
@@ -302,8 +308,6 @@ public class Show_party_profile extends AppCompatActivity implements OnMapReadyC
                 {
                     Picasso.with(mcontext).load(arr_url[0]).resize(500, 500).into(create_image);
                 }
-
-
             }
         });
         sh.execute(own_userid);
@@ -321,7 +325,6 @@ public class Show_party_profile extends AppCompatActivity implements OnMapReadyC
                     st.setVisibility(View.VISIBLE);
                     status.setText("Request");
                     status.setTextColor(Color.RED);
-
                 }
             }
         }
