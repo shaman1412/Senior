@@ -50,20 +50,23 @@ public class list_party_request extends RecyclerView.Adapter<list_party_request.
         this.list_accept = list_accept;
         this.host = host;
     }
+
+
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.activity_list_party_request, parent, false);
-       ViewHolder vh = new ViewHolder(view);
-        if(!host) {
-            View ac = view.findViewById(R.id.accept);
-            ac.setVisibility(View.INVISIBLE);
-            View re = view.findViewById(R.id.reject);
-            re.setVisibility(View.INVISIBLE);
-        }
-        mcontext = view.getContext();
+            View view = LayoutInflater.from(parent.getContext())
+                    .inflate(R.layout.activity_list_party_request, parent, false);
+            ViewHolder vh = new ViewHolder(view);
+            if(!host) {
+                View ac = view.findViewById(R.id.accept);
+                ac.setVisibility(View.INVISIBLE);
+                View re = view.findViewById(R.id.reject);
+                re.setVisibility(View.INVISIBLE);
+            }
+            mcontext = view.getContext();
 
-        return vh;
+            return vh;
+
     }
 
     @Override

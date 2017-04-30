@@ -270,6 +270,7 @@ public class MapsActivity extends AppCompatActivity implements  OnMyLocationButt
 
     }
 
+
     @Override
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
 

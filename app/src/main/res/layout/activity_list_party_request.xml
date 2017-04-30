@@ -6,7 +6,6 @@
     android:layout_height="wrap_content"
     android:orientation="horizontal"
     android:gravity="center"
-    tools:context="com.Senior.Faff.Fragment.Party.list_party_member"
     >
 <LinearLayout
     android:layout_width="wrap_content"
