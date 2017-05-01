@@ -79,12 +79,20 @@ public class list_bookmark extends RecyclerView.Adapter<list_bookmark.ViewHolder
         {
             url = tmp[0].replaceAll(" ", "%20");
             Log.i("TEST:", " bookmark url is : "+url);
-            Picasso.with(this.context).load(url).resize(200, 200).into(holder.image);
+            try {
+                Picasso.with(this.context).load(url).resize(200, 200).into(holder.image);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
         else
         {
             Log.i("TEST:", " bookmark url is : "+tmp[0]);
-            Picasso.with(this.context).load(tmp[0]).resize(200, 200).into(holder.image);
+            try {
+                Picasso.with(this.context).load(tmp[0]).resize(200, 200).into(holder.image);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
 
         holder.mix.setOnClickListener(new View.OnClickListener() {

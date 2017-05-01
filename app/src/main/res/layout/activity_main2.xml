@@ -66,6 +66,7 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/pager"
                 app:itemBackground="@android:color/black"
+                android:background="@android:color/black"
                 app:itemIconTint="@android:color/white"
                 app:itemTextColor="@android:color/white"
                 app:menu="@menu/bottom_navigation_main" />

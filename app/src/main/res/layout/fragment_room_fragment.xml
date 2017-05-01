@@ -5,12 +5,17 @@
     tools:context="com.Senior.Faff.Fragment.Party.Room_fragment">
 
     <!-- TODO: Update blank fragment layout -->
-    <ListView
+    <!--<ListView-->
+        <!--android:id="@+id/listView12"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content">-->
+    <!--</ListView>-->
+
+
+    <android.support.v7.widget.RecyclerView
         android:id="@+id/listView12"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content">
-    </ListView>
-
-
+    </android.support.v7.widget.RecyclerView>
 
 </FrameLayout>

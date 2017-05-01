@@ -286,7 +286,11 @@ public class Show_party_profile extends AppCompatActivity implements OnMapReadyC
                 @Override
                 public void onSuccess(Uri uri) {
                     room_image_path = uri.toString();
-                    Picasso.with(mcontext).load(uri.toString()).resize(500,500).into(party_image);
+                    try {
+                        Picasso.with(mcontext).load(uri.toString()).resize(500,500).into(party_image);
+                    } finally {
+
+                    }
                     if(party_image.getDrawable() == null)
                     {
                         Log.i("TEST: ", "NOT NULL");
@@ -314,7 +318,11 @@ public class Show_party_profile extends AppCompatActivity implements OnMapReadyC
                 String[] arr_url = item.getString("picture").split(",");
                 if(arr_url!=null)
                 {
-                    Picasso.with(mcontext).load(arr_url[0]).resize(500, 500).into(create_image);
+                    try {
+                        Picasso.with(mcontext).load(arr_url[0]).resize(500, 500).into(create_image);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
                 }
             }
         });

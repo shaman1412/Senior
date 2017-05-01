@@ -33,22 +33,23 @@ public class Customlistview_addvice_adapter extends ArrayAdapter<Restaurant> {
     public Customlistview_addvice_adapter(Context context, int tv, Restaurant[] res_name, int[] res_id) {
         super(context, tv, res_name);
         this.res_name = res_name;
+        this.mcontext = context;
         inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
     }
 
     public View getView(int position, View convertView, ViewGroup parent) {
-        ImageView imageView = null;
+        //ImageView imageView = null;
         ViewHolder viewHolder;
 
         if (convertView == null) {
             convertView = inflater.inflate(R.layout.list_view_advice_restaurant, parent, false);
-            imageView = (ImageView) convertView.findViewById(R.id.image);
+//            imageView = (ImageView) convertView.findViewById(R.id.image);
             viewHolder = new ViewHolder(convertView);
             convertView.setTag(viewHolder);
         } else {
             viewHolder = (ViewHolder) convertView.getTag();
-            imageView = (ImageView) convertView.findViewById(R.id.image);
+//            imageView = (ImageView) convertView.findViewById(R.id.image);
         }
 
         String[] img_path = res_name[position].getPicture().split(",");
@@ -66,11 +67,28 @@ public class Customlistview_addvice_adapter extends ArrayAdapter<Restaurant> {
         if(img_path[0].contains(" "))
         {
             String tmp = img_path[0].replaceAll(" ", "%20");
-            builder.build().load(tmp).resize(300, 300).into(imageView);
+//            builder.build().cancelRequest(viewHolder.imageView);
+            try{
+                Picasso.with(this.mcontext).cancelRequest(viewHolder.imageView);
+                Picasso.with(this.mcontext).load(tmp).resize(300, 300).into(viewHolder.imageView);
+            }
+            catch (Exception e){
+                e.printStackTrace();
+            }
         }
         else
         {
-            builder.build().load(img_path[0]).resize(300, 300).into(imageView);
+            try
+            {
+                Picasso.with(this.mcontext).cancelRequest(viewHolder.imageView);
+                Picasso.with(this.mcontext).load(img_path[0]).resize(300, 300).into(viewHolder.imageView);
+            }
+            catch (Exception e){
+                e.printStackTrace();
+            }
+
+//            builder.build().cancelRequest(viewHolder.imageView);
+//            builder.build().load(img_path[0]).resize(300, 300).into(viewHolder.imageView);
         }
 
 
@@ -85,11 +103,14 @@ public class Customlistview_addvice_adapter extends ArrayAdapter<Restaurant> {
         public TextView ResName;
         public TextView detail;
         public TextView period;
+        private ImageView imageView;
+
 
         public ViewHolder(View convertView) {
             ResName = (TextView) convertView.findViewById(R.id.textView1);
             detail = (TextView) convertView.findViewById(R.id.detail);
             period = (TextView) convertView.findViewById(R.id.open_text);
+            imageView = (ImageView) convertView.findViewById(R.id.image);
         }
     }
 

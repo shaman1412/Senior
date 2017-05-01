@@ -118,10 +118,15 @@
         <activity android:name=".UserProfile.Change_password" />
         <activity android:name=".testnoti" />
         <activity android:name=".RestaurantProfile.Add_Comment" />
-        <activity android:name=".chat.Chat_Party"></activity>
-        <activity android:name=".test_callservice"></activity>
+        <activity android:name=".chat.Chat_Party" />
+        <activity android:name=".test_callservice" />
 
         <service android:name=".server_service" />
+
+        <activity android:name=".Fragment.Party.Room_Recycler" />
+        <activity android:name=".Fragment.Party.Join_Recycler" />
+        <activity android:name=".Fragment.Party.Request_Recycler" />
+        <activity android:name=".Fragment.Party.Created_Recycler"></activity>
     </application>
 
 </manifest>

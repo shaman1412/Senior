@@ -74,12 +74,20 @@ public class Search_name_recycle extends RecyclerView.Adapter<Search_name_recycl
         {
             url = tmp[0].replaceAll(" ", "%20");
             Log.i("TEST:", " url in search nearby : " +url);
-            Picasso.with(mcontext).load(url).resize(250, 250).into(holder.image);
+            try {
+                Picasso.with(mcontext).load(url).resize(250, 250).into(holder.image);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
         else
         {
             Log.i("TEST:", " url in search nearby : " +tmp[0]);
-            Picasso.with(mcontext).load(tmp[0]).resize(250, 250).into(holder.image);
+            try {
+                Picasso.with(mcontext).load(tmp[0]).resize(250, 250).into(holder.image);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
 
         holder.item.setOnClickListener(new View.OnClickListener() {

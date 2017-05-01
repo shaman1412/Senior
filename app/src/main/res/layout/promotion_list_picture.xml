@@ -17,6 +17,7 @@
         android:padding="16dp"
         android:id="@+id/image"
         android:hint="image"
-        android:scaleType="fitXY" />
+        android:scaleType="centerCrop"
+        />
 
 </RelativeLayout>

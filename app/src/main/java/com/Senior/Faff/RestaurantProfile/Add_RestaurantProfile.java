@@ -518,6 +518,9 @@ public class Add_RestaurantProfile extends AppCompatActivity implements OnMapRea
         protected void onPostExecute(String result) {
             if (result != "") {
                 finish();
+                Intent i = new Intent(mcontext, Main2Activity.class);
+                i.putExtra(UserProfile.Column.UserID, user_id);
+                startActivity(i);
                 //Toast.makeText(mcontext, result, Toast.LENGTH_LONG).show();
             } else {
                // Toast.makeText(mcontext, "Fail on retrieve result", Toast.LENGTH_SHORT).show();

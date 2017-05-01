@@ -73,7 +73,14 @@ public class Chat_Party extends AppCompatActivity {
         room.setText(room_name);
 
         room_image = (ImageView) findViewById(R.id.room_image);
-        Picasso.with(mcontext).load(image_path).resize(150,150).into(room_image);
+        try
+        {
+            Picasso.with(mcontext).load(image_path).resize(150,150).into(room_image);
+        }
+        catch (Exception ex)
+        {
+            ex.printStackTrace();
+        }
 
         root = FirebaseDatabase.getInstance().getReference("Chat_Room").child(room_name);
 

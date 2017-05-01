@@ -15,6 +15,8 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -74,11 +76,13 @@ public class Room_fragment extends Fragment implements GoogleApiClient.OnConnect
     private LatLng myLocation;
     private Location location;
     private ArrayList<Party> re_list = new ArrayList<>();
-    private ListView listview;
+//    private ListView listview;
     private ArrayList<Party> party_list;
     private int gender, age;
     private String userid;
-    Customlistview_nearparty_adapter cus;
+//    Customlistview_nearparty_adapter cus;
+    RecyclerView listview;
+    Room_Recycler cus;
 
     int[] resId = {R.drawable.restaurant1, R.drawable.restaurant2, R.drawable.restaurant3};
 
@@ -97,7 +101,9 @@ public class Room_fragment extends Fragment implements GoogleApiClient.OnConnect
 
         Restaurant model = new Restaurant();
 
-        listview = (ListView) root.findViewById(R.id.listView12);
+//        listview = (ListView) root.findViewById(R.id.listView12);
+        listview = (RecyclerView) root.findViewById(R.id.listView12);
+
 
 
         googleApiClient = new GoogleApiClient.Builder(getContext())
@@ -275,7 +281,7 @@ public class Room_fragment extends Fragment implements GoogleApiClient.OnConnect
         return res;
     }
 
-    public void showlist_r(ListView listview, ArrayList<Party> Pary_list, int[] resId, int gender, int age) {
+    public void showlist_r(RecyclerView listview, ArrayList<Party> Pary_list, int[] resId, int gender, int age) {
 
         Map<String, String> rule_gender = new HashMap<>();
         if (gender == 0) {
@@ -293,18 +299,21 @@ public class Room_fragment extends Fragment implements GoogleApiClient.OnConnect
                 Log.i("TEST:", " debug : In Room : ");
 //                listview.setAdapter(new Customlistview_nearparty_adapter(mcontext, 0, re_list, resId));
                 
-                cus = new Customlistview_nearparty_adapter(mcontext, re_list);
+//                cus = new Customlistview_nearparty_adapter(mcontext, re_list);
+                cus = new Room_Recycler(mcontext, re_list, userid);
+                LinearLayoutManager mLayoutManager  = new LinearLayoutManager(mcontext);
+                mLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
+                listview.setLayoutManager(mLayoutManager);
                 listview.setAdapter(cus);
-
-
-                listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                    public void onItemClick(AdapterView<?> arg0, View view, int position, long id) {
-                        Intent intent = new Intent(mcontext, Show_party_profile.class);
-                        intent.putExtra(Party.Column.RoomID, re_list.get(position).getRoomID());
-                        intent.putExtra(UserProfile.Column.UserID, userid);
-                        startActivity(intent);
-                    }
-                });
+//
+//                listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+//                    public void onItemClick(AdapterView<?> arg0, View view, int position, long id) {
+//                        Intent intent = new Intent(mcontext, Show_party_profile.class);
+//                        intent.putExtra(Party.Column.RoomID, re_list.get(position).getRoomID());
+//                        intent.putExtra(UserProfile.Column.UserID, userid);
+//                        startActivity(intent);
+//                    }
+//                });
             }
         } else {
             Toast.makeText(getActivity(), "Dont have party", Toast.LENGTH_SHORT);
