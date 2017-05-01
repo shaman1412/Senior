@@ -157,6 +157,7 @@ public class Show_party_profile extends AppCompatActivity implements OnMapReadyC
                 @Override
                 public void onMapClick(LatLng latLng) {
                     Intent intent = new Intent(Show_party_profile.this, MapsActivity.class);
+                    intent.putExtra(Party.Column.Name,room_name);
                     intent.putExtra(Party.Column.Location, send_location);
                     startActivity(intent);
                 }

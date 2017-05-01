@@ -91,7 +91,7 @@ public class list_bookmark extends RecyclerView.Adapter<list_bookmark.ViewHolder
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(mcontext, Show_RestaurantProfile.class);
-                intent.putExtra(UserProfile.Column.UserID,list.get(position).getresId());
+                intent.putExtra(Restaurant.Column.ResID,list.get(position).getresId());
                 mcontext.startActivity(intent);
             }
         });

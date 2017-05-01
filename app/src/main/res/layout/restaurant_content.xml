@@ -36,7 +36,8 @@
                     android:background="@drawable/fav_click"
                     android:layout_alignParentRight="true"
                     android:layout_alignParentTop="true"
-                    android:layout_marginTop="10dp"/>
+                    android:layout_marginTop="10dp"
+                    android:visibility="gone"/>
 
                 <Button
                     android:id="@+id/fav_unclick"
@@ -46,7 +47,7 @@
                     android:layout_alignParentRight="true"
                     android:layout_alignParentTop="true"
                     android:layout_marginTop="10dp"
-                    android:visibility="gone"/>
+                   />
                 <TextView
                     android:id="@+id/name"
                     android:layout_width="wrap_content"

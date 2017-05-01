@@ -86,6 +86,7 @@ public class Show_RestaurantProfile extends AppCompatActivity implements OnMapRe
     private TextView text_rate;
     private FloatingActionButton fab;
     private String id;
+    private String restaurantName;
     ImageView imageView;
     RecyclerView recyclerView;
     private int width;
@@ -241,6 +242,7 @@ public class Show_RestaurantProfile extends AppCompatActivity implements OnMapRe
             @Override
             public void onMapClick(LatLng latLng) {
                 Intent intent = new Intent(Show_RestaurantProfile.this, MapsActivity.class);
+                intent.putExtra(Restaurant.Column.RestaurantName,restaurantName);
                 intent.putExtra(Party.Column.Location, send_location);
                 startActivity(intent);
             }
@@ -322,6 +324,7 @@ public class Show_RestaurantProfile extends AppCompatActivity implements OnMapRe
             super.onPostExecute(respro);
             if (respro != null) {
                 name.setText(respro.getRestaurantName());
+                restaurantName = respro.getRestaurantName();
                 address.setText("   "+respro.getAddress());
                 telephone.setText(respro.getTelephone());
                 description.setText("   "+respro.getDescription());

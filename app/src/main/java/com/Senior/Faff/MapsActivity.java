@@ -13,6 +13,7 @@ import android.support.v4.app.ActivityCompat;
 import android.os.Bundle;
 
 import com.Senior.Faff.model.Party;
+import com.Senior.Faff.model.Restaurant;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationAvailability;
@@ -50,6 +51,8 @@ public class MapsActivity extends AppCompatActivity implements  OnMyLocationButt
     private LatLng myLocation;
     private Button buttonNone;
     private String getlocation;
+    private String roomName;
+    private String restaurantName;
     private TextView la,lo;
     protected Location mLastLocation;
     private static final int LOCATION_PERMISSION_REQUEST_CODE = 1;
@@ -76,6 +79,8 @@ public class MapsActivity extends AppCompatActivity implements  OnMyLocationButt
         Bundle args = getIntent().getExtras();
         if(args != null){
          getlocation  = args.getString(Party.Column.Location);
+            roomName = args.getString(Party.Column.Name,null);
+            restaurantName = args.getString(Restaurant.Column.RestaurantName,null);
         }
 
 
@@ -104,11 +109,15 @@ public class MapsActivity extends AppCompatActivity implements  OnMyLocationButt
             double a = Double.parseDouble(Eslat[0]);
             double b = Double.parseDouble(Eslat[1]);
             LatLng location = new LatLng(a,b);
-            mMap.addMarker(new MarkerOptions()
-                    .title("This Place")
-                    .position(location)
+        MarkerOptions marker = new MarkerOptions();
+        marker.position(location);
+        if(roomName!= null){
+            marker.title(roomName);
+        }else {
+            marker.title(restaurantName);
+        }
 
-            );
+       mMap.addMarker(marker);
             mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(location,13.0f));
 
 

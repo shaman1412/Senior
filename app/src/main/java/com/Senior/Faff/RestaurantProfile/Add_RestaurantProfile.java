@@ -465,9 +465,11 @@ public class Add_RestaurantProfile extends AppCompatActivity implements OnMapRea
                 lv.setAdapter(adapter);
             }else if(requestCode == MAP_REQUEST_CODE) {
                 getlocation = data.getStringExtra(Restaurant.Column.Location);
+                send_location = getlocation;
                String[] split = getlocation.split(",");
                LatLng lola =  new LatLng(Double.parseDouble(split[0]),Double.parseDouble(split[1]));
                 mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(lola,11));
+                mMap.clear();
                 MarkerOptions markerOptions = new MarkerOptions();
                 markerOptions.position(lola);
                 markerOptions.title("Current Position");

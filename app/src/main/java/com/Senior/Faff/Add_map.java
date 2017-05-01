@@ -134,7 +134,9 @@ if(getlocation!=null) {
                 // TODO Auto-generated method stub
                // LatLngs.add(point);
                 mMap.clear();
-                mMap.addMarker(new MarkerOptions().position(point));
+                mMap.addMarker(new MarkerOptions()
+                                .title("This Place")
+                                .position(point));
                 getlocation = point.latitude + "," + point.longitude;
                 Toast.makeText(Add_map.this,getlocation,Toast.LENGTH_SHORT).show();
             }
@@ -170,13 +172,18 @@ if(getlocation!=null) {
         if (location != null) {
             myLocation = new LatLng(location.getLatitude(),
                     location.getLongitude());
+            mMap.clear();
             mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(myLocation,
                     11));
-            MarkerOptions markerOptions = new MarkerOptions();
+/*            MarkerOptions markerOptions = new MarkerOptions();
             markerOptions.position(myLocation);
             markerOptions.title("Your Current Position");
             markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN));
-            mCurrLocationMarker = mMap.addMarker(markerOptions);
+            mCurrLocationMarker = mMap.addMarker(markerOptions);*/
+            getlocation = myLocation.latitude + "," + myLocation.longitude;
+            mMap.addMarker(new MarkerOptions()
+                    .title("This Place")
+                    .position(myLocation));
         }
 
         Toast.makeText(this, "MyLocation button clicked", Toast.LENGTH_SHORT).show();

@@ -62,7 +62,7 @@ public class Option_RestaurantFragment extends Fragment {
         mcontext =  getContext();
         listview = (ListView)root.findViewById(R.id.listView1);
 
-        new getData().execute();
+        new getData().execute(userid);
 
         add.setOnClickListener(new View.OnClickListener(){
             @Override
@@ -97,7 +97,7 @@ public class Option_RestaurantFragment extends Fragment {
         @Override
         protected Restaurant[] doInBackground(String... args) {
             StringBuilder result = new StringBuilder();
-            String url_api = "https://faff-1489402013619.appspot.com/res_list/all" ;
+            String url_api = "https://faff-1489402013619.appspot.com/res_list/own_restaurant/" + args[0] ;
             try {
                 URL url = new URL(url_api);
                 connection = (HttpURLConnection) url.openConnection();

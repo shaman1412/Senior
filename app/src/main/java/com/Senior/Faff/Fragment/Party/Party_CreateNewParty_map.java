@@ -164,7 +164,9 @@ public class Party_CreateNewParty_map extends AppCompatActivity implements OnMap
                 // TODO Auto-generated method stub
                 // LatLngs.add(point);
                 mMap.clear();
-                mMap.addMarker(new MarkerOptions().position(point));
+                mMap.addMarker(new MarkerOptions()
+                        .title("This Place")
+                        .position(point));
                 getlocation = point.latitude + "," + point.longitude;
                 Toast.makeText(Party_CreateNewParty_map.this,getlocation,Toast.LENGTH_SHORT).show();
             }
@@ -219,7 +221,7 @@ public class Party_CreateNewParty_map extends AppCompatActivity implements OnMap
                             11));
                     MarkerOptions markerOptions = new MarkerOptions();
                     markerOptions.position(myLocation);
-                    markerOptions.title("Current Position");
+                    markerOptions.title("This Place");
                     markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN));
                     mCurrLocationMarker = mMap.addMarker(markerOptions);
                     getlocation = location.getLatitude() + "," + location.getLongitude();
@@ -244,12 +246,13 @@ public class Party_CreateNewParty_map extends AppCompatActivity implements OnMap
             if (location != null) {
                 myLocation = new LatLng(location.getLatitude(),
                         location.getLongitude());
+                mMap.clear();
                 mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(myLocation,
                         11));
                 MarkerOptions markerOptions = new MarkerOptions();
                 markerOptions.position(myLocation);
-                markerOptions.title("Current Position");
-                markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN));
+                markerOptions.title("This Place");
+                //markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN));
                 mCurrLocationMarker = mMap.addMarker(markerOptions);
                 getlocation = location.getLatitude() + "," + location.getLongitude();
                 //description.setText(String.valueOf(myLocation.latitude));
