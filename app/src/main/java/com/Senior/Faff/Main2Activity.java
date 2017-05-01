@@ -313,10 +313,10 @@ public class Main2Activity extends AppCompatActivity {
                 Intent Home_intent = new Intent(context, InsertUserProfile.class);
                 startActivity(Home_intent);
                 break;
-            case R.id.NotificationUser:
+      /*      case R.id.NotificationUser:
                 Intent Home_intenta = new Intent(context, test_callservice.class);
                 startActivity(Home_intenta);
-                break;
+                break;*/
             case R.id.UserProfile:
                 Intent intent = new Intent(context, ShowUserprofile.class);
                 intent.putExtra(UserProfile.Column.UserID, userid);
@@ -328,10 +328,10 @@ public class Main2Activity extends AppCompatActivity {
                 b.putExtra(UserProfile.Column.UserID, userid);
                 startActivity(b);
                 break;
-            case R.id.ShowPromotion:
+  /*          case R.id.ShowPromotion:
                 Intent i = new Intent(context, ChatMainActivity.class);
                 startActivity(i);
-                break;
+                break;*/
             case R.id.RestaurantProfile:
                 Bundle bundle = new Bundle();
                 bundle.putString("userid", userid);
