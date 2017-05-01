@@ -103,13 +103,13 @@ public class PromotionActivity extends AppCompatActivity {
                     }
                 }
                 if (same == false && first == false) {
-            /*        type_list.add(text);
+                    type_list.add(text);
                     list_adapter = new List_type(type_list, mContext);
                     LinearLayoutManager mLayoutManager = new LinearLayoutManager(mContext);
                     mLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
                     mRecyclerView = (RecyclerView) findViewById(R.id.list_show);
                     mRecyclerView.setLayoutManager(mLayoutManager);
-                    mRecyclerView.setAdapter(list_adapter);*/
+                    mRecyclerView.setAdapter(list_adapter);
 
                 }
                 if (first == true) {
