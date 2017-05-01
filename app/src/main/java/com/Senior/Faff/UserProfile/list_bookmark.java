@@ -72,6 +72,21 @@ public class list_bookmark extends RecyclerView.Adapter<list_bookmark.ViewHolder
         holder.list_name.setText(list.get(position).getRestaurantName());
         holder.detail.setText(list.get(position).getDescription());
         holder.open_text.setText(list.get(position).getPeriod());
+
+        String url = list.get(position).getPicture();
+        String[] tmp = url.split(",");
+        if(tmp[0].contains(" "))
+        {
+            url = tmp[0].replaceAll(" ", "%20");
+            Log.i("TEST:", " bookmark url is : "+url);
+            Picasso.with(this.context).load(url).resize(200, 200).into(holder.image);
+        }
+        else
+        {
+            Log.i("TEST:", " bookmark url is : "+tmp[0]);
+            Picasso.with(this.context).load(tmp[0]).resize(200, 200).into(holder.image);
+        }
+
         holder.mix.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

@@ -3,6 +3,7 @@ package com.Senior.Faff.Fragment.Party;
 import android.content.Context;
 import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,6 +17,7 @@ import com.Senior.Faff.UserProfile.ShowUserprofile;
 import com.Senior.Faff.model.UserProfile;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
@@ -71,6 +73,20 @@ public class list_party_request extends RecyclerView.Adapter<list_party_request.
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, final int position) {
+
+        String url = list.get(position).getPicture();
+        String tmp[] = url.split(",");
+        if(tmp[0].contains(" "))
+        {
+            url = tmp[0].replaceAll(" ", "%20");
+            Log.i("TEST:", " list party member url ");
+            Picasso.with(mcontext).load(url).resize(150, 150).into(holder.image);
+        }
+        else
+        {
+            Log.i("TEST:", " list party member url ");
+            Picasso.with(mcontext).load(tmp[0]).resize(150, 150).into(holder.image);
+        }
 
         holder.list_name.setText(list.get(position).getName());
         holder.mix.setOnClickListener(new View.OnClickListener() {

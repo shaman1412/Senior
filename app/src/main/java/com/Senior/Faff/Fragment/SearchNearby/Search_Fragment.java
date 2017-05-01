@@ -103,7 +103,6 @@ public class Search_Fragment extends Fragment {
             } else {
                 Log.i("Request Status", "This is failure response status from server: " + responseCode);
                 return null;
-
             }
 
         }
@@ -111,14 +110,14 @@ public class Search_Fragment extends Fragment {
         @Override
         protected void onPostExecute(ArrayList<Restaurant> restaurant) {
             super.onPostExecute(restaurant);
-            if(restaurant != null){
+            if(restaurant.size() != 0){
                 Search_name_recycle recycle = new Search_name_recycle(restaurant);
                 RecyclerView recyclerView = (RecyclerView)getView().findViewById(R.id.search_re);
                 LinearLayoutManager mLayoutManager  = new LinearLayoutManager(getContext());
                 mLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
                 recyclerView.setLayoutManager(mLayoutManager);
                 recyclerView.setAdapter(recycle);
-
+                //Toast.makeText(getContext(),"found",Toast.LENGTH_SHORT).show();
             }
             else{
                 Toast.makeText(getContext(),"Restaurant's name wasn't found",Toast.LENGTH_SHORT).show();
