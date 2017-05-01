@@ -529,6 +529,7 @@ public class Show_party_profile extends AppCompatActivity implements OnMapReadyC
                     {
                         Userid = null;
                     }
+                    finish();
                     mDatabase.child(key).child("accept").setValue(Userid);
                 }
 

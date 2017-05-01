@@ -1,5 +1,6 @@
 package com.Senior.Faff.Fragment.Party;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
@@ -12,6 +13,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.Senior.Faff.LoginActivity;
 import com.Senior.Faff.R;
 import com.Senior.Faff.UserProfile.ShowUserprofile;
 import com.Senior.Faff.model.UserProfile;
@@ -120,6 +122,7 @@ public class list_party_member extends RecyclerView.Adapter<list_party_member.Vi
                     setuserid = null;
                 }
                 sendRequest(setuserid);
+
             }
         });
     }

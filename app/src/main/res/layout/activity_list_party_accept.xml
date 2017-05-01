@@ -6,31 +6,34 @@
     android:layout_height="wrap_content"
     android:orientation="vertical"
 >
+
     <LinearLayout
+        android:id="@+id/mix"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id= "@+id/mix"
-        android:orientation="horizontal"
         android:gravity="center"
+        android:orientation="horizontal"
         android:padding="10dp">
-    <ImageView
-        android:layout_width="80dp"
-        android:layout_height="80dp"
-        android:id ="@+id/image" />
-    <TextView
-        android:layout_marginLeft="50dp"
-        android:layout_width="0dp"
-        android:layout_weight="0.4"
-        android:layout_height="wrap_content"
-        android:text ="Name"
-        android:id="@+id/name"/>
 
-    <Button
+        <ImageView
+            android:id="@+id/image"
+            android:layout_width="80dp"
+            android:layout_height="80dp" />
 
-        android:layout_width="0dp"
-        android:layout_weight="0.3"
-        android:layout_height="wrap_content"
-        android:text="Kick"
-        android:id="@+id/kick"/>
-        </LinearLayout>
+        <TextView
+            android:id="@+id/name"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="50dp"
+            android:layout_weight="0.4"
+            android:text="Name" />
+
+        <Button
+
+            android:id="@+id/kick"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.3"
+            android:text="Kick" />
+    </LinearLayout>
 </LinearLayout>
