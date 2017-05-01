@@ -189,16 +189,10 @@
                 android:layout_centerHorizontal="true"
                 android:text="Edit"
                 android:background="@color/ButtonUserProfile"/>
-            <Button
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/add_promotion"
-                android:layout_centerHorizontal="true"
-                android:text="Add Promotion"
-                android:textColor="#ffffff"
-                android:background="@color/black_tab"/>
+
 
             <Button
+                android:layout_marginTop="10dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/delete"
