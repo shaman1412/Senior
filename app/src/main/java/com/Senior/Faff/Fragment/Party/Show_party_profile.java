@@ -401,7 +401,11 @@ public class Show_party_profile extends AppCompatActivity implements OnMapReadyC
                     FragmentManager fragmentManager = getSupportFragmentManager();
                     FragmentTransaction fragtran = fragmentManager.beginTransaction();
                     fragment_party.setArguments(bundle);
-                    fragtran.add(R.id.request, fragment_party).commit();
+                    try {
+                        fragtran.add(R.id.request, fragment_party).commit();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
                 }else{
 
                     View ec = findViewById(R.id.card_request);
