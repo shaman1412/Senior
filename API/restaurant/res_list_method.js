@@ -174,9 +174,7 @@ function  getdetail_resid (group_resid, cb) {
 
 function  search_name (res_name, cb) {
   const connection = getConnection();
-  if(group_resid != null){
-	const userid = group_resid.split(",");
-	let sql = 'SELECT * FROM `restaurant_profile`  WHERE  name = ' + res_name  ;
+	let sql = 'SELECT * FROM `restaurant_profile`  WHERE  name = ' + '\''+ res_name + '\''  ;
   connection.query(
     sql , (err, results) => {
       if (err) {
@@ -187,10 +185,7 @@ function  search_name (res_name, cb) {
     });
 
   connection.end();
-}else{
-	 cb(err);
-     return;
-}
+
 };
 
 
