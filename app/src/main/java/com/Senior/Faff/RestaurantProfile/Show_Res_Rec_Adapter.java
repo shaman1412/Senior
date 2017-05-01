@@ -43,12 +43,20 @@ public class Show_Res_Rec_Adapter extends RecyclerView.Adapter<Show_Res_Rec_Adap
         {
             String tmp = img_path[0].replaceAll(" ", "%20");
             Log.i("TEST: ", "image_pth is : "+tmp);
-            Picasso.with(context).load(tmp).resize(width, 1080).into(holder.imageView);
+            try {
+                Picasso.with(context).load(tmp).resize(width, 1080).into(holder.imageView);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
         else
         {
             Log.i("TEST: ", "image_pth is : "+img_path[position]);
-            Picasso.with(context).load(img_path[position]).resize(width, 1080).into(holder.imageView);
+            try {
+                Picasso.with(context).load(img_path[position]).resize(width, 1080).into(holder.imageView);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
     }
 

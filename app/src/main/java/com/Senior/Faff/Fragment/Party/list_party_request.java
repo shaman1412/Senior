@@ -80,12 +80,22 @@ public class list_party_request extends RecyclerView.Adapter<list_party_request.
         {
             url = tmp[0].replaceAll(" ", "%20");
             Log.i("TEST:", " list party member url ");
-            Picasso.with(mcontext).load(url).resize(150, 150).into(holder.image);
+            try {
+                Picasso.with(mcontext).load(url).resize(150, 150).into(holder.image);
+            }
+            catch (Exception ex)
+            {
+                ex.printStackTrace();
+            }
         }
         else
         {
             Log.i("TEST:", " list party member url ");
-            Picasso.with(mcontext).load(tmp[0]).resize(150, 150).into(holder.image);
+            try {
+                Picasso.with(mcontext).load(tmp[0]).resize(150, 150).into(holder.image);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
 
         holder.list_name.setText(list.get(position).getName());

@@ -140,7 +140,11 @@ public class ShowUserprofile extends AppCompatActivity {
                     String img_path_tmp = userpro.getPicture();
                     String[] img_path = img_path_tmp.split(",");
 
-                    Picasso.with(mcontext).load(img_path[0]).resize(width, 1080).into(image);
+                    try {
+                        Picasso.with(mcontext).load(img_path[0]).resize(width, 1080).into(image);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
 
                     switch (userpro.getGender()) {
                         case 0:

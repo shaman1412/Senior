@@ -33,6 +33,7 @@ public class Customlistview_addvice_adapter extends ArrayAdapter<Restaurant> {
     public Customlistview_addvice_adapter(Context context, int tv, Restaurant[] res_name, int[] res_id) {
         super(context, tv, res_name);
         this.res_name = res_name;
+        this.mcontext = context;
         inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
     }
@@ -66,11 +67,28 @@ public class Customlistview_addvice_adapter extends ArrayAdapter<Restaurant> {
         if(img_path[0].contains(" "))
         {
             String tmp = img_path[0].replaceAll(" ", "%20");
-            builder.build().load(tmp).resize(300, 300).into(viewHolder.imageView);
+//            builder.build().cancelRequest(viewHolder.imageView);
+            try{
+                Picasso.with(this.mcontext).cancelRequest(viewHolder.imageView);
+                Picasso.with(this.mcontext).load(tmp).resize(300, 300).into(viewHolder.imageView);
+            }
+            catch (Exception e){
+                e.printStackTrace();
+            }
         }
         else
         {
-            builder.build().load(img_path[0]).resize(300, 300).into(viewHolder.imageView);
+            try
+            {
+                Picasso.with(this.mcontext).cancelRequest(viewHolder.imageView);
+                Picasso.with(this.mcontext).load(img_path[0]).resize(300, 300).into(viewHolder.imageView);
+            }
+            catch (Exception e){
+                e.printStackTrace();
+            }
+
+//            builder.build().cancelRequest(viewHolder.imageView);
+//            builder.build().load(img_path[0]).resize(300, 300).into(viewHolder.imageView);
         }
 
 

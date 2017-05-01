@@ -57,7 +57,14 @@ public class Chat_Party_Adapter extends BaseAdapter {
         TextView date_time = (TextView) convertView.findViewById(R.id.date_time_chat_list);
 
         String path = list_chat.get(position).getImage_path();
-        Picasso.with(mContext).load(path).resize(120, 120).into(img);
+        try {
+            Picasso.with(mContext).cancelRequest(img);
+            Picasso.with(mContext).load(path).resize(120, 120).into(img);
+        }
+        catch (Exception  ex)
+        {
+            ex.printStackTrace();
+        }
 
         username.setText(list_chat.get(position).getUsername());
         msg.setText(list_chat.get(position).getMessage());

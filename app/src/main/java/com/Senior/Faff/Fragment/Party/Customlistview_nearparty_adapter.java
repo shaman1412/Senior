@@ -84,7 +84,15 @@ public class Customlistview_nearparty_adapter extends BaseAdapter {
                     // Pass it to Picasso to download, show in ImageView and caching
                     Log.i("TEST:", " count : "+ccc);
                     ccc++;
-                    Picasso.with(mContext).load(uri.toString()).resize(250, 250).into(imageView);
+                    try
+                    {
+                        Picasso.with(mContext).cancelRequest(imageView);
+                        Picasso.with(mContext).load(uri.toString()).resize(250, 250).into(imageView);
+                    }
+                    catch (Exception ex)
+                    {
+                        ex.printStackTrace();
+                    }
                     Log.i("TEST:", " uri " + " : " + uri.toString() + " postition : "+position);
 
                 }

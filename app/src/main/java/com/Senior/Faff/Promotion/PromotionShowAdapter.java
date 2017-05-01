@@ -62,7 +62,12 @@ public class PromotionShowAdapter extends BaseAdapter{
         ImageView imageView = (ImageView)convertView.findViewById(R.id.imageView1);
         String url = promotions.get(position).getPromotionpictureurl().split(",")[0];
 
-        Picasso.with(mContext).load(url).into(imageView);
+        try {
+            Picasso.with(mContext).cancelRequest(imageView);
+            Picasso.with(mContext).load(url).into(imageView);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
         return convertView;
     }

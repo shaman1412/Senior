@@ -186,7 +186,13 @@ public class Show_RestaurantProfile extends AppCompatActivity implements OnMapRe
                 Comment_RestaurantFragment cmf = new Comment_RestaurantFragment();
                 cmf.setArguments(b);
                 FragmentManager fm = getSupportFragmentManager();
-                fm.beginTransaction().replace(R.id.comment_restaurant_content, cmf).commit();
+                try {
+                    fm.beginTransaction().replace(R.id.comment_restaurant_content, cmf).commit();
+                }
+                catch (Exception ex)
+                {
+                    ex.printStackTrace();
+                }
             }
         });
         getuser.execute(id);
