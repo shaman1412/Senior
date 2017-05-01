@@ -7,10 +7,10 @@
             android:id="@+id/Home"
             android:icon="@drawable/home_drawer_home"
             android:title="Home" />
-       <item
+<!--       <item
             android:id="@+id/NotificationUser"
             android:icon="@drawable/notification_drawer_home"
-            android:title="Notification" />
+            android:title="Notification" />-->
         <item
             android:id="@+id/UserProfile"
             android:icon="@drawable/userpro_drawer_home"
@@ -19,10 +19,12 @@
             android:id="@+id/Favourite"
             android:icon="@drawable/favourite_drawer_home"
             android:title="Favourite Restaurant" />
+<!--
        <item
             android:id="@+id/ShowPromotion"
             android:icon="@drawable/history_drawer_home"
             android:title="Show Promotion" />
+-->
 
     </group>
     <item android:title="Restaurant">
@@ -32,14 +34,14 @@
                     android:icon="@drawable/restaurantpro_drawer_home"
                     android:id="@+id/RestaurantProfile"
                     android:title="Restaurant Profile" />
-                <item
+<!--                <item
                     android:icon="@drawable/restaurantpro_drawer_home"
                     android:id="@+id/AddPromotion"
-                    android:title="Add Promotion" />
-               <item
+                    android:title="Add Promotion" />-->
+   <!--            <item
                     android:icon="@drawable/notification_drawer_home"
                     android:id="@+id/NotificationRe"
-                    android:title="Notification" />
+                    android:title="Notification" />-->
             </group>
         </menu>
     </item>
