@@ -123,7 +123,10 @@
 
         <service android:name=".server_service" />
 
-        <activity android:name=".Fragment.Party.Room_Recycler"></activity>
+        <activity android:name=".Fragment.Party.Room_Recycler" />
+        <activity android:name=".Fragment.Party.Join_Recycler" />
+        <activity android:name=".Fragment.Party.Request_Recycler" />
+        <activity android:name=".Fragment.Party.Created_Recycler"></activity>
     </application>
 
 </manifest>

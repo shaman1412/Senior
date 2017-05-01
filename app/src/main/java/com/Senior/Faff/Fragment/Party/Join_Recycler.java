@@ -11,26 +11,22 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.Senior.Faff.R;
-import com.Senior.Faff.UserProfile.ShowUserprofile;
 import com.Senior.Faff.model.Party;
 import com.Senior.Faff.model.UserProfile;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
-public class Room_Recycler extends RecyclerView.Adapter<Room_Recycler.ViewHolder>{
+public class Join_Recycler extends RecyclerView.Adapter<Join_Recycler.ViewHolder>{
 
     Context mContext;
     Context context;
@@ -62,7 +58,7 @@ public class Room_Recycler extends RecyclerView.Adapter<Room_Recycler.ViewHolder
         }
     }
 
-    public Room_Recycler(Context mcontext, ArrayList<Party> room_name, String userid) {
+    public Join_Recycler(Context mcontext, ArrayList<Party> room_name, String userid) {
         this.mContext = mcontext;
         this.list = room_name;
         this.userid = userid;
@@ -70,17 +66,17 @@ public class Room_Recycler extends RecyclerView.Adapter<Room_Recycler.ViewHolder
 
 
     @Override
-    public Room_Recycler.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public Join_Recycler.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.activity_room__recycler, parent, false);
-        ViewHolder vh = new ViewHolder(view);
+                .inflate(R.layout.activity_join__recycler, parent, false);
+        Join_Recycler.ViewHolder vh = new Join_Recycler.ViewHolder(view);
         context = view.getContext();
         return vh;
 
     }
 
     @Override
-    public void onBindViewHolder(final ViewHolder holder, final int position) {
+    public void onBindViewHolder(final Join_Recycler.ViewHolder holder, final int position) {
 
         final String pic_url = list.get(position).getPicture();
         if (pic_url != null) {
@@ -103,7 +99,7 @@ public class Room_Recycler extends RecyclerView.Adapter<Room_Recycler.ViewHolder
                     {
                         ex.printStackTrace();
                     }
-                    Log.i("TEST:", " room recycler uri " + " : " + uri.toString() + " postition : "+position);
+                    Log.i("TEST:", " join recycler uri " + " : " + uri.toString() + " postition : "+position);
 
                 }
             }).addOnFailureListener(new OnFailureListener() {
@@ -111,7 +107,7 @@ public class Room_Recycler extends RecyclerView.Adapter<Room_Recycler.ViewHolder
                 public void onFailure(@NonNull Exception exception) {
                     // Handle any errors
 
-                    Log.i("TEST: ", " room recycler in List err " +  " : " + exception.toString());
+                    Log.i("TEST: ", " join recycler in List err " +  " : " + exception.toString());
                     exception.printStackTrace();
                 }
             });

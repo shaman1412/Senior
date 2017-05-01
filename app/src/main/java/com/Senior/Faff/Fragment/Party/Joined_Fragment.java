@@ -5,6 +5,8 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -33,7 +35,7 @@ import java.util.Map;
 public class Joined_Fragment extends Fragment {
 
 
-    private Customlistview_nearparty_adapter cus;
+    private Join_Recycler cus;
     private boolean isFirst = true;
 
     public Joined_Fragment() {
@@ -43,7 +45,9 @@ public class Joined_Fragment extends Fragment {
     private Context mcontext;
 
     private ArrayList<Party> re_list;
-    private ListView listview;
+//    private ListView listview;
+    private RecyclerView listview;
+
     private ArrayList<Party> party_list;
     private int gender,age;
     private String userid;
@@ -65,14 +69,14 @@ public class Joined_Fragment extends Fragment {
         }
         mcontext = getContext();
         re_list = new  ArrayList<>();
-        listview = (ListView) root.findViewById(R.id.listView12);
+        listview = (RecyclerView) root.findViewById(R.id.listView12);
 
 
         new getData_j().execute();
         return  root;
     }
 
-    public void showlist_j(ListView listview, ArrayList<Party> Pary_list, int[] resId, int gender, int age) {
+    public void showlist_j(RecyclerView listview, ArrayList<Party> Pary_list, int[] resId, int gender, int age) {
 
         Map<String, String> rule_gender = new HashMap<>();
         if(gender == 0){
@@ -90,18 +94,21 @@ public class Joined_Fragment extends Fragment {
 
                 debug("In Joined : ");
 
-                cus = new Customlistview_nearparty_adapter(mcontext, re_list);
+                cus = new Join_Recycler(mcontext, re_list, userid);
+                LinearLayoutManager mLayoutManager  = new LinearLayoutManager(mcontext);
+                mLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
+                listview.setLayoutManager(mLayoutManager);
                 listview.setAdapter(cus);
 
 //              listview.setAdapter(new Customlistview_nearparty_adapter(mcontext, re_list));
-                listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                    public void onItemClick(AdapterView<?> arg0, View view, int position, long id) {
-                        Intent intent = new Intent(mcontext, Show_party_profile.class);
-                        intent.putExtra(Party.Column.RoomID, re_list.get(position).getRoomID());
-                        intent.putExtra(UserProfile.Column.UserID, userid);
-                        startActivity(intent);
-                    }
-                });
+//                listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+//                    public void onItemClick(AdapterView<?> arg0, View view, int position, long id) {
+//                        Intent intent = new Intent(mcontext, Show_party_profile.class);
+//                        intent.putExtra(Party.Column.RoomID, re_list.get(position).getRoomID());
+//                        intent.putExtra(UserProfile.Column.UserID, userid);
+//                        startActivity(intent);
+//                    }
+//                });
             }
         }
         else{
