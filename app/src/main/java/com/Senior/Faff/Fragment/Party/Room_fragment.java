@@ -289,12 +289,13 @@ public class Room_fragment extends Fragment implements GoogleApiClient.OnConnect
         if (Pary_list != null) {
             re_list = calculatedistance(900, rule_gender, rule_age, Pary_list); // 900 meter
             if (re_list != null) {
-                Log.i("TEST:", "size re_list : "+re_list.size());
+
+                Log.i("TEST:", " debug : In Room : ");
 //                listview.setAdapter(new Customlistview_nearparty_adapter(mcontext, 0, re_list, resId));
-
-
+                
                 cus = new Customlistview_nearparty_adapter(mcontext, re_list);
                 listview.setAdapter(cus);
+
 
                 listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                     public void onItemClick(AdapterView<?> arg0, View view, int position, long id) {

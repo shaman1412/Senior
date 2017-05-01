@@ -96,6 +96,7 @@ public class Created_Fragment extends Fragment {
                 cus = new Customlistview_nearparty_adapter(mcontext, re_list);
                 listview.setAdapter(cus);
 
+
                 //listview.setAdapter(new Customlistview_nearparty_adapter(mcontext, re_list));
                 listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                     public void onItemClick(AdapterView<?> arg0, View view, int position, long id) {

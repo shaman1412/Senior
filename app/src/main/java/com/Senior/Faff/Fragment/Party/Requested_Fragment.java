@@ -88,8 +88,10 @@ public class Requested_Fragment extends Fragment {
 
                 debug("In request : ");
 
+
                 cus = new Customlistview_nearparty_adapter(mcontext, re_list);
                 listview.setAdapter(cus);
+
 
 
 //                listview.setAdapter(new Customlistview_nearparty_adapter(mcontext, re_list));

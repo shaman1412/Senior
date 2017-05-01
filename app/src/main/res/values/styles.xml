@@ -58,6 +58,11 @@
 
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
+    <style name="AppTheme.Button" parent="Widget.AppCompat.Button.Colored">
+        <item name="colorButtonNormal">#2196f3</item>
+        <item name="android:textColor">@color/backgroundpro</item>
+    </style>
+
     <!--   <style name="BottomTab_main" parent="Widget.Design.BottomNavigationView">
         <item name="colorTab">#000000</item>
 

@@ -70,6 +70,8 @@ public class Customlistview_nearparty_adapter extends BaseAdapter {
         TextView currentpeople = (TextView) convertView.findViewById(R.id.people);
         TextView detail = (TextView) convertView.findViewById(R.id.detail);
 
+        imageView.getTag(position);
+
         final String pic_url = room_name.get(position).getPicture();
         if (pic_url != null) {
             String[] tmp = pic_url.split("/");

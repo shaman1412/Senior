@@ -33,6 +33,7 @@ import com.Senior.Faff.Main2Activity;
 import com.Senior.Faff.MapsActivity;
 import com.Senior.Faff.R;
 import com.Senior.Faff.UserProfile.ShowUserprofile;
+import com.Senior.Faff.chat.Chat_Party;
 import com.Senior.Faff.model.Party;
 import com.Senior.Faff.model.Restaurant;
 import com.Senior.Faff.model.UserProfile;
@@ -95,6 +96,11 @@ public class Show_party_profile extends AppCompatActivity implements OnMapReadyC
     private TextView cmember,maxmember;
     private  Button enter_chat,leave_group;
     private String send_location;
+
+    private String room_name;
+    private String viewer_name;
+    private String room_image_path;
+    private String viewer_image;
 
     @Override
     protected void onResume() {
@@ -236,6 +242,7 @@ public class Show_party_profile extends AppCompatActivity implements OnMapReadyC
         }
     }
     public void  setvalue(final Party partypro) {
+        room_name = partypro.getName();
         name.setText(partypro.getName());
         description.setText("       "+partypro.getDescription());
         appointment.setText("       "+partypro.getAppointment());
@@ -277,6 +284,7 @@ public class Show_party_profile extends AppCompatActivity implements OnMapReadyC
             load.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                 @Override
                 public void onSuccess(Uri uri) {
+                    room_image_path = uri.toString();
                     Picasso.with(mcontext).load(uri.toString()).resize(500,500).into(party_image);
                     if(party_image.getDrawable() == null)
                     {
@@ -303,7 +311,6 @@ public class Show_party_profile extends AppCompatActivity implements OnMapReadyC
                 ArrayList<String[]> bitmap_url_list = new ArrayList<>();
 
                 String[] arr_url = item.getString("picture").split(",");
-
                 if(arr_url!=null)
                 {
                     Picasso.with(mcontext).load(arr_url[0]).resize(500, 500).into(create_image);
@@ -313,6 +320,22 @@ public class Show_party_profile extends AppCompatActivity implements OnMapReadyC
         String host_id = partypro.getCreateid();
         sh.execute(host_id);
 
+        ShowParty sh2 = new ShowParty(new ShowParty.AsyncResponse() {
+            @Override
+            public void processFinish(String output) throws JSONException {
+                JSONObject item = new JSONObject(output);
+
+                viewer_name = item.get("name").toString();
+
+                ArrayList<String[]> bitmap_url_list2 = new ArrayList<>();
+                String[] arr_url2 = item.getString("picture").split(",");
+                if(arr_url2!=null)
+                {
+                    viewer_image = arr_url2[0];
+                }
+            }
+        });
+        sh2.execute(own_userid);
 
         status.setText("None");
         status.setTextColor(Color.GRAY);
@@ -460,6 +483,15 @@ public class Show_party_profile extends AppCompatActivity implements OnMapReadyC
         enter_chat.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                Log.i("TEST:", " user name is : "+viewer_name+" room_name is : "+room_name+" room_image_path is : "+room_image_path+" viewer_omage_path is : "+viewer_image);
+
+                Intent i = new Intent(mcontext, Chat_Party.class);
+                i.putExtra("user_name", viewer_name);
+                i.putExtra("room_name", room_name);
+                i.putExtra("room_image", room_image_path);
+                i.putExtra("user_image", viewer_image);
+                startActivity(i);
 
             }
         });
