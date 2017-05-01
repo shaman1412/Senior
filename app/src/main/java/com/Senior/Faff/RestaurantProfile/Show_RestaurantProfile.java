@@ -30,8 +30,10 @@ import android.widget.Toast;
 
 import com.Senior.Faff.Fragment.Party.Show_party_profile;
 import com.Senior.Faff.MapsActivity;
+import com.Senior.Faff.Promotion.PromotionActivity;
 import com.Senior.Faff.R;
 import com.Senior.Faff.UserProfile.List_typeNodel;
+import com.Senior.Faff.chat.ChatMainActivity;
 import com.Senior.Faff.model.Bookmark;
 import com.Senior.Faff.model.BookmarkList;
 import com.Senior.Faff.model.Party;
@@ -93,6 +95,8 @@ public class Show_RestaurantProfile extends AppCompatActivity implements OnMapRe
     private BookmarkList book;
     private String send_location;
     private String ownerid;
+    private Button add_promotion;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -111,6 +115,8 @@ public class Show_RestaurantProfile extends AppCompatActivity implements OnMapRe
 
 
         mcontext = getApplicationContext();
+
+        add_promotion = (Button) findViewById(R.id.add_promotion);
         name = (TextView)findViewById(R.id.name);
         telephone = (TextView)findViewById(R.id.telephone);
         period = (TextView)findViewById(R.id.period);
@@ -122,6 +128,13 @@ public class Show_RestaurantProfile extends AppCompatActivity implements OnMapRe
         fav_click = (Button)findViewById(R.id.fav_click);
         fav_unclick = (Button)findViewById(R.id.fav_unclick);
 
+        add_promotion.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(mcontext, PromotionActivity.class);
+                startActivity(intent);
+            }
+        });
 
         rate = (RatingBar)findViewById(R.id.rate);
         text_rate = (TextView)findViewById(R.id.text_rate);
