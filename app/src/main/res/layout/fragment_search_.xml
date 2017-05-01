@@ -1,10 +1,12 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context="com.Senior.Faff.Fragment.SearchNearby.Search_Fragment">
 
     <!-- TODO: Update blank fragment layout -->
+
 <LinearLayout
     android:layout_width="match_parent"
     android:layout_height="70dp"
@@ -22,6 +24,7 @@
         android:layout_width="220dp"
         android:layout_height="wrap_content"
         android:background="@drawable/search_box"
+        android:id="@+id/search_edit"
         />
     <TextView
         android:layout_width="wrap_content"
@@ -30,7 +33,17 @@
         android:padding="5dp"
         android:text="Search"
         android:textColor="#000000"
-        android:background="@drawable/search_box"/>
+        android:background="@drawable/search_box"
+        android:id="@+id/serach_button"
+        />
+</LinearLayout>
+    <android.support.v7.widget.RecyclerView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/search_re"
+       >
+
+    </android.support.v7.widget.RecyclerView>
+
 
 </LinearLayout>
-</FrameLayout>
