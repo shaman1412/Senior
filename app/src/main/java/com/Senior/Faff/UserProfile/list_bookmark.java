@@ -32,7 +32,7 @@ public class list_bookmark extends RecyclerView.Adapter<list_bookmark.ViewHolder
     private ArrayList<Restaurant> list ;
     private Context context;
     private String key;
-    private String  setuserid;
+    private String  userid;
     private  Context mcontext;
     private boolean host;
     public static class ViewHolder extends RecyclerView.ViewHolder {
@@ -52,11 +52,11 @@ public class list_bookmark extends RecyclerView.Adapter<list_bookmark.ViewHolder
         }
     }
 
-    public list_bookmark(ArrayList<Restaurant> list, Context context){
+    public list_bookmark(ArrayList<Restaurant> list, Context context,String userid){
         this.list = list;
         this.context = context;
-        this.key = key;
-        this.host = host;
+        this.userid = userid;
+
     }
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType ) {
@@ -100,6 +100,7 @@ public class list_bookmark extends RecyclerView.Adapter<list_bookmark.ViewHolder
             public void onClick(View v) {
                 Intent intent = new Intent(mcontext, Show_RestaurantProfile.class);
                 intent.putExtra(Restaurant.Column.ResID,list.get(position).getresId());
+                intent.putExtra(UserProfile.Column.UserID,userid);
                 mcontext.startActivity(intent);
             }
         });

@@ -140,7 +140,7 @@ public class Show_RestaurantProfile extends AppCompatActivity implements OnMapRe
         rate = (RatingBar)findViewById(R.id.rate);
         text_rate = (TextView)findViewById(R.id.text_rate);
         fab = (FloatingActionButton)findViewById(R.id.fab);
-
+        book = new BookmarkList();
         Bundle args = getIntent().getExtras();
         if(args != null) {
             userid = args.getString(Restaurant.Column.UserID, null);
@@ -194,6 +194,49 @@ public class Show_RestaurantProfile extends AppCompatActivity implements OnMapRe
                 {
                     ex.printStackTrace();
                 }
+            }
+        });
+        fav_click.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String[] list   =  book.getBookmarkID().split(",");
+                boolean first = true;
+                String getlist = null;
+                for(int i = 0; i<list.length; i++){
+                    if(!resid.equals(list[i])) {
+                        if(first) {
+                            getlist = list[i];
+                            first = false;
+                        }
+                        else{
+                            getlist = getlist + "," + list[i];
+                        }
+                    }
+                }
+                DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference().child("All_Bookmark");
+                mDatabase.child(key).child("bookmarkID").setValue(getlist);
+                fav_click.setEnabled(false);
+                fav_unclick.setEnabled(true);
+                Toast.makeText(mcontext,"Remove to Whitelist",Toast.LENGTH_SHORT).show();
+            }});
+
+        fav_unclick.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String getlist = null;
+                if(book.getBookmarkID() != null){
+                    getlist =  book.getBookmarkID() + "," + resid;
+                    DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference().child("All_Bookmark");
+                    mDatabase.child(key).child("bookmarkID").setValue(getlist);
+                }else{
+                    book.setBookmarkID(resid);
+                    book.setUserID(userid);
+                    DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference().child("All_Bookmark");
+                    mDatabase.push().setValue(book);
+                }
+                fav_click.setEnabled(true);
+                fav_unclick.setEnabled(false);
+                Toast.makeText(mcontext,"Add to Whitelist",Toast.LENGTH_SHORT).show();
             }
         });
         getuser.execute(id);
@@ -471,45 +514,6 @@ public class Show_RestaurantProfile extends AppCompatActivity implements OnMapRe
         }
 
 
-        fav_click.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String[] list   =  book.getBookmarkID().split(",");
-                boolean first = true;
-                String getlist = null;
-                for(int i = 0; i<list.length; i++){
-                    if(!resid.equals(list[i])) {
-                        if(first) {
-                            getlist = list[i];
-                            first = false;
-                        }
-                        else{
-                            getlist = getlist + "," + list[i];
-                        }
-                    }
-                }
-                DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference().child("All_Bookmark");
-                mDatabase.child(key).child("bookmarkID").setValue(getlist);
-                fav_click.setEnabled(false);
-                fav_unclick.setEnabled(true);
-                Toast.makeText(mcontext,"Remove to Whitelist",Toast.LENGTH_SHORT).show();
-            }});
 
-        fav_unclick.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String getlist = null;
-                if(book.getBookmarkID() != null){
-                     getlist =  book.getBookmarkID() + "," + resid;
-                }else{
-                    getlist = resid;
-                }
-                DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference().child("All_Bookmark");
-                mDatabase.child(key).child("bookmarkID").setValue(getlist);
-                fav_click.setEnabled(true);
-                fav_unclick.setEnabled(false);
-                Toast.makeText(mcontext,"Add to Whitelist",Toast.LENGTH_SHORT).show();
-            }
-        });
     }
 }

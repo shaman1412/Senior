@@ -158,7 +158,7 @@ public class favorite_restaurant extends AppCompatActivity {
             super.onPostExecute(userpro);
             if (userpro != null) {
 
-                list_adapter = new list_bookmark(userpro, mcontext);
+                list_adapter = new list_bookmark(userpro, mcontext,userid);
                 LinearLayoutManager mLayoutManager  = new LinearLayoutManager(mcontext);
                 mLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
                 mRecyclerView.setLayoutManager(mLayoutManager);
