@@ -188,7 +188,21 @@ function  search_name (res_name, cb) {
 
 };
 
+function  get_favorite (userid, cb) {
+  const connection = getConnection();
+	let sql = 'SELECT * FROM `restaurant_profile`  WHERE  userid = ' + '\''+ userid + '\''  ;
+  connection.query(
+    sql , (err, results) => {
+      if (err) {
+        cb(err);
+        return;
+      }
+      cb(null, results);
+    });
 
+  connection.end();
+
+};
 
 module.exports = {
  nearby_list:  nearby_list,
@@ -196,5 +210,6 @@ module.exports = {
  top_list : top_list,
  recommend_list : recommend_list,
  getdetail_resid : getdetail_resid,
- search_name : search_name
+ search_name : search_name,
+ get_favorite : get_favorite
 };

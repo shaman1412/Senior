@@ -76,6 +76,16 @@ router.get('/search_name/:res_name' , (req, res, next )=>{
 	})
 })
 
+router.get('/own_restaurant/:userid' , (req, res, next )=>{
+	getModel().get_favorite(req.params.userid , (err,entity) =>{
+		if(err){
+			next(err);
+			return;
+		}
+		res.json(entity);
+	})
+})
+
 
 
 
