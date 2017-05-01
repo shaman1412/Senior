@@ -211,8 +211,8 @@
                     android:id="@+id/showcreate">
                     <ImageView
                         android:id="@+id/create_image"
-                        android:layout_width="70dp"
-                        android:layout_height="60dp"
+                        android:layout_width="80dp"
+                        android:layout_height="80dp"
                         android:layout_marginLeft="10dp"
 
                         />

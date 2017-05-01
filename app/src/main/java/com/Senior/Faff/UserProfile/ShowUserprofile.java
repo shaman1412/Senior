@@ -218,14 +218,14 @@ public class ShowUserprofile extends AppCompatActivity {
         @Override
         protected void onPostExecute(String result) {
             if (result != "") {
-                Toast.makeText(mcontext, result, Toast.LENGTH_LONG).show();
+                //Toast.makeText(mcontext, result, Toast.LENGTH_LONG).show();
                 try {
                     delegate.processFinish(result);
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
             } else {
-                Toast.makeText(mcontext, "Fail to retrieve from server", Toast.LENGTH_SHORT).show();
+                //Toast.makeText(mcontext, "Fail to retrieve from server", Toast.LENGTH_SHORT).show();
             }
         }
     }

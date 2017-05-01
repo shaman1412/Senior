@@ -173,7 +173,7 @@ public class Show_RestaurantProfile extends AppCompatActivity implements OnMapRe
                 Comment_RestaurantFragment cmf = new Comment_RestaurantFragment();
                 cmf.setArguments(b);
                 FragmentManager fm = getSupportFragmentManager();
-                fm.beginTransaction().replace(R.id.comment_restaurant_content, cmf).addToBackStack("frag_show_restaurant").commit();
+                fm.beginTransaction().replace(R.id.comment_restaurant_content, cmf).commit();
             }
         });
         getuser.execute(id);
@@ -392,14 +392,14 @@ public class Show_RestaurantProfile extends AppCompatActivity implements OnMapRe
         @Override
         protected void onPostExecute(String result) {
             if (result != "") {
-                Toast.makeText(mcontext, result, Toast.LENGTH_LONG).show();
+                //Toast.makeText(mcontext, result, Toast.LENGTH_LONG).show();
                 try {
                     delegate.processFinish(result);
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
             } else {
-                Toast.makeText(mcontext, "Fail", Toast.LENGTH_SHORT).show();
+                //Toast.makeText(mcontext, "Fail", Toast.LENGTH_SHORT).show();
             }
         }
     }

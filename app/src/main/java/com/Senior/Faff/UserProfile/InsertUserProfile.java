@@ -298,9 +298,9 @@ public class InsertUserProfile extends AppCompatActivity {
         protected void onPostExecute(String result) {
             if (result != "") {
                 finish();
-                Toast.makeText(mcontext, result, Toast.LENGTH_LONG).show();
+                //Toast.makeText(mcontext, result, Toast.LENGTH_LONG).show();
             } else {
-                Toast.makeText(mcontext, "Fail", Toast.LENGTH_SHORT).show();
+               // Toast.makeText(mcontext, "Fail", Toast.LENGTH_SHORT).show();
             }
         }
     }

@@ -116,14 +116,14 @@ public class PromotionShow extends AppCompatActivity{
         @Override
         protected void onPostExecute(String result) {
             if (result != "") {
-                Toast.makeText(mContext, result, Toast.LENGTH_LONG).show();
+                //Toast.makeText(mContext, result, Toast.LENGTH_LONG).show();
                 try {
                     delegate.processFinish(result);
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
             } else {
-                Toast.makeText(mContext, "Fail", Toast.LENGTH_SHORT).show();
+                //Toast.makeText(mContext, "Fail", Toast.LENGTH_SHORT).show();
             }
         }
     }

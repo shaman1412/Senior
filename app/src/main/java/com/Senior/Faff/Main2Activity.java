@@ -158,8 +158,8 @@ public class Main2Activity extends AppCompatActivity {
                 // signed in user can be handled in the listener.
                 if (!task.isSuccessful()) {
                     Log.i("TEST:", "signInAnonymously", task.getException());
-                    Toast.makeText(context, "Authentication failed.",
-                            Toast.LENGTH_SHORT).show();
+//                    Toast.makeText(context, "Authentication failed.",
+//                            Toast.LENGTH_SHORT).show();
                 }
             }
         });
