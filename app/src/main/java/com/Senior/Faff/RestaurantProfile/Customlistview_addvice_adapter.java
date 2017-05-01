@@ -38,17 +38,17 @@ public class Customlistview_addvice_adapter extends ArrayAdapter<Restaurant> {
     }
 
     public View getView(int position, View convertView, ViewGroup parent) {
-        ImageView imageView = null;
+        //ImageView imageView = null;
         ViewHolder viewHolder;
 
         if (convertView == null) {
             convertView = inflater.inflate(R.layout.list_view_advice_restaurant, parent, false);
-            imageView = (ImageView) convertView.findViewById(R.id.image);
+//            imageView = (ImageView) convertView.findViewById(R.id.image);
             viewHolder = new ViewHolder(convertView);
             convertView.setTag(viewHolder);
         } else {
             viewHolder = (ViewHolder) convertView.getTag();
-            imageView = (ImageView) convertView.findViewById(R.id.image);
+//            imageView = (ImageView) convertView.findViewById(R.id.image);
         }
 
         String[] img_path = res_name[position].getPicture().split(",");
@@ -66,11 +66,11 @@ public class Customlistview_addvice_adapter extends ArrayAdapter<Restaurant> {
         if(img_path[0].contains(" "))
         {
             String tmp = img_path[0].replaceAll(" ", "%20");
-            builder.build().load(tmp).resize(300, 300).into(imageView);
+            builder.build().load(tmp).resize(300, 300).into(viewHolder.imageView);
         }
         else
         {
-            builder.build().load(img_path[0]).resize(300, 300).into(imageView);
+            builder.build().load(img_path[0]).resize(300, 300).into(viewHolder.imageView);
         }
 
 
@@ -85,11 +85,14 @@ public class Customlistview_addvice_adapter extends ArrayAdapter<Restaurant> {
         public TextView ResName;
         public TextView detail;
         public TextView period;
+        private ImageView imageView;
+
 
         public ViewHolder(View convertView) {
             ResName = (TextView) convertView.findViewById(R.id.textView1);
             detail = (TextView) convertView.findViewById(R.id.detail);
             period = (TextView) convertView.findViewById(R.id.open_text);
+            imageView = (ImageView) convertView.findViewById(R.id.image);
         }
     }
 
