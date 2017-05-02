@@ -63,8 +63,17 @@ public class PromotionShowAdapter extends BaseAdapter{
         String url = promotions.get(position).getPromotionpictureurl().split(",")[0];
 
         try {
-            Picasso.with(mContext).cancelRequest(imageView);
-            Picasso.with(mContext).load(url).into(imageView);
+            if(url.contains(" "))
+            {
+                Picasso.with(mContext).cancelRequest(imageView);
+                String tmp = url.replaceAll(" ", "%20");
+                Picasso.with(mContext).load(tmp).into(imageView);
+            }
+            else
+            {
+                Picasso.with(mContext).cancelRequest(imageView);
+                Picasso.with(mContext).load(url).into(imageView);
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }

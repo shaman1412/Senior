@@ -29,18 +29,18 @@ public class Promotion {
     private String promotionenddate;
     private String promotiondetail;
     private String promotionlocation;
-    private String promotiontype;
+//    private String promotiontype;
     private String promotionpictureurl;
 
     // Constructor
 
-    public Promotion(String promotionname, String promotionpictureurl, String promotiontype, String promotionstartdate, String promotionenddate, String promotiondetail, String promotionlocation) {
+    public Promotion(String promotionname, String promotionpictureurl, String promotionstartdate, String promotionenddate, String promotiondetail, String promotionlocation) {
         this.promotionname = promotionname;
         this.promotionstartdate = promotionstartdate;
         this.promotionenddate = promotionenddate;
         this.promotiondetail = promotiondetail;
         this.promotionlocation = promotionlocation;
-        this.promotiontype = promotiontype;
+//        this.promotiontype = promotiontype;
         this.promotionpictureurl = promotionpictureurl;
     }
 
@@ -93,14 +93,6 @@ public class Promotion {
         this.promotionlocation = promotionlocation;
     }
 
-    public String getType() {
-        return promotiontype;
-    }
-
-    public void setType(String promotiontype) {
-        this.promotiontype = promotiontype;
-    }
-
     public String getPromotionpictureurl() {
         return promotionpictureurl;
     }
@@ -120,7 +112,6 @@ public class Promotion {
                 ", promotionenddate='" + promotionenddate + '\'' +
                 ", promotiondetail='" + promotiondetail + '\'' +
                 ", promotionlocation='" + promotionlocation + '\'' +
-                ", promotiontype='" + promotiontype + '\'' +
                 ", promotionpictureurl='" + promotionpictureurl + '\'' +
                 '}';
     }

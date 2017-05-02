@@ -2,15 +2,24 @@ package com.Senior.Faff.utils;
 
 import android.content.Context;
 import android.content.ContextWrapper;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
 import android.os.AsyncTask;
+import android.support.v4.app.FragmentManager;
 import android.util.Log;
 import android.widget.ImageView;
 
+import com.Senior.Faff.Fragment.MainMenu.MainHome_Fragment;
+import com.Senior.Faff.R;
+import com.Senior.Faff.UserProfile.InsertUserProfile;
+import com.Senior.Faff.model.UserProfile;
+import com.google.gson.Gson;
+
 import org.json.JSONObject;
 
+import java.io.BufferedInputStream;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.ByteArrayOutputStream;
@@ -264,4 +273,5 @@ public class Helper {
         bm.recycle();
         return resizedBitmap;
     }
+
 }

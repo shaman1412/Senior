@@ -30,14 +30,27 @@ import com.Senior.Faff.Main3Activity;
 import com.Senior.Faff.R;
 import com.Senior.Faff.UserProfile.List_type;
 import com.Senior.Faff.model.Promotion;
+import com.Senior.Faff.model.Restaurant;
+import com.Senior.Faff.model.Restaurant_Promotion;
 import com.Senior.Faff.utils.Helper;
 import com.google.gson.Gson;
 
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.BufferedOutputStream;
+import java.io.BufferedWriter;
 import java.io.ByteArrayOutputStream;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
+import java.net.HttpURLConnection;
 import java.net.URL;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
 
 public class PromotionActivity extends AppCompatActivity {
@@ -53,9 +66,9 @@ public class PromotionActivity extends AppCompatActivity {
     private EditText Location;
     private Context mContext;
     private RecyclerView mRecyclerView;
-    private List_type list_adapter;
+    //    private List_type list_adapter;
     private boolean first = true;
-    private String type_check;
+//    private String type_check;
 
     private static final int request_code = 1;                          //request code for OnClick result
 
@@ -66,8 +79,9 @@ public class PromotionActivity extends AppCompatActivity {
     public static int image_count = 0;                                    //number of images
 
     public static PromotionRecyclerViewAdapter adapter;
-    private Spinner type;
-    private ArrayList<String> type_list;
+    private static String resid;
+//    private Spinner type;
+//    private ArrayList<String> type_list;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -77,52 +91,53 @@ public class PromotionActivity extends AppCompatActivity {
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_promotion);
 
-        mContext = this;
-        type_list = new ArrayList<>();
+        resid = getIntent().getExtras().getString(Restaurant.Column.ResID);
 
-        type = (Spinner) findViewById(R.id.type);
+        mContext = this;
+//        type_list = new ArrayList<>();
+
+//        type = (Spinner) findViewById(R.id.type);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
 
-        ArrayAdapter<CharSequence> adapter_type = ArrayAdapter.createFromResource(mContext, R.array.type_food_dropdown, android.R.layout.simple_spinner_item);
-        adapter_type.setDropDownViewResource(android.R.layout.simple_dropdown_item_1line);
-        type.setAdapter(adapter_type);
+//        ArrayAdapter<CharSequence> adapter_type = ArrayAdapter.createFromResource(mContext, R.array.type_food_dropdown, android.R.layout.simple_spinner_item);
+//        adapter_type.setDropDownViewResource(android.R.layout.simple_dropdown_item_1line);
+//        type.setAdapter(adapter_type);
 
-        type.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                String text = type.getSelectedItem().toString();
-                boolean same = false;
-
-                for (int i = 0; i < type_list.size(); i++) {
-                    if (text.equals(type_list.get(i))) {
-                        same = true;
-                    }
-                }
-                if (same == false && first == false) {
-                    type_list.add(text);
-                    list_adapter = new List_type(type_list, mContext);
-                    LinearLayoutManager mLayoutManager = new LinearLayoutManager(mContext);
-                    mLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
-                    mRecyclerView = (RecyclerView) findViewById(R.id.list_show);
-                    mRecyclerView.setLayoutManager(mLayoutManager);
-                    mRecyclerView.setAdapter(list_adapter);
-
-                }
-                if (first == true) {
-                    first = false;
-                }
-
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-
-            }
-        });
+//        type.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+//            @Override
+//            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+//                String text = type.getSelectedItem().toString();
+//                boolean same = false;
+//
+//                for (int i = 0; i < type_list.size(); i++) {
+//                    if (text.equals(type_list.get(i))) {
+//                        same = true;
+//                    }
+//                }
+//                if (same == false && first == false) {
+//                    type_list.add(text);
+//                    list_adapter = new List_type(type_list, mContext);
+//                    LinearLayoutManager mLayoutManager = new LinearLayoutManager(mContext);
+//                    mLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
+//                    mRecyclerView = (RecyclerView) findViewById(R.id.list_show);
+//                    mRecyclerView.setLayoutManager(mLayoutManager);
+//                    mRecyclerView.setAdapter(list_adapter);
+//                }
+//                if (first == true) {
+//                    first = false;
+//                }
+//
+//            }
+//
+//            @Override
+//            public void onNothingSelected(AdapterView<?> parent) {
+//
+//            }
+//        });
 
         addPromotion = (Button) findViewById(R.id.addPromotion);
         Title = (EditText) findViewById(R.id.title);
@@ -146,17 +161,17 @@ public class PromotionActivity extends AppCompatActivity {
         addPromotion.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ArrayList<String> list_get = list_adapter.getlist();
-                for (int i = 0; i < list_get.size(); i++) {
-                    if (i == 0) {
-                        type_check = list_get.get(i);
-                    } else {
-                        type_check = type_check + list_get.get(i);
-                    }
-                    if (i != list_get.size() - 1) {
-                        type_check = type_check + ",";
-                    }
-                }
+//                ArrayList<String> list_get = list_adapter.getlist();
+//                for (int i = 0; i < list_get.size(); i++) {
+//                    if (i == 0) {
+//                        type_check = list_get.get(i);
+//                    } else {
+//                        type_check = type_check + list_get.get(i);
+//                    }
+//                    if (i != list_get.size() - 1) {
+//                        type_check = type_check + ",";
+//                    }
+//                }
 
                 String title = Title.getText().toString();
                 String startDate = StartDate.getText().toString();
@@ -166,7 +181,7 @@ public class PromotionActivity extends AppCompatActivity {
 
                 String img_path_tmp = new Gson().toJson(imgPath);
 
-                Promotion promotion = new Promotion(title, img_path_tmp, type_check, startDate, endDate, promotionDetail, location);
+                Promotion promotion = new Promotion(title, img_path_tmp, startDate, endDate, promotionDetail, location);
                 PromotionActivity.AddPromotion add_pro = new PromotionActivity.AddPromotion();
                 add_pro.execute(promotion);
 
@@ -232,7 +247,7 @@ public class PromotionActivity extends AppCompatActivity {
                 Map<String, String> paras = new HashMap<>();
                 paras.put(Promotion.Column.ID, String.valueOf(params[0].getId()));
                 paras.put(Promotion.Column.Title, params[0].getTitle());
-                paras.put(Promotion.Column.Type, params[0].getType());
+//                paras.put(Promotion.Column.Type, params[0].getType());
                 paras.put(Promotion.Column.StartDate, params[0].getStartDate());
                 paras.put(Promotion.Column.EndDate, params[0].getEndDate());
                 paras.put(Promotion.Column.PromotionDetail, params[0].getPromotionDetail());
@@ -242,28 +257,141 @@ public class PromotionActivity extends AppCompatActivity {
                 AddPromotion.this.imgPath = new Gson().fromJson(img_path_tmp, ArrayList.class);
 
                 URL url = new URL("https://faff-1489402013619.appspot.com/promotion_list/new_promotion");
-                //URL url = new URL("http://localhost:8080/promotion_list/new_promotion");
 
-                Log.i(TAG, "  background size : " + AddPromotion.this.imgPath.size());
-                result = new Helper().multipartRequest(url.toString(),paras, AddPromotion.this.imgPath, "image", "image/jpeg");
-                Log.i(TAG, "result for multipartRequest(url.toString(), paras, imgPath.get(0), \"image\", \"image/jpeg\");   :   " + result);
-
+                result = new Helper().multipartRequest(url.toString(), paras, AddPromotion.this.imgPath, "image", "image/jpeg");
             } catch (Exception ex) {
                 ex.printStackTrace();
             }
 
-           return result;
+            return result;
         }
 
         @Override
         protected void onPostExecute(String result) {
             if (result != "") {
-                finish();
+
+                getCount gc = new getCount();
+                gc.execute("");
+
                 //Toast.makeText(mContext, result, Toast.LENGTH_LONG).show();
             } else {
                 //Toast.makeText(mContext, "Fail", Toast.LENGTH_SHORT).show();
             }
         }
     }
+
+    private class getCount extends AsyncTask<String, String, String> {
+
+        private String result;
+
+        @Override
+        protected String doInBackground(String... params) {
+            try {
+                URL url = new URL("https://faff-1489402013619.appspot.com/promotion_list/get_count");
+
+                result = new Helper().getRequest(url.toString());
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
+            return result;
+        }
+
+        @Override
+        protected void onPostExecute(String result) {
+            if (result != "") {
+                //Toast.makeText(mContext, result, Toast.LENGTH_LONG).show();
+                try {
+                    JSONArray item = new JSONArray(result);
+                    String n = item.getJSONObject(0).getString("n");
+
+                    getCount.Linking lk = new getCount.Linking();
+                    lk.execute(new Restaurant_Promotion(resid, n));
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            } else {
+                //Toast.makeText(mContext, "Fail", Toast.LENGTH_SHORT).show();
+            }
+        }
+
+        private class Linking extends AsyncTask<Restaurant_Promotion, String, String> {
+            private HttpURLConnection connection;
+            private int responseCode;
+
+            @Override
+            protected String doInBackground(Restaurant_Promotion... params) {
+                try {
+                    JSONObject paras = new JSONObject();
+                    paras.put(Restaurant_Promotion.Column.resid, params[0].getResid());
+                    paras.put(Restaurant_Promotion.Column.promotionid, params[0].getPromotionid());
+
+                    URL url = new URL("https://faff-1489402013619.appspot.com/restaurant_promotion/create");
+                    //URL url = new URL("http://localhost:8080/promotion_list/new_promotion");
+
+                    connection = (HttpURLConnection) url.openConnection();
+                    connection.setRequestMethod("POST");
+                    connection.setDoOutput(true);
+
+                    OutputStream out = new BufferedOutputStream(connection.getOutputStream());
+
+                    BufferedWriter bufferedWriter = new BufferedWriter(new OutputStreamWriter(out, "UTF-8"));
+                    bufferedWriter.write(getPostDataString(paras));
+                    bufferedWriter.flush();
+                    bufferedWriter.close();
+                    out.close();
+
+                    responseCode = connection.getResponseCode();
+
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                }
+
+                if (responseCode == 200) {
+                    Log.i("TEST:", " res_promo This is success response status from server: " + responseCode);
+
+                    return String.valueOf(responseCode);
+                } else {
+                    Log.i("Request Status", "Tsis is failure response status from server: " + responseCode);
+                    return null;
+                }
+            }
+
+            @Override
+            protected void onPostExecute(String result) {
+                if (result != "") {
+                    finish();
+                    //Toast.makeText(mContext, result, Toast.LENGTH_LONG).show();
+                } else {
+                    //Toast.makeText(mContext, "Fail", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            public String getPostDataString(JSONObject params) throws Exception {
+
+                StringBuilder result = new StringBuilder();
+                boolean first = true;
+
+                Iterator<String> itr = params.keys();
+
+                while (itr.hasNext()) {
+
+                    String key = itr.next();
+                    Object value = params.get(key);
+
+                    if (first)
+                        first = false;
+                    else
+                        result.append("&");
+
+                    result.append(URLEncoder.encode(key, "UTF-8"));
+                    result.append("=");
+                    result.append(URLEncoder.encode(value.toString(), "UTF-8"));
+
+                }
+                return result.toString();
+            }
+        }
+    }
+
 
 }
