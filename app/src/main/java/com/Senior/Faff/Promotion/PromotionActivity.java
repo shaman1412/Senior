@@ -77,6 +77,8 @@ public class PromotionActivity extends AppCompatActivity {
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_promotion);
 
+
+
         mContext = this;
         type_list = new ArrayList<>();
 

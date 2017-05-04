@@ -287,6 +287,8 @@ public class MapsActivity extends AppCompatActivity implements  OnMyLocationButt
 
     @Override
     public void onLocationChanged(Location location) {
+        Toast.makeText(MapsActivity.this, "Location was changed", Toast.LENGTH_SHORT).show();
+
         mLastLocation = location;
         if (mCurrLocationMarker != null) {
             mCurrLocationMarker.remove();

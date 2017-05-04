@@ -310,7 +310,7 @@ public class Main2Activity extends AppCompatActivity {
 
         switch (menuItem.getItemId()) {
             case R.id.Home:
-                Intent Home_intent = new Intent(context, InsertUserProfile.class);
+                Intent Home_intent = new Intent(context, test_callservice.class);
                 startActivity(Home_intent);
                 break;
       /*      case R.id.NotificationUser:

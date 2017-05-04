@@ -12,7 +12,7 @@
     <uses-permission android:name="com.google.android.providers.gsf.permission.READ_GSERVICES" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
     <application
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
@@ -31,7 +31,11 @@
         <activity android:name=".MainActivity" />
         <activity android:name=".Promotion.PromotionActivity" />
         <activity android:name=".Promotion.PromotionView" />
-
+        <receiver android:name=".broadcast_to_start">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+            </intent-filter>
+        </receiver>
         <!--
                  <intent-filter>
              <action android:name="android.intent.action.MAIN" />
@@ -104,14 +108,11 @@
             android:configChanges="orientation|screenSize|keyboardHidden" />
         <activity android:name=".Main3Activity" />
         <activity android:name=".TestAPI" />
-        <activity android:name=".UserProfile.List_typeNodel" />
+
         <activity android:name=".UserProfile.UpdateUserProfile" />
         <activity android:name=".RestaurantProfile.Edit_RestaurantProfile" />
         <activity android:name=".Fragment.Party.Show_party_profile" />
-        <activity android:name=".Fragment.Party.list_party_member" />
-        <activity android:name=".Fragment.Party.list_party_request" />
         <activity android:name=".UserProfile.favorite_restaurant" />
-        <activity android:name=".UserProfile.list_bookmark" />
         <activity
             android:name=".Add_map"
             android:label="@string/title_activity_add_map" />
@@ -123,10 +124,6 @@
 
         <service android:name=".server_service" />
 
-        <activity android:name=".Fragment.Party.Room_Recycler" />
-        <activity android:name=".Fragment.Party.Join_Recycler" />
-        <activity android:name=".Fragment.Party.Request_Recycler" />
-        <activity android:name=".Fragment.Party.Created_Recycler"></activity>
     </application>
 
 </manifest>

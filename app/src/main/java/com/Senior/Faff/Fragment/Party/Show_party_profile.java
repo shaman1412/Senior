@@ -345,9 +345,9 @@ public class Show_party_profile extends AppCompatActivity implements OnMapReadyC
             }
         });
         sh2.execute(own_userid);
+        boolean check_request = false;
+        boolean check_accept = false;
 
-        status.setText("None");
-        status.setTextColor(Color.GRAY);
         if (olduserid_request != null ) {
             String[] a = olduserid_request.split(",");
             for (int i = 0; i < a.length; i++) {
@@ -358,6 +358,8 @@ public class Show_party_profile extends AppCompatActivity implements OnMapReadyC
                     st.setVisibility(View.VISIBLE);
                     status.setText("Request");
                     status.setTextColor(Color.RED);
+                    check_request = true;
+
                 }
             }
         }
@@ -373,9 +375,20 @@ public class Show_party_profile extends AppCompatActivity implements OnMapReadyC
                     ec.setVisibility(View.VISIBLE);
                     status.setText("Joined");
                     status.setTextColor(Color.GREEN);
+                    check_accept = true;
                     chatandleave();
                 }
             }
+        }
+        if((check_accept || check_request) == false){
+            status.setText("None");
+            status.setTextColor(Color.GRAY);
+            View ec1 = findViewById(R.id.endandchat);
+            ec1.setVisibility(View.GONE);
+            View ec2 = findViewById(R.id.sent_request);
+            ec2.setVisibility(View.GONE);
+            View ec3 = findViewById(R.id.send_request);
+            ec3.setVisibility(View.VISIBLE);
         }
         showcreate.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -395,28 +408,41 @@ public class Show_party_profile extends AppCompatActivity implements OnMapReadyC
             bundle.putString(UserProfile.Column.UserID_request, olduserid_request);
             bundle.putString("key", key);
 
-            if (start) {
-                if(partypro.getCreateid().equals(own_userid)) {
-                    party_member_request fragment_party = new party_member_request();
-                    FragmentManager fragmentManager = getSupportFragmentManager();
-                    FragmentTransaction fragtran = fragmentManager.beginTransaction();
-                    fragment_party.setArguments(bundle);
-                    fragtran.add(R.id.request, fragment_party).commit();
-                }else{
+try {
+    if (partypro.getCreateid().equals(own_userid)) {
 
-                    View ec = findViewById(R.id.card_request);
-                    ec.setVisibility(View.GONE);
-                }
+        party_member_request mSomeFragment = (party_member_request) getSupportFragmentManager().findFragmentByTag("request");
+        if(mSomeFragment != null) {
+            FragmentManager fragmentManager1 = getSupportFragmentManager();
+            fragmentManager1.beginTransaction().remove(fragmentManager1.findFragmentByTag("request")).commit();
+        }
+        party_member_request fragment_party = new party_member_request();
+        FragmentManager fragmentManager2 = getSupportFragmentManager();
+        FragmentTransaction fragtran = fragmentManager2.beginTransaction();
+        fragment_party.setArguments(bundle);
+        fragtran.replace(R.id.request, fragment_party, "request").commit();
+    } else {
 
-                    party_member_accept fragment_accept = new party_member_accept();
-                    FragmentManager fragmentManager1 = getSupportFragmentManager();
-                    FragmentTransaction fragtran1 = fragmentManager1.beginTransaction();
-                    fragment_accept.setArguments(bundle);
-                    fragtran1.add(R.id.member, fragment_accept).commit();
+        View ec = findViewById(R.id.card_request);
+        ec.setVisibility(View.GONE);
+    }
+    party_member_accept mSomeFragment1 = (party_member_accept) getSupportFragmentManager().findFragmentByTag("accept");
+    if(mSomeFragment1 != null) {
+        FragmentManager fragmentManager3 = getSupportFragmentManager();
+        fragmentManager3.beginTransaction().remove(fragmentManager3.findFragmentByTag("accept")).commit();
+    }
 
 
-                start = false;
-            }
+    party_member_accept fragment_accept = new party_member_accept();
+    FragmentManager fragmentManager4 = getSupportFragmentManager();
+    FragmentTransaction fragtran1 = fragmentManager4.beginTransaction();
+    fragment_accept.setArguments(bundle);
+    fragtran1.replace(R.id.member, fragment_accept, "accept").commit();
+}catch (Exception e){
+
+}
+
+
 
 
         send_request.setOnClickListener(new View.OnClickListener() {
