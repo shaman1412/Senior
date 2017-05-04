@@ -33,6 +33,7 @@ app.use('/res_profile',require('./restaurant/res_profile_api'));
 app.use('/res_list',require('./restaurant/res_list_api'));
 app.use('/promotion_list',require('./promotion/promotion_api'));
 app.use('/party',require('./party/party_api'));
+app.use('/restaurant_promotion', require('./restaurant/restaurant_promotion_api'));
 
 
 // Redirect root to /books

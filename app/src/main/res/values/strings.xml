@@ -64,4 +64,6 @@
         <item>Chinese Food</item>
     </string-array>
     <string name="title_activity_add_map">Map</string>
+
+    <string name="facebook_app_id">1403235209770412</string>
 </resources>

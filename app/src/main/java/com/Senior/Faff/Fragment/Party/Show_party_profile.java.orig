@@ -408,8 +408,27 @@ public class Show_party_profile extends AppCompatActivity implements OnMapReadyC
             bundle.putString(UserProfile.Column.UserID_request, olduserid_request);
             bundle.putString("key", key);
 
+<<<<<<< HEAD
 try {
     if (partypro.getCreateid().equals(own_userid)) {
+=======
+            if (start) {
+                if(partypro.getCreateid().equals(own_userid)) {
+                    party_member_request fragment_party = new party_member_request();
+                    FragmentManager fragmentManager = getSupportFragmentManager();
+                    FragmentTransaction fragtran = fragmentManager.beginTransaction();
+                    fragment_party.setArguments(bundle);
+                    try {
+                        fragtran.add(R.id.request, fragment_party).commit();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }else{
+
+                    View ec = findViewById(R.id.card_request);
+                    ec.setVisibility(View.GONE);
+                }
+>>>>>>> a6126ad60432b40b3d62cb4925ee9e845aa0a24f
 
         party_member_request mSomeFragment = (party_member_request) getSupportFragmentManager().findFragmentByTag("request");
         if(mSomeFragment != null) {
@@ -421,9 +440,6 @@ try {
         FragmentTransaction fragtran = fragmentManager2.beginTransaction();
         fragment_party.setArguments(bundle);
         fragtran.replace(R.id.request, fragment_party, "request").commit();
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
     } else {
 
         View ec = findViewById(R.id.card_request);

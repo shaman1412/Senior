@@ -91,7 +91,11 @@ public class PromotionActivity extends AppCompatActivity {
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_promotion);
 
+<<<<<<< HEAD
+
+=======
         resid = getIntent().getExtras().getString(Restaurant.Column.ResID);
+>>>>>>> a6126ad60432b40b3d62cb4925ee9e845aa0a24f
 
         mContext = this;
 //        type_list = new ArrayList<>();

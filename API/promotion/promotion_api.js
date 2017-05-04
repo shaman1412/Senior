@@ -36,6 +36,16 @@ router.get('/', (req, res, next) => {
   });
 });
 
+router.get('/get_count', (req, res, next) => {
+  getModel().get_count((err, entity) => {
+    if (err) {
+      next(err);
+      return;
+    }
+    res.json(entity);
+  });
+});
+
 router.get('/:promotionid', (req, res, next) => {
   getModel().read(req.params.promotionid, (err, entity) => {
     if (err) {
@@ -71,7 +81,6 @@ router.post('/new_promotion',images.multer.array('image'),images.sendUploadToGCS
 	const promotion = {
 		promotionname: json.promotionname,
 		promotionpictureurl: json.promotionpictureurl,
-		promotiontype: json.promotiontype,
 		promotionstartdate: json.promotionstartdate,
 		promotionenddate: json.promotionenddate,
 		promotiondetail: json.promotiondetail,
@@ -79,7 +88,6 @@ router.post('/new_promotion',images.multer.array('image'),images.sendUploadToGCS
 	}
 	console.log("\n\n");
 	console.log(promotion.promotionpictureurl);
-	
 	
 	getModel().create(promotion,(err,entities) => {
 		if(err){
@@ -97,7 +105,6 @@ router.put('/:promotionid', (req, res, next) => {
 	const promotion = {		
 		promotionname: json.promotionname,
 		promotionpictureurl: json.promotionpictureurl,
-		promotiontype: json.promotiontype,
 		promotionstartdate: json.promotionstartdate,
 		promotionenddate: json.promotionenddate,
 		promotiondetail: json.promotiondetail,

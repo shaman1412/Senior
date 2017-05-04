@@ -129,14 +129,6 @@ public class Show_RestaurantProfile extends AppCompatActivity implements OnMapRe
         fav_click = (Button)findViewById(R.id.fav_click);
         fav_unclick = (Button)findViewById(R.id.fav_unclick);
 
-        add_promotion.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(mcontext, PromotionActivity.class);
-                startActivity(intent);
-            }
-        });
-
         rate = (RatingBar)findViewById(R.id.rate);
         text_rate = (TextView)findViewById(R.id.text_rate);
         fab = (FloatingActionButton)findViewById(R.id.fab);
@@ -152,7 +144,14 @@ public class Show_RestaurantProfile extends AppCompatActivity implements OnMapRe
             new getBookmark().execute();
         }
 
-
+        add_promotion.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(mcontext, PromotionActivity.class);
+                intent.putExtra(Restaurant.Column.ResID, resid);
+                startActivity(intent);
+            }
+        });
 
         fab.setOnClickListener(new View.OnClickListener() {
             @Override

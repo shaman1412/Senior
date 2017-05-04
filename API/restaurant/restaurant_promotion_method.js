@@ -1,6 +1,5 @@
-'use strict';
+'use strict'
 
-var table_name = "promotion_list"
 const extend = require('lodash').assign;
 const mysql = require('mysql');
 const config = require('../config');
@@ -19,45 +18,31 @@ function getConnection () {
   return mysql.createConnection(options);
 }
 
-function list (limit, token, cb) {
-  token = token ? parseInt(token, 10) : 0;
+function all_list ( cb) {
   const connection = getConnection();
   connection.query(
-    'SELECT * FROM `'+table_name+'` LIMIT ? OFFSET ?', [limit, token],
-    (err, results) => {
+    'SELECT * FROM `restaurant_promotion` ', (err, results) => {
       if (err) {
         cb(err);
         return;
       }
-      const hasMore = results.length === limit ? token + results.length : false;
-      cb(null, results, hasMore);
-    }
-  );
-  connection.end();
-}
-
-function get_count (cb) {
-  const connection = getConnection();
-  connection.query(
-    'SELECT count(promotionid) as n FROM `promotion_list` ', (err, results) => {
-      if (err) {
-        cb(err);
-        return;
-      }
+      //const hasMore = results.length === limit ? token + results.length : false;
       cb(null, results);
     }
   );
   connection.end();
 }
 
+
+
 function create (data, cb) {
   const connection = getConnection();
-  connection.query('INSERT INTO `'+table_name+'` SET ?', data, (err, res) => {
+  connection.query('INSERT INTO `restaurant_promotion` SET ?', data, (err, res) => {
     if (err) {
       cb(err);
       return;
     }
-    read(res.insertId, cb);
+     cb(null, res);
   });
   connection.end();
 }
@@ -65,7 +50,7 @@ function create (data, cb) {
 function read (id, cb) {
   const connection = getConnection();
   connection.query(
-    'SELECT * FROM `'+table_name+'` WHERE `promotionid` = ?', id, (err, results) => {
+    'SELECT * FROM `restaurant_promotion` WHERE `resid` = ?', id, (err, results) => {
       if (err) {
         cb(err);
         return;
@@ -81,33 +66,43 @@ function read (id, cb) {
     });
   connection.end();
 }
-
 function update (id, data, cb) {
   const connection = getConnection();
   connection.query(
-    'UPDATE `'+table_name+'` SET ? WHERE `promotionid` = ?', [data, id], (err) => {
+    'UPDATE `restaurant_promotion` SET ? WHERE `resid` = ?', [data, id], (err, results) => {
       if (err) {
         cb(err);
         return;
       }
-      read(id, cb);
+      cb(null, results);
     });
   connection.end();
 }
 function _delete (id, cb) {
   const connection = getConnection();
-  connection.query('DELETE FROM `'+table_name+'` WHERE `promotionid` = ?', id, cb);
+  connection.query('DELETE FROM `restaurant_promotion` WHERE `resid` = ?', id, cb);
   connection.end();
 }
 
+function update_score(data, id, cb){
+  const connection = getConnection();
+  connection.query('UPDATE `restaurant_promotion` SET  ? WHERE `resid` = ? ',[ data , id] , (err, results) =>{
+    if(err){
+      cb(err);
+      return;
+    }
+    cb(null, results);
+  });
+ connection.end();
+}
+
 module.exports = {
-  get_count: get_count,
-  createSchema: createSchema,
-  list: list,
+  all_list: all_list,
   create: create,
+  createSchema: createSchema,
   read: read,
   update: update,
-  delete: _delete
+  delete: _delete,
 };
 
 if (module === require.main) {
@@ -136,14 +131,9 @@ function createSchema (config) {
       DEFAULT CHARACTER SET = 'utf8'
       DEFAULT COLLATE 'utf8_general_ci';
     USE \`faff\`;
-    CREATE TABLE IF NOT EXISTS \`faff\`.\``+table_name+`\`(
-      \`promotionid\` INT UNSIGNED NOT NULL AUTO_INCREMENT,
-      \`promotionname\` VARCHAR(255) NULL,
-	  \`promotionpictureurl\` TEXT NULL,
-      \`promotionstartdate\`TEXT NULL,
-      \`promotionenddate\` VARCHAR(255) NULL,
-      \`promotiondetail\` VARCHAR(255) NULL,
-      \`promotionlocation\` VARCHAR(255) NULL,
+    CREATE TABLE IF NOT EXISTS \`faff\`.\`restaurant_promotion\` (
+       \`promotionid\` VARCHAR(255) NOT NULL,
+       \`resid\` VARCHAR(255) NOT NULL,
     PRIMARY KEY (\`promotionid\`));`,
     (err) => {
       if (err) {
