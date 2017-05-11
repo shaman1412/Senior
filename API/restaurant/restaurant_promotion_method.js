@@ -18,7 +18,7 @@ function getConnection () {
   return mysql.createConnection(options);
 }
 
-function all_list ( cb) {
+function all_list (cb) {
   const connection = getConnection();
   connection.query(
     'SELECT * FROM `restaurant_promotion` ', (err, results) => {
