@@ -13,6 +13,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.Senior.Faff.LoginActivity;
 import com.Senior.Faff.R;
 import com.facebook.login.LoginManager;
 import com.facebook.login.widget.DeviceLoginButton;
@@ -40,7 +41,7 @@ public class TestFacebookFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_test_facebook, container, false);
 
-        ((TestLoginFacebook)getActivity()).hideLogin();
+        ((LoginActivity)getActivity()).hideLogin();
 
         tv = (TextView) root.findViewById(R.id.textView_testFacebok);
         iv = (ImageView) root.findViewById(R.id.imageView_testFacebok);
@@ -66,8 +67,8 @@ public class TestFacebookFragment extends Fragment {
             public void onClick(View v) {
                 Log.i("TEST:", "logout click:");
                 try {
-                    ((TestLoginFacebook)getActivity()).showLogin();
-                    ((TestLoginFacebook)getActivity()).getSupportFragmentManager().popBackStackImmediate();
+                    ((LoginActivity)getActivity()).showLogin();
+                    ((LoginActivity)getActivity()).getSupportFragmentManager().popBackStackImmediate();
 //                    ((TestLoginFacebook)getActivity()).logout();
                 } catch (Exception e) {
                     Log.i("TEST:", " logout error : "+e.toString());

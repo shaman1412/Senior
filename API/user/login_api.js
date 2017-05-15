@@ -40,6 +40,41 @@ router.get('/:username', (req, res, next) => {
   });
 });
 
+router.post('/registerIfNotExists/:userid',(req, res, next) => {
+	
+	var read_data
+	
+	const json = req.body;
+	//const token = tokenGenerator(json.username);
+	const data = {
+		username:json.username,
+		password:json.password,
+		userid:json.userid
+	}
+
+	getModel().read_userid(req.params.userid, (err, entity) => {
+    if (err) {
+      //next(err);
+	  if(err.code=="404")
+	  {
+		getModel().read_and_create(data,(err, entities) => {
+		if(err){
+			next(err);
+			return;
+		}
+		read_data = entities;
+		// console.log(read_data)
+		res.end(JSON.stringify(read_data));
+		})
+	  }
+      return;
+    }
+	res.json(entity);
+	read_data = entity.userid;
+	console.log(read_data)
+	});
+	
+});
 
 router.get('/userid/:userid', (req, res, next) => {
   getModel().read_userid(req.params.userid, (err, entity) => {
