@@ -19,6 +19,7 @@ import com.Senior.Faff.UserProfile.InsertUserProfile;
 import com.Senior.Faff.model.UserAuthen;
 import com.Senior.Faff.model.UserProfile;
 import com.Senior.Faff.utils.DatabaseManager;
+import com.Senior.Faff.utils.Helper;
 import com.facebook.AccessToken;
 import com.facebook.AccessTokenTracker;
 import com.facebook.CallbackManager;
@@ -51,7 +52,11 @@ import java.net.URL;
 import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Map;
 
 
 public class LoginActivity extends ActionBarActivity {
@@ -151,8 +156,23 @@ public class LoginActivity extends ActionBarActivity {
                                                             String key_user = "fb"+obj.getString("id")+String.valueOf(rand);
                                                             rand = (int)(Math.random()*999);
                                                             String key_pass = "fb"+obj.getString("id")+String.valueOf(rand);
-                                                            UserAuthen user = new UserAuthen(key_user, key_pass, "fb"+obj.getString("id"));
-                                                            new facebookToUserAuthen().execute(user);
+                                                            String key_user_id = "fb"+obj.getString("id");
+                                                            UserAuthen user = new UserAuthen(key_user, key_pass, key_user_id);
+                                                            int gender = obj.getString("gender").equals("male")?1:0;
+                                                            int age = Integer.parseInt(getAge(obj.getString("birthday")));
+                                                            UserProfile profile = new UserProfile(
+                                                                    key_user_id,
+                                                                    obj.getString("name"),
+                                                                    obj.getString("location"),
+                                                                    obj.getString("email"),
+                                                                    "",
+                                                                    "",
+                                                                    gender,
+                                                                    age,
+                                                                    obj.getString("picture")
+                                                            );
+                                                            facebookToUserAuthen fb_tmp = new facebookToUserAuthen(profile);
+                                                            fb_tmp.execute(user);
 
                                                         } catch (JSONException e) {
                                                             e.printStackTrace();
@@ -245,6 +265,40 @@ public class LoginActivity extends ActionBarActivity {
         new getData().execute(username, password);
     }
 
+    private String getAge(String str)
+    {
+        try {
+            String[] arr = str.split("\\/");
+            int MM = Integer.parseInt(arr[0]);
+            int DD = Integer.parseInt(arr[1]);
+            int YYYY = Integer.parseInt(arr[2]);
+
+            Calendar dob = Calendar.getInstance();
+            Calendar today = Calendar.getInstance();
+
+            dob.set(YYYY, MM, DD);
+
+            if(today.get(Calendar.YEAR) > dob.get(Calendar.YEAR))
+            {
+                int age = today.get(Calendar.YEAR) - dob.get(Calendar.YEAR);
+
+                if (today.get(Calendar.DAY_OF_YEAR) < dob.get(Calendar.DAY_OF_YEAR)){
+                    age--;
+                }
+
+                return String.valueOf(age);
+            }
+            else
+            {
+                return "-1";
+            }
+
+        } catch (NumberFormatException e) {
+            e.printStackTrace();
+        }
+        return "-1";
+    }
+
     private class getData extends AsyncTask<String, String, UserAuthen> {
 
         String pass;
@@ -311,12 +365,18 @@ public class LoginActivity extends ActionBarActivity {
 
         }
 
+
     }
 
     private class facebookToUserAuthen extends AsyncTask<UserAuthen, String, UserAuthen> {
 
         int responseCode;
         HttpURLConnection connection;
+        UserProfile user_profile;
+
+        public facebookToUserAuthen(UserProfile profile) {
+            user_profile = profile;
+        }
 
         @Override
         protected UserAuthen doInBackground(UserAuthen... params) {
@@ -361,20 +421,23 @@ public class LoginActivity extends ActionBarActivity {
             super.onPostExecute(s);
             if(s != null){
                 Toast.makeText(mContext, "Success", Toast.LENGTH_SHORT).show();
-                Intent intent = new Intent(mContext, Main2Activity.class);
-                //intent.putExtra(UserAuthen.Column.USERNAME, userAuthen.getUsername());
-                intent.putExtra(UserAuthen.Column.USERID, s.getUserid());
-                startActivity(intent);
-                finish();
-//                Intent intent = new Intent(RegisterActivity.this, InsertUserProfile.class);
+                facebookToUserProfile fb_to_profile = new facebookToUserProfile();
+                if(user_profile!=null)
+                {
+                    fb_to_profile.execute(user_profile);
+                }
+                else
+                {
+                    Log.i("TEST:", " LoginActivity : user_profile is null");
+                }
+//                Intent intent = new Intent(mContext, Main2Activity.class);
 //                intent.putExtra(UserAuthen.Column.USERID, s.getUserid());
 //                startActivity(intent);
-                //((Activity)mContext).finish();
+//                finish();
             }else{
                 Toast.makeText(mContext, "Username was used", Toast.LENGTH_SHORT).show();
             }
         }
-
 
         public String getPostDataString(JSONObject params) throws Exception {
 
@@ -403,4 +466,55 @@ public class LoginActivity extends ActionBarActivity {
 
 
     }
+
+    private class facebookToUserProfile extends AsyncTask<UserProfile, String, String> {
+
+        private ArrayList<String> imgPath = new ArrayList<>();
+        String result = "";
+
+        @Override
+        protected String doInBackground(UserProfile... params) {
+            try {
+                Map<String, String> paras = new HashMap<>();
+                paras.put(UserProfile.Column.UserID, params[0].getUserid());
+                paras.put(UserProfile.Column.Name, params[0].getName());
+                paras.put(UserProfile.Column.Address, params[0].getAddress());
+                paras.put(UserProfile.Column.Email, params[0].getEmail());
+                paras.put(UserProfile.Column.Gender, String.valueOf(params[0].getGender()));
+                paras.put(UserProfile.Column.Favourite_type, params[0].getFavourite_type());
+                paras.put(UserProfile.Column.Age, String.valueOf(params[0].getAge()));
+                paras.put(UserProfile.Column.Telephone, params[0].getTelephone());
+
+                String img_path_tmp = params[0].getPicture();
+                debug(" img path tmp : " + img_path_tmp);
+                LoginActivity.facebookToUserProfile.this.imgPath.add(img_path_tmp);
+                URL url = new URL("https://faff-1489402013619.appspot.com/user/newUserIfNotExists/"+params[0].getUserid());
+
+                Helper hp = new Helper();
+                hp.setLocal(false);
+                result = hp.multipartRequest(url.toString(),paras, LoginActivity.facebookToUserProfile.this.imgPath, "image", "image/jpeg");
+
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
+
+            return result;
+        }
+
+        @Override
+        protected void onPostExecute(String result) {
+            if (result != "") {
+                Intent intent = new Intent(mContext, Main2Activity.class);
+                UserProfile user_profile = new Gson().fromJson(result, UserProfile.class);
+                Log.i("TEST:", "result is : "+result);
+                intent.putExtra(UserProfile.Column.UserID, user_profile.getUserid());
+                startActivity(intent);
+                finish();
+                //Toast.makeText(mcontext, result, Toast.LENGTH_LONG).show();
+            } else {
+                // Toast.makeText(mcontext, "Fail", Toast.LENGTH_SHORT).show();
+            }
+        }
+    }
+
 }

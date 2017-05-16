@@ -7,15 +7,19 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
 import android.os.AsyncTask;
+import android.os.Environment;
 import android.support.v4.app.FragmentManager;
 import android.util.Log;
 import android.widget.ImageView;
 
 import com.Senior.Faff.Fragment.MainMenu.MainHome_Fragment;
+import com.Senior.Faff.LoginActivity;
 import com.Senior.Faff.R;
 import com.Senior.Faff.UserProfile.InsertUserProfile;
 import com.Senior.Faff.model.UserProfile;
 import com.google.gson.Gson;
+import com.squareup.picasso.Picasso;
+import com.squareup.picasso.Target;
 
 import org.json.JSONObject;
 
@@ -35,6 +39,7 @@ import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.net.URLConnection;
 import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -48,6 +53,7 @@ public class Helper {
     private static final String TAG = Helper.class.getSimpleName();
 
     String request_method = "POST";
+    boolean isLocal = true;
 
     public String getRequest_method() {
         return request_method;
@@ -55,6 +61,14 @@ public class Helper {
 
     public void setRequest_method(String request_method) {
         this.request_method = request_method;
+    }
+
+    public boolean isLocal() {
+        return isLocal;
+    }
+
+    public void setLocal(boolean local) {
+        isLocal = local;
     }
 
     public byte[] ConvertBitmapToArrayOfByte(Bitmap bmp) {
@@ -105,7 +119,6 @@ public class Helper {
         FileInputStream fileInputStream = null;
         InputStream inputStream = null;
 
-
         String twoHyphens = "--";
         String boundary = "*****" + Long.toString(System.currentTimeMillis()) + "*****";
         String lineEnd = "\r\n";
@@ -138,33 +151,72 @@ public class Helper {
                     String[] q = filepath.split("/");
                     int idx = q.length - 1;
 
-                    Log.e("TEST: "," filepath is : " +filepath);
-                    File file = new File(filepath);
-                    fileInputStream = new FileInputStream(file);
+                    Log.i("TEST: ", " filepath is : " + filepath);
 
-                    outputStream.writeBytes(twoHyphens + boundary + lineEnd);
-                    outputStream.writeBytes("Content-Disposition: form-data; name=\"" + filefield + "\"; filename=\"" + q[idx] + "\"" + lineEnd);
-                    outputStream.writeBytes("Content-Type: " + fileMimeType + lineEnd);
-                    outputStream.writeBytes("Content-Transfer-Encoding: binary" + lineEnd);
+                    File file = null;
+                    if (isLocal) {
+                        file = new File(filepath);
+                        fileInputStream = new FileInputStream(file);
+                        outputStream.writeBytes(twoHyphens + boundary + lineEnd);
+                        outputStream.writeBytes("Content-Disposition: form-data; name=\"" + filefield + "\"; filename=\"" + q[idx] + "\"" + lineEnd);
+                        outputStream.writeBytes("Content-Type: " + fileMimeType + lineEnd);
+                        outputStream.writeBytes("Content-Transfer-Encoding: binary" + lineEnd);
 
-                    outputStream.writeBytes(lineEnd);
+                        outputStream.writeBytes(lineEnd);
 
-                    bytesAvailable = fileInputStream.available();
-                    bufferSize = Math.min(bytesAvailable, maxBufferSize);
-                    buffer = new byte[bufferSize];
-
-                    bytesRead = fileInputStream.read(buffer, 0, bufferSize);
-                    while (bytesRead > 0) {
-                        outputStream.write(buffer, 0, bufferSize);
                         bytesAvailable = fileInputStream.available();
                         bufferSize = Math.min(bytesAvailable, maxBufferSize);
+                        buffer = new byte[bufferSize];
+
                         bytesRead = fileInputStream.read(buffer, 0, bufferSize);
+                        while (bytesRead > 0) {
+                            outputStream.write(buffer, 0, bufferSize);
+                            bytesAvailable = fileInputStream.available();
+                            bufferSize = Math.min(bytesAvailable, maxBufferSize);
+                            bytesRead = fileInputStream.read(buffer, 0, bufferSize);
+                        }
+
+                        outputStream.writeBytes(lineEnd);
+                        fileInputStream.close();
+
+                    } else {
+                        URL url_tmp = new URL(filepath);
+                        InputStream inputStream_tmp = url_tmp.openStream();
+
+                        outputStream.writeBytes(twoHyphens + boundary + lineEnd);
+                        Object value = "image_test";
+                        if (parmas.containsKey(UserProfile.Column.UserID)) {
+                            value = parmas.get(UserProfile.Column.UserID);
+                        }
+                        outputStream.writeBytes("Content-Disposition: form-data; name=\"" + filefield + "\"; filename=\"" + value.toString() + "\"" + lineEnd);
+                        outputStream.writeBytes("Content-Type: " + fileMimeType + lineEnd);
+                        outputStream.writeBytes("Content-Transfer-Encoding: binary" + lineEnd);
+
+                        outputStream.writeBytes(lineEnd);
+
+//                        bytesAvailable = inputStream_tmp.available();
+//                        bufferSize = Math.min(bytesAvailable, maxBufferSize);
+//                        Log.i("TEST:", " init buff size : "+bufferSize);
+//                        buffer = new byte[bufferSize];
+//
+//                        bytesRead = inputStream_tmp.read(buffer, 0, bufferSize);
+//                        while (bytesRead > 0) {
+//                            outputStream.write(buffer, 0, bufferSize);
+//                            bytesAvailable = inputStream_tmp.available();
+//                            bufferSize = Math.min(bytesAvailable, maxBufferSize);
+//                            Log.i("TEST:", " > 0 buff size : "+bufferSize);
+//                            bytesRead = inputStream_tmp.read(buffer, 0, bufferSize);
+//                        }
+                        byte[] bytes = readFully(inputStream_tmp);
+                        Log.i("TEST:", "Byte : " + bytes.toString());
+                        outputStream.write(bytes);
+
+                        outputStream.writeBytes(lineEnd);
+                        inputStream_tmp.close();
                     }
 
-                    outputStream.writeBytes(lineEnd);
-                    fileInputStream.close();
-                }
 
+                }
 
                 OutputStreamWriter ow = new OutputStreamWriter(outputStream, "UTF-8");
                 BufferedWriter bf = new BufferedWriter(ow);
@@ -272,6 +324,21 @@ public class Helper {
                 bm, 0, 0, width, height, matrix, false);
         bm.recycle();
         return resizedBitmap;
+    }
+
+    public static byte[] readFully(InputStream input) {
+        byte[] buffer = new byte[8192];
+        int bytesRead;
+        ByteArrayOutputStream output = new ByteArrayOutputStream();
+        try {
+            while ((bytesRead = input.read(buffer)) != -1) {
+                output.write(buffer, 0, bytesRead);
+            }
+            output.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return output.toByteArray();
     }
 
 }
