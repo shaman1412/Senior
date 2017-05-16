@@ -65,7 +65,7 @@ public class LoginActivity extends ActionBarActivity {
     private Context mContext;
     private LoginButton loginButton;
 
-    private FrameLayout loading;
+    private static FrameLayout loading;
     private LoadingFragment loadingFragment;
 
     private DatabaseManager mManager;
@@ -238,8 +238,14 @@ public class LoginActivity extends ActionBarActivity {
     public void onDestroy() {
         super.onDestroy();
         try {
-            accessTokenTracker.stopTracking();
-            profileTracker.stopTracking();
+            if(accessTokenTracker!=null)
+            {
+                accessTokenTracker.stopTracking();
+            }
+            if(profileTracker!=null)
+            {
+                profileTracker.stopTracking();
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -534,24 +540,22 @@ public class LoginActivity extends ActionBarActivity {
         }
     }
 
-    public void showLoading(){
-        if(this.loading!=null)
+    public static void showLoading(){
+        if(loading!=null)
         {
-            debug("Loading : show");
-            if(this.loading.getVisibility()==View.GONE)
+            if(loading.getVisibility()==View.GONE)
             {
-                this.loading.setVisibility(View.VISIBLE);
+                loading.setVisibility(View.VISIBLE);
             }
         }
     }
 
-    public void hideLoading(){
-        if(this.loading!=null)
+    public static void hideLoading(){
+        if(loading!=null)
         {
-            debug("Loading : hide");
-            if(this.loading.getVisibility()==View.VISIBLE)
+            if(loading.getVisibility()==View.VISIBLE)
             {
-                this.loading.setVisibility(View.GONE);
+                loading.setVisibility(View.GONE);
             }
         }
     }

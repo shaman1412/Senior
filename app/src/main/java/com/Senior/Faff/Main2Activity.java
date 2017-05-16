@@ -49,7 +49,7 @@ import com.Senior.Faff.RestaurantProfile.Option_RestaurantFragment;
 import com.Senior.Faff.UserProfile.Change_password;
 import com.Senior.Faff.UserProfile.InsertUserProfile;
 import com.Senior.Faff.UserProfile.List_typeNodel;
-import com.Senior.Faff.UserProfile.ProfileManager;
+//import com.Senior.Faff.UserProfile.ProfileManager;
 import com.Senior.Faff.UserProfile.ShowUserprofile;
 import com.Senior.Faff.UserProfile.favorite_restaurant;
 import com.Senior.Faff.chat.ChatMainActivity;
@@ -110,7 +110,7 @@ public class Main2Activity extends AppCompatActivity {
     private NavigationView nvDrawer;
     private ActionBarDrawerToggle drawerToggle;
     private TabLayout tabLayout;
-    private ProfileManager profileManager;
+//    private ProfileManager profileManager;
     private UserProfile userProfile;
     private Bundle bundle;
     private String userid;
@@ -204,7 +204,7 @@ public class Main2Activity extends AppCompatActivity {
         //tabLayout = (TabLayout) findViewById(R.id.sliding_tabs);
 
 
-        profileManager = new ProfileManager(this);
+//        profileManager = new ProfileManager(this);
         userProfile = new UserProfile();
         Bundle args;
         if ((args = getIntent().getExtras()) != null) {

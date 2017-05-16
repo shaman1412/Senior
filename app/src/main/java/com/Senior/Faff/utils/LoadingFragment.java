@@ -36,6 +36,7 @@ public class LoadingFragment extends Fragment {
                         Intent intent = new Intent(LoadingFragment.this.getActivity(), to);
                         startActivity(intent);
                     } catch (ClassNotFoundException e) {
+                        onStop();
                         e.printStackTrace();
                     }
                 }
@@ -54,7 +55,10 @@ public class LoadingFragment extends Fragment {
 
     public void onStop() {
         super.onStop();
-        handler.removeCallbacks(runnable);
-        time = delay_time - (System.currentTimeMillis() - time);
+        if(runnable!=null)
+        {
+            handler.removeCallbacks(runnable);
+            time = delay_time - (System.currentTimeMillis() - time);
+        }
     }
 }

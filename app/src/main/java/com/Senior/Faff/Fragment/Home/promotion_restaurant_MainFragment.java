@@ -1,15 +1,19 @@
 package com.Senior.Faff.Fragment.Home;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.FrameLayout;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -19,6 +23,7 @@ import com.Senior.Faff.Promotion.PromotionView;
 import com.Senior.Faff.R;
 import com.Senior.Faff.model.Promotion;
 import com.Senior.Faff.utils.Helper;
+import com.Senior.Faff.utils.LoadingFragment;
 import com.google.gson.Gson;
 
 import org.json.JSONArray;
@@ -31,7 +36,8 @@ import java.util.ArrayList;
 
 public class promotion_restaurant_MainFragment extends Fragment {
 
-
+    private static FrameLayout loading;
+    private static LoadingFragment loadingFragment;
     private static Context mContext;
 
     public promotion_restaurant_MainFragment() {
@@ -45,8 +51,19 @@ public class promotion_restaurant_MainFragment extends Fragment {
         // Inflate the layout for this fragment
         final View rootView =  inflater.inflate(R.layout.fragment_promotion_restaurant__main, container, false);
 
-        mContext = getActivity();
+        loading = (FrameLayout)rootView.findViewById(R.id.loading);
+        showLoading();
+        try {
+            loadingFragment = new LoadingFragment();
+            Bundle b = new Bundle();
+            b.putString("to", this.getClass().getCanonicalName());
+            loadingFragment.setArguments(b);
+            ((AppCompatActivity)mContext).getSupportFragmentManager().beginTransaction().replace(R.id.loading, loadingFragment).commit();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
+        mContext = getActivity();
         promotion_restaurant_MainFragment.ListPromotion lsp = new promotion_restaurant_MainFragment.ListPromotion(new promotion_restaurant_MainFragment.ListPromotion.AsyncResponse() {
             @Override
             public void processFinish(String output) throws JSONException {
@@ -66,9 +83,13 @@ public class promotion_restaurant_MainFragment extends Fragment {
                 }
 
                 ListView list = (ListView) rootView.findViewById(R.id.listView1) ;
-                PromotionShowAdapter adapter = new PromotionShowAdapter(getActivity(), pro_list);
+                PromotionShowAdapter adapter = new PromotionShowAdapter(mContext, pro_list);
                 list.setAdapter(adapter);
-
+                if(loadingFragment!=null)
+                {
+                    loadingFragment.onStop();
+                    hideLoading();
+                }
                 list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                     @Override
                     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -116,7 +137,6 @@ public class promotion_restaurant_MainFragment extends Fragment {
         @Override
         protected String doInBackground(String... params) {
             try {
-
                 URL url = new URL("https://faff-1489402013619.appspot.com/promotion_list");
                 //URL url = new URL("http://localhost:8080/promotion_list");
 
@@ -139,6 +159,48 @@ public class promotion_restaurant_MainFragment extends Fragment {
                 }
             } else {
                 //Toast.makeText(mContext, "Fail", Toast.LENGTH_SHORT).show();
+            }
+        }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        showLoading();
+        try {
+            loadingFragment = new LoadingFragment();
+            Bundle b = new Bundle();
+            b.putString("to", this.getClass().getCanonicalName());
+            loadingFragment.setArguments(b);
+            ((AppCompatActivity)mContext).getSupportFragmentManager().beginTransaction().replace(R.id.loading, loadingFragment).commit();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        hideLoading();
+    }
+
+    public static void showLoading(){
+        if(loading!=null)
+        {
+            if(loading.getVisibility()==View.GONE)
+            {
+                loading.setVisibility(View.VISIBLE);
+            }
+        }
+    }
+
+    public static void hideLoading(){
+        if(loading!=null)
+        {
+            if(loading.getVisibility()==View.VISIBLE)
+            {
+                loading.setVisibility(View.GONE);
             }
         }
     }

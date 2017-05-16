@@ -71,6 +71,7 @@
                 app:itemTextColor="@android:color/white"
                 app:menu="@menu/bottom_navigation_main" />
 
+
         </LinearLayout>
 
         <!-- The navigation drawer that comes from the left -->
