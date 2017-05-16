@@ -24,11 +24,19 @@ import com.facebook.AccessTokenTracker;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
+import com.facebook.GraphRequest;
+import com.facebook.GraphResponse;
+import com.facebook.HttpMethod;
 import com.facebook.Profile;
 import com.facebook.ProfileTracker;
+import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
 import com.google.gson.Gson;
+import com.google.gson.JsonObject;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedReader;
@@ -36,6 +44,8 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.Arrays;
 
 
 public class LoginActivity extends ActionBarActivity {
@@ -53,12 +63,13 @@ public class LoginActivity extends ActionBarActivity {
     private TestFacebookFragment frag;
     private AccessTokenTracker accessTokenTracker;
     private ProfileTracker profileTracker;
+    private JSONObject obj;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         SharedPreferences sp = getSharedPreferences("CHECK_LOGIN", Context.MODE_PRIVATE);
-        String user_id = sp.getString(UserProfile.Column.UserID, "nothing");
+        final String user_id = sp.getString(UserProfile.Column.UserID, "nothing");
         if (!(user_id.equals("nothing"))) {
             Intent intent = new Intent(LoginActivity.this, Main2Activity.class);
             intent.putExtra(UserProfile.Column.UserID, user_id);
@@ -75,26 +86,16 @@ public class LoginActivity extends ActionBarActivity {
         mUsername = (EditText) findViewById(R.id.username);
         mPassword = (EditText) findViewById(R.id.password);
         mRegister = (TextView) findViewById(R.id.register);
+        LoginManager.getInstance().logOut();
         loginButton = (LoginButton) findViewById(R.id.facebookLoginButton);
         callbackManager = CallbackManager.Factory.create();
 
-
-        accessToken = AccessToken.getCurrentAccessToken();
-        if (accessToken != null) {
-
-            Profile profile = Profile.getCurrentProfile();
-            String userID = accessToken.getUserId();
-            String profileImgUrl = "https://graph.facebook.com/" + userID + "/picture?type=large";
-
-            try {
-                frag = new TestFacebookFragment();
-                frag.setTv(profile.getName());
-                frag.setIv(profileImgUrl);
-                getSupportFragmentManager().beginTransaction().replace(R.id.test_facebook_container, frag).addToBackStack(null).commit();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
+        ArrayList<String> permiss = new ArrayList<String>();
+        permiss.add("email");
+        permiss.add("user_birthday");
+        permiss.add("user_location");
+        permiss.add("user_hometown");
+        loginButton.setReadPermissions(permiss);
 
         loginButton.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
             @Override
@@ -111,27 +112,74 @@ public class LoginActivity extends ActionBarActivity {
                 // If the access token is available already assign it.
                 accessToken = AccessToken.getCurrentAccessToken();
 
+                if (accessToken != null) {
+                    String userID = accessToken.getUserId();
+//                    GraphRequest request = GraphRequest.newMeRequest(
+//                            accessToken,
+//                            new GraphRequest.GraphJSONObjectCallback() {
+//                                @Override
+//                                public void onCompleted(
+//                                        JSONObject object,
+//                                        GraphResponse response) {
+//                                    // Application code
+//                                    Log.i("TEST:", "result from graph_api : "+object.toString());
+//                                }
+//                            });
+//                    Bundle parameters = new Bundle();
+////                        parameters.putString("fields", "id,name,picture,email,gender,birthday,link,location");
+//                    parameters.putString("fields", "email,birthday,hometown,link,picture");
+//
+//                    request.setParameters(parameters);
+//                    request.executeAsync();
+
+                    //String profileImgUrl = "https://graph.facebook.com/" + userID + "/picture?type=large";
+
+                    Bundle parameters = new Bundle();
+                    parameters.putString("fields", "email,birthday,link,picture,location,gender,name,id");  //no favorite type and phone
+                    new GraphRequest(
+                            AccessToken.getCurrentAccessToken(),
+                            userID,
+                            parameters,
+                            HttpMethod.GET,
+                            new GraphRequest.Callback() {
+                                public void onCompleted(GraphResponse response) {
+            /* handle the result */
+                                    obj = response.getJSONObject();
+                                    try {
+                                        String location_id = obj.getJSONObject("location").getString("id");
+                                        new GraphRequest(AccessToken.getCurrentAccessToken(),
+                                                location_id + "?fields=location{latitude,longitude}",
+                                                null,
+                                                HttpMethod.GET,
+                                                new GraphRequest.Callback() {
+                                                    @Override
+                                                    public void onCompleted(GraphResponse response) {
+                                                        JSONObject obj1 = response.getJSONObject();
+                                                        try {
+                                                            obj1 = obj1.getJSONObject("location");
+                                                            obj.put("location", obj1.getString("latitude") + "," + obj1.getString("longitude"));
+                                                            obj1 = obj.getJSONObject("picture").getJSONObject("data");
+                                                            obj.put("picture", obj1.getString("url"));
+                                                            Log.i("TEST:", obj.toString());
+
+                                                        } catch (JSONException e) {
+                                                            e.printStackTrace();
+                                                        }
+                                                    }
+                                                }).executeAsync();
+                                    } catch (JSONException e) {
+                                        e.printStackTrace();
+                                    }
+                                }
+                            }
+                    ).executeAsync();
+                }
+
                 profileTracker = new ProfileTracker() {
                     @Override
                     protected void onCurrentProfileChanged(Profile oldProfile, Profile currentProfile) {
                         // App code
-
                         debug("Change User");
-
-                        Profile profile = currentProfile;
-                        String userID = accessToken.getUserId();
-                        String profileImgUrl = "https://graph.facebook.com/" + userID + "/picture?type=large";
-
-                        try {
-                            if (profile != null) {
-                                frag = new TestFacebookFragment();
-                                frag.setTv(profile.getName());
-                                frag.setIv(profileImgUrl);
-                                getSupportFragmentManager().beginTransaction().replace(R.id.test_facebook_container, frag).addToBackStack(null).commit();
-                            }
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
                     }
                 };
             }
@@ -181,10 +229,10 @@ public class LoginActivity extends ActionBarActivity {
         }
     }
 
-    @Override
-    public void onBackPressed() {
-
-    }
+//    @Override
+//    public void onBackPressed() {
+//
+//    }
 
     public void showLogin() {
         this.loginButton.setVisibility(View.VISIBLE);
