@@ -3,6 +3,8 @@ package com.Senior.Faff.chat;
 import android.content.Context;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -12,6 +14,7 @@ import android.widget.TextView;
 
 import com.Senior.Faff.R;
 import com.Senior.Faff.model.PartyChat;
+import com.Senior.Faff.model.UserProfile;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -29,7 +32,7 @@ import java.util.TimeZone;
 
 public class Chat_Party extends AppCompatActivity {
 
-    private Button btn_send_msg;
+    private ImageView btn_send_msg;
     private EditText input_msg;
     private String user_name;
     private String room_name;
@@ -43,6 +46,8 @@ public class Chat_Party extends AppCompatActivity {
     ArrayList<PartyChat> list_chat = new ArrayList<>();
     Chat_Party_Adapter adapter;
     private String image_path_user;
+    private String userid;
+    private Toolbar toolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,13 +55,7 @@ public class Chat_Party extends AppCompatActivity {
         setContentView(R.layout.activity_chat__party);
 
         mcontext = this;
-
-        btn_send_msg = (Button) findViewById(R.id.send);
-        input_msg = (EditText) findViewById(R.id.input);
-        listview = (ListView) findViewById(R.id.listView);
-        adapter = new Chat_Party_Adapter(mcontext, list_chat);
-        listview.setAdapter(adapter);
-
+        userid = getIntent().getExtras().getString(UserProfile.Column.UserID);
 
         ///////////////////////////////     Note        //////////////////////////////
 
@@ -65,12 +64,26 @@ public class Chat_Party extends AppCompatActivity {
         image_path = getIntent().getExtras().get("room_image").toString();
         image_path_user = getIntent().getExtras().get("user_image").toString();
 
+        ///////////////////////////////     Note        //////////////////////////////
+
+        btn_send_msg = (ImageView) findViewById(R.id.send);
+        input_msg = (EditText) findViewById(R.id.input);
+        listview = (ListView) findViewById(R.id.listView);
+        adapter = new Chat_Party_Adapter(mcontext, list_chat,user_name);
+        listview.setAdapter(adapter);
+        toolbar = (Toolbar)findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        getSupportActionBar().setDisplayShowTitleEnabled(true);
+        getSupportActionBar().setTitle(room_name);
+
 
         ///////////////////////////////     Note        //////////////////////////////
 
 
-        room = (TextView) findViewById(R.id.room_name);
-        room.setText(room_name);
+ /*       room = (TextView) findViewById(R.id.room_name);
+        room.setText(room_name);*/
 
         room_image = (ImageView) findViewById(R.id.room_image);
         try
@@ -105,6 +118,7 @@ public class Chat_Party extends AppCompatActivity {
                 map2.put("image_path", image_path_user);
 
                 message_root.updateChildren(map2);
+                input_msg.setText(null);
             }
         });
 
@@ -155,6 +169,18 @@ public class Chat_Party extends AppCompatActivity {
             adapter.notifyDataSetChanged();
         }
 
+    }
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                // this takes the user 'back', as if they pressed the left-facing triangle icon on the main android toolbar.
+                // if this doesn't work as desired, another possibility is to call `finish()` here.
+                finish();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 
 }

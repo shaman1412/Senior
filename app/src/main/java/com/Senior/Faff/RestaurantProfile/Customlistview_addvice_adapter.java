@@ -70,7 +70,7 @@ public class Customlistview_addvice_adapter extends ArrayAdapter<Restaurant> {
 //            builder.build().cancelRequest(viewHolder.imageView);
             try{
                 Picasso.with(this.mcontext).cancelRequest(viewHolder.imageView);
-                Picasso.with(this.mcontext).load(tmp).resize(300, 300).into(viewHolder.imageView);
+                Picasso.with(this.mcontext).load(tmp).resize(300, 200).into(viewHolder.imageView);
             }
             catch (Exception e){
                 e.printStackTrace();
@@ -81,7 +81,7 @@ public class Customlistview_addvice_adapter extends ArrayAdapter<Restaurant> {
             try
             {
                 Picasso.with(this.mcontext).cancelRequest(viewHolder.imageView);
-                Picasso.with(this.mcontext).load(img_path[0]).resize(300, 300).into(viewHolder.imageView);
+                Picasso.with(this.mcontext).load(img_path[0]).resize(300, 200).into(viewHolder.imageView);
             }
             catch (Exception e){
                 e.printStackTrace();
@@ -93,7 +93,6 @@ public class Customlistview_addvice_adapter extends ArrayAdapter<Restaurant> {
 
 
         viewHolder.ResName.setText(res_name[position].getRestaurantName());
-        viewHolder.detail.setText("   " + res_name[position].getDescription());
         viewHolder.period.setText(res_name[position].getPeriod());
 
         return convertView;
@@ -101,14 +100,12 @@ public class Customlistview_addvice_adapter extends ArrayAdapter<Restaurant> {
 
     private class ViewHolder {
         public TextView ResName;
-        public TextView detail;
         public TextView period;
         private ImageView imageView;
 
 
         public ViewHolder(View convertView) {
             ResName = (TextView) convertView.findViewById(R.id.textView1);
-            detail = (TextView) convertView.findViewById(R.id.detail);
             period = (TextView) convertView.findViewById(R.id.open_text);
             imageView = (ImageView) convertView.findViewById(R.id.image);
         }

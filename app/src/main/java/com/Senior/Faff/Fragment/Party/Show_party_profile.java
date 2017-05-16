@@ -263,11 +263,17 @@ public class Show_party_profile extends AppCompatActivity implements OnMapReadyC
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         getSupportActionBar().setDisplayShowTitleEnabled(true);
         getSupportActionBar().setTitle(partypro.getName());
-
-        if(own_userid.equals(createby)) {
+        String host_id = partypro.getCreateid();
+        if(own_userid.equals(host_id)) {
             View a = findViewById(R.id.request);
             a.setVisibility(View.VISIBLE);
+            View b = findViewById(R.id.remove_group);
+            b.setVisibility(View.VISIBLE);
+        }else{
+            View a = findViewById(R.id.Leave_group);
+            a.setVisibility(View.VISIBLE);
         }
+
         if(olduserid_accept != null){
             String[] countsting =   olduserid_accept.split(",");
             count = countsting.length;
@@ -326,7 +332,7 @@ public class Show_party_profile extends AppCompatActivity implements OnMapReadyC
                 }
             }
         });
-        String host_id = partypro.getCreateid();
+
         sh.execute(host_id);
 
         ShowParty sh2 = new ShowParty(new ShowParty.AsyncResponse() {
@@ -421,9 +427,6 @@ try {
         FragmentTransaction fragtran = fragmentManager2.beginTransaction();
         fragment_party.setArguments(bundle);
         fragtran.replace(R.id.request, fragment_party, "request").commit();
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
     } else {
 
         View ec = findViewById(R.id.card_request);
@@ -525,6 +528,7 @@ try {
                 Log.i("TEST:", " user name is : "+viewer_name+" room_name is : "+room_name+" room_image_path is : "+room_image_path+" viewer_omage_path is : "+viewer_image);
 
                 Intent i = new Intent(mcontext, Chat_Party.class);
+                i.putExtra(UserProfile.Column.UserID,own_userid);
                 i.putExtra("user_name", viewer_name);
                 i.putExtra("room_name", room_name);
                 i.putExtra("room_image", room_image_path);
@@ -565,5 +569,10 @@ try {
             }
         });
 
+    }
+    public  void  remove_group(View v){
+        DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference().child("All_Room");
+        mDatabase.child(key).setValue(null);
+        finish();
     }
 }

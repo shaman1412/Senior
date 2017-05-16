@@ -3,6 +3,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:background="@drawable/food_background"
+    android:padding="10dp"
     tools:context="com.Senior.Faff.Fragment.Home.advice_restaurant_MainFragment">
 
     <!-- TODO: Update blank fragment layout -->
@@ -10,6 +12,8 @@
         android:id="@+id/listView1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+
+        android:dividerHeight="10.0dp"
          />
 
 </RelativeLayout>

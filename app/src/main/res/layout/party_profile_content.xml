@@ -287,26 +287,42 @@
     android:layout_gravity="center"
     android:id="@+id/endandchat"
     android:visibility="gone"
-    android:layout_marginTop="7dp">
+    android:layout_marginTop="11dp">
 
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/enter_room"
         android:text="Enter Chat Room"
-        android:background="@color/ButtonUserProfile"
+        android:background="@drawable/orange_button"
         android:layout_gravity="center"
-        android:padding="10dp"/>
+        android:padding="10dp"
+        android:elevation="10dp"/>
+
+
 
                 <Button
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:id="@+id/Leave_group"
                     android:text="Leave Group"
-                    android:background="@color/sent_request"
+                    android:background="@drawable/grey_button"
                     android:layout_gravity="center"
                     android:padding="10dp"
-                    android:layout_marginLeft="20dp"/>
+                    android:layout_marginLeft="20dp"
+                    android:visibility="gone"/>
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/remove_group"
+        android:text="Remove Group"
+        android:background="@drawable/grey_button"
+        android:layout_gravity="center"
+        android:padding="10dp"
+        android:layout_marginLeft="20dp"
+        android:visibility="gone"
+        android:onClick="remove_group"
+        />
 
 
 </LinearLayout>
