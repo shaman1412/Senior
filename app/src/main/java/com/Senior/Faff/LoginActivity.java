@@ -175,6 +175,7 @@ public class LoginActivity extends ActionBarActivity {
                                                                     obj.getString("picture")
                                                             );
                                                             facebookToUserAuthen fb_tmp = new facebookToUserAuthen(profile);
+                                                            showLoading();
                                                             fb_tmp.execute(user);
 
                                                         } catch (JSONException e) {
@@ -385,7 +386,6 @@ public class LoginActivity extends ActionBarActivity {
         protected UserAuthen doInBackground(UserAuthen... params) {
             try {
                 try {
-                    showLoading();
                     loadingFragment = new LoadingFragment();
                     Bundle b = new Bundle();
                     b.putString("to", this.getClass().getCanonicalName());
@@ -535,18 +535,24 @@ public class LoginActivity extends ActionBarActivity {
     }
 
     public void showLoading(){
-        if(loading!=null)
+        if(this.loading!=null)
         {
             debug("Loading : show");
-            loading.setVisibility(View.VISIBLE);
+            if(this.loading.getVisibility()==View.GONE)
+            {
+                this.loading.setVisibility(View.VISIBLE);
+            }
         }
     }
 
     public void hideLoading(){
-        if(loading!=null)
+        if(this.loading!=null)
         {
             debug("Loading : hide");
-            loading.setVisibility(View.GONE);
+            if(this.loading.getVisibility()==View.VISIBLE)
+            {
+                this.loading.setVisibility(View.GONE);
+            }
         }
     }
 }
