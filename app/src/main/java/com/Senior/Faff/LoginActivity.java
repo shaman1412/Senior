@@ -5,21 +5,21 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.provider.ContactsContract;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.FrameLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.Senior.Faff.TestLoginFacebook.TestFacebookFragment;
-import com.Senior.Faff.UserProfile.InsertUserProfile;
 import com.Senior.Faff.model.UserAuthen;
 import com.Senior.Faff.model.UserProfile;
 import com.Senior.Faff.utils.DatabaseManager;
 import com.Senior.Faff.utils.Helper;
+import com.Senior.Faff.utils.LoadingFragment;
 import com.facebook.AccessToken;
 import com.facebook.AccessTokenTracker;
 import com.facebook.CallbackManager;
@@ -34,7 +34,6 @@ import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
 import com.google.gson.Gson;
-import com.google.gson.JsonObject;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -51,9 +50,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
@@ -67,6 +64,9 @@ public class LoginActivity extends ActionBarActivity {
     private TextView mRegister;
     private Context mContext;
     private LoginButton loginButton;
+
+    private FrameLayout loading;
+    private LoadingFragment loadingFragment;
 
     private DatabaseManager mManager;
     private CallbackManager callbackManager;
@@ -97,6 +97,9 @@ public class LoginActivity extends ActionBarActivity {
         mUsername = (EditText) findViewById(R.id.username);
         mPassword = (EditText) findViewById(R.id.password);
         mRegister = (TextView) findViewById(R.id.register);
+        loading = (FrameLayout) findViewById(R.id.loading);
+        hideLoading();
+
         LoginManager.getInstance().logOut();
         loginButton = (LoginButton) findViewById(R.id.facebookLoginButton);
         callbackManager = CallbackManager.Factory.create();
@@ -381,6 +384,17 @@ public class LoginActivity extends ActionBarActivity {
         @Override
         protected UserAuthen doInBackground(UserAuthen... params) {
             try {
+                try {
+                    showLoading();
+                    loadingFragment = new LoadingFragment();
+                    Bundle b = new Bundle();
+                    b.putString("to", this.getClass().getCanonicalName());
+                    loadingFragment.setArguments(b);
+                    getSupportFragmentManager().beginTransaction().replace(R.id.loading, loadingFragment).commit();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
                 JSONObject postDataParams = new JSONObject();
                 postDataParams.put(UserAuthen.Column.USERNAME, params[0].getUsername());
                 postDataParams.put(UserAuthen.Column.PASSWORD, params[0].getPassword());
@@ -464,7 +478,6 @@ public class LoginActivity extends ActionBarActivity {
             return result.toString();
         }
 
-
     }
 
     private class facebookToUserProfile extends AsyncTask<UserProfile, String, String> {
@@ -508,6 +521,10 @@ public class LoginActivity extends ActionBarActivity {
                 UserProfile user_profile = new Gson().fromJson(result, UserProfile.class);
                 Log.i("TEST:", "result is : "+result);
                 intent.putExtra(UserProfile.Column.UserID, user_profile.getUserid());
+                if(loadingFragment !=null)
+                {
+                    loadingFragment.onStop();
+                }
                 startActivity(intent);
                 finish();
                 //Toast.makeText(mcontext, result, Toast.LENGTH_LONG).show();
@@ -517,4 +534,19 @@ public class LoginActivity extends ActionBarActivity {
         }
     }
 
+    public void showLoading(){
+        if(loading!=null)
+        {
+            debug("Loading : show");
+            loading.setVisibility(View.VISIBLE);
+        }
+    }
+
+    public void hideLoading(){
+        if(loading!=null)
+        {
+            debug("Loading : hide");
+            loading.setVisibility(View.GONE);
+        }
+    }
 }
