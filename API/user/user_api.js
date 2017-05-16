@@ -98,6 +98,69 @@ router.post('/new_user',images.multer.array('image'), images.sendUploadToGCS_Use
 	  res.send(user.picture);
 });
 
+router.post('/newUserIfNotExists/:userid',images.multer.array('image'), (req, res, next) => {
+	var read_data
+	const json  = req.body;
+
+	getModel().read(req.params.userid, (err, entity) => {
+    if (err) {
+      //next(err);
+	  if(err.code=="404")
+	  {
+		images.sendUploadToGCS_UserProfile(req, res, next);
+		if (req.file && req.file.cloudStoragePublicUrl) {
+		json.picture = req.file.cloudStoragePublicUrl;
+		}
+		else if(req.files)
+		{
+			var ls=req.files;
+			json.picture = "";
+			var n = ls.length;
+			var i = 0;
+			ls.forEach(function(item){
+				if(!(++i == n))
+				{
+					json.picture = json.picture + item.cloudStoragePublicUrl+",";
+				}
+				else
+				{
+					json.picture = json.picture + item.cloudStoragePublicUrl;
+				}
+			});
+		}
+	
+		const user = {
+			userid : json.userid,
+			picture: json.picture,
+			name: json.name,
+			picture : json.picture,
+			address: json.address,
+			email: json.email,
+			telephone: json.telephone,
+			gender: json.gender,
+			favourite_type : json.favourite_type,
+			age: json.age
+		}
+		
+		getModel().read_and_create(user,(err, entities) => {
+		if(err){
+			next(err);
+			return;
+		}
+		read_data = entities;
+		res.end(JSON.stringify(read_data));
+		})
+	  }
+	  else{
+		  next(err);
+	  }
+      return;
+    }
+	res.json(entity);
+	});
+	
+});
+
 router.put('/:userid', (req, res, next) => {
 	const json  = req.body;
 	console.log(json);
