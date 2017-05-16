@@ -39,13 +39,19 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Iterator;
 
 
 public class LoginActivity extends ActionBarActivity {
@@ -114,26 +120,6 @@ public class LoginActivity extends ActionBarActivity {
 
                 if (accessToken != null) {
                     String userID = accessToken.getUserId();
-//                    GraphRequest request = GraphRequest.newMeRequest(
-//                            accessToken,
-//                            new GraphRequest.GraphJSONObjectCallback() {
-//                                @Override
-//                                public void onCompleted(
-//                                        JSONObject object,
-//                                        GraphResponse response) {
-//                                    // Application code
-//                                    Log.i("TEST:", "result from graph_api : "+object.toString());
-//                                }
-//                            });
-//                    Bundle parameters = new Bundle();
-////                        parameters.putString("fields", "id,name,picture,email,gender,birthday,link,location");
-//                    parameters.putString("fields", "email,birthday,hometown,link,picture");
-//
-//                    request.setParameters(parameters);
-//                    request.executeAsync();
-
-                    //String profileImgUrl = "https://graph.facebook.com/" + userID + "/picture?type=large";
-
                     Bundle parameters = new Bundle();
                     parameters.putString("fields", "email,birthday,link,picture,location,gender,name,id");  //no favorite type and phone
                     new GraphRequest(
@@ -143,7 +129,6 @@ public class LoginActivity extends ActionBarActivity {
                             HttpMethod.GET,
                             new GraphRequest.Callback() {
                                 public void onCompleted(GraphResponse response) {
-            /* handle the result */
                                     obj = response.getJSONObject();
                                     try {
                                         String location_id = obj.getJSONObject("location").getString("id");
@@ -161,6 +146,13 @@ public class LoginActivity extends ActionBarActivity {
                                                             obj1 = obj.getJSONObject("picture").getJSONObject("data");
                                                             obj.put("picture", obj1.getString("url"));
                                                             Log.i("TEST:", obj.toString());
+
+                                                            int rand = (int)(Math.random()*999);
+                                                            String key_user = "fb"+obj.getString("id")+String.valueOf(rand);
+                                                            rand = (int)(Math.random()*999);
+                                                            String key_pass = "fb"+obj.getString("id")+String.valueOf(rand);
+                                                            UserAuthen user = new UserAuthen(key_user, key_pass, "fb"+obj.getString("id"));
+                                                            new facebookToUserAuthen().execute(user);
 
                                                         } catch (JSONException e) {
                                                             e.printStackTrace();
@@ -318,6 +310,97 @@ public class LoginActivity extends ActionBarActivity {
             }
 
         }
+
+    }
+
+    private class facebookToUserAuthen extends AsyncTask<UserAuthen, String, UserAuthen> {
+
+        int responseCode;
+        HttpURLConnection connection;
+
+        @Override
+        protected UserAuthen doInBackground(UserAuthen... params) {
+            try {
+                JSONObject postDataParams = new JSONObject();
+                postDataParams.put(UserAuthen.Column.USERNAME, params[0].getUsername());
+                postDataParams.put(UserAuthen.Column.PASSWORD, params[0].getPassword());
+                postDataParams.put(UserAuthen.Column.USERID, params[0].getUserid());
+
+
+                URL url = new URL("https://faff-1489402013619.appspot.com/login/registerIfNotExists/"+params[0].getUserid());
+                connection = (HttpURLConnection) url.openConnection();
+                connection.setRequestMethod("POST");
+                connection.setDoOutput(true);
+
+                OutputStream out = new BufferedOutputStream(connection.getOutputStream());
+
+                BufferedWriter bufferedWriter = new BufferedWriter(new OutputStreamWriter(out, "UTF-8"));
+                bufferedWriter.write(getPostDataString(postDataParams));
+                bufferedWriter.flush();
+                bufferedWriter.close();
+                out.close();
+
+                responseCode = connection.getResponseCode();
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            if (responseCode == 200) {
+                Log.i("Request Status", "This is success response status from server: " + responseCode);
+
+                return params[0];
+            } else {
+                Log.i("Request Status", "This is failure response status from server: " + responseCode);
+                return null;
+
+            }
+        }
+
+        @Override
+        protected void onPostExecute(UserAuthen s) {
+            super.onPostExecute(s);
+            if(s != null){
+                Toast.makeText(mContext, "Success", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(mContext, Main2Activity.class);
+                //intent.putExtra(UserAuthen.Column.USERNAME, userAuthen.getUsername());
+                intent.putExtra(UserAuthen.Column.USERID, s.getUserid());
+                startActivity(intent);
+                finish();
+//                Intent intent = new Intent(RegisterActivity.this, InsertUserProfile.class);
+//                intent.putExtra(UserAuthen.Column.USERID, s.getUserid());
+//                startActivity(intent);
+                //((Activity)mContext).finish();
+            }else{
+                Toast.makeText(mContext, "Username was used", Toast.LENGTH_SHORT).show();
+            }
+        }
+
+
+        public String getPostDataString(JSONObject params) throws Exception {
+
+            StringBuilder result = new StringBuilder();
+            boolean first = true;
+
+            Iterator<String> itr = params.keys();
+
+            while (itr.hasNext()) {
+
+                String key = itr.next();
+                Object value = params.get(key);
+
+                if (first)
+                    first = false;
+                else
+                    result.append("&");
+
+                result.append(URLEncoder.encode(key, "UTF-8"));
+                result.append("=");
+                result.append(URLEncoder.encode(value.toString(), "UTF-8"));
+
+            }
+            return result.toString();
+        }
+
 
     }
 }
