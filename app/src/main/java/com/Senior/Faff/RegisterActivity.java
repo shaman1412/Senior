@@ -81,7 +81,6 @@ public class RegisterActivity extends ActionBarActivity {
                     String message = getString(R.string.register_password_error);
                     Toast.makeText(mContext, message, Toast.LENGTH_SHORT).show();
                 }
-
             }
         });
     }

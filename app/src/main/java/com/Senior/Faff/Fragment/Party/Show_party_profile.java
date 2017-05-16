@@ -73,17 +73,17 @@ public class Show_party_profile extends AppCompatActivity implements OnMapReadyC
     private com.google.android.gms.maps.model.Marker mCurrLocationMarker;
     private static Context mcontext;
     private Toolbar toolbar;
-    private TextView name,status,appointment,description,address,telephone;
+    private TextView name, status, appointment, description, address, telephone;
     private ImageView create_image;
     private ImageView party_image;
     private TextView createby;
     private Button send_request;
     private RecyclerView mRecyclerView;
-    private String userid,partyid;
+    private String userid, partyid;
     private ArrayList<Party> party_list;
     private String key;
     private String Userid;
-    private String olduserid_request,olduserid_accept;
+    private String olduserid_request, olduserid_accept;
     private Button sent_request;
     private String own_userid;
     private Bundle save;
@@ -93,8 +93,8 @@ public class Show_party_profile extends AppCompatActivity implements OnMapReadyC
     private LinearLayout showcreate;
     private int number_party = 0;
     private int count = 0;
-    private TextView cmember,maxmember;
-    private  Button enter_chat,leave_group;
+    private TextView cmember, maxmember;
+    private Button enter_chat, leave_group;
     private String send_location;
 
     private String room_name;
@@ -111,39 +111,39 @@ public class Show_party_profile extends AppCompatActivity implements OnMapReadyC
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-       // save = savedInstanceState;
+        // save = savedInstanceState;
         setContentView(R.layout.activity_show_party_profile);
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map_party);
         mapFragment.getMapAsync(this);
-        mcontext= this;
-        enter_chat = (Button)findViewById(R.id.enter_room);
-        leave_group = (Button)findViewById(R.id.Leave_group);
+        mcontext = this;
+        enter_chat = (Button) findViewById(R.id.enter_room);
+        leave_group = (Button) findViewById(R.id.Leave_group);
 
 
-        name = (TextView)findViewById(R.id.name);
-        status=  (TextView)findViewById(R.id.status);
-        appointment = (TextView)findViewById(R.id.appointment);
-        description = (TextView)findViewById(R.id.description);
-        createby = (TextView)findViewById(R.id.createby);
+        name = (TextView) findViewById(R.id.name);
+        status = (TextView) findViewById(R.id.status);
+        appointment = (TextView) findViewById(R.id.appointment);
+        description = (TextView) findViewById(R.id.description);
+        createby = (TextView) findViewById(R.id.createby);
         create_image = (ImageView) findViewById(R.id.create_image);
         party_image = (ImageView) findViewById(R.id.profile_image);
-        send_request = (Button)findViewById(R.id.send_request);
-        mRecyclerView = (RecyclerView)findViewById(R.id.mRecyclerView);
-        address = (TextView)findViewById(R.id.address);
-        telephone = (TextView)findViewById(R.id.telephone);
-        sent_request = (Button)findViewById(R.id.sent_request);
-        showcreate = (LinearLayout)findViewById(R.id.showcreate);
-        cmember = (TextView)findViewById(R.id.people);
-        maxmember = (TextView)findViewById(R.id.max);
+        send_request = (Button) findViewById(R.id.send_request);
+        mRecyclerView = (RecyclerView) findViewById(R.id.mRecyclerView);
+        address = (TextView) findViewById(R.id.address);
+        telephone = (TextView) findViewById(R.id.telephone);
+        sent_request = (Button) findViewById(R.id.sent_request);
+        showcreate = (LinearLayout) findViewById(R.id.showcreate);
+        cmember = (TextView) findViewById(R.id.people);
+        maxmember = (TextView) findViewById(R.id.max);
 
         bundle = new Bundle();
         Bundle args = getIntent().getExtras();
         start = true;
-        if(args != null) {
+        if (args != null) {
             own_userid = args.getString(UserProfile.Column.UserID, null);
-            partyid = args.getString(Party.Column.RoomID,null);
-            Userid =  own_userid;
+            partyid = args.getString(Party.Column.RoomID, null);
+            Userid = own_userid;
         }
 
 
@@ -157,14 +157,15 @@ public class Show_party_profile extends AppCompatActivity implements OnMapReadyC
                 @Override
                 public void onMapClick(LatLng latLng) {
                     Intent intent = new Intent(Show_party_profile.this, MapsActivity.class);
-                    intent.putExtra(Party.Column.Name,room_name);
+                    intent.putExtra(Party.Column.Name, room_name);
                     intent.putExtra(Party.Column.Location, send_location);
                     startActivity(intent);
                 }
             });
         }
     }
-    private class getDataMember extends AsyncTask<String, String, Party > {
+
+    private class getDataMember extends AsyncTask<String, String, Party> {
 
         String pass;
         int responseCode;
@@ -177,10 +178,10 @@ public class Show_party_profile extends AppCompatActivity implements OnMapReadyC
             mRootRef.orderByChild("roomID")
                     .equalTo(partyid).addValueEventListener(new ValueEventListener() {
                 @Override
-                public void onDataChange (DataSnapshot dataSnapshot){
-                    for (DataSnapshot postSnapshot: dataSnapshot.getChildren()) {
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
                         key = postSnapshot.getKey();
-                        Party post= postSnapshot.getValue(Party.class);
+                        Party post = postSnapshot.getValue(Party.class);
                         setvalue(post);
                     }
 
@@ -199,7 +200,8 @@ public class Show_party_profile extends AppCompatActivity implements OnMapReadyC
         }
 
     }
-    private void enableMyLocation(String lola,String res_name) {
+
+    private void enableMyLocation(String lola, String res_name) {
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
                 != PackageManager.PERMISSION_GRANTED) {
             // Permission to access the location is missing.
@@ -214,7 +216,7 @@ public class Show_party_profile extends AppCompatActivity implements OnMapReadyC
 
             location = locationManager.getLastKnownLocation(locationManager
                     .getBestProvider(criteria, false));
-            if(lola != null) {
+            if (lola != null) {
                 String[] pos = lola.split(",");
                 myLocation = new LatLng(Double.parseDouble(pos[0]),
                         Double.parseDouble(pos[1]));
@@ -230,6 +232,7 @@ public class Show_party_profile extends AppCompatActivity implements OnMapReadyC
             }
         }
     }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
@@ -242,16 +245,17 @@ public class Show_party_profile extends AppCompatActivity implements OnMapReadyC
                 return super.onOptionsItemSelected(item);
         }
     }
-    public void  setvalue(final Party partypro) {
+
+    public void setvalue(final Party partypro) {
         room_name = partypro.getName();
         name.setText(partypro.getName());
-        description.setText("       "+partypro.getDescription());
-        appointment.setText("       "+partypro.getAppointment());
-        send_location  = partypro.getLocation();
+        description.setText("       " + partypro.getDescription());
+        appointment.setText("       " + partypro.getAppointment());
+        send_location = partypro.getLocation();
         enableMyLocation(partypro.getLocation(), partypro.getName());
-        address.setText("       "+partypro.getAddress());
+        address.setText("       " + partypro.getAddress());
         createby.setText(partypro.getCreatename());
-        telephone.setText("       "+partypro.getTelephone());
+        telephone.setText("       " + partypro.getTelephone());
         setTitle(partypro.getName());
         olduserid_request = partypro.getRequest();
         olduserid_accept = partypro.getAccept();
@@ -274,18 +278,17 @@ public class Show_party_profile extends AppCompatActivity implements OnMapReadyC
             a.setVisibility(View.VISIBLE);
         }
 
-        if(olduserid_accept != null){
-            String[] countsting =   olduserid_accept.split(",");
+        if (olduserid_accept != null) {
+            String[] countsting = olduserid_accept.split(",");
             count = countsting.length;
             cmember.setText(Integer.toString(count));
-        }else{
+        } else {
             cmember.setText("0");
         }
 
         String pic_url = partypro.getPicture();
-        Log.i("TEST: ", "pic_url : "+pic_url);
-        if(pic_url!=null)
-        {
+        Log.i("TEST: ", "pic_url : " + pic_url);
+        if (pic_url != null) {
             String[] tmp = pic_url.split("/");
             StorageReference load = FirebaseStorage.getInstance().getReference().child(tmp[1]).child(tmp[2]);
             load.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
@@ -293,15 +296,13 @@ public class Show_party_profile extends AppCompatActivity implements OnMapReadyC
                 public void onSuccess(Uri uri) {
                     room_image_path = uri.toString();
                     try {
-                        Picasso.with(mcontext).load(uri.toString()).resize(500,500).into(party_image);
+                        Picasso.with(mcontext).load(uri.toString()).resize(500, 500).into(party_image);
                     } finally {
 
                     }
-                    if(party_image.getDrawable() == null)
-                    {
+                    if (party_image.getDrawable() == null) {
                         Log.i("TEST: ", "NOT NULL");
-                    }
-                    else {
+                    } else {
                         Log.i("TEST: ", "NULL");
                     }
                 }
@@ -322,8 +323,7 @@ public class Show_party_profile extends AppCompatActivity implements OnMapReadyC
                 ArrayList<String[]> bitmap_url_list = new ArrayList<>();
 
                 String[] arr_url = item.getString("picture").split(",");
-                if(arr_url!=null)
-                {
+                if (arr_url != null) {
                     try {
                         Picasso.with(mcontext).load(arr_url[0]).resize(500, 500).into(create_image);
                     } catch (Exception e) {
@@ -344,8 +344,7 @@ public class Show_party_profile extends AppCompatActivity implements OnMapReadyC
 
                 ArrayList<String[]> bitmap_url_list2 = new ArrayList<>();
                 String[] arr_url2 = item.getString("picture").split(",");
-                if(arr_url2!=null)
-                {
+                if (arr_url2 != null) {
                     viewer_image = arr_url2[0];
                 }
             }
@@ -354,7 +353,7 @@ public class Show_party_profile extends AppCompatActivity implements OnMapReadyC
         boolean check_request = false;
         boolean check_accept = false;
 
-        if (olduserid_request != null ) {
+        if (olduserid_request != null) {
             String[] a = olduserid_request.split(",");
             for (int i = 0; i < a.length; i++) {
                 if (a[i].equals(Userid)) {
@@ -369,7 +368,7 @@ public class Show_party_profile extends AppCompatActivity implements OnMapReadyC
                 }
             }
         }
-        if (olduserid_accept != null ) {
+        if (olduserid_accept != null) {
             String[] b = olduserid_accept.split(",");
             for (int j = 0; j < b.length; j++) {
                 if (b[j].equals(Userid)) {
@@ -386,7 +385,7 @@ public class Show_party_profile extends AppCompatActivity implements OnMapReadyC
                 }
             }
         }
-        if((check_accept || check_request) == false){
+        if ((check_accept || check_request) == false) {
             status.setText("None");
             status.setTextColor(Color.GRAY);
             View ec1 = findViewById(R.id.endandchat);
@@ -399,66 +398,70 @@ public class Show_party_profile extends AppCompatActivity implements OnMapReadyC
         showcreate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent  = new Intent(mcontext, ShowUserprofile.class);
+                Intent intent = new Intent(mcontext, ShowUserprofile.class);
                 intent.putExtra(UserProfile.Column.UserID, partypro.getCreateid());
-                intent.putExtra(UserProfile.Column.Ownerid,own_userid);
+                intent.putExtra(UserProfile.Column.Ownerid, own_userid);
                 startActivity(intent);
             }
         });
-        if(partypro.getCreateid().equals(own_userid)) {
+        if (partypro.getCreateid().equals(own_userid)) {
             bundle.putBoolean("host", true);
-        }else{
+        } else {
             bundle.putBoolean("host", false);
         }
-            bundle.putString(UserProfile.Column.UserID_accept, olduserid_accept);
-            bundle.putString(UserProfile.Column.UserID_request, olduserid_request);
-            bundle.putString("key", key);
+        bundle.putString(UserProfile.Column.UserID_accept, olduserid_accept);
+        bundle.putString(UserProfile.Column.UserID_request, olduserid_request);
+        bundle.putString("key", key);
 
-try {
-    if (partypro.getCreateid().equals(own_userid)) {
+        try {
+            if (partypro.getCreateid().equals(own_userid)) {
 
-        party_member_request mSomeFragment = (party_member_request) getSupportFragmentManager().findFragmentByTag("request");
-        if(mSomeFragment != null) {
-            FragmentManager fragmentManager1 = getSupportFragmentManager();
-            fragmentManager1.beginTransaction().remove(fragmentManager1.findFragmentByTag("request")).commit();
+                party_member_request mSomeFragment = (party_member_request) getSupportFragmentManager().findFragmentByTag("request");
+                if (mSomeFragment != null) {
+                    FragmentManager fragmentManager1 = getSupportFragmentManager();
+                    fragmentManager1.beginTransaction().remove(fragmentManager1.findFragmentByTag("request")).commit();
+                }
+                party_member_request fragment_party = new party_member_request();
+                FragmentManager fragmentManager2 = getSupportFragmentManager();
+                FragmentTransaction fragtran = fragmentManager2.beginTransaction();
+                fragment_party.setArguments(bundle);
+                fragtran.replace(R.id.request, fragment_party, "request").commit();
+//            }
+            } else {
+
+                View ec = findViewById(R.id.card_request);
+                ec.setVisibility(View.GONE);
+            }
+            party_member_accept mSomeFragment1 = (party_member_accept) getSupportFragmentManager().findFragmentByTag("accept");
+            if (mSomeFragment1 != null) {
+                FragmentManager fragmentManager3 = getSupportFragmentManager();
+                fragmentManager3.beginTransaction().remove(fragmentManager3.findFragmentByTag("accept")).commit();
+            }
+
+
+            party_member_accept fragment_accept = new party_member_accept();
+            FragmentManager fragmentManager4 = getSupportFragmentManager();
+            FragmentTransaction fragtran1 = fragmentManager4.beginTransaction();
+            fragment_accept.setArguments(bundle);
+            fragtran1.replace(R.id.member, fragment_accept, "accept").commit();
+        } catch (
+                Exception e)
+
+        {
+
         }
-        party_member_request fragment_party = new party_member_request();
-        FragmentManager fragmentManager2 = getSupportFragmentManager();
-        FragmentTransaction fragtran = fragmentManager2.beginTransaction();
-        fragment_party.setArguments(bundle);
-        fragtran.replace(R.id.request, fragment_party, "request").commit();
-    } else {
-
-        View ec = findViewById(R.id.card_request);
-        ec.setVisibility(View.GONE);
-    }
-    party_member_accept mSomeFragment1 = (party_member_accept) getSupportFragmentManager().findFragmentByTag("accept");
-    if(mSomeFragment1 != null) {
-        FragmentManager fragmentManager3 = getSupportFragmentManager();
-        fragmentManager3.beginTransaction().remove(fragmentManager3.findFragmentByTag("accept")).commit();
-    }
 
 
-    party_member_accept fragment_accept = new party_member_accept();
-    FragmentManager fragmentManager4 = getSupportFragmentManager();
-    FragmentTransaction fragtran1 = fragmentManager4.beginTransaction();
-    fragment_accept.setArguments(bundle);
-    fragtran1.replace(R.id.member, fragment_accept, "accept").commit();
-}catch (Exception e){
+        send_request.setOnClickListener(new View.OnClickListener()
 
-}
-
-
-
-
-        send_request.setOnClickListener(new View.OnClickListener() {
+        {
             @Override
             public void onClick(View v) {
                 sendRequest();
             }
         });
 
-        }
+    }
 
     private static class ShowParty extends AsyncTask<String, String, String> {
 
@@ -502,11 +505,12 @@ try {
                 //Toast.makeText(mcontext, "Fail to retrieve from server", Toast.LENGTH_SHORT).show();
             }
         }
+
     }
 
-    public void sendRequest(){
+    public void sendRequest() {
 
-        if( count < number_party) {
+        if (count < number_party) {
             View sd = findViewById(R.id.send_request);
             sd.setVisibility(View.GONE);
             View st = findViewById(R.id.sent_request);
@@ -518,14 +522,15 @@ try {
             mDatabase.child(key).child("request").setValue(Userid);
 
         }
-        Toast.makeText(mcontext,"Member is full",Toast.LENGTH_SHORT);
+        Toast.makeText(mcontext, "Member is full", Toast.LENGTH_SHORT);
     }
-    public void chatandleave(){
+
+    public void chatandleave() {
         enter_chat.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-                Log.i("TEST:", " user name is : "+viewer_name+" room_name is : "+room_name+" room_image_path is : "+room_image_path+" viewer_omage_path is : "+viewer_image);
+                Log.i("TEST:", " user name is : " + viewer_name + " room_name is : " + room_name + " room_image_path is : " + room_image_path + " viewer_omage_path is : " + viewer_image);
 
                 Intent i = new Intent(mcontext, Chat_Party.class);
                 i.putExtra(UserProfile.Column.UserID,own_userid);
@@ -541,25 +546,23 @@ try {
             @Override
             public void onClick(View v) {
                 DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference().child("All_Room");
-                if (olduserid_accept != null ) {
+                if (olduserid_accept != null) {
                     boolean first = true;
                     boolean change = false;
                     String[] b = olduserid_accept.split(",");
                     for (int j = 0; j < b.length; j++) {
                         if (!(b[j].equals(own_userid))) {
-                            if(first) {
+                            if (first) {
                                 Userid = b[j];
                                 first = false;
                                 change = true;
-                            }
-                            else {
+                            } else {
                                 Userid = "," + Userid + b[j];
                                 change = true;
                             }
                         }
                     }
-                    if(!change)
-                    {
+                    if (!change) {
                         Userid = null;
                     }
                     finish();

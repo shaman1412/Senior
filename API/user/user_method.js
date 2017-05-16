@@ -67,6 +67,19 @@ function read (id, cb) {
   connection.end();
 }
 
+function read_and_create (data, cb) {
+  const connection = getConnection();
+  connection.query('INSERT INTO `user_profile` SET ?', data, (err, res) => {
+    if (err) {
+      cb('Wrong Input');
+      return;
+    }
+	console.log("response create is "+JSON.stringify(data));
+	cb(null, data);
+  });
+  connection.end();
+}
+
 function update (id, data, cb) {
   const connection = getConnection();
   connection.query(
@@ -87,6 +100,7 @@ function _delete (id, cb) {
 
 module.exports = {
   createSchema: createSchema,
+  read_and_create: read_and_create,
   list: list,
   create: create,
   read: read,

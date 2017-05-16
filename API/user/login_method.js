@@ -58,6 +58,18 @@ function read_userid (id, cb) {
   connection.end();
 }
 
+function read_and_create (data, cb) {
+  const connection = getConnection();
+  connection.query('INSERT INTO `user_login` SET ?', data, (err, res) => {
+    if (err) {
+      cb('Wrong Input');
+      return;
+    }
+	console.log("response create is "+JSON.stringify(data));
+	cb(null, data);
+  });
+  connection.end();
+}
 
 function create (data, cb) {
   const connection = getConnection();
@@ -66,12 +78,15 @@ function create (data, cb) {
       cb(err);
       return;
     }
+	console.log("response create is "+res);
     cb(null, res);
   });
   connection.end();
 }
+
 module.exports = {
   createSchema: createSchema,
+  read_and_create: read_and_create,
   create: create,
   read: read,
   update: update,

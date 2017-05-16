@@ -21,6 +21,17 @@
         <activity
             android:name=".LoginActivity"
             android:label="Faff">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
 
         </activity>
         <activity android:name=".RegisterActivity" />
@@ -123,22 +134,23 @@
 
         <service android:name=".server_service" />
 
-<<<<<<< HEAD
-=======
-        <activity android:name=".Fragment.Party.Room_Recycler" />
-        <activity android:name=".Fragment.Party.Join_Recycler" />
-        <activity android:name=".Fragment.Party.Request_Recycler" />
-        <activity android:name=".Fragment.Party.Created_Recycler" />
         <activity android:name=".TestLoginFacebook.TestLoginFacebook">
 
-            <intent-filter>
+<<<<<<< HEAD
+<!--            <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
+            </intent-filter>-->
+=======
+            <!--<intent-filter>-->
+                <!--<action android:name="android.intent.action.MAIN" />-->
+
+                <!--<category android:name="android.intent.category.LAUNCHER" />-->
+            <!--</intent-filter>-->
+>>>>>>> 232af130304e74f306eb9ab908714f0a77663439
 
         </activity>
->>>>>>> a6126ad60432b40b3d62cb4925ee9e845aa0a24f
     </application>
 
 </manifest>
