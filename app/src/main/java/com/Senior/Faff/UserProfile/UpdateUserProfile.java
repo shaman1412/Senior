@@ -53,7 +53,6 @@ import java.util.Map;
 
 public class UpdateUserProfile extends AppCompatActivity {
     private int genderid;
-    private int Userid;
     private EditText name, email, address;
     private Spinner gender, type;
     private Button submit;
@@ -64,12 +63,12 @@ public class UpdateUserProfile extends AppCompatActivity {
     private ArrayList<String> type_list;
     private String type_check;
     private List_type list_adapter;
-    private ArrayList<String> favourite_type;
     private boolean first = true;
     private String user_profile;
     private Button upload_picture;
     private EditText Tel;
     private EditText Age;
+    private String old_picture = "";
 
     private static final int request_code = 1;                          //request code for OnClick result
 
@@ -288,6 +287,9 @@ public class UpdateUserProfile extends AppCompatActivity {
                 paras.put(UserProfile.Column.Favourite_type, params[0].getFavourite_type());
                 paras.put(UserProfile.Column.Age, String.valueOf(params[0].getAge()));
                 paras.put(UserProfile.Column.Telephone, params[0].getTelephone());
+                paras.put("old_filename", old_picture);
+
+                Log.i("TEST:", " old_picture : "+old_picture);
 
                 String img_path_tmp = params[0].getPicture();
                 Log.i("TEST:", "img path tmp : "+img_path_tmp);
@@ -373,31 +375,31 @@ public class UpdateUserProfile extends AppCompatActivity {
 //            }
 //        }
 //    }
-
-    public String getPostDataString(JSONObject params) throws Exception {
-
-        StringBuilder result = new StringBuilder();
-        boolean first = true;
-
-        Iterator<String> itr = params.keys();
-
-        while (itr.hasNext()) {
-
-            String key = itr.next();
-            Object value = params.get(key);
-
-            if (first)
-                first = false;
-            else
-                result.append("&");
-
-            result.append(URLEncoder.encode(key, "UTF-8"));
-            result.append("=");
-            result.append(URLEncoder.encode(value.toString(), "UTF-8"));
-
-        }
-        return result.toString();
-    }
+//
+//    public String getPostDataString(JSONObject params) throws Exception {
+//
+//        StringBuilder result = new StringBuilder();
+//        boolean first = true;
+//
+//        Iterator<String> itr = params.keys();
+//
+//        while (itr.hasNext()) {
+//
+//            String key = itr.next();
+//            Object value = params.get(key);
+//
+//            if (first)
+//                first = false;
+//            else
+//                result.append("&");
+//
+//            result.append(URLEncoder.encode(key, "UTF-8"));
+//            result.append("=");
+//            result.append(URLEncoder.encode(value.toString(), "UTF-8"));
+//
+//        }
+//        return result.toString();
+//    }
 
     private class getData extends AsyncTask<String, String, UserProfile> {
 
@@ -441,8 +443,6 @@ public class UpdateUserProfile extends AppCompatActivity {
 
         }
 
-
-
         @Override
         protected void onPostExecute(UserProfile userpro) {
             super.onPostExecute(userpro);
@@ -465,10 +465,11 @@ public class UpdateUserProfile extends AppCompatActivity {
                         email.setText(userpro.getEmail());
                     }
 
-//                    if(!userpro.getPicture().equals(""))
-//                    {
-//                        Picasso.with(mcontext).load(userpro.getPicture()).resize(300,300).into();
-//                    }
+                    if(userpro.getPicture()!=null)
+                    {
+                        old_picture = userpro.getPicture();
+                    }
+
                     switch (userpro.getGender()) {
                         case 0:
                             gender.setSelection(0);

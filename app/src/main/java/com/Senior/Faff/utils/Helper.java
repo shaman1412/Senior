@@ -233,6 +233,7 @@ public class Helper {
                         outputStream.writeBytes("Content-Type: text/plain" + lineEnd);
                         outputStream.writeBytes(lineEnd);
                         bf.write(value);
+                        Log.i("TEST:", key+" : "+value);
                         bf.flush();
                         //outputStream.writeBytes(value);
                         outputStream.writeBytes(lineEnd);

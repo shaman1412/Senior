@@ -91,8 +91,6 @@ public class LoginActivity extends ActionBarActivity {
         }
         setContentView(R.layout.activity_login);
 
-        mManager = new DatabaseManager(this);
-
         mContext = this;
 
         mLogin = (Button) findViewById(R.id.button_login);
