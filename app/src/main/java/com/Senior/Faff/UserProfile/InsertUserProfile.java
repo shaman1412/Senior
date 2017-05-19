@@ -80,6 +80,7 @@ public class InsertUserProfile extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_insert_user_profile);
+        image_count = 0;
         String[] values = {"Femail", "Male"};
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -206,7 +207,7 @@ public class InsertUserProfile extends AppCompatActivity {
 
                 String img_path_tmp = new Gson().toJson(imgPath);
 
-                UserProfile user = new UserProfile(userid, name.getText().toString(), address.getText().toString(), email.getText().toString(), Tel.getText().toString(), type_check, genderid, Integer.parseInt(Age.getText().toString()), "asd");
+                UserProfile user = new UserProfile(userid, name.getText().toString(), address.getText().toString(), email.getText().toString(), Tel.getText().toString(), type_check, genderid, Integer.parseInt(Age.getText().toString()), img_path_tmp);
                 user.setPicture(img_path_tmp);
 
                 InsertUserProfile.AddUserProfile add_pro = new InsertUserProfile.AddUserProfile();
@@ -285,7 +286,9 @@ public class InsertUserProfile extends AppCompatActivity {
                 InsertUserProfile.AddUserProfile.this.imgPath = new Gson().fromJson(img_path_tmp, ArrayList.class);
                 URL url = new URL("https://faff-1489402013619.appspot.com/user/new_user");
 
-                result = new Helper().multipartRequest(url.toString(),paras, InsertUserProfile.AddUserProfile.this.imgPath, "image", "image/jpeg");
+                Helper hp = new Helper();
+                hp.setRequest_method("POST");
+                result = hp.multipartRequest(url.toString(),paras, InsertUserProfile.AddUserProfile.this.imgPath, "image", "image/jpeg");
 
             } catch (Exception ex) {
                 ex.printStackTrace();

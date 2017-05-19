@@ -505,7 +505,9 @@ public class Add_RestaurantProfile extends AppCompatActivity implements OnMapRea
 
                 URL url = new URL("https://faff-1489402013619.appspot.com/res_profile/create");
 
-                result = new Helper().multipartRequest(url.toString(),paras, Add_RestaurantProfile.AddRestProfile.this.imgPath, "image", "image/jpeg");
+                Helper hp = new Helper();
+                hp.setRequest_method("POST");
+                result = hp.multipartRequest(url.toString(),paras, Add_RestaurantProfile.AddRestProfile.this.imgPath, "image", "image/jpeg");
 
             } catch (Exception ex) {
                 ex.printStackTrace();

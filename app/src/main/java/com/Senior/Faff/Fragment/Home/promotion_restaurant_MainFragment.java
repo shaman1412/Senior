@@ -53,17 +53,14 @@ public class promotion_restaurant_MainFragment extends Fragment {
 
         loading = (FrameLayout)rootView.findViewById(R.id.loading);
         showLoading();
+        mContext = getActivity();
         try {
             loadingFragment = new LoadingFragment();
-            Bundle b = new Bundle();
-            b.putString("to", this.getClass().getCanonicalName());
-            loadingFragment.setArguments(b);
             ((AppCompatActivity)mContext).getSupportFragmentManager().beginTransaction().replace(R.id.loading, loadingFragment).commit();
         } catch (Exception e) {
             e.printStackTrace();
         }
 
-        mContext = getActivity();
         promotion_restaurant_MainFragment.ListPromotion lsp = new promotion_restaurant_MainFragment.ListPromotion(new promotion_restaurant_MainFragment.ListPromotion.AsyncResponse() {
             @Override
             public void processFinish(String output) throws JSONException {
@@ -140,7 +137,9 @@ public class promotion_restaurant_MainFragment extends Fragment {
                 URL url = new URL("https://faff-1489402013619.appspot.com/promotion_list");
                 //URL url = new URL("http://localhost:8080/promotion_list");
 
-                result = new Helper().getRequest(url.toString());
+                Helper hp = new Helper();
+                hp.setRequest_method("GET");
+                result = hp.getRequest(url.toString());
 
             } catch (Exception ex) {
                 ex.printStackTrace();
@@ -166,23 +165,11 @@ public class promotion_restaurant_MainFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        showLoading();
-        try {
-            loadingFragment = new LoadingFragment();
-            Bundle b = new Bundle();
-            b.putString("to", this.getClass().getCanonicalName());
-            loadingFragment.setArguments(b);
-            ((AppCompatActivity)mContext).getSupportFragmentManager().beginTransaction().replace(R.id.loading, loadingFragment).commit();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
     }
 
     @Override
     public void onStop() {
         super.onStop();
-        hideLoading();
     }
 
     public static void showLoading(){

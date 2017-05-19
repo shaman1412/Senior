@@ -5,6 +5,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const config = require('../config');
 const images = require('../lib/images');
+const delete_from_gcloud = require('../lib/delete_image_from_gcloud');
 
 const router = express.Router();
 
@@ -45,6 +46,16 @@ router.get('/:userid', (req, res, next) => {
   });
 });
 
+// router.get('/newUserIfNotExists/:userid',images.multer.array('image'), (req, res, next) => {
+	// getModel().read(req.params.userid, (err, entity) => {
+    // if (err) {
+      // next(err);
+      // return;
+    // }
+    // res.json(entity);
+  // });
+// });
+
 
 router.post('/new_user',images.multer.array('image'), images.sendUploadToGCS_UserProfile,(req, res, next) => {
 	const json  = req.body;
@@ -75,7 +86,7 @@ router.post('/new_user',images.multer.array('image'), images.sendUploadToGCS_Use
 		userid : json.userid,
 		picture: json.picture,
 		name: json.name,
-    picture : json.picture,
+		picture : json.picture,
 		address: json.address,
 		email: json.email,
 		telephone: json.telephone,
@@ -161,18 +172,46 @@ router.post('/newUserIfNotExists/:userid',images.multer.array('image'), (req, re
 	
 });
 
-router.put('/:userid', (req, res, next) => {
+router.put('/:userid',images.multer.array('image'), (req, res, next) => {
 	const json  = req.body;
 	console.log(json);
+	
+	const old_filename = json.old_filename;
+	delete_from_gcloud.deleteImageFromUserProfile (old_filename, res, next);
+	
+	images.sendUploadToGCS_UserProfile (req, res, next);
+	if (req.file && req.file.cloudStoragePublicUrl) {
+		json.picture = req.file.cloudStoragePublicUrl;
+    }
+	else if(req.files)
+	{
+		var ls=req.files;
+		json.picture = "";
+		var n = ls.length;
+		var i = 0;
+		ls.forEach(function(item){
+			if(!(++i == n))
+			{
+				json.picture = json.picture + item.cloudStoragePublicUrl+",";
+			}
+			else
+			{
+				json.picture = json.picture + item.cloudStoragePublicUrl;
+			}
+		});
+	}
 	const user = {		
 		name: json.name,
 		address: json.address,
 		telephone: json.telephone,
-
-    favourite_type : json.favourite_type,
-		
-	}	
-  getModel().update(req.params.userid, user, (err, entity) => {
+		picture: json.picture,
+		email: json.email,
+		gender: json.gender,		
+		favourite_type: json.favourite_type,
+		age: json.age
+	}
+	
+	getModel().update(req.params.userid, user, (err, entity) => {
     if (err) {
       next(err);
       return;

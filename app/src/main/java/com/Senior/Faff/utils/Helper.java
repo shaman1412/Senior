@@ -184,11 +184,11 @@ public class Helper {
                         InputStream inputStream_tmp = url_tmp.openStream();
 
                         outputStream.writeBytes(twoHyphens + boundary + lineEnd);
-                        Object value = "image_test";
+                        String value = "image_test";
                         if (parmas.containsKey(UserProfile.Column.UserID)) {
-                            value = parmas.get(UserProfile.Column.UserID);
+                            value = parmas.get(UserProfile.Column.UserID).substring(3, 6) + ".jpg";
                         }
-                        outputStream.writeBytes("Content-Disposition: form-data; name=\"" + filefield + "\"; filename=\"" + value.toString() + "\"" + lineEnd);
+                        outputStream.writeBytes("Content-Disposition: form-data; name=\"" + filefield + "\"; filename=\"" + value + "\"" + lineEnd);
                         outputStream.writeBytes("Content-Type: " + fileMimeType + lineEnd);
                         outputStream.writeBytes("Content-Transfer-Encoding: binary" + lineEnd);
 
@@ -223,23 +223,40 @@ public class Helper {
 
                 // Upload POST Data
                 Iterator<String> keys = parmas.keySet().iterator();
+                String value = "";
                 while (keys.hasNext()) {
                     String key = keys.next();
-                    String value = parmas.get(key);
-                    outputStream.writeBytes(twoHyphens + boundary + lineEnd);
-                    outputStream.writeBytes("Content-Disposition: form-data; name=\"" + key + "\"" + lineEnd);
-                    outputStream.writeBytes("Content-Type: text/plain" + lineEnd);
-                    outputStream.writeBytes(lineEnd);
-                    bf.write(value);
-                    bf.flush();
-                    //outputStream.writeBytes(value);
-                    outputStream.writeBytes(lineEnd);
+                    value = parmas.get(key);
+                    if (value != null) {
+                        outputStream.writeBytes(twoHyphens + boundary + lineEnd);
+                        outputStream.writeBytes("Content-Disposition: form-data; name=\"" + key + "\"" + lineEnd);
+                        outputStream.writeBytes("Content-Type: text/plain" + lineEnd);
+                        outputStream.writeBytes(lineEnd);
+                        bf.write(value);
+                        bf.flush();
+                        //outputStream.writeBytes(value);
+                        outputStream.writeBytes(lineEnd);
+                    } else {
+                        outputStream.writeBytes(twoHyphens + boundary + lineEnd);
+                        outputStream.writeBytes("Content-Disposition: form-data; name=\"" + key + "\"" + lineEnd);
+                        outputStream.writeBytes("Content-Type: text/plain" + lineEnd);
+                        outputStream.writeBytes(lineEnd);
+                        //outputStream.writeBytes(value);
+                        outputStream.writeBytes(lineEnd);
+                    }
                 }
 
                 outputStream.writeBytes(twoHyphens + boundary + twoHyphens + lineEnd);
 
                 if (200 != connection.getResponseCode()) {
-                    throw new Exception("Failed to upload code:" + connection.getResponseCode() + " " + connection.getResponseMessage());
+                    if(connection.getResponseCode()==404 && !isLocal)
+                    {
+                        return parmas.get(UserProfile.Column.UserID).toString();
+                    }
+                    else
+                    {
+                        throw new Exception("Failed to upload code:" + connection.getResponseCode() + " " + connection.getResponseMessage());
+                    }
                 }
 
                 inputStream = connection.getInputStream();
