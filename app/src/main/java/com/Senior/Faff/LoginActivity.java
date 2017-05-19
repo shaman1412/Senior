@@ -50,6 +50,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -109,6 +110,7 @@ public class LoginActivity extends ActionBarActivity {
         permiss.add("user_birthday");
         permiss.add("user_location");
         permiss.add("user_hometown");
+
         loginButton.setReadPermissions(permiss);
 
         loginButton.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
@@ -128,6 +130,7 @@ public class LoginActivity extends ActionBarActivity {
 
                 if (accessToken != null) {
                     String userID = accessToken.getUserId();
+                    Log.i("TEST:", "user_id : "+userID);
                     Bundle parameters = new Bundle();
                     parameters.putString("fields", "email,birthday,link,picture,location,gender,name,id");  //no favorite type and phone
                     new GraphRequest(
@@ -139,50 +142,88 @@ public class LoginActivity extends ActionBarActivity {
                                 public void onCompleted(GraphResponse response) {
                                     obj = response.getJSONObject();
                                     try {
-                                        String location_id = obj.getJSONObject("location").getString("id");
-                                        new GraphRequest(AccessToken.getCurrentAccessToken(),
-                                                location_id + "?fields=location{latitude,longitude}",
-                                                null,
-                                                HttpMethod.GET,
-                                                new GraphRequest.Callback() {
-                                                    @Override
-                                                    public void onCompleted(GraphResponse response) {
-                                                        JSONObject obj1 = response.getJSONObject();
-                                                        try {
-                                                            obj1 = obj1.getJSONObject("location");
-                                                            obj.put("location", obj1.getString("latitude") + "," + obj1.getString("longitude"));
-                                                            obj1 = obj.getJSONObject("picture").getJSONObject("data");
-                                                            obj.put("picture", obj1.getString("url"));
-                                                            Log.i("TEST:", obj.toString());
+                                        Log.i("TEST:", "response is : "+obj.toString());
+                                        if(obj.has("location"))
+                                        {
+                                            String location_id = obj.getJSONObject("location").getString("id");
+                                            new GraphRequest(AccessToken.getCurrentAccessToken(),
+                                                    location_id + "?fields=location{latitude,longitude}",
+                                                    null,
+                                                    HttpMethod.GET,
+                                                    new GraphRequest.Callback() {
+                                                        @Override
+                                                        public void onCompleted(GraphResponse response) {
+                                                            JSONObject obj1 = response.getJSONObject();
+                                                            try {
+                                                                obj1 = obj1.getJSONObject("location");
+                                                                obj.put("location", obj1.getString("latitude") + "," + obj1.getString("longitude"));
+                                                                obj1 = obj.getJSONObject("picture").getJSONObject("data");
+                                                                obj.put("picture", obj1.getString("url"));
+                                                                Log.i("TEST:", obj.toString());
 
-                                                            int rand = (int)(Math.random()*999);
-                                                            String key_user = "fb"+obj.getString("id")+String.valueOf(rand);
-                                                            rand = (int)(Math.random()*999);
-                                                            String key_pass = "fb"+obj.getString("id")+String.valueOf(rand);
-                                                            String key_user_id = "fb"+obj.getString("id");
-                                                            UserAuthen user = new UserAuthen(key_user, key_pass, key_user_id);
-                                                            int gender = obj.getString("gender").equals("male")?1:0;
-                                                            int age = Integer.parseInt(getAge(obj.getString("birthday")));
-                                                            UserProfile profile = new UserProfile(
-                                                                    key_user_id,
-                                                                    obj.getString("name"),
-                                                                    obj.getString("location"),
-                                                                    obj.getString("email"),
-                                                                    "",
-                                                                    "",
-                                                                    gender,
-                                                                    age,
-                                                                    obj.getString("picture")
-                                                            );
-                                                            facebookToUserAuthen fb_tmp = new facebookToUserAuthen(profile);
-                                                            showLoading();
-                                                            fb_tmp.execute(user);
+                                                                int rand = (int)(Math.random()*999);
+                                                                String key_user = "fb"+obj.getString("id")+String.valueOf(rand);
+                                                                rand = (int)(Math.random()*999);
+                                                                String key_pass = "fb"+obj.getString("id")+String.valueOf(rand);
+                                                                String key_user_id = "fb"+obj.getString("id");
+                                                                UserAuthen user = new UserAuthen(key_user, key_pass, key_user_id);
+                                                                int gender = obj.getString("gender").equals("male")?1:0;
+                                                                int age = Integer.parseInt(getAge(obj.getString("birthday")));
+                                                                UserProfile profile = new UserProfile(
+                                                                        key_user_id,
+                                                                        obj.getString("name"),
+                                                                        obj.getString("location"),
+                                                                        obj.getString("email"),
+                                                                        "",
+                                                                        "",
+                                                                        gender,
+                                                                        age,
+                                                                        obj.getString("picture")
+                                                                );
+                                                                facebookToUserAuthen fb_tmp = new facebookToUserAuthen(profile);
+                                                                showLoading();
+                                                                fb_tmp.execute(user);
 
-                                                        } catch (JSONException e) {
-                                                            e.printStackTrace();
+                                                            } catch (JSONException e) {
+                                                                e.printStackTrace();
+                                                            }
                                                         }
-                                                    }
-                                                }).executeAsync();
+                                                    }).executeAsync();
+                                        }
+                                        else
+                                        {
+                                            obj.put("location", "");
+                                            try {
+                                                JSONObject obj1 = obj.getJSONObject("picture").getJSONObject("data");
+                                                obj.put("picture", obj1.getString("url"));
+                                                Log.i("TEST:", obj.toString());
+
+                                                int rand = (int)(Math.random()*999);
+                                                String key_user = "fb"+obj.getString("id")+String.valueOf(rand);
+                                                rand = (int)(Math.random()*999);
+                                                String key_pass = "fb"+obj.getString("id")+String.valueOf(rand);
+                                                String key_user_id = "fb"+obj.getString("id");
+                                                UserAuthen user = new UserAuthen(key_user, key_pass, key_user_id);
+                                                int gender = obj.getString("gender").equals("male")?1:0;
+                                                int age = Integer.parseInt(getAge(obj.getString("birthday")));
+                                                UserProfile profile = new UserProfile(
+                                                        key_user_id,
+                                                        obj.getString("name"),
+                                                        obj.getString("location"),
+                                                        obj.getString("email"),
+                                                        "",
+                                                        "",
+                                                        gender,
+                                                        age,
+                                                        obj.getString("picture")
+                                                );
+                                                facebookToUserAuthen fb_tmp = new facebookToUserAuthen(profile);
+                                                showLoading();
+                                                fb_tmp.execute(user);
+                                            } catch (JSONException e) {
+                                                e.printStackTrace();
+                                            }
+                                        }
                                     } catch (JSONException e) {
                                         e.printStackTrace();
                                     }
