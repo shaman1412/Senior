@@ -14,7 +14,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.LinearLayout;
+import android.widget.FrameLayout;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -26,6 +26,7 @@ import com.Senior.Faff.UserProfile.List_typeNodel;
 import com.Senior.Faff.model.Restaurant;
 import com.Senior.Faff.model.UserProfile;
 import com.Senior.Faff.utils.Helper;
+import com.Senior.Faff.utils.LoadingFragment;
 import com.google.gson.Gson;
 
 import java.io.BufferedInputStream;
@@ -41,7 +42,6 @@ import java.util.ArrayList;
  */
 public class advice_restaurant_MainFragment extends Fragment {
 
-
     public advice_restaurant_MainFragment() {
         // Required empty public constructor
     }
@@ -49,6 +49,10 @@ public class advice_restaurant_MainFragment extends Fragment {
     private ListView listview;
     private String userid;
     private int[] resId =  {R.drawable.restaurant1,R.drawable.restaurant2,R.drawable.restaurant3};
+
+    private static FrameLayout loading;
+    private LoadingFragment loadingFragment;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -58,9 +62,22 @@ public class advice_restaurant_MainFragment extends Fragment {
         View rootView = inflater.inflate(R.layout.fragment_advice_restaurant__main, container, false);
         listview = (ListView)rootView.findViewById(R.id.listView1);
 
+        loading = (FrameLayout)rootView.findViewById(R.id.loading);
+
+        showLoading();
+        try {
+            loadingFragment = new LoadingFragment();
+            Bundle b = new Bundle();
+            b.putString("to", this.getClass().getCanonicalName());
+            loadingFragment.setArguments(b);
+            getFragmentManager().beginTransaction().replace(R.id.loading, loadingFragment).commit();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         new getData().execute();
         return  rootView;
     }
+
     private class getData extends AsyncTask<String, String, Restaurant[] > {
 
         String pass;
@@ -121,6 +138,11 @@ public class advice_restaurant_MainFragment extends Fragment {
         protected void onPostExecute(final Restaurant[] respro) {
             super.onPostExecute(respro);
             if (respro != null) {
+                if(loadingFragment!=null)
+                {
+                    loadingFragment.onStop();
+                }
+                hideLoading();
                 listview.setAdapter( new Customlistview_addvice_adapter(mcontext,0,respro,resId));
                 listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                     public void onItemClick(AdapterView<?> arg0, View view, int position, long id) {
@@ -140,7 +162,46 @@ public class advice_restaurant_MainFragment extends Fragment {
             }
 
         }
-
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        showLoading();
+        try {
+            loadingFragment = new LoadingFragment();
+            Bundle b = new Bundle();
+            b.putString("to", this.getClass().getCanonicalName());
+            loadingFragment.setArguments(b);
+            getFragmentManager().beginTransaction().replace(R.id.loading, loadingFragment).commit();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        hideLoading();
+    }
+
+    public static void showLoading(){
+        if(loading!=null)
+        {
+            if(loading.getVisibility()==View.GONE)
+            {
+                loading.setVisibility(View.VISIBLE);
+            }
+        }
+    }
+
+    public static void hideLoading(){
+        if(loading!=null)
+        {
+            if(loading.getVisibility()==View.VISIBLE)
+            {
+                loading.setVisibility(View.GONE);
+            }
+        }
+    }
 }

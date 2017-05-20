@@ -446,7 +446,9 @@ public class Show_RestaurantProfile extends AppCompatActivity implements OnMapRe
                 URL url = new URL("https://faff-1489402013619.appspot.com/user/"+params[0]);
                 //URL url = new URL("http://localhost:8080/promotion_list");
 
-                result = new Helper().getRequest(url.toString());
+                Helper hp = new Helper();
+                hp.setRequest_method("GET");
+                result = hp.getRequest(url.toString());
 
             } catch (Exception ex) {
                 ex.printStackTrace();

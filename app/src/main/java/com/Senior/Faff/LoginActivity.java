@@ -34,6 +34,7 @@ import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
 import com.google.gson.Gson;
+import com.google.gson.JsonSyntaxException;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -50,6 +51,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -65,7 +67,7 @@ public class LoginActivity extends ActionBarActivity {
     private Context mContext;
     private LoginButton loginButton;
 
-    private FrameLayout loading;
+    private static FrameLayout loading;
     private LoadingFragment loadingFragment;
 
     private DatabaseManager mManager;
@@ -89,8 +91,6 @@ public class LoginActivity extends ActionBarActivity {
         }
         setContentView(R.layout.activity_login);
 
-        mManager = new DatabaseManager(this);
-
         mContext = this;
 
         mLogin = (Button) findViewById(R.id.button_login);
@@ -109,12 +109,20 @@ public class LoginActivity extends ActionBarActivity {
         permiss.add("user_birthday");
         permiss.add("user_location");
         permiss.add("user_hometown");
+
         loginButton.setReadPermissions(permiss);
 
         loginButton.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
             @Override
             public void onSuccess(LoginResult loginResult) {
                 debug("Success");
+
+                try {
+                    loadingFragment = new LoadingFragment();
+                    getSupportFragmentManager().beginTransaction().replace(R.id.loading, loadingFragment).commit();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
 
                 accessTokenTracker = new AccessTokenTracker() {
                     @Override
@@ -128,6 +136,7 @@ public class LoginActivity extends ActionBarActivity {
 
                 if (accessToken != null) {
                     String userID = accessToken.getUserId();
+                    Log.i("TEST:", "user_id : "+userID);
                     Bundle parameters = new Bundle();
                     parameters.putString("fields", "email,birthday,link,picture,location,gender,name,id");  //no favorite type and phone
                     new GraphRequest(
@@ -139,49 +148,88 @@ public class LoginActivity extends ActionBarActivity {
                                 public void onCompleted(GraphResponse response) {
                                     obj = response.getJSONObject();
                                     try {
-                                        String location_id = obj.getJSONObject("location").getString("id");
-                                        new GraphRequest(AccessToken.getCurrentAccessToken(),
-                                                location_id + "?fields=location{latitude,longitude}",
-                                                null,
-                                                HttpMethod.GET,
-                                                new GraphRequest.Callback() {
-                                                    @Override
-                                                    public void onCompleted(GraphResponse response) {
-                                                        JSONObject obj1 = response.getJSONObject();
-                                                        try {
-                                                            obj1 = obj1.getJSONObject("location");
-                                                            obj.put("location", obj1.getString("latitude") + "," + obj1.getString("longitude"));
-                                                            obj1 = obj.getJSONObject("picture").getJSONObject("data");
-                                                            obj.put("picture", obj1.getString("url"));
-                                                            Log.i("TEST:", obj.toString());
+                                        Log.i("TEST:", "response is : "+obj.toString());
+                                        if(obj.has("location"))
+                                        {
+                                            String location_id = obj.getJSONObject("location").getString("id");
+                                            new GraphRequest(AccessToken.getCurrentAccessToken(),
+                                                    location_id + "?fields=location{latitude,longitude}",
+                                                    null,
+                                                    HttpMethod.GET,
+                                                    new GraphRequest.Callback() {
+                                                        @Override
+                                                        public void onCompleted(GraphResponse response) {
+                                                            JSONObject obj1 = response.getJSONObject();
+                                                            try {
+                                                                obj1 = obj1.getJSONObject("location");
+                                                                obj.put("location", obj1.getString("latitude") + "," + obj1.getString("longitude"));
+                                                                obj1 = obj.getJSONObject("picture").getJSONObject("data");
+                                                                obj.put("picture", obj1.getString("url"));
+                                                                Log.i("TEST:", obj.toString());
 
-                                                            int rand = (int)(Math.random()*999);
-                                                            String key_user = "fb"+obj.getString("id")+String.valueOf(rand);
-                                                            rand = (int)(Math.random()*999);
-                                                            String key_pass = "fb"+obj.getString("id")+String.valueOf(rand);
-                                                            String key_user_id = "fb"+obj.getString("id");
-                                                            UserAuthen user = new UserAuthen(key_user, key_pass, key_user_id);
-                                                            int gender = obj.getString("gender").equals("male")?1:0;
-                                                            int age = Integer.parseInt(getAge(obj.getString("birthday")));
-                                                            UserProfile profile = new UserProfile(
-                                                                    key_user_id,
-                                                                    obj.getString("name"),
-                                                                    obj.getString("location"),
-                                                                    obj.getString("email"),
-                                                                    "",
-                                                                    "",
-                                                                    gender,
-                                                                    age,
-                                                                    obj.getString("picture")
-                                                            );
-                                                            facebookToUserAuthen fb_tmp = new facebookToUserAuthen(profile);
-                                                            fb_tmp.execute(user);
+                                                                int rand = (int)(Math.random()*999);
+                                                                String key_user = "fb"+obj.getString("id")+String.valueOf(rand);
+                                                                rand = (int)(Math.random()*999);
+                                                                String key_pass = "fb"+obj.getString("id")+String.valueOf(rand);
+                                                                String key_user_id = "fb"+obj.getString("id");
+                                                                UserAuthen user = new UserAuthen(key_user, key_pass, key_user_id);
+                                                                int gender = obj.getString("gender").equals("male")?1:0;
+                                                                int age = Integer.parseInt(getAge(obj.getString("birthday")));
+                                                                UserProfile profile = new UserProfile(
+                                                                        key_user_id,
+                                                                        obj.getString("name"),
+                                                                        obj.getString("location"),
+                                                                        obj.getString("email"),
+                                                                        "",
+                                                                        "",
+                                                                        gender,
+                                                                        age,
+                                                                        obj.getString("picture")
+                                                                );
+                                                                facebookToUserAuthen fb_tmp = new facebookToUserAuthen(profile);
+                                                                showLoading();
+                                                                fb_tmp.execute(user);
 
-                                                        } catch (JSONException e) {
-                                                            e.printStackTrace();
+                                                            } catch (JSONException e) {
+                                                                e.printStackTrace();
+                                                            }
                                                         }
-                                                    }
-                                                }).executeAsync();
+                                                    }).executeAsync();
+                                        }
+                                        else
+                                        {
+                                            obj.put("location", "");
+                                            try {
+                                                JSONObject obj1 = obj.getJSONObject("picture").getJSONObject("data");
+                                                obj.put("picture", obj1.getString("url"));
+                                                Log.i("TEST:", obj.toString());
+
+                                                int rand = (int)(Math.random()*999);
+                                                String key_user = "fb"+obj.getString("id")+String.valueOf(rand);
+                                                rand = (int)(Math.random()*999);
+                                                String key_pass = "fb"+obj.getString("id")+String.valueOf(rand);
+                                                String key_user_id = "fb"+obj.getString("id");
+                                                UserAuthen user = new UserAuthen(key_user, key_pass, key_user_id);
+                                                int gender = obj.getString("gender").equals("male")?1:0;
+                                                int age = Integer.parseInt(getAge(obj.getString("birthday")));
+                                                UserProfile profile = new UserProfile(
+                                                        key_user_id,
+                                                        obj.getString("name"),
+                                                        obj.getString("location"),
+                                                        obj.getString("email"),
+                                                        "",
+                                                        "",
+                                                        gender,
+                                                        age,
+                                                        obj.getString("picture")
+                                                );
+                                                facebookToUserAuthen fb_tmp = new facebookToUserAuthen(profile);
+                                                showLoading();
+                                                fb_tmp.execute(user);
+                                            } catch (JSONException e) {
+                                                e.printStackTrace();
+                                            }
+                                        }
                                     } catch (JSONException e) {
                                         e.printStackTrace();
                                     }
@@ -207,6 +255,7 @@ public class LoginActivity extends ActionBarActivity {
             @Override
             public void onError(FacebookException error) {
                 debug("Error");
+                error.printStackTrace();
             }
         });
 
@@ -237,8 +286,14 @@ public class LoginActivity extends ActionBarActivity {
     public void onDestroy() {
         super.onDestroy();
         try {
-            accessTokenTracker.stopTracking();
-            profileTracker.stopTracking();
+            if(accessTokenTracker!=null)
+            {
+                accessTokenTracker.stopTracking();
+            }
+            if(profileTracker!=null)
+            {
+                profileTracker.stopTracking();
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -384,17 +439,6 @@ public class LoginActivity extends ActionBarActivity {
         @Override
         protected UserAuthen doInBackground(UserAuthen... params) {
             try {
-                try {
-                    showLoading();
-                    loadingFragment = new LoadingFragment();
-                    Bundle b = new Bundle();
-                    b.putString("to", this.getClass().getCanonicalName());
-                    loadingFragment.setArguments(b);
-                    getSupportFragmentManager().beginTransaction().replace(R.id.loading, loadingFragment).commit();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-
                 JSONObject postDataParams = new JSONObject();
                 postDataParams.put(UserAuthen.Column.USERNAME, params[0].getUsername());
                 postDataParams.put(UserAuthen.Column.PASSWORD, params[0].getPassword());
@@ -505,6 +549,7 @@ public class LoginActivity extends ActionBarActivity {
 
                 Helper hp = new Helper();
                 hp.setLocal(false);
+                hp.setRequest_method("POST");
                 result = hp.multipartRequest(url.toString(),paras, LoginActivity.facebookToUserProfile.this.imgPath, "image", "image/jpeg");
 
             } catch (Exception ex) {
@@ -518,15 +563,26 @@ public class LoginActivity extends ActionBarActivity {
         protected void onPostExecute(String result) {
             if (result != "") {
                 Intent intent = new Intent(mContext, Main2Activity.class);
-                UserProfile user_profile = new Gson().fromJson(result, UserProfile.class);
-                Log.i("TEST:", "result is : "+result);
-                intent.putExtra(UserProfile.Column.UserID, user_profile.getUserid());
-                if(loadingFragment !=null)
-                {
-                    loadingFragment.onStop();
+                UserProfile user_profile = null;
+                try {
+                    user_profile = new Gson().fromJson(result, UserProfile.class);
+                    Log.i("TEST:", "result is : "+result);
+                    intent.putExtra(UserProfile.Column.UserID, user_profile.getUserid());
+                    if(loadingFragment !=null)
+                    {
+                        loadingFragment.onStop();
+                    }
+                    startActivity(intent);
+                    finish();
+                } catch (JsonSyntaxException e) {
+                    intent.putExtra(UserProfile.Column.UserID, result);
+                    if(loadingFragment !=null)
+                    {
+                        loadingFragment.onStop();
+                    }
+                    startActivity(intent);
+                    finish();
                 }
-                startActivity(intent);
-                finish();
                 //Toast.makeText(mcontext, result, Toast.LENGTH_LONG).show();
             } else {
                 // Toast.makeText(mcontext, "Fail", Toast.LENGTH_SHORT).show();
@@ -534,19 +590,23 @@ public class LoginActivity extends ActionBarActivity {
         }
     }
 
-    public void showLoading(){
+    public static void showLoading(){
         if(loading!=null)
         {
-            debug("Loading : show");
-            loading.setVisibility(View.VISIBLE);
+            if(loading.getVisibility()==View.GONE)
+            {
+                loading.setVisibility(View.VISIBLE);
+            }
         }
     }
 
-    public void hideLoading(){
+    public static void hideLoading(){
         if(loading!=null)
         {
-            debug("Loading : hide");
-            loading.setVisibility(View.GONE);
+            if(loading.getVisibility()==View.VISIBLE)
+            {
+                loading.setVisibility(View.GONE);
+            }
         }
     }
 }

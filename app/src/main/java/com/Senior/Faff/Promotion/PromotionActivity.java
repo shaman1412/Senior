@@ -258,7 +258,9 @@ public class PromotionActivity extends AppCompatActivity {
 
                 URL url = new URL("https://faff-1489402013619.appspot.com/promotion_list/new_promotion");
 
-                result = new Helper().multipartRequest(url.toString(), paras, AddPromotion.this.imgPath, "image", "image/jpeg");
+                Helper hp = new Helper();
+                hp.setRequest_method("POST");
+                result = hp.multipartRequest(url.toString(), paras, AddPromotion.this.imgPath, "image", "image/jpeg");
             } catch (Exception ex) {
                 ex.printStackTrace();
             }
@@ -289,7 +291,9 @@ public class PromotionActivity extends AppCompatActivity {
             try {
                 URL url = new URL("https://faff-1489402013619.appspot.com/promotion_list/get_count");
 
-                result = new Helper().getRequest(url.toString());
+                Helper hp = new Helper();
+                hp.setRequest_method("GET");
+                result = hp.getRequest(url.toString());
             } catch (Exception ex) {
                 ex.printStackTrace();
             }

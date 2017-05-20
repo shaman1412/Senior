@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,8 +16,6 @@ public class LoadingFragment extends Fragment {
     Handler handler;
     Runnable runnable;
     Long delay_time;
-    String to_class;
-    Class<?> to;
     Long time = 20000L;
 
     @Override
@@ -28,17 +27,7 @@ public class LoadingFragment extends Fragment {
 
         runnable = new Runnable() {
             public void run() {
-                Bundle from = getArguments();
-                if (from.getString("to")!=null) {
-                    to_class = from.getString("to");
-                    try {
-                        to = Class.forName(to_class);
-                        Intent intent = new Intent(LoadingFragment.this.getActivity(), to);
-                        startActivity(intent);
-                    } catch (ClassNotFoundException e) {
-                        e.printStackTrace();
-                    }
-                }
+                    onStop();
             }
         };
 
@@ -54,7 +43,10 @@ public class LoadingFragment extends Fragment {
 
     public void onStop() {
         super.onStop();
-        handler.removeCallbacks(runnable);
-        time = delay_time - (System.currentTimeMillis() - time);
+        if(runnable!=null)
+        {
+            handler.removeCallbacks(runnable);
+            time = delay_time - (System.currentTimeMillis() - time);
+        }
     }
 }

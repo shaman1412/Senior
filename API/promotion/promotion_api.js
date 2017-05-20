@@ -5,6 +5,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const config = require('../config');
 const images = require('../lib/images');
+const delete_from_gcloud = require('../lib/delete_image_from_gcloud');
 
 const router = express.Router();
 
@@ -99,9 +100,37 @@ router.post('/new_promotion',images.multer.array('image'),images.sendUploadToGCS
 	return res.send(promotion.promotionpictureurl);
 });
 
-router.put('/:promotionid', (req, res, next) => {
+//update
+router.put('/:promotionid', images.multer.array('image'), (req, res, next) => {
+	
 	const json  = req.body;
 	console.log(json);
+	
+	const old_filename = json.old_filename;
+	delete_from_gcloud.deleteImageFromPromotion (old_filename, res, next);
+	
+	images.sendUploadToGCS (req, res, next);
+	if (req.file && req.file.cloudStoragePublicUrl) {
+		json.picture = req.file.cloudStoragePublicUrl;
+    }
+	else if(req.files)
+	{
+		var ls=req.files;
+		json.picture = "";
+		var n = ls.length;
+		var i = 0;
+		ls.forEach(function(item){
+			if(!(++i == n))
+			{
+				json.picture = json.picture + item.cloudStoragePublicUrl+",";
+			}
+			else
+			{
+				json.picture = json.picture + item.cloudStoragePublicUrl;
+			}
+		});
+	}
+	
 	const promotion = {		
 		promotionname: json.promotionname,
 		promotionpictureurl: json.promotionpictureurl,
@@ -110,13 +139,14 @@ router.put('/:promotionid', (req, res, next) => {
 		promotiondetail: json.promotiondetail,
 		promotionlocation: json.promotionlocation
 	}	
-  getModel().update(req.params.promotionid, promotion, (err, entity) => {
-    if (err) {
-      next(err);
-      return;
-    }
-    res.json(entity);
-  });
+	
+	getModel().update(req.params.promotionid, promotion, (err, entity) => {
+		if (err) {
+			next(err);
+			return;
+		}
+		res.json(entity);
+	});
 });
 
 router.use((err, req, res, next) => {
