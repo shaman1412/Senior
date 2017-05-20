@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -18,6 +19,7 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import com.Senior.Faff.R;
+import com.Senior.Faff.VerticalSpaceItemDecoration;
 import com.Senior.Faff.model.Party;
 import com.Senior.Faff.model.Restaurant;
 import com.Senior.Faff.model.UserProfile;
@@ -43,7 +45,7 @@ public class Joined_Fragment extends Fragment {
     }
 
     private Context mcontext;
-
+    final private int VERTICAL_ITEM_SPACE = 20;
     private ArrayList<Party> re_list;
 //    private ListView listview;
     private RecyclerView listview;
@@ -94,10 +96,16 @@ public class Joined_Fragment extends Fragment {
 
                 debug("In Joined : ");
 
+
                 cus = new Join_Recycler(mcontext, re_list, userid);
                 LinearLayoutManager mLayoutManager  = new LinearLayoutManager(mcontext);
                 mLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
                 listview.setLayoutManager(mLayoutManager);
+
+
+
+               // listview.addItemDecoration(new VerticalSpaceItemDecoration(VERTICAL_ITEM_SPACE));
+
                 listview.setAdapter(cus);
 
 //              listview.setAdapter(new Customlistview_nearparty_adapter(mcontext, re_list));

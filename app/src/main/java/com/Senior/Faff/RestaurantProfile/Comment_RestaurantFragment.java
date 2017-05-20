@@ -3,6 +3,7 @@ package com.Senior.Faff.RestaurantProfile;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -105,7 +106,23 @@ public class Comment_RestaurantFragment extends Fragment {
 //                comment.child(tmp).updateChildren(map3);
 //            }
 //        });
+        Bundle i = new Bundle();
+        i.putString("resid", resid);
+        i.putString("id", id);
+        i.putString("username", username);
 
+        Add_Comment add_comment = new Add_Comment();
+        FragmentManager fm = getFragmentManager();
+        add_comment.setArguments(i);
+        try {
+            fm.beginTransaction().replace(R.id.add_comment, add_comment).commit();
+        }
+        catch (Exception ex)
+        {
+            ex.printStackTrace();
+        }
+
+ /*
         enter_comment = (Button) root.findViewById(R.id.enter_comment);
         enter_comment.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -116,7 +133,7 @@ public class Comment_RestaurantFragment extends Fragment {
                 i.putExtra("username", username);
                 startActivity(i);
             }
-        });
+        });*/
 
         adapter = new CommentAdapter(getContext(), list);
         listView = (ListView)root.findViewById(R.id.listView);

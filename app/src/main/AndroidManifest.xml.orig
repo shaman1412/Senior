@@ -13,6 +13,7 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+
     <application
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
@@ -21,12 +22,22 @@
         <activity
             android:name=".LoginActivity"
             android:label="Faff">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
 
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+<<<<<<< HEAD
+
+
+=======
+>>>>>>> origin/master
         </activity>
         <activity android:name=".RegisterActivity" />
         <activity android:name=".MainActivity" />
         <activity android:name=".Promotion.PromotionActivity" />
         <activity android:name=".Promotion.PromotionView" />
+
         <receiver android:name=".broadcast_to_start">
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
@@ -107,7 +118,6 @@
             android:configChanges="orientation|screenSize|keyboardHidden" />
         <activity android:name=".Main3Activity" />
         <activity android:name=".TestAPI" />
-
         <activity android:name=".UserProfile.UpdateUserProfile" />
         <activity android:name=".RestaurantProfile.Edit_RestaurantProfile" />
         <activity android:name=".Fragment.Party.Show_party_profile" />
@@ -117,28 +127,26 @@
             android:label="@string/title_activity_add_map" />
         <activity android:name=".UserProfile.Change_password" />
         <activity android:name=".testnoti" />
-        <activity android:name=".RestaurantProfile.Add_Comment" />
         <activity android:name=".chat.Chat_Party" />
         <activity android:name=".test_callservice" />
 
         <service android:name=".server_service" />
 
-<<<<<<< HEAD
-=======
-        <activity android:name=".Fragment.Party.Room_Recycler" />
-        <activity android:name=".Fragment.Party.Join_Recycler" />
-        <activity android:name=".Fragment.Party.Request_Recycler" />
-        <activity android:name=".Fragment.Party.Created_Recycler" />
         <activity android:name=".TestLoginFacebook.TestLoginFacebook">
 
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
+<<<<<<< HEAD
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
+=======
+            <!-- <intent-filter> -->
+            <!-- <action android:name="android.intent.action.MAIN" /> -->
+
+
+            <!-- <category android:name="android.intent.category.LAUNCHER" /> -->
+            <!-- </intent-filter> -->
+>>>>>>> origin/master
 
         </activity>
->>>>>>> a6126ad60432b40b3d62cb4925ee9e845aa0a24f
+        <activity android:name=".utils.LoadingFragment"></activity>
     </application>
 
 </manifest>

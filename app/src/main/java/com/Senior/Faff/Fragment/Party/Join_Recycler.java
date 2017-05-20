@@ -7,6 +7,7 @@ import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -50,7 +51,7 @@ public class Join_Recycler extends RecyclerView.Adapter<Join_Recycler.ViewHolder
             super(v);
             imageView = (ImageView) v.findViewById(R.id.imageView1);
             RoomName = (TextView) v.findViewById(R.id.textView1);
-            appointment = (TextView) v.findViewById(R.id.Location_text);
+            appointment = (TextView) v.findViewById(R.id.appointment);
             maxpeople = (TextView) v.findViewById(R.id.max);
             currentpeople = (TextView) v.findViewById(R.id.people);
             detail = (TextView) v.findViewById(R.id.detail);
@@ -93,7 +94,7 @@ public class Join_Recycler extends RecyclerView.Adapter<Join_Recycler.ViewHolder
                     try
                     {
                         Picasso.with(mContext).cancelRequest(holder.imageView);
-                        Picasso.with(mContext).load(uri.toString()).resize(250, 250).into(holder.imageView);
+                        Picasso.with(mContext).load(uri.toString()).resize(300, 200).into(holder.imageView);
                     }
                     catch (Exception ex)
                     {
@@ -132,7 +133,11 @@ public class Join_Recycler extends RecyclerView.Adapter<Join_Recycler.ViewHolder
         holder.appointment.setText(list.get(position).getAppointment());
         holder.maxpeople.setText(Integer.toString(list.get(position).getPeople()));
         holder.currentpeople.setText(Integer.toString(count));
-        holder.detail.setText("     " + list.get(position).getDescription());
+
+        holder.detail.setEllipsize(TextUtils.TruncateAt.END);
+        holder.detail.setLines(2);
+        holder.detail.setMaxLines(2);
+        holder.detail.setText(list.get(position).getDescription());
 
 
     }

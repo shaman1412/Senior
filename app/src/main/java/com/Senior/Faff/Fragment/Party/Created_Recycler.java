@@ -7,6 +7,7 @@ import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -132,6 +133,9 @@ public class Created_Recycler extends RecyclerView.Adapter<Created_Recycler.View
         holder.appointment.setText(list.get(position).getAppointment());
         holder.maxpeople.setText(Integer.toString(list.get(position).getPeople()));
         holder.currentpeople.setText(Integer.toString(count));
+        holder.detail.setEllipsize(TextUtils.TruncateAt.END);
+        holder.detail.setLines(2);
+        holder.detail.setMaxLines(2);
         holder.detail.setText("     " + list.get(position).getDescription());
 
 
