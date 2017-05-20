@@ -317,8 +317,12 @@ public class Show_RestaurantProfile extends AppCompatActivity implements OnMapRe
             if(lola != null) {
                 send_location = lola;
                 String[] pos = lola.split(",");
-                myLocation = new LatLng(Double.parseDouble(pos[0]),
-                        Double.parseDouble(pos[1]));
+                try {
+                    myLocation = new LatLng(Double.parseDouble(pos[0]),
+                            Double.parseDouble(pos[1]));
+                } catch (NumberFormatException e) {
+                    myLocation = new LatLng(0, 0);
+                }
                 mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(myLocation,
                         11));
                 MarkerOptions markerOptions = new MarkerOptions();

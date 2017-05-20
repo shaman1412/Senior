@@ -303,7 +303,6 @@ public class UpdateUserProfile extends AppCompatActivity {
                 Log.i("TEST:", " old_picture : "+old_picture);
 
                 String img_path_tmp = params[0].getPicture();
-                Log.i("TEST:", "img path tmp : "+img_path_tmp);
                 UpdateUserProfile.AddUserProfile.this.imgPath = new ArrayList<String>(Arrays.asList(img_path_tmp));
 
                 URL url = new URL("https://faff-1489402013619.appspot.com/user/" + params[0].getUserid());

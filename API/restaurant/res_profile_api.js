@@ -97,7 +97,8 @@ router.put('/update/:resid',images.multer.array('image'),(req,res,next)=>{
 	const json  = req.body;
 	console.log(json);
 	
-	const old_filename = json.old_filename;
+	var old_filename = json.old_filename.split(",");
+	// var old_filename = json.old_filename;
 	delete_from_gcloud.deleteImageFromRestProfile (old_filename, res, next);
 	
 	images.sendUploadToGCS_RestaurantProfile (req, res, next);
@@ -122,7 +123,7 @@ router.put('/update/:resid',images.multer.array('image'),(req,res,next)=>{
 		});
 	}
 	
-	res_pro = {
+	var res_pro = {
 		name : json.name,
 		picture: json.picture,
 		type_food :  json.type_food,
@@ -141,8 +142,9 @@ router.put('/update/:resid',images.multer.array('image'),(req,res,next)=>{
 			next(err);
 			return;
 		}
-		res.json(entity);
 	});
+	console.log("update success");
+	res.send("update successful");
 });
 
 router.delete('/del/:resid', (req, res, next) => {
