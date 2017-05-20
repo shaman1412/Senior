@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/activity_insert_user_profile"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="com.Senior.Faff.UserProfile.InsertUserProfile">
+   >
 
     <android.support.v7.widget.Toolbar
         android:id="@+id/toolbar"
@@ -25,19 +24,16 @@
     </android.support.v7.widget.Toolbar>
 
 
-
     <LinearLayout
         android:layout_width="wrap_content"
-        android:layout_height="0dp"
-        android:layout_weight="2.5"
+        android:layout_height="wrap_content"
         android:background="@color/backgroundpro"
-        android:gravity="center"
         android:orientation="vertical">
 
         <android.support.v4.widget.NestedScrollView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center">
+          >
 
             <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
                 xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -70,22 +66,16 @@
                         android:inputType="text"
                         android:padding="16dp" />
 
-                    <LinearLayout
-                        android:layout_width="fill_parent"
-                        android:layout_height="match_parent"
-                        android:layout_gravity="center">
 
                         <android.support.v7.widget.RecyclerView
                             android:id="@+id/rlist1"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_alignParentTop="true"
-                            android:foregroundGravity="center"
-                            android:orientation="horizontal"
-                            android:scrollbars="vertical"
-                            app:layoutManager="android.support.v7.widget.LinearLayoutManager" />
+                            android:adjustViewBounds="true"
+                            android:scaleType="centerCrop"
+                             />
 
-                    </LinearLayout>
 
                     <Button
                         android:layout_width="100dp"
@@ -94,6 +84,8 @@
                         android:layout_marginBottom="5dp"
                         android:padding="2dip"
                         android:background="@drawable/adduserphoto"/>
+
+
 
                     <EditText
                         android:id="@+id/startDate"
@@ -122,23 +114,14 @@
                         android:inputType="text"
                         android:padding="16dp" />
 
-                    <EditText
-                        android:id="@+id/location"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_below="@id/promotionDetail"
-                        android:hint="googleMapLink"
-                        android:inputType="text"
-                        android:padding="16dp" />
 
                     <Button
                         android:id="@+id/addPromotion"
                         android:layout_width="fill_parent"
                         android:layout_height="wrap_content"
-                        android:layout_below="@id/location"
                         android:layout_marginTop="16dp"
                         android:background="@color/ButtonUserProfile"
-                        android:text="addPromotion"
+                        android:text="Edit"
                         android:textColor="#ffffff"
                         android:textSize="18sp" />
 
@@ -151,6 +134,3 @@
     </LinearLayout>
 
 </LinearLayout>
-
-
-

@@ -51,7 +51,7 @@ public class Request_Recycler extends RecyclerView.Adapter<Request_Recycler.View
             super(v);
             imageView = (ImageView) v.findViewById(R.id.imageView1);
             RoomName = (TextView) v.findViewById(R.id.textView1);
-            appointment = (TextView) v.findViewById(R.id.Location_text);
+            appointment = (TextView) v.findViewById(R.id.appointment);
             maxpeople = (TextView) v.findViewById(R.id.max);
             currentpeople = (TextView) v.findViewById(R.id.people);
             detail = (TextView) v.findViewById(R.id.detail);
@@ -94,7 +94,7 @@ public class Request_Recycler extends RecyclerView.Adapter<Request_Recycler.View
                     try
                     {
                         Picasso.with(mContext).cancelRequest(holder.imageView);
-                        Picasso.with(mContext).load(uri.toString()).resize(250, 250).into(holder.imageView);
+                        Picasso.with(mContext).load(uri.toString()).resize(300, 200).into(holder.imageView);
                     }
                     catch (Exception ex)
                     {

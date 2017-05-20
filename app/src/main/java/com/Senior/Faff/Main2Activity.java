@@ -215,6 +215,8 @@ public class Main2Activity extends AppCompatActivity {
             bundle = new Bundle();
             new getData().execute(id);
 
+        }else{
+            id = sp.getString(UserProfile.Column.UserID, "nothing");
         }
 
         BottomNavigationView bottomNavigationView = (BottomNavigationView)

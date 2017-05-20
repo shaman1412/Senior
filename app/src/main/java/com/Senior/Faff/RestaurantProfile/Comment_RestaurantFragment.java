@@ -217,7 +217,6 @@ public class Comment_RestaurantFragment extends Fragment {
 
         //rating_star = (RatingBar)root.findViewById(R.id.ratingBar);
         rating_total = (RatingBar) getActivity().findViewById(R.id.rate);
-        score = (TextView) getActivity().findViewById(R.id.text_rate);
 
         rate.addValueEventListener(new ValueEventListener() {
             @Override
@@ -238,7 +237,6 @@ public class Comment_RestaurantFragment extends Fragment {
 //                    rating_star.setOnRatingBarChangeListener(null);
                     float scor = sum/n;
                     rating_total.setRating(scor);
-                    score.setText(String.valueOf(new DecimalFormat("#.##").format(sum/n)));
 //                    rating_star.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
 //                        @Override
 //                        public void onRatingChanged(RatingBar ratingBar, float rating, boolean fromUser) {
