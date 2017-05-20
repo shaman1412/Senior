@@ -17,6 +17,8 @@ function getConnection () {
 
   return mysql.createConnection(options);
 }
+/*select * from promotion_list pro inner join restaurant_promotion res on pro.promotionid = res.promotionid where resid= test0914121493662297; 
+update restaurant_promotion set promotionid = 8 where promotionid = 1;*/
 
 function all_list (cb) {
   const connection = getConnection();
@@ -47,7 +49,7 @@ function create (data, cb) {
   connection.end();
 }
 
-function read (id, cb) {
+/*function read (id, cb) {
   const connection = getConnection();
   connection.query(
     'SELECT * FROM `restaurant_promotion` WHERE `resid` = ?', id, (err, results) => {
@@ -66,6 +68,27 @@ function read (id, cb) {
     });
   connection.end();
 }
+*/
+function read (id, cb) {
+  const connection = getConnection();
+  connection.query(
+    'SELECT * from promotion_list pro INNER JOIN restaurant_promotion res on pro.promotionid = res.promotionid where resid = ? ', id, (err, results) => {
+      if (err) {
+        cb(err);
+        return;
+      }
+      if (!results.length) {
+        cb({
+          code: 404,
+          message: 'Not found'
+        });
+        return;
+      }
+      cb(null, results);
+    });
+  connection.end();
+}
+
 function update (id, data, cb) {
   const connection = getConnection();
   connection.query(

@@ -36,6 +36,8 @@ router.get('/resid/:resid', (req, res, next) => {
   });
 });
 
+
+
 router.get('/promotionid/:promotionid', (req, res, next) => {
   getModel().read(req.params.promotionid, (err, entity) => {
     if (err) {

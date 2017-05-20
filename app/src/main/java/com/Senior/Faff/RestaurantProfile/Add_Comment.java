@@ -33,7 +33,7 @@ public class Add_Comment extends Fragment {
     private String username;
     private RatingBar rating_star;
     private DatabaseReference rate;
-    private TextView score;
+
 
 
     @Override
@@ -55,7 +55,6 @@ public class Add_Comment extends Fragment {
         add_comment = (Button) root.findViewById(R.id.comment_send);
         comment_text = (EditText) root.findViewById(R.id.comment_text);
         rating_star = (RatingBar) root.findViewById(R.id.ratingBar);
-        score = (TextView) root.findViewById(R.id.score);
         rating_star.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
             @Override
             public void onRatingChanged(RatingBar ratingBar, float rating, boolean fromUser) {

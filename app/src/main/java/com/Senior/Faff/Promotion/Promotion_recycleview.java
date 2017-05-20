@@ -35,12 +35,10 @@ public class Promotion_recycleview extends RecyclerView.Adapter<Promotion_recycl
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
         public TextView Name;
-        public TextView Detail;
         public ImageView image;
         public ViewHolder(View v) {
             super(v);
             Name = (TextView)v.findViewById(R.id.name);
-            Detail = (TextView)v.findViewById(R.id.detail);
             image = (ImageView)v.findViewById(R.id.image);
 
     }
@@ -64,7 +62,6 @@ public class Promotion_recycleview extends RecyclerView.Adapter<Promotion_recycl
     @Override
     public void onBindViewHolder(final Promotion_recycleview.ViewHolder holder, int position) {
         holder.Name.setText(list[position].getTitle());
-        holder.Detail.setText(list[position].getPromotionDetail());
         String url = list[position].getPromotionpictureurl().split(",")[0];
         try {
             if(url.contains(" "))

@@ -140,11 +140,13 @@ public class Show_RestaurantProfile extends AppCompatActivity implements OnMapRe
             resid = args.getString(Restaurant.Column.ResID,null);
             //ownerid =args.getString(UserProfile.Column.Ownerid,null);
         }
+        /////////////////////////////////////////// Excute Aysntask ///////////////////////////////////////////////////////////////
         if(userid != null){
             new getData().execute(resid);
             new getBookmark().execute();
+            new getPromotion().execute(resid);
         }
-
+        ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         add_promotion.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -478,7 +480,8 @@ public class Show_RestaurantProfile extends AppCompatActivity implements OnMapRe
         @Override
         protected Promotion[] doInBackground(String... params) {
             StringBuilder result = new StringBuilder();
-            String url_api = "https://faff-1489402013619.appspot.com/res_profile/" + params[0];
+            //String url_api = "https://faff-1489402013619.appspot.com/restaurant_promotion/resid/" + params[0];
+            String url_api = "https://faff-1489402013619.appspot.com/restaurant_promotion/resid/test0914121493662297";
             try {
                 URL url = new URL(url_api);
                 connection = (HttpURLConnection) url.openConnection();
@@ -512,12 +515,14 @@ public class Show_RestaurantProfile extends AppCompatActivity implements OnMapRe
         @Override
         protected void onPostExecute(Promotion[] promotions) {
             super.onPostExecute(promotions);
-            Promotion_recycleview  list_adapter = new Promotion_recycleview(promotions, resid);
-            LinearLayoutManager mLayoutManager  = new LinearLayoutManager(mcontext);
-            mLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
-            RecyclerView proRecyclerView = (RecyclerView) findViewById(R.id.promotion_list);
-            proRecyclerView.setLayoutManager(mLayoutManager);
-            proRecyclerView.setAdapter(list_adapter);
+            if(promotions != null) {
+                Promotion_recycleview list_adapter = new Promotion_recycleview(promotions, resid);
+                LinearLayoutManager mLayoutManager = new LinearLayoutManager(mcontext);
+                mLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
+                RecyclerView proRecyclerView = (RecyclerView) findViewById(R.id.promotion_list);
+                proRecyclerView.setLayoutManager(mLayoutManager);
+                proRecyclerView.setAdapter(list_adapter);
+            }
         }
     }
 
