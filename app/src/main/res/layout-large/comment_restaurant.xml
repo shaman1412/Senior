@@ -10,7 +10,7 @@
         android:layout_height="match_parent"
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
-        android:padding="16sp">
+        android:padding="10sp">
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -18,14 +18,14 @@
             android:layout_gravity="center"
 
             android:backgroundTint="@android:color/transparent">
-            <Button
+<!--            <Button
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="10dp"
                 android:id="@+id/enter_comment"
                 android:text="Add Comment"
                 android:textColor="#ffffffff"
-                android:background="@color/ButtonUserProfile"/>
+                android:background="@color/ButtonUserProfile"/>-->
 
             <TextView
                 android:id="@+id/comment_title"
@@ -36,7 +36,7 @@
                 android:gravity="center"
                 android:text="Comment"
                 android:textAppearance="@style/TextAppearance.AppCompat.Headline"
-                android:textColor="#d3d3d3" />
+                android:textColor="#696969" />
             <View
                 android:id="@+id/line"
                 android:layout_width="match_parent"
@@ -44,32 +44,21 @@
                 android:layout_marginTop="5dp"
                 android:layout_below="@+id/comment_title"
                 android:background="@drawable/line" />
-         <!--   <TextView
-                android:id="@+id/comment_score"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_above="@+id/listView"
-                android:layout_alignParentLeft="true"
-                android:layout_marginBottom="15dp"
-                android:layout_marginLeft="15dp"
-                android:layout_marginRight="15dp"
-                android:layout_marginTop="15dp"
-                android:layout_below="@+id/comment_title"
-                android:background="@android:color/transparent"
-                android:gravity="right"
-                android:textAlignment="center"
-                android:textAppearance="@style/TextAppearance.AppCompat.Headline"
-                android:textColor="@android:color/holo_red_dark"
-                android:textSize="30sp" />-->
 
-           <!-- <RatingBar
-                android:id="@+id/ratingBar"
-                android:layout_width="wrap_content"
+            <FrameLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:layout_below="@+id/comment_title"
-                android:numStars="5"
-                android:background="@color/TabUserProfile" />-->
+                android:id="@+id/add_comment"
+                android:layout_marginTop="15dp"
+                android:layout_below="@+id/line"/>
+
+            <View
+                android:id="@+id/line2"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginTop="8dp"
+                android:layout_below="@+id/add_comment"
+                android:background="@drawable/line" />
 
             <ListView
                 android:layout_marginTop="15dp"
@@ -77,7 +66,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_above="@+id/comment_send"
-                android:layout_below="@+id/line"
+                android:layout_below="@+id/line2"
                 android:layout_centerHorizontal="true"
                 />
 

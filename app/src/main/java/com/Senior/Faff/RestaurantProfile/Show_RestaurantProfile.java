@@ -31,12 +31,14 @@ import android.widget.Toast;
 import com.Senior.Faff.Fragment.Party.Show_party_profile;
 import com.Senior.Faff.MapsActivity;
 import com.Senior.Faff.Promotion.PromotionActivity;
+import com.Senior.Faff.Promotion.Promotion_recycleview;
 import com.Senior.Faff.R;
 import com.Senior.Faff.UserProfile.List_typeNodel;
 import com.Senior.Faff.chat.ChatMainActivity;
 import com.Senior.Faff.model.Bookmark;
 import com.Senior.Faff.model.BookmarkList;
 import com.Senior.Faff.model.Party;
+import com.Senior.Faff.model.Promotion;
 import com.Senior.Faff.model.Restaurant;
 import com.Senior.Faff.model.UserProfile;
 import com.Senior.Faff.utils.Helper;
@@ -97,7 +99,6 @@ public class Show_RestaurantProfile extends AppCompatActivity implements OnMapRe
     private String send_location;
     private String ownerid;
     private Button add_promotion;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -468,6 +469,55 @@ public class Show_RestaurantProfile extends AppCompatActivity implements OnMapRe
         }
     }
 
+    private  class getPromotion extends AsyncTask<String , String, Promotion[]>{
+
+        int responseCode;
+        HttpURLConnection connection;
+        @Override
+        protected Promotion[] doInBackground(String... params) {
+            StringBuilder result = new StringBuilder();
+            String url_api = "https://faff-1489402013619.appspot.com/res_profile/" + params[0];
+            try {
+                URL url = new URL(url_api);
+                connection = (HttpURLConnection) url.openConnection();
+                connection.setRequestMethod("GET");
+
+                InputStream in = new BufferedInputStream(connection.getInputStream());
+
+                BufferedReader reader = new BufferedReader(new InputStreamReader(in));
+
+                responseCode = connection.getResponseCode();
+                String line;
+                while ((line = reader.readLine()) != null) {
+                    result.append(line);
+                }
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            if (responseCode == 200) {
+                Log.i("Request Status", "This is success response status from server: " + responseCode);
+                Gson gson = new Gson();
+                Promotion[] promotion_list  =  gson.fromJson(result.toString(),  Promotion[].class);
+                return promotion_list;
+            } else {
+                Log.i("Request Status", "This is failure response status from server: " + responseCode);
+                return null ;
+
+            }
+        }
+
+        @Override
+        protected void onPostExecute(Promotion[] promotions) {
+            super.onPostExecute(promotions);
+            Promotion_recycleview  list_adapter = new Promotion_recycleview(promotions, resid);
+            LinearLayoutManager mLayoutManager  = new LinearLayoutManager(mcontext);
+            mLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
+            RecyclerView proRecyclerView = (RecyclerView) findViewById(R.id.promotion_list);
+            proRecyclerView.setLayoutManager(mLayoutManager);
+            proRecyclerView.setAdapter(list_adapter);
+        }
+    }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {

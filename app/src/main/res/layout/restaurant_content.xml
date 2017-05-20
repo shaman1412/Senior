@@ -292,6 +292,21 @@
 
         </android.support.v7.widget.CardView>
 
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:text="Promotion"/>
+
+        <android.support.v7.widget.RecyclerView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/promotion_list"
+            >
+
+        </android.support.v7.widget.RecyclerView>
+
         <Button
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

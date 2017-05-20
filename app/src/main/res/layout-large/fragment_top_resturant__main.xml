@@ -2,6 +2,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#ededed"
+    android:padding="10dp"
     tools:context="com.Senior.Faff.Fragment.Home.top_resturant_MainFragment">
 
     <!-- TODO: Update blank fragment layout -->
@@ -9,6 +11,8 @@
         android:id="@+id/listView1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:divider="@android:color/transparent"
+        android:dividerHeight="10.0dp"
         />
 
 </FrameLayout>

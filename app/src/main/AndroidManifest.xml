@@ -27,7 +27,6 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-
         </activity>
         <activity android:name=".RegisterActivity" />
         <activity android:name=".MainActivity" />
@@ -128,13 +127,10 @@
 
         <service android:name=".server_service" />
 
-        <activity android:name=".TestLoginFacebook.TestLoginFacebook">
-
-
-
-
-        </activity>
-        <activity android:name=".utils.LoadingFragment"></activity>
+        <activity android:name=".TestLoginFacebook.TestLoginFacebook" />
+        <activity android:name=".utils.LoadingFragment" />
+        <activity android:name=".Promotion.Promotion_recycleview" />
+        <activity android:name=".Promotion.Promotion_recycleview_adapter"></activity>
     </application>
 
 </manifest>

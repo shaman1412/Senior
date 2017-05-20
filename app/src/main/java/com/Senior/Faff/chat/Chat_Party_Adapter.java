@@ -50,11 +50,11 @@ public class Chat_Party_Adapter extends BaseAdapter {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-
+         ViewHolder holder;
         LayoutInflater mInflater = (LayoutInflater)mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         if(convertView == null) {
             convertView = mInflater.inflate(R.layout.list_view_party_chat, parent, false);
-            final ViewHolder holder = new ViewHolder();
+            holder = new ViewHolder();
             holder.img = (ImageView) convertView.findViewById(R.id.image_chat);
             holder.username = (TextView) convertView.findViewById(R.id.username_chat_list);
             holder.msg = (TextView) convertView.findViewById(R.id.message_chat_list);
@@ -62,22 +62,22 @@ public class Chat_Party_Adapter extends BaseAdapter {
             holder.img2 = (ImageView) convertView.findViewById(R.id.image_chat2);
             holder.username2 = (TextView) convertView.findViewById(R.id.username_chat_list2);
             holder.msg2 = (TextView) convertView.findViewById(R.id.message_chat_list2);
-            convertView.setTag(holder);
+
 
             holder.v1 =  convertView.findViewById(R.id.ownuser);
             holder.v2 =  convertView.findViewById(R.id.no_ownuser);
+            convertView.setTag(holder);
 
         }else{
-            final ViewHolder holder = new ViewHolder();
-            convertView.setTag(holder);
-        }
+
+        holder = (ViewHolder) convertView.getTag();
+    }
         final PartyChat list = list_chat.get(position);
         final String path = list.getImage_path();
-        final ViewHolder holder = (ViewHolder)convertView.getTag();
-
 
         if(getusername.equals(list.getUsername())){
             holder.v1.setVisibility(View.VISIBLE);
+            holder.v2.setVisibility(View.GONE);
             holder.username2.setText(list.getUsername());
             holder.msg2.setText(list.getMessage());
             try {
@@ -91,6 +91,7 @@ public class Chat_Party_Adapter extends BaseAdapter {
 
         }else{
             holder.v2.setVisibility(View.VISIBLE);
+            holder.v1.setVisibility(View.GONE);
             holder.username.setText(list.getUsername());
             holder.msg.setText(list.getMessage());
             try {

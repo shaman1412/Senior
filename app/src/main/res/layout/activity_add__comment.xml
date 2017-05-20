@@ -38,8 +38,6 @@
                         android:isIndicator="false"
                         />
 
-
-
                 <EditText
                     android:id="@+id/comment_text"
                     android:layout_width="match_parent"

@@ -9,6 +9,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -68,6 +69,7 @@ public class Chat_Party extends AppCompatActivity {
 
         btn_send_msg = (ImageView) findViewById(R.id.send);
         input_msg = (EditText) findViewById(R.id.input);
+
         listview = (ListView) findViewById(R.id.listView);
         adapter = new Chat_Party_Adapter(mcontext, list_chat,user_name);
         listview.setAdapter(adapter);
@@ -167,6 +169,8 @@ public class Chat_Party extends AppCompatActivity {
 
             list_chat.add(new PartyChat(chat_user_name, image_path, chat_msg, date_time));
             adapter.notifyDataSetChanged();
+            listview.setSelection(adapter.getCount() - 1);
+
         }
 
     }
