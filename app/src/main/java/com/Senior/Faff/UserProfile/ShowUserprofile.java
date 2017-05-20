@@ -141,7 +141,8 @@ public class ShowUserprofile extends AppCompatActivity {
                     String[] img_path = img_path_tmp.split(",");
 
                     try {
-                        Picasso.with(mcontext).load(img_path[0]).resize(width, 1080).into(image);
+//                        Picasso.with(mcontext).load(img_path[0]).resize(width+100, height+100).centerInside().into(image);
+                        Picasso.with(mcontext).load(img_path[0]).fit().into(image);
                     } catch (Exception e) {
                         e.printStackTrace();
                     }

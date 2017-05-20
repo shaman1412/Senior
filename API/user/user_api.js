@@ -216,7 +216,7 @@ router.put('/:userid',images.multer.array('image'), (req, res, next) => {
       next(err);
       return;
     }
-    res.json(entity);
+    res.send("update successful");
   });
 });
 
