@@ -172,7 +172,10 @@ router.post('/newUserIfNotExists/:userid',images.multer.array('image'), (req, re
 	
 });
 
-router.put('/:userid',images.multer.array('image'), (req, res, next) => {
+
+
+
+router.put('/:userid', images.multer.array('image'), (req, res, next) => {
 	const json  = req.body;
 	console.log(json);
 	
@@ -213,11 +216,13 @@ router.put('/:userid',images.multer.array('image'), (req, res, next) => {
 	
 	getModel().update(req.params.userid, user, (err, entity) => {
     if (err) {
+	  console.log("In update Failed");
       next(err);
       return;
     }
-    res.send("update successful");
-  });
+	});
+	console.log("update success");
+	res.send("update successful");
 });
 
 router.use((err, req, res, next) => {

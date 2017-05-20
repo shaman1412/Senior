@@ -51,7 +51,8 @@ function read (id, cb) {
   const connection = getConnection();
   connection.query(
     'SELECT * FROM `user_profile` WHERE `userid` = ?', id, (err, results) => {
-      if (err) {
+	  console.log("result : "+JSON.stringify(results)+"   length : "+results.length);
+	  if (err) {
         cb(err);
         return;
       }
@@ -88,7 +89,7 @@ function update (id, data, cb) {
         cb(err);
         return;
       }
-      read(id, cb);
+      //read(id, cb);
     });
   connection.end();
 }

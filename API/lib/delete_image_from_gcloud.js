@@ -48,8 +48,8 @@ function deleteImageFromUserProfile (filename, res, next) {
 	
 	file.delete(function(err, data) {
 		if (err) {
+			console.log("delete error");
 			// console.log(err);
-			next(err);
 			return;
 		}
 		else {

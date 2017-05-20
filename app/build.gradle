@@ -18,6 +18,8 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+    compileOptions.encoding = 'UTF-8' // write your encoding here
+
 }
 ext {
     supportLibVersion = '25.1.1'  // variable that can be referenced to keep support libs consistent
