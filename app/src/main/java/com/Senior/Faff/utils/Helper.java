@@ -146,6 +146,7 @@ public class Helper {
                 connection.setRequestProperty("User-Agent", "Android Multipart HTTP Client 1.0");
                 connection.setRequestProperty("Content-Type", "multipart/form-data; boundary=" + boundary);
 
+
                 outputStream = new DataOutputStream(connection.getOutputStream());
 
                 for (int i = 0; i < imgPath.size(); i++) {
@@ -154,14 +155,27 @@ public class Helper {
                     String[] q = filepath.split("/");
                     int idx = q.length - 1;
 
-                    Log.i("TEST: ", " filepath is : " + filepath);
+                    String[] arr_str = q[idx].split("\\.");
+                    String ext = arr_str[arr_str.length - 1];
+                    if (ext.toLowerCase().equals("png")) {
+                        ext = ".png";
+                    } else {
+                        ext = ".jpg";
+                    }
+
+                    String asscii_name = "";
+                    for (int z = 0; z < arr_str[0].length(); z++) {
+                        asscii_name += (int) arr_str[0].charAt(z);
+                    }
+
+                    Log.i("TEST: ", " filepath is : " + asscii_name + ext);
 
                     File file = null;
                     if (isLocal) {
                         file = new File(filepath);
                         fileInputStream = new FileInputStream(file);
                         outputStream.writeBytes(twoHyphens + boundary + lineEnd);
-                        outputStream.writeBytes("Content-Disposition: form-data; name=\"" + filefield + "\"; filename=\"" + Charset.forName("UTF-8").encode(q[idx]) + "\"" + lineEnd);
+                        outputStream.writeBytes("Content-Disposition: form-data; name=\"" + filefield + "\"; filename=\"" + asscii_name + ext + "\"" + lineEnd);
                         outputStream.writeBytes("Content-Type: " + fileMimeType + lineEnd);
                         outputStream.writeBytes("Content-Transfer-Encoding: binary" + lineEnd);
 
@@ -236,7 +250,7 @@ public class Helper {
                         outputStream.writeBytes("Content-Type: text/plain" + lineEnd);
                         outputStream.writeBytes(lineEnd);
                         bf.write(value);
-                        Log.i("TEST:", key+" : "+value);
+                        Log.i("TEST:", key + " : " + value);
                         bf.flush();
                         //outputStream.writeBytes(value);
                         outputStream.writeBytes(lineEnd);
@@ -253,12 +267,9 @@ public class Helper {
                 outputStream.writeBytes(twoHyphens + boundary + twoHyphens + lineEnd);
 
                 if (200 != connection.getResponseCode()) {
-                    if(connection.getResponseCode()==404 && !isLocal)
-                    {
+                    if (connection.getResponseCode() == 404 && !isLocal) {
                         return parmas.get(UserProfile.Column.UserID).toString();
-                    }
-                    else
-                    {
+                    } else {
                         throw new Exception("Failed to upload code:" + connection.getResponseCode() + " " + connection.getResponseMessage());
                     }
                 }

@@ -22,6 +22,10 @@
 
     <LinearLayout
 
+<<<<<<< HEAD
+        android:layout_above="@+id/register"
+=======
+>>>>>>> dae6715fc030cd0a419b3b03d61b67cbf19f2860
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"

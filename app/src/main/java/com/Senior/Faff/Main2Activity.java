@@ -575,7 +575,11 @@ public class Main2Activity extends AppCompatActivity {
                 MainHome_Fragment fragment_home = new MainHome_Fragment();
                 fragment_home.setArguments(bundle);
                 FragmentManager fragmentManager_home = getSupportFragmentManager();
-                fragmentManager_home.beginTransaction().replace(R.id.flContent, fragment_home).commit();
+                try {
+                    fragmentManager_home.beginTransaction().replace(R.id.flContent, fragment_home).commit();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             } else {
                 /*String message = getString(R.string.login_error_message);
                 Toast.makeText(Main2Activity.this, message, Toast.LENGTH_SHORT).show();*/

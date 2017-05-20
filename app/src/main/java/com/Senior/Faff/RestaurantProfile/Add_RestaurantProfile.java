@@ -91,8 +91,8 @@ public class Add_RestaurantProfile extends AppCompatActivity implements OnMapRea
 
     public static ArrayList<Bitmap> bmap = new ArrayList<>();           //keep bitmap data
     public static ArrayList<String> imgPath = new ArrayList<>();        //keep uri
-
     public static int image_count = 0;                                    //number of images
+
     private final int MAP_REQUEST_CODE = 20;
     private com.google.android.gms.maps.model.Marker mCurrLocationMarker;
     private LatLng myLocation;

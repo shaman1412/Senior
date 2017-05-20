@@ -40,6 +40,8 @@ function getRestProfileUrl(filename)
 // * ``cloudStorageObject`` the object name in cloud storage.
 // * ``cloudStoragePublicUrl`` the public url to the object.
 // [START process]
+
+//single image
 function deleteImageFromUserProfile (filename, res, next) {
 	
 	console.log(filename);
@@ -48,8 +50,8 @@ function deleteImageFromUserProfile (filename, res, next) {
 	
 	file.delete(function(err, data) {
 		if (err) {
+			console.log("delete error");
 			// console.log(err);
-			next(err);
 			return;
 		}
 		else {
@@ -58,40 +60,51 @@ function deleteImageFromUserProfile (filename, res, next) {
 	});
 }
 
+//multiple image
 function deleteImageFromRestProfile (filename, res, next) {
 	
 	console.log(filename);
 	
-	const file = bucket_rest_pro.file(filename);
+	for(var i=0; i<filename.length; i++)
+	{
+		const file = bucket_rest_pro.file(filename[i]);
+		console.log(filename[i])
+		
+		file.delete(function(err, data) {
+			if (err) {
+				// console.log(err);
+				next(err);
+				return;
+			}
+			else {
+				console.log("Deleted successfully : ");
+			}
+		});
+	}
 	
-	file.delete(function(err, data) {
-		if (err) {
-			// console.log(err);
-			next(err);
-			return;
-		}
-		else {
-			console.log("Deleted successfully : ");
-		}
-	});
 }
 
+//multiple image
 function deleteImageFromPromotion (filename, res, next) {
 	
 	console.log(filename);
 	
-	const file = bucket_promotion.file(filename);
-	
-	file.delete(function(err, data) {
-		if (err) {
-			// console.log(err);
-			next(err);
-			return;
-		}
-		else {
-			console.log("Deleted successfully : ");
-		}
-	});
+	for(var i=0; i<filename.length; i++)
+	{
+		const file = bucket_promotion.file(filename[i]);
+		console.log(filename[i])
+		
+		file.delete(function(err, data) {
+			if (err) {
+				// console.log(err);
+				next(err);
+				return;
+			}
+			else {
+				console.log("Deleted successfully : ");
+			}
+		});
+	}
 }
 
 

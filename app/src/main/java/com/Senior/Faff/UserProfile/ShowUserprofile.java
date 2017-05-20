@@ -67,6 +67,7 @@ public class ShowUserprofile extends AppCompatActivity {
     private int width;
     private int height;
     private String ownerid;
+    private static ImageView image;
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
@@ -113,7 +114,7 @@ public class ShowUserprofile extends AppCompatActivity {
         //  String json = profileManager.getUserProfile(id);
         // text.setText(json);
         BitmapImageManager bitmap = new BitmapImageManager();
-        final ImageView image = (ImageView) findViewById(R.id.profile_image);
+        image = (ImageView) findViewById(R.id.profile_image);
 //        image.setImageBitmap(bitmap.decodeSampledBitmapFromResource(getResources(), R.drawable.woman, 100, 100));
 
         final NestedScrollView childScroll = (NestedScrollView) findViewById(R.id.scroll);
@@ -237,8 +238,79 @@ public class ShowUserprofile extends AppCompatActivity {
         }
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        ShowUserPro sh = new ShowUserPro(new ShowUserPro.AsyncResponse() {
+            @Override
+            public void processFinish(final String output) throws JSONException {
+                JSONObject item = new JSONObject(output);
 
-//    private class getData extends AsyncTask<String, String, UserProfile> {
+                ArrayList<String[]> bitmap_url_list = new ArrayList<>();
+
+                String[] arr_url = item.getString("picture").split(",");
+                bitmap_url_list.add(arr_url);
+                final UserProfile userpro = new Gson().fromJson(item.toString(), UserProfile.class);
+                userid = userpro.getUserid();
+
+                if (userid != null) {
+                    name.setText(userpro.getName());
+                    age.setText(String.valueOf(userpro.getAge()));
+                    address.setText(userpro.getAddress());
+                    email.setText(userpro.getEmail());
+                    telephone.setText(userpro.getTelephone());
+
+                    String img_path_tmp = userpro.getPicture();
+                    String[] img_path = img_path_tmp.split(",");
+
+                    try {
+//                        Picasso.with(mcontext).load(img_path[0]).resize(width+100, height+100).centerInside().into(image);
+                        Picasso.with(mcontext).load(img_path[0]).fit().into(image);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+
+                    switch (userpro.getGender()) {
+                        case 0:
+                            gender.setText("Female");
+                            break;
+                        case 1:
+                            gender.setText("Male");
+                            break;
+                    }
+                    if (userpro.getFavourite_type() != null) {
+                        String[] list = userpro.getFavourite_type().split(",");
+                        favourite_type = new ArrayList<String>();
+                        for (int i = 0; i < list.length; i++) {
+                            favourite_type.add(list[i]);
+                        }
+                        list_adapter = new List_typeNodel(favourite_type, mcontext);
+                        LinearLayoutManager mLayoutManager = new LinearLayoutManager(mcontext);
+                        mLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
+                        mRecyclerView = (RecyclerView) findViewById(R.id.mRecyclerView);
+                        mRecyclerView.setLayoutManager(mLayoutManager);
+                        mRecyclerView.setAdapter(list_adapter);
+                    }
+
+                    fab.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+
+                            Intent intent = new Intent(mcontext, UpdateUserProfile.class);
+                            intent.putExtra("user_profile", output);
+                            intent.putExtra(UserProfile.Column.UserID, userid);
+                            startActivity(intent);
+                        }
+                    });
+
+                }
+            }
+        });
+        sh.execute(userid);
+    }
+
+
+    //    private class getData extends AsyncTask<String, String, UserProfile> {
 //
 //        String pass;
 //        int responseCode;

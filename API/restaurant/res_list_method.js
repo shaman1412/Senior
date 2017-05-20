@@ -188,7 +188,7 @@ function  search_name (res_name, cb) {
 
 };
 
-function  get_favorite (userid, cb) {
+function get_favorite (userid, cb) {
   const connection = getConnection();
 	let sql = 'SELECT * FROM `restaurant_profile`  WHERE  userid = ' + '\''+ userid + '\''  ;
   connection.query(

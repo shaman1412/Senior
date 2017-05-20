@@ -83,7 +83,6 @@ public class UpdateUserProfile extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_insert_user_profile);
-        image_count = 0;
         String[] values = {"Femail", "Male"};
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -228,6 +227,14 @@ public class UpdateUserProfile extends AppCompatActivity {
     }
 
     @Override
+    protected void onStop() {
+        image_count = 0;
+        bmap = new ArrayList<>();
+        imgPath = new ArrayList<>();
+        super.onStop();
+    }
+
+    @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == RESULT_OK) {
@@ -242,6 +249,7 @@ public class UpdateUserProfile extends AppCompatActivity {
                     imgPath.add(cur.getString(column_index));
                     cur.close();
                 }
+
                 bmap.add(BitmapFactory.decodeFile(imgPath.get(image_count)));
                 //convert to byte
                 ByteArrayOutputStream stream = new ByteArrayOutputStream();
@@ -287,12 +295,14 @@ public class UpdateUserProfile extends AppCompatActivity {
                 paras.put(UserProfile.Column.Favourite_type, params[0].getFavourite_type());
                 paras.put(UserProfile.Column.Age, String.valueOf(params[0].getAge()));
                 paras.put(UserProfile.Column.Telephone, params[0].getTelephone());
-                paras.put("old_filename", old_picture);
+
+                String[] arr_tmp = old_picture.split("/");
+
+                paras.put("old_filename", arr_tmp[arr_tmp.length-1]);
 
                 Log.i("TEST:", " old_picture : "+old_picture);
 
                 String img_path_tmp = params[0].getPicture();
-                Log.i("TEST:", "img path tmp : "+img_path_tmp);
                 UpdateUserProfile.AddUserProfile.this.imgPath = new ArrayList<String>(Arrays.asList(img_path_tmp));
 
                 URL url = new URL("https://faff-1489402013619.appspot.com/user/" + params[0].getUserid());
