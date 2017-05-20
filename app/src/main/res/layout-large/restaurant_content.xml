@@ -307,7 +307,7 @@
             android:textColor="#7e7e7e"
             android:textSize="20sp"
             android:text="Promotion"/>
-    <android.support.v4.widget.NestedScrollView
+
 
 <!--       <LinearLayout
            android:layout_width="150dp"
@@ -333,37 +333,9 @@
 
        </LinearLayout>-->
 
+        <android.support.v7.widget.RecyclerView
             android:layout_marginTop="10dp"
             android:layout_width="match_parent"
-            android:layout_height="210dp"
-            android:orientation="horizontal">
-
-
-       <LinearLayout
-           android:layout_width="0dp"
-           android:layout_weight="2"
-           android:orientation="vertical"
-           android:padding="10dp"
-           android:layout_height="210dp"
-           android:gravity="center"
-           android:layout_marginRight="10dp"
-           android:background="@drawable/listview_card">
-           <ImageView
-               android:layout_width="80dp"
-               android:layout_height="80dp"
-               android:src="@drawable/add_promotion"
-               android:layout_marginBottom="5dp"/>
-           <TextView
-               android:layout_marginTop="10dp"
-               android:layout_width="wrap_content"
-               android:text="Add promotion"
-               android:textColor="#939393"/>
-
-       </LinearLayout>
-
-        <android.support.v7.widget.RecyclerView
-            android:layout_width="0dp"
-            android:layout_weight="3"
             android:layout_height="210dp"
             android:id="@+id/promotion_list"
 
@@ -371,8 +343,6 @@
 
         </android.support.v7.widget.RecyclerView>
 
-        </LinearLayout>
-</android.support.v4.widget.NestedScrollView>
         <Button
             android:layout_marginTop="10dp"
             android:layout_width="match_parent"
