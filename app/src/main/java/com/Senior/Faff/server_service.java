@@ -361,7 +361,7 @@ public class server_service extends Service implements GoogleApiClient.Connectio
     public void send_notification(Party new_room){
         final NotificationCompat.Builder mBuilder =
                 (NotificationCompat.Builder) new NotificationCompat.Builder(getApplicationContext())
-                        .setSmallIcon(R.drawable.faff_logo)
+                        .setSmallIcon(R.drawable.newlogo)
                         .setContentTitle("New Party Near You")
                         .setContentText("   Title:" + new_room.getName() )
                         .setAutoCancel(true);

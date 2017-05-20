@@ -82,7 +82,7 @@ public class Customlistview_addvice_adapter extends ArrayAdapter<Restaurant> {
 //            builder.build().cancelRequest(viewHolder.imageView);
             try{
                 Picasso.with(this.mcontext).cancelRequest(viewHolder.imageView);
-                Picasso.with(this.mcontext).load(tmp).resize(300, 200).into(viewHolder.imageView);
+                Picasso.with(this.mcontext).load(tmp).fit().into(viewHolder.imageView);
             }
             catch (Exception e){
                 e.printStackTrace();
@@ -93,7 +93,7 @@ public class Customlistview_addvice_adapter extends ArrayAdapter<Restaurant> {
             try
             {
                 Picasso.with(this.mcontext).cancelRequest(viewHolder.imageView);
-                Picasso.with(this.mcontext).load(img_path[0]).resize(300, 200).into(viewHolder.imageView);
+                Picasso.with(this.mcontext).load(img_path[0]).fit().into(viewHolder.imageView);
             }
             catch (Exception e){
                 e.printStackTrace();

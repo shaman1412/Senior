@@ -29,6 +29,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.Senior.Faff.Fragment.Party.Show_party_profile;
+import com.Senior.Faff.Main2Activity;
 import com.Senior.Faff.MapsActivity;
 import com.Senior.Faff.Promotion.PromotionActivity;
 import com.Senior.Faff.Promotion.Promotion_recycleview;
@@ -61,9 +62,13 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.text.DecimalFormat;
@@ -85,7 +90,7 @@ public class Show_RestaurantProfile extends AppCompatActivity implements OnMapRe
     private String userid,resid;
     private Toolbar toolbar;
     private RatingBar rate;
-    private TextView text_rate;
+
     private FloatingActionButton fab;
     private String id;
     private String restaurantName;
@@ -99,6 +104,7 @@ public class Show_RestaurantProfile extends AppCompatActivity implements OnMapRe
     private String send_location;
     private String ownerid;
     private Button add_promotion;
+    private TextView delete_res;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -128,9 +134,9 @@ public class Show_RestaurantProfile extends AppCompatActivity implements OnMapRe
         imageView = (ImageView) findViewById(R.id.image);
         fav_click = (Button)findViewById(R.id.fav_click);
         fav_unclick = (Button)findViewById(R.id.fav_unclick);
+        delete_res  = (TextView)findViewById(R.id.delete_res);
 
         rate = (RatingBar)findViewById(R.id.rate);
-        text_rate = (TextView)findViewById(R.id.text_rate);
         fab = (FloatingActionButton)findViewById(R.id.fab);
         book = new BookmarkList();
         Bundle args = getIntent().getExtras();
@@ -154,6 +160,12 @@ public class Show_RestaurantProfile extends AppCompatActivity implements OnMapRe
                 startActivity(intent);
             }
         });
+        delete_res.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+               new delete().execute(resid);
+            }
+        });
 
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -164,13 +176,7 @@ public class Show_RestaurantProfile extends AppCompatActivity implements OnMapRe
                 startActivity(intent);
             }
         });
-        rate.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
-            public void onRatingChanged(RatingBar ratingBar, float rating,
-                                        boolean fromUser) {
-                text_rate.setText(String.valueOf(new DecimalFormat("#.##").format(rating)));
-                //ratingBar.getRating()
-            }
-        });
+
 
 
         GetUser getuser = new GetUser(new GetUser.AsyncResponse() {
@@ -382,7 +388,7 @@ public class Show_RestaurantProfile extends AppCompatActivity implements OnMapRe
                 description.setText("   "+respro.getDescription());
                 period.setText(respro.getPeriod());
                 rate.setRating(respro.getScore());
-                text_rate.setText(String.valueOf(respro.getScore()));
+
                 enableMyLocation(respro.getLocation(),respro.getRestaurantName());
                 ownerid = respro.getUserID();
                 resid =  respro.getresId();
@@ -414,6 +420,9 @@ public class Show_RestaurantProfile extends AppCompatActivity implements OnMapRe
                     String[] img_path = respro.getPicture().toString().split(",");
                     recyclerView = (RecyclerView) findViewById(R.id.recyclerview);
                     Show_Res_Rec_Adapter sh = new Show_Res_Rec_Adapter(mcontext, img_path, width);
+                    LinearLayoutManager mLayoutManager1  = new LinearLayoutManager(mcontext);
+                    mLayoutManager1.setOrientation(LinearLayoutManager.HORIZONTAL);
+                    recyclerView.setLayoutManager(mLayoutManager1);
                     recyclerView.setAdapter(sh);
 
                 }
@@ -570,7 +579,50 @@ public class Show_RestaurantProfile extends AppCompatActivity implements OnMapRe
 
         }
 
-
-
     }
+    public class delete extends AsyncTask<String , Void, Boolean>{
+        int responseCode;
+        HttpURLConnection connection;
+        @Override
+        protected Boolean doInBackground(String... params) {
+            try{
+                JSONObject para = new JSONObject();
+                String url_api = "https://faff-1489402013619.appspot.com/res_profile/del/" + params[0];
+                URL url = new URL(url_api);
+                connection = (HttpURLConnection)url.openConnection();
+                connection.setDoOutput(true);
+                connection.setRequestProperty(
+                        "Content-Type", "application/x-www-form-urlencoded" );
+                connection.setRequestMethod("DELETE");
+                connection.connect();
+
+                responseCode = connection.getResponseCode();
+
+            }catch (Exception e){
+                e.printStackTrace();
+            }
+            if (responseCode == 200) {
+                Log.i("Request Status", "This is success response status from server: " + responseCode);
+                return true;
+            } else {
+                Log.i("Request Status", "This is failure response status from server: " + responseCode);
+                return false;
+            }
+
+        }
+
+        @Override
+        protected void onPostExecute(Boolean aBoolean) {
+            super.onPostExecute(aBoolean);
+            if(aBoolean){
+                Toast.makeText(mcontext,"Restaurant deleted",Toast.LENGTH_SHORT);
+                Intent intent = new Intent(mcontext, Main2Activity.class);
+                intent.putExtra(UserProfile.Column.UserID,userid);
+                startActivity(intent);
+            }else{
+                Toast.makeText(mcontext,"Cant Delete",Toast.LENGTH_SHORT);
+            }
+        }
+    }
+
 }

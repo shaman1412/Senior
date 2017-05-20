@@ -66,7 +66,7 @@ router.post('/create', (req,res,next) => {
   //return res.send(data.picture);
 });
 
-router.delete('/resid/del/:resid', (req, res, next) => {
+/*router.delete('/resid/del/:resid', (req, res, next) => {
   getModel().delete(req.params.resid , (err, entity) =>{
     if(err){
       next(err);
@@ -75,7 +75,7 @@ router.delete('/resid/del/:resid', (req, res, next) => {
     res.json(entity);
   })
 })
-
+*/
 router.delete('/promotionid/del/:promotionid', (req, res, next) => {
   getModel().delete(req.params.promotionid , (err, entity) =>{
     if(err){

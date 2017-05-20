@@ -103,7 +103,7 @@ function update (id, data, cb) {
 }
 function _delete (id, cb) {
   const connection = getConnection();
-  connection.query('DELETE FROM `restaurant_promotion` WHERE `resid` = ?', id, cb);
+  connection.query('DELETE restaurant_promotion,promotion_list FROM restaurant_promotion INNER JOIN promotion_list WHERE promotion_list.promotionid = restaurant_promotion.promotionid AND restaurant_promotion.promotionid = ?' , id, cb);
   connection.end();
 }
 

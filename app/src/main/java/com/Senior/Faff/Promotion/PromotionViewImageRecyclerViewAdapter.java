@@ -40,7 +40,7 @@ public class PromotionViewImageRecyclerViewAdapter extends RecyclerView.Adapter<
     public void onBindViewHolder(PromotionViewImageRecyclerViewAdapter.MyViewHolder holder, int position) {
         holder.imageView.setTag(position);
         try {
-            Picasso.with(context).load(img_path[position]).into(holder.imageView);
+            Picasso.with(context).load(img_path[position]).fit().into(holder.imageView);
         } catch (Exception e) {
             e.printStackTrace();
         }

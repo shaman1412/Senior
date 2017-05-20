@@ -130,7 +130,7 @@
         <activity android:name=".TestLoginFacebook.TestLoginFacebook" />
         <activity android:name=".utils.LoadingFragment" />
         <activity android:name=".Promotion.Promotion_recycleview" />
-        <activity android:name=".Promotion.Promotion_recycleview_adapter"></activity>
+        <activity android:name=".Promotion.Edit_promotion"></activity>
     </application>
 
 </manifest>

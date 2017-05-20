@@ -2,6 +2,7 @@ package com.Senior.Faff.Promotion;
 
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -56,7 +57,12 @@ public class PromotionShowAdapter extends BaseAdapter{
         TextView textView1 = (TextView)convertView.findViewById(R.id.textView1);
         textView1.setText(promotions.get(position).getTitle());
 
+
         TextView textView2 = (TextView)convertView.findViewById(R.id.textView2);
+
+        textView2.setEllipsize(TextUtils.TruncateAt.END);
+        textView2.setLines(3);
+        textView2.setMaxLines(3);
         textView2.setText(promotions.get(position).getPromotionDetail());
 
         ImageView imageView = (ImageView)convertView.findViewById(R.id.imageView1);
