@@ -40,7 +40,10 @@ import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLConnection;
+import java.net.URLDecoder;
 import java.net.URLEncoder;
+import java.nio.charset.Charset;
+import java.nio.charset.CharsetDecoder;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Map;
@@ -158,7 +161,7 @@ public class Helper {
                         file = new File(filepath);
                         fileInputStream = new FileInputStream(file);
                         outputStream.writeBytes(twoHyphens + boundary + lineEnd);
-                        outputStream.writeBytes("Content-Disposition: form-data; name=\"" + filefield + "\"; filename=\"" + q[idx] + "\"" + lineEnd);
+                        outputStream.writeBytes("Content-Disposition: form-data; name=\"" + filefield + "\"; filename=\"" + Charset.forName("UTF-8").encode(q[idx]) + "\"" + lineEnd);
                         outputStream.writeBytes("Content-Type: " + fileMimeType + lineEnd);
                         outputStream.writeBytes("Content-Transfer-Encoding: binary" + lineEnd);
 

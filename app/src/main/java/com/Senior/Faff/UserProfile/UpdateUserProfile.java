@@ -77,7 +77,7 @@ public class UpdateUserProfile extends AppCompatActivity {
 
     public static int image_count = 0;                                    //number of images
 
-    public static InsertUserProfileRecyclerView adapter;
+    public static UpdateUserProfileRecyclerView adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -249,7 +249,7 @@ public class UpdateUserProfile extends AppCompatActivity {
 //                imgByte.add(stream.toByteArray());
                 image_count++;
 
-                adapter = new InsertUserProfileRecyclerView(this, bmap);
+                adapter = new UpdateUserProfileRecyclerView(this, bmap);
                 RecyclerView lv = (RecyclerView) findViewById(R.id.rlist1);
                 lv.setNestedScrollingEnabled(false);
                 lv.setAdapter(adapter);
