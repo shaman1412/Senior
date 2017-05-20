@@ -456,6 +456,7 @@ public class Edit_RestaurantProfile extends AppCompatActivity implements OnMapRe
         @Override
         protected void onPostExecute(String result) {
             if (result != "") {
+                Log.i("TEST:", "result : "+result);
                 finish();
                 Intent i = new Intent(mcontext, Main2Activity.class);
                 i.putExtra(UserProfile.Column.UserID, user_id);
