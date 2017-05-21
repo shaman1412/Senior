@@ -106,8 +106,15 @@ router.put('/:promotionid', images.multer.array('image'), (req, res, next) => {
 	const json  = req.body;
 	console.log(json);
 	
-	const old_filename = json.old_filename;
-	delete_from_gcloud.deleteImageFromPromotion (old_filename, res, next);
+	if(json.old_filename!=null)
+	{
+		var old_filename = json.old_filename.split(",");
+		// var old_filename = json.old_filename;
+		if(old_filename.length>0)
+		{
+			delete_from_gcloud.deleteImageFromRestProfile (old_filename, res, next);
+		}
+	}
 	
 	images.sendUploadToGCS (req, res, next);
 	if (req.file && req.file.cloudStoragePublicUrl) {
@@ -140,13 +147,24 @@ router.put('/:promotionid', images.multer.array('image'), (req, res, next) => {
 		promotionlocation: json.promotionlocation
 	}	
 	
+	if(json.promotionpictureurl==null)
+	{
+		delete promotion.promotionpictureurl;
+	}
+	
+	if(json.location==null)
+	{
+		delete promotion.promotionlocation
+	}
+	
 	getModel().update(req.params.promotionid, promotion, (err, entity) => {
 		if (err) {
 			next(err);
 			return;
 		}
-		res.json(entity);
 	});
+	console.log("update success : "+JSON.stringify(res_pro));
+	res.send("update successful");
 });
 
 router.use((err, req, res, next) => {

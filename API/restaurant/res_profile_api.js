@@ -97,9 +97,15 @@ router.put('/update/:resid',images.multer.array('image'),(req,res,next)=>{
 	const json  = req.body;
 	console.log(json);
 	
-	var old_filename = json.old_filename.split(",");
-	// var old_filename = json.old_filename;
-	delete_from_gcloud.deleteImageFromRestProfile (old_filename, res, next);
+	if(json.old_filename!=null)
+	{
+		var old_filename = json.old_filename.split(",");
+		// var old_filename = json.old_filename;
+		if(old_filename.length>0)
+		{
+			delete_from_gcloud.deleteImageFromRestProfile (old_filename, res, next);
+		}
+	}
 	
 	images.sendUploadToGCS_RestaurantProfile (req, res, next);
 	if (req.file && req.file.cloudStoragePublicUrl) {
@@ -137,13 +143,26 @@ router.put('/update/:resid',images.multer.array('image'),(req,res,next)=>{
 		create_time : json.create_time
 	}
 	
+	if(json.picture=="")
+	{
+		delete res_pro.picture;
+	}
+	if(json.vote=="")
+	{
+		delete res_pro.vote;
+	}
+	if(json.score=="")
+	{
+		delete res_pro.score;
+	}
+	
 	getModel().update(req.params.resid, res_pro, (err,entity) =>{
 		if (err) {
 			next(err);
 			return;
 		}
 	});
-	console.log("update success");
+	console.log("update success : "+JSON.stringify(res_pro));
 	res.send("update successful");
 });
 

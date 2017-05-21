@@ -90,7 +90,7 @@ function update (id, data, cb) {
         cb(err);
         return;
       }
-      read(id, cb);
+      // read(id, cb);
     });
   connection.end();
 }
@@ -144,6 +144,7 @@ function createSchema (config) {
       \`promotionenddate\` VARCHAR(255) NULL,
       \`promotiondetail\` VARCHAR(255) NULL,
       \`promotionlocation\` VARCHAR(255) NULL,
+	  \`promotionuserid\` VARCHAR(255) NULL
     PRIMARY KEY (\`promotionid\`));`,
     (err) => {
       if (err) {

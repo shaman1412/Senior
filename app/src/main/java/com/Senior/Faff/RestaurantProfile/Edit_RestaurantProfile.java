@@ -433,14 +433,16 @@ public class Edit_RestaurantProfile extends AppCompatActivity implements OnMapRe
                 paras.put(Restaurant.Column.Location, params[0].getLocation());
                 paras.put(Restaurant.Column.CreateTime, params[0].getCreate_time().toString());
 
-                String[] arr_tmp = old_picture.split("/");
-
-                paras.put("old_filename", arr_tmp[arr_tmp.length-1]);
-
                 String img_path_tmp = params[0].getPicture();
                 Edit_RestaurantProfile.EditRestProfile.this.imgPath = new Gson().fromJson(img_path_tmp, ArrayList.class);
 
-                URL url = new URL("https://faff-1489402013619.appspot.com/res_profile/update/"+params[0].getUserID());
+                String[] arr_tmp = old_picture.split("/");
+                if(Edit_RestaurantProfile.EditRestProfile.this.imgPath.size()!=0)
+                {
+                    paras.put("old_filename", arr_tmp[arr_tmp.length-1]);
+                }
+
+                URL url = new URL("https://faff-1489402013619.appspot.com/res_profile/update/"+params[0].getresId());
 
                 Helper hp = new Helper();
                 hp.setRequest_method("PUT");
