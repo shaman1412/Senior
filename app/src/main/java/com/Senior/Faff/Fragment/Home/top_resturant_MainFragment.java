@@ -19,6 +19,7 @@ import com.Senior.Faff.RestaurantProfile.Customlistview_addvice_adapter;
 import com.Senior.Faff.RestaurantProfile.Restaurant_manager;
 import com.Senior.Faff.RestaurantProfile.Show_RestaurantProfile;
 import com.Senior.Faff.model.Restaurant;
+import com.Senior.Faff.model.UserProfile;
 import com.google.gson.Gson;
 
 import java.io.BufferedInputStream;
@@ -41,13 +42,14 @@ public class top_resturant_MainFragment extends Fragment {
     private Context mcontext;
     private ListView listview;
     private int[] resId =  {R.drawable.restaurant1,R.drawable.restaurant2,R.drawable.restaurant3};
-
+    private String userid;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
         mcontext  = getContext();
         View root = inflater.inflate(R.layout.fragment_top_resturant__main, container, false);
+        userid = getArguments().getString("userid");
         listview = (ListView)root.findViewById(R.id.listView1);
         new getData().execute();
         return  root;
@@ -102,6 +104,7 @@ public class top_resturant_MainFragment extends Fragment {
                         Intent intent = new Intent(mcontext, Show_RestaurantProfile.class);
                         intent.putExtra(Restaurant.Column.ResID,respro[position].getresId());
                         intent.putExtra(Restaurant.Column.UserID,respro[position].getUserID());
+                        intent.putExtra(UserProfile.Column.UserID, userid);
                         startActivity(intent);
                     }
                 });

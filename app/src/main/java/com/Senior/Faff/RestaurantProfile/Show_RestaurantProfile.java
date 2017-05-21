@@ -24,6 +24,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -105,6 +106,7 @@ public class Show_RestaurantProfile extends AppCompatActivity implements OnMapRe
     private String ownerid;
     private Button add_promotion;
     private TextView delete_res;
+    private LinearLayout promotion_res_list;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -122,7 +124,7 @@ public class Show_RestaurantProfile extends AppCompatActivity implements OnMapRe
         height = size.y;
 
         mcontext = getApplicationContext();
-
+        promotion_res_list = (LinearLayout) findViewById(R.id.promotion_res_list);
         add_promotion = (Button) findViewById(R.id.add_promotion);
         name = (TextView)findViewById(R.id.name);
         telephone = (TextView)findViewById(R.id.telephone);
@@ -157,6 +159,7 @@ public class Show_RestaurantProfile extends AppCompatActivity implements OnMapRe
             public void onClick(View v) {
                 Intent intent = new Intent(mcontext, PromotionActivity.class);
                 intent.putExtra(Restaurant.Column.ResID, resid);
+                intent.putExtra(UserProfile.Column.UserID,userid);
                 startActivity(intent);
             }
         });
@@ -402,8 +405,10 @@ public class Show_RestaurantProfile extends AppCompatActivity implements OnMapRe
                 if(userid.equals(ownerid)) {
                     View a = findViewById(R.id.fab);
                     a.setVisibility(View.VISIBLE);
+                    delete_res.setVisibility(View.VISIBLE);
+                    add_promotion.setVisibility(View.VISIBLE);
+                    promotion_res_list.setVisibility(View.VISIBLE);
                 }
-
                 if(respro.getTypefood() != null){
                     String[] list = respro.getTypefood().split(",");
                     favourite_type = new ArrayList<String>();
@@ -490,8 +495,8 @@ public class Show_RestaurantProfile extends AppCompatActivity implements OnMapRe
         @Override
         protected Promotion[] doInBackground(String... params) {
             StringBuilder result = new StringBuilder();
-            //String url_api = "https://faff-1489402013619.appspot.com/restaurant_promotion/resid/" + params[0];
-            String url_api = "https://faff-1489402013619.appspot.com/restaurant_promotion/resid/test0914121493662297";
+            String url_api = "https://faff-1489402013619.appspot.com/restaurant_promotion/resid/" + params[0];
+          //  String url_api = "https://faff-1489402013619.appspot.com/restaurant_promotion/resid/test0914121493662297";
             try {
                 URL url = new URL(url_api);
                 connection = (HttpURLConnection) url.openConnection();
@@ -526,12 +531,19 @@ public class Show_RestaurantProfile extends AppCompatActivity implements OnMapRe
         protected void onPostExecute(Promotion[] promotions) {
             super.onPostExecute(promotions);
             if(promotions != null) {
-                Promotion_recycleview list_adapter = new Promotion_recycleview(promotions, resid);
+                View a = findViewById(R.id.promotion_list);
+                a.setVisibility(View.VISIBLE);
+                promotion_res_list.setVisibility(View.VISIBLE);
+                Promotion_recycleview list_adapter = new Promotion_recycleview(promotions, resid,userid);
                 LinearLayoutManager mLayoutManager = new LinearLayoutManager(mcontext);
                 mLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
                 RecyclerView proRecyclerView = (RecyclerView) findViewById(R.id.promotion_list);
                 proRecyclerView.setLayoutManager(mLayoutManager);
                 proRecyclerView.setAdapter(list_adapter);
+            }else{
+                View a = findViewById(R.id.no_pro);
+                a.setVisibility(View.VISIBLE);
+
             }
         }
     }

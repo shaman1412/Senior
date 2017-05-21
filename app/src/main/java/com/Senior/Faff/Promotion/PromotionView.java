@@ -1,9 +1,15 @@
 package com.Senior.Faff.Promotion;
 
+import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.location.Criteria;
+import android.location.Location;
+import android.location.LocationManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -15,10 +21,23 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.Senior.Faff.Main2Activity;
+import com.Senior.Faff.MapsActivity;
+import com.Senior.Faff.Promotion_MapsActivity;
 import com.Senior.Faff.R;
+import com.Senior.Faff.RestaurantProfile.Show_RestaurantProfile;
+import com.Senior.Faff.model.Party;
 import com.Senior.Faff.model.Promotion;
+import com.Senior.Faff.model.Restaurant;
 import com.Senior.Faff.model.UserProfile;
 import com.Senior.Faff.utils.Helper;
+import com.Senior.Faff.utils.PermissionUtils;
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.gson.Gson;
 
 import org.json.JSONException;
@@ -27,21 +46,35 @@ import org.json.JSONObject;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
-public class PromotionView extends AppCompatActivity {
+public class PromotionView extends AppCompatActivity implements OnMapReadyCallback {
     public static final String TAG = PromotionView.class.getSimpleName();
 
     //    ListView mListPromotion;
+    private String send_location;
+    private static final int LOCATION_PERMISSION_REQUEST_CODE = 99;
+    private LatLng myLocation;
+    private com.google.android.gms.maps.model.Marker mCurrLocationMarker;
+    private String getlocation;
+    private Location location;
     static Context mContext;
     private Toolbar toolbar;
     private String userid;
+    private GoogleMap mMap;
+    private Promotion data;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.promotion_view);
 
+        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
+                .findFragmentById(R.id.map);
+        mapFragment.getMapAsync(this);
         mContext = this;
         Intent i = getIntent();
+       userid =  i.getExtras().getString(UserProfile.Column.UserID);
        final String id = String.valueOf(i.getExtras().getInt("id"));
+
+
 
         ListPromotion lsp = new ListPromotion(new ListPromotion.AsyncResponse() {
             @Override
@@ -50,7 +83,7 @@ public class PromotionView extends AppCompatActivity {
 
                 Log.i(TAG, "  item is : "+item.toString());
 
-                Promotion data = new Gson().fromJson(item.toString(), Promotion.class);
+                data = new Gson().fromJson(item.toString(), Promotion.class);
                 String[] arr_url = item.getString("promotionpictureurl").split(",");
 
                 TextView textView1 = (TextView) findViewById(R.id.pro_name);
@@ -80,6 +113,8 @@ public class PromotionView extends AppCompatActivity {
                 recyclerView.setLayoutManager(mLayoutManager);
                 recyclerView.setAdapter(adapter);
 
+                enableMyLocation(data.getGoogleMapLink(),data.getTitle());
+
                 TextView edit_pro =(TextView)findViewById(R.id.edit_pro);
                 edit_pro.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -98,10 +133,70 @@ public class PromotionView extends AppCompatActivity {
                     }
                 });
 
+                if(userid.equals(data.getUserid())){
+                    delete_pro.setVisibility(View.VISIBLE);
+                    edit_pro.setVisibility(View.VISIBLE);
+                }
+
             }
         });
         lsp.execute(id);
 
+    }
+
+    @Override
+    public void onMapReady(GoogleMap googleMap) {
+        mMap = googleMap;
+        double a = -34;
+        double b = 151;
+        LatLng sydney = new LatLng(a,b);
+        mMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(sydney,10.0f));
+        mMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
+            @Override
+            public void onMapClick(LatLng latLng) {
+                Intent intent = new Intent(PromotionView.this, Promotion_MapsActivity.class);
+                intent.putExtra(Promotion.Column.Location,data.getGoogleMapLink());
+                intent.putExtra(Promotion.Column.Title, data.getTitle());
+                startActivity(intent);
+            }
+        });
+    }
+    private void enableMyLocation(String lola,String res_name) {
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
+                != PackageManager.PERMISSION_GRANTED) {
+            // Permission to access the location is missing.
+            PermissionUtils.requestPermission(this, LOCATION_PERMISSION_REQUEST_CODE,
+                    Manifest.permission.ACCESS_FINE_LOCATION, true);
+        } else if (mMap != null) {
+            // Access to the location has been granted to the app.
+            //mMap.setMyLocationEnabled(true);
+            LocationManager locationManager = (LocationManager)
+                    getSystemService(Context.LOCATION_SERVICE);
+            Criteria criteria = new Criteria();
+
+            location = locationManager.getLastKnownLocation(locationManager
+                    .getBestProvider(criteria, false));
+            if(lola != null) {
+                send_location = lola;
+                String[] pos = lola.split(",");
+                try {
+                    myLocation = new LatLng(Double.parseDouble(pos[0]),
+                            Double.parseDouble(pos[1]));
+                } catch (NumberFormatException e) {
+                    myLocation = new LatLng(0, 0);
+                }
+                mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(myLocation,
+                        11));
+                MarkerOptions markerOptions = new MarkerOptions();
+                markerOptions.position(myLocation);
+                markerOptions.title(res_name);
+                markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN));
+                mCurrLocationMarker = mMap.addMarker(markerOptions);
+                //    getlocation = location.getLatitude() + ","  + location.getLongitude();
+
+            }
+        }
     }
 
     private static class ListPromotion extends AsyncTask<String, String, String> {
@@ -167,7 +262,7 @@ public class PromotionView extends AppCompatActivity {
         protected Boolean doInBackground(String... params) {
             try{
                 JSONObject para = new JSONObject();
-                String url_api = "https://faff-1489402013619.appspot.com/res_profile/del/" + params[0];
+                String url_api = "https://faff-1489402013619.appspot.com/restaurant_promotion/promotionid/del/" + params[0];
                 URL url = new URL(url_api);
                 connection = (HttpURLConnection)url.openConnection();
                 connection.setDoOutput(true);
@@ -197,7 +292,7 @@ public class PromotionView extends AppCompatActivity {
             if(aBoolean){
                 Toast.makeText(mContext,"Restaurant deleted",Toast.LENGTH_SHORT);
                 Intent intent = new Intent(mContext, Main2Activity.class);
-                intent.putExtra(UserProfile.Column.UserID,userid);
+                //intent.putExtra(UserProfile.Column.UserID,userid);
                 startActivity(intent);
             }else{
                 Toast.makeText(mContext,"Cant Delete",Toast.LENGTH_SHORT);

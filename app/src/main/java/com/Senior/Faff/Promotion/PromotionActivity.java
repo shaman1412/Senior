@@ -1,14 +1,23 @@
 package com.Senior.Faff.Promotion;
 
+import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.location.Criteria;
+import android.location.Location;
+import android.location.LocationManager;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -23,16 +32,35 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import com.Senior.Faff.Add_map;
 import com.Senior.Faff.Main2Activity;
 import com.Senior.Faff.Main3Activity;
 import com.Senior.Faff.R;
+import com.Senior.Faff.RestaurantProfile.Add_RestaurantProfile;
 import com.Senior.Faff.UserProfile.List_type;
+import com.Senior.Faff.model.Party;
 import com.Senior.Faff.model.Promotion;
 import com.Senior.Faff.model.Restaurant;
 import com.Senior.Faff.model.Restaurant_Promotion;
+import com.Senior.Faff.model.UserProfile;
 import com.Senior.Faff.utils.Helper;
+import com.Senior.Faff.utils.PermissionUtils;
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.location.LocationAvailability;
+import com.google.android.gms.location.LocationListener;
+import com.google.android.gms.location.LocationRequest;
+import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.gson.Gson;
 
 
@@ -53,7 +81,11 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
-public class PromotionActivity extends AppCompatActivity {
+public class PromotionActivity extends AppCompatActivity implements OnMapReadyCallback,
+        GoogleMap.OnMyLocationButtonClickListener,
+        GoogleApiClient.OnConnectionFailedListener,
+        GoogleApiClient.ConnectionCallbacks, LocationListener,
+        ActivityCompat.OnRequestPermissionsResultCallback  {
 
     public static final String TAG = PromotionActivity.class.getSimpleName();
 
@@ -80,9 +112,20 @@ public class PromotionActivity extends AppCompatActivity {
 
     public static PromotionRecyclerViewAdapter adapter;
     private static String resid;
+    private String userid;
 //    private Spinner type;
 //    private ArrayList<String> type_list;
-
+    private final int MAP_REQUEST_CODE = 20;
+    private com.google.android.gms.maps.model.Marker mCurrLocationMarker;
+    private LatLng myLocation;
+    private GoogleApiClient googleApiClient;
+    private Location location;
+    private boolean mPermissionDenied = false;
+    private static final int LOCATION_PERMISSION_REQUEST_CODE = 99;
+    private GoogleMap mMap;
+    private String getlocation;
+    private TextView showlocation;
+    private String send_location;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -90,9 +133,16 @@ public class PromotionActivity extends AppCompatActivity {
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_promotion);
-
+        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
+                .findFragmentById(R.id.map);
+        mapFragment.getMapAsync(this);
+        googleApiClient = new GoogleApiClient.Builder(this)
+                .addApi(LocationServices.API)
+                .addConnectionCallbacks(this)
+                .addOnConnectionFailedListener(this)
+                .build();
         resid = getIntent().getExtras().getString(Restaurant.Column.ResID);
-
+        userid = getIntent().getExtras().getString(UserProfile.Column.UserID);
         mContext = this;
 //        type_list = new ArrayList<>();
 
@@ -103,41 +153,6 @@ public class PromotionActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
 
-//        ArrayAdapter<CharSequence> adapter_type = ArrayAdapter.createFromResource(mContext, R.array.type_food_dropdown, android.R.layout.simple_spinner_item);
-//        adapter_type.setDropDownViewResource(android.R.layout.simple_dropdown_item_1line);
-//        type.setAdapter(adapter_type);
-
-//        type.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-//            @Override
-//            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-//                String text = type.getSelectedItem().toString();
-//                boolean same = false;
-//
-//                for (int i = 0; i < type_list.size(); i++) {
-//                    if (text.equals(type_list.get(i))) {
-//                        same = true;
-//                    }
-//                }
-//                if (same == false && first == false) {
-//                    type_list.add(text);
-//                    list_adapter = new List_type(type_list, mContext);
-//                    LinearLayoutManager mLayoutManager = new LinearLayoutManager(mContext);
-//                    mLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
-//                    mRecyclerView = (RecyclerView) findViewById(R.id.list_show);
-//                    mRecyclerView.setLayoutManager(mLayoutManager);
-//                    mRecyclerView.setAdapter(list_adapter);
-//                }
-//                if (first == true) {
-//                    first = false;
-//                }
-//
-//            }
-//
-//            @Override
-//            public void onNothingSelected(AdapterView<?> parent) {
-//
-//            }
-//        });
 
         addPromotion = (Button) findViewById(R.id.addPromotion);
         Title = (EditText) findViewById(R.id.title);
@@ -177,14 +192,15 @@ public class PromotionActivity extends AppCompatActivity {
                 String startDate = StartDate.getText().toString();
                 String endDate = EndDate.getText().toString();
                 String promotionDetail = PromotionDetail.getText().toString();
-                String location = Location.getText().toString();
 
                 String img_path_tmp = new Gson().toJson(imgPath);
-
-                Promotion promotion = new Promotion(title, img_path_tmp, startDate, endDate, promotionDetail, location);
-                PromotionActivity.AddPromotion add_pro = new PromotionActivity.AddPromotion();
-                add_pro.execute(promotion);
-
+                if(getlocation != null) {
+                    Promotion promotion = new Promotion(title, img_path_tmp, startDate, endDate, promotionDetail, getlocation);
+                    PromotionActivity.AddPromotion add_pro = new PromotionActivity.AddPromotion();
+                    add_pro.execute(promotion);
+                }else{
+                    Toast.makeText(mContext,"Please complete blank",Toast.LENGTH_SHORT).show();
+                }
                 bmap.clear();
                 imgPath.clear();
 //                imgByte.clear();
@@ -203,6 +219,22 @@ public class PromotionActivity extends AppCompatActivity {
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
+        }
+    }
+    @Override
+    public void onStart() {
+        super.onStart();
+
+        // Connect to Google API Client
+        googleApiClient.connect();
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        if (googleApiClient != null && googleApiClient.isConnected()) {
+            // Disconnect Google API Client if available and connected
+            googleApiClient.disconnect();
         }
     }
 
@@ -232,7 +264,140 @@ public class PromotionActivity extends AppCompatActivity {
                 RecyclerView lv = (RecyclerView) findViewById(R.id.rlist1);
                 lv.setNestedScrollingEnabled(false);
                 lv.setAdapter(adapter);
+            }else if(requestCode == MAP_REQUEST_CODE) {
+                getlocation = data.getStringExtra(Restaurant.Column.Location);
+                send_location = getlocation;
+                String[] split = getlocation.split(",");
+                LatLng lola =  new LatLng(Double.parseDouble(split[0]),Double.parseDouble(split[1]));
+                mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(lola,11));
+                mMap.clear();
+                MarkerOptions markerOptions = new MarkerOptions();
+                markerOptions.position(lola);
+                markerOptions.title("Current Position");
+                markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN));
+                mCurrLocationMarker = mMap.addMarker(markerOptions);
             }
+        }
+    }
+
+    @Override
+    public void onConnected(@Nullable Bundle bundle) {
+        enableMyLocation();
+    }
+
+    @Override
+    public void onConnectionSuspended(int i) {
+
+    }
+
+    @Override
+    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
+
+    }
+
+    @Override
+    public void onLocationChanged(android.location.Location location) {
+
+    }
+
+    @Override
+    public boolean onMyLocationButtonClick() {
+        LocationManager locationManager = (LocationManager)
+                getSystemService(Context.LOCATION_SERVICE);
+        Criteria criteria = new Criteria();
+
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
+                != PackageManager.PERMISSION_GRANTED) {
+
+            location = locationManager.getLastKnownLocation(locationManager
+                    .getBestProvider(criteria, false));
+            if (location != null) {
+                myLocation = new LatLng(location.getLatitude(),
+                        location.getLongitude());
+                mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(myLocation,
+                        11));
+                MarkerOptions markerOptions = new MarkerOptions();
+                markerOptions.position(myLocation);
+                markerOptions.title("Current Position");
+                markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN));
+                mCurrLocationMarker = mMap.addMarker(markerOptions);
+                getlocation = location.getLatitude() + "," + location.getLongitude();
+                //description.setText(String.valueOf(myLocation.latitude));
+                Toast.makeText(this, "getlocation = get ", Toast.LENGTH_SHORT).show();
+            } else {
+                Toast.makeText(this, "getlocation = null ", Toast.LENGTH_SHORT).show();
+            }
+        }
+
+
+        // Toast.makeText(this, "MyLocation button clicked", Toast.LENGTH_SHORT).show();
+        return false;
+    }
+
+    @Override
+    public void onMapReady(GoogleMap googleMap) {
+        mMap = googleMap;
+        mMap.setOnMyLocationButtonClickListener(this);
+        mMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
+            @Override
+            public void onMapClick(LatLng latLng) {
+                Intent intent = new Intent(mContext, Add_map.class);
+                intent.putExtra(Party.Column.Location, send_location);
+                startActivityForResult(intent, MAP_REQUEST_CODE);
+            }
+        });
+    }
+    private void enableMyLocation() {
+
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
+                != PackageManager.PERMISSION_GRANTED) {
+            // Permission to access the location is missing.
+            ActivityCompat.requestPermissions(this,
+                    new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION}, LOCATION_PERMISSION_REQUEST_CODE);
+        } else if (mMap != null) {
+            // Access to the location has been granted to the app.
+            mMap.setMyLocationEnabled(true);
+
+            LocationAvailability locationAvailability = LocationServices.FusedLocationApi.getLocationAvailability(googleApiClient);
+            if (locationAvailability != null) {
+
+                Toast.makeText(this, "set location ", Toast.LENGTH_SHORT).show();
+                LocationRequest locationRequest = new LocationRequest()  // ใช้สำหรับ onlicationchange ทำเรื่อยๆ
+                        .setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY)
+                        .setInterval(2000)
+                        .setFastestInterval(2000);
+                if (ContextCompat.checkSelfPermission(this,
+                        Manifest.permission.ACCESS_FINE_LOCATION)
+                        == PackageManager.PERMISSION_GRANTED) {
+                    LocationServices.FusedLocationApi.requestLocationUpdates(googleApiClient, locationRequest, this);
+                }
+                location = LocationServices.FusedLocationApi.getLastLocation(googleApiClient);
+
+                if (location != null) {
+                    send_location = location.getLatitude() + "," + location.getLongitude();
+                    getlocation = location.getLatitude() + "," + location.getLongitude();
+                    Toast.makeText(this, " set getlocation ", Toast.LENGTH_SHORT).show();
+                }
+
+            }
+            Toast.makeText(this, "cant set location", Toast.LENGTH_SHORT).show();
+
+        }
+    }
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
+                                           @NonNull int[] grantResults) {
+        if (requestCode != LOCATION_PERMISSION_REQUEST_CODE) {
+            return;
+        }
+
+        if (PermissionUtils.isPermissionGranted(permissions, grantResults,
+                Manifest.permission.ACCESS_FINE_LOCATION)) {
+            // Enable the my location layer if the permission has been granted.
+            enableMyLocation();
+        } else {
+            // Display the missing permission error dialog when the fragments resume.
+            mPermissionDenied = true;
         }
     }
 
@@ -252,6 +417,7 @@ public class PromotionActivity extends AppCompatActivity {
                 paras.put(Promotion.Column.EndDate, params[0].getEndDate());
                 paras.put(Promotion.Column.PromotionDetail, params[0].getPromotionDetail());
                 paras.put(Promotion.Column.Location, params[0].getGoogleMapLink());
+                paras.put(Promotion.Column.Userid, userid);
 
                 String img_path_tmp = params[0].getPromotionpictureurl();
                 AddPromotion.this.imgPath = new Gson().fromJson(img_path_tmp, ArrayList.class);

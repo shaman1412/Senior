@@ -24,6 +24,7 @@ import com.Senior.Faff.R;
 import com.Senior.Faff.RestaurantProfile.Show_RestaurantProfile;
 import com.Senior.Faff.model.Party;
 import com.Senior.Faff.model.Promotion;
+import com.Senior.Faff.model.UserProfile;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.storage.FirebaseStorage;
@@ -37,7 +38,7 @@ public class Promotion_recycleview extends RecyclerView.Adapter<Promotion_recycl
     private Context context;
     private Promotion[] list;
     public String resid;
-
+    public String userid;
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
         public TextView Name;
@@ -52,9 +53,10 @@ public class Promotion_recycleview extends RecyclerView.Adapter<Promotion_recycl
     }
 
     }
-    public Promotion_recycleview(Promotion[] list, String resid){
+    public Promotion_recycleview(Promotion[] list, String resid,String userid){
         this.list = list;
         this.resid = resid;
+        this.userid = userid;
 
     }
 
@@ -94,6 +96,7 @@ public class Promotion_recycleview extends RecyclerView.Adapter<Promotion_recycl
             public void onClick(View v) {
                 Intent intent = new Intent(context, PromotionView.class);
                 intent.putExtra("id",list[position].getId());
+                intent.putExtra(UserProfile.Column.UserID,userid);
                 context.startActivity(intent);
 
             }

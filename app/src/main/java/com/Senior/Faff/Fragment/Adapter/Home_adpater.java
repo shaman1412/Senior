@@ -14,6 +14,7 @@ import com.Senior.Faff.Fragment.Home.promotion_restaurant_MainFragment;
 import com.Senior.Faff.Fragment.Home.top_resturant_MainFragment;
 import com.Senior.Faff.Fragment.Home.advice_restaurant_MainFragment;
 import com.Senior.Faff.R;
+import com.Senior.Faff.model.UserProfile;
 
 public class Home_adpater extends FragmentPagerAdapter   {
     private final int PAGE_NUM = 3;
@@ -41,10 +42,18 @@ public class Home_adpater extends FragmentPagerAdapter   {
             return ad;
         }
         else if(position == 1) {
-            return new promotion_restaurant_MainFragment();
+            Bundle b = new Bundle();
+            b.putString(UserProfile.Column.UserID, userid);
+            promotion_restaurant_MainFragment rm = new promotion_restaurant_MainFragment();
+            rm.setArguments(b);
+            return rm;
         }
         else if(position == 2){
-            return  new top_resturant_MainFragment();
+            Bundle b = new Bundle();
+            b.putString("userid", userid);
+            top_resturant_MainFragment tr = new top_resturant_MainFragment();
+            tr.setArguments(b);
+            return  tr;
         }
         else
         return null;
