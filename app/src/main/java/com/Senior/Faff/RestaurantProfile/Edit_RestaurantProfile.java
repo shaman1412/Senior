@@ -468,6 +468,8 @@ public class Edit_RestaurantProfile extends AppCompatActivity implements OnMapRe
                 if(respro.getPicture()!=null)
                 {
                     old_picture = respro.getPicture();
+
+
                 }
                 if(respro.getTypefood() != null){
                     String[] list = respro.getTypefood().split(",");

@@ -65,7 +65,7 @@ public class PromotionShow extends AppCompatActivity{
                     @Override
                     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                         Promotion pro = pro_list.get(position);
-                        int proid = pro.getId();
+                        String proid = pro.getId();
 
                         Intent i = new Intent(getApplicationContext(), PromotionView.class);
                         i.putExtra("id", proid);

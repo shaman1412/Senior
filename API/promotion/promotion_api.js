@@ -80,6 +80,7 @@ router.post('/new_promotion',images.multer.array('image'),images.sendUploadToGCS
 		});
 	}
 	const promotion = {
+		promotionid: json.promotionid,
 		promotionname: json.promotionname,
 		promotionpictureurl: json.promotionpictureurl,
 		promotionstartdate: json.promotionstartdate,
@@ -140,6 +141,7 @@ router.put('/:promotionid', images.multer.array('image'), (req, res, next) => {
 	}
 	
 	const promotion = {		
+		promotionid: json.promotionid,
 		promotionname: json.promotionname,
 		promotionpictureurl: json.promotionpictureurl,
 		promotionstartdate: json.promotionstartdate,
@@ -156,6 +158,10 @@ router.put('/:promotionid', images.multer.array('image'), (req, res, next) => {
 	if(json.location==null)
 	{
 		delete promotion.promotionlocation
+	}
+	if(json.promotionid==null)
+	{
+		delete promotion.promotionid;
 	}
 	
 	getModel().update(req.params.promotionid, promotion, (err, entity) => {

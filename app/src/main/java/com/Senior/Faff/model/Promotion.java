@@ -13,7 +13,7 @@ public class Promotion {
     public static final String TABLE = "promotion";
 
     public class Column {
-        public static final String ID = BaseColumns._ID;
+        public static final String ID = "promotionid";
         public static final String Title = "promotionname";
         public static final String Picture = "promotionpictureurl";
         public static final String Type = "promotiontype";
@@ -24,7 +24,7 @@ public class Promotion {
         public static final String Userid = "promotionuserid";
     }
 
-    private int promotionid;
+    private String promotionid;
     private String promotionname;
     private String promotionstartdate;
     private String promotionenddate;
@@ -52,11 +52,11 @@ public class Promotion {
 
     public void setUserid(String promotionuserid){ this.promotionuserid = promotionuserid; }
 
-    public int getId() {
+    public String getId() {
         return promotionid;
     }
 
-    public void setId(int promotionid) {
+    public void setId(String promotionid) {
         this.promotionid = promotionid;
     }
 
@@ -110,16 +110,18 @@ public class Promotion {
 
     //endregion
 
+
     @Override
     public String toString() {
         return "Promotion{" +
-                "promotionid=" + promotionid +
+                "promotionid='" + promotionid + '\'' +
                 ", promotionname='" + promotionname + '\'' +
                 ", promotionstartdate='" + promotionstartdate + '\'' +
                 ", promotionenddate='" + promotionenddate + '\'' +
                 ", promotiondetail='" + promotiondetail + '\'' +
                 ", promotionlocation='" + promotionlocation + '\'' +
                 ", promotionpictureurl='" + promotionpictureurl + '\'' +
+                ", promotionuserid='" + promotionuserid + '\'' +
                 '}';
     }
 }
