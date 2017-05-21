@@ -72,9 +72,7 @@ public class PromotionView extends AppCompatActivity implements OnMapReadyCallba
         mContext = this;
         Intent i = getIntent();
        userid =  i.getExtras().getString(UserProfile.Column.UserID);
-       final String id = String.valueOf(i.getExtras().getInt("id"));
-
-
+       final String id = i.getExtras().getString("id");
 
         ListPromotion lsp = new ListPromotion(new ListPromotion.AsyncResponse() {
             @Override
@@ -216,7 +214,7 @@ public class PromotionView extends AppCompatActivity implements OnMapReadyCallba
         @Override
         protected String doInBackground(String... params) {
             try {
-                URL url = new URL("https://faff-1489402013619.appspot.com/promotion_list/"+Integer.parseInt(params[0]));
+                URL url = new URL("https://faff-1489402013619.appspot.com/promotion_list/"+params[0]);
                 //URL url = new URL("http://localhost:8080/promotion_list");
 
                 Helper hp = new Helper();
