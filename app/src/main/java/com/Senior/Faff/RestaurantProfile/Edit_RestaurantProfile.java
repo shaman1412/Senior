@@ -235,6 +235,14 @@ public class Edit_RestaurantProfile extends AppCompatActivity implements OnMapRe
     }
 
     @Override
+    protected void onStop() {
+        image_count = 0;
+        bmap = new ArrayList<>();
+        imgPath = new ArrayList<>();
+        super.onStop();
+    }
+
+    @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == RESULT_OK) {

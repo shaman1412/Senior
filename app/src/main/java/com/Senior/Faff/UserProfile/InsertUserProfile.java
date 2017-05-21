@@ -223,6 +223,14 @@ public class InsertUserProfile extends AppCompatActivity {
     }
 
     @Override
+    protected void onStop() {
+        image_count = 0;
+        bmap = new ArrayList<>();
+        imgPath = new ArrayList<>();
+        super.onStop();
+    }
+
+    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:

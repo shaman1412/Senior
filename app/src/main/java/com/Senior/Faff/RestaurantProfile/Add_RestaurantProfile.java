@@ -278,6 +278,9 @@ public class Add_RestaurantProfile extends AppCompatActivity implements OnMapRea
 
     @Override
     public void onStop() {
+        image_count = 0;
+        bmap = new ArrayList<>();
+        imgPath = new ArrayList<>();
         super.onStop();
         if (googleApiClient != null && googleApiClient.isConnected()) {
             // Disconnect Google API Client if available and connected
@@ -419,7 +422,6 @@ public class Add_RestaurantProfile extends AppCompatActivity implements OnMapRea
             mPermissionDenied = true;
         }
     }
-
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
