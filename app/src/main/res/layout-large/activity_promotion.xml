@@ -101,7 +101,7 @@
                         android:layout_height="wrap_content"
                         android:layout_below="@id/list_show"
                         android:hint="startDate"
-                        android:inputType="datetime"
+                        android:inputType="text"
                         android:padding="16dp" />
 
                     <EditText
@@ -110,7 +110,7 @@
                         android:layout_height="wrap_content"
                         android:layout_below="@id/startDate"
                         android:hint="endDate"
-                        android:inputType="datetime"
+                        android:inputType="text"
                         android:padding="16dp" />
 
                     <EditText

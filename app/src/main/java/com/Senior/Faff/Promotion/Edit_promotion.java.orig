@@ -30,10 +30,15 @@ import com.Senior.Faff.Add_map;
 import com.Senior.Faff.MapsActivity;
 import com.Senior.Faff.R;
 import com.Senior.Faff.RestaurantProfile.Edit_RestaurantProfile;
+<<<<<<< HEAD
 import com.Senior.Faff.RestaurantProfile.Show_RestaurantProfile;
 import com.Senior.Faff.model.Party;
 import com.Senior.Faff.model.Promotion;
+import com.Senior.Faff.model.Restaurant;
+=======
+import com.Senior.Faff.model.Promotion;
 import com.Senior.Faff.model.Restaurant_Promotion;
+>>>>>>> 5e56cc65b4aaddf5cf35b8b0b21ec79f587757aa
 import com.Senior.Faff.utils.Helper;
 import com.Senior.Faff.utils.PermissionUtils;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -202,6 +207,13 @@ public class Edit_promotion extends AppCompatActivity implements OnMapReadyCallb
         }
     }
 
+<<<<<<< HEAD
+    @Override
+    public boolean onMyLocationButtonClick() {
+        return false;
+    }
+
+=======
     private class EditPromotion extends AsyncTask<Promotion, String, String> {
 
         private ArrayList<String> imgPath = new ArrayList<>();
@@ -366,11 +378,7 @@ public class Edit_promotion extends AppCompatActivity implements OnMapReadyCallb
     }
 
 
-    @Override
-    public boolean onMyLocationButtonClick() {
-        return false;
-    }
-
+>>>>>>> 5e56cc65b4aaddf5cf35b8b0b21ec79f587757aa
     private static class ListPromotion extends AsyncTask<String, String, String> {
 
         String result = "";

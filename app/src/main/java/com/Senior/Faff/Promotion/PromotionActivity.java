@@ -77,6 +77,7 @@ import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -127,6 +128,8 @@ public class PromotionActivity extends AppCompatActivity implements OnMapReadyCa
     private String getlocation;
     private TextView showlocation;
     private String send_location;
+    private static String promotionid;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -196,6 +199,8 @@ public class PromotionActivity extends AppCompatActivity implements OnMapReadyCa
                 String img_path_tmp = new Gson().toJson(imgPath);
                 if(getlocation != null) {
                     Promotion promotion = new Promotion(title, img_path_tmp, startDate, endDate, promotionDetail, getlocation);
+                    promotionid = String.valueOf(System.currentTimeMillis())+"-"+resid;
+                    promotion.setId(promotionid);
                     PromotionActivity.AddPromotion add_pro = new PromotionActivity.AddPromotion();
                     add_pro.execute(promotion);
                 }else{
@@ -424,6 +429,7 @@ public class PromotionActivity extends AppCompatActivity implements OnMapReadyCa
                 paras.put(Promotion.Column.PromotionDetail, params[0].getPromotionDetail());
                 paras.put(Promotion.Column.Location, params[0].getGoogleMapLink());
                 paras.put(Promotion.Column.Userid, userid);
+                paras.put(Promotion.Column.ID, params[0].getId());
 
                 String img_path_tmp = params[0].getPromotionpictureurl();
                 AddPromotion.this.imgPath = new Gson().fromJson(img_path_tmp, ArrayList.class);
@@ -444,8 +450,11 @@ public class PromotionActivity extends AppCompatActivity implements OnMapReadyCa
         protected void onPostExecute(String result) {
             if (result != "") {
 
-                getCount gc = new getCount();
-                gc.execute("");
+                PromotionActivity.Linking lk = new PromotionActivity.Linking();
+                lk.execute(new Restaurant_Promotion(resid, promotionid));
+
+//                getCount gc = new getCount();
+//                gc.execute("");
 
                 //Toast.makeText(mContext, result, Toast.LENGTH_LONG).show();
             } else {
@@ -454,120 +463,119 @@ public class PromotionActivity extends AppCompatActivity implements OnMapReadyCa
         }
     }
 
-    private class getCount extends AsyncTask<String, String, String> {
-
-        private String result;
+    private class Linking extends AsyncTask<Restaurant_Promotion, String, String> {
+        private HttpURLConnection connection;
+        private int responseCode;
 
         @Override
-        protected String doInBackground(String... params) {
+        protected String doInBackground(Restaurant_Promotion... params) {
             try {
-                URL url = new URL("https://faff-1489402013619.appspot.com/promotion_list/get_count");
+                JSONObject paras = new JSONObject();
+                paras.put(Restaurant_Promotion.Column.resid, params[0].getResid());
+                paras.put(Restaurant_Promotion.Column.promotionid, params[0].getPromotionid());
 
-                Helper hp = new Helper();
-                hp.setRequest_method("GET");
-                result = hp.getRequest(url.toString());
+                URL url = new URL("https://faff-1489402013619.appspot.com/restaurant_promotion/create");
+                //URL url = new URL("http://localhost:8080/promotion_list/new_promotion");
+
+                connection = (HttpURLConnection) url.openConnection();
+                connection.setRequestMethod("POST");
+                connection.setDoOutput(true);
+
+                OutputStream out = new BufferedOutputStream(connection.getOutputStream());
+
+                BufferedWriter bufferedWriter = new BufferedWriter(new OutputStreamWriter(out, "UTF-8"));
+                bufferedWriter.write(getPostDataString(paras));
+                bufferedWriter.flush();
+                bufferedWriter.close();
+                out.close();
+
+                responseCode = connection.getResponseCode();
+
             } catch (Exception ex) {
                 ex.printStackTrace();
             }
-            return result;
+
+            if (responseCode == 200) {
+                Log.i("TEST:", " res_promo This is success response status from server: " + responseCode);
+
+                return String.valueOf(responseCode);
+            } else {
+                Log.i("Request Status", "Tsis is failure response status from server: " + responseCode);
+                return null;
+            }
         }
 
         @Override
         protected void onPostExecute(String result) {
             if (result != "") {
+                finish();
                 //Toast.makeText(mContext, result, Toast.LENGTH_LONG).show();
-                try {
-                    JSONArray item = new JSONArray(result);
-                    String n = item.getJSONObject(0).getString("n");
-
-                    getCount.Linking lk = new getCount.Linking();
-                    lk.execute(new Restaurant_Promotion(resid, n));
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
             } else {
                 //Toast.makeText(mContext, "Fail", Toast.LENGTH_SHORT).show();
             }
         }
 
-        private class Linking extends AsyncTask<Restaurant_Promotion, String, String> {
-            private HttpURLConnection connection;
-            private int responseCode;
+        public String getPostDataString(JSONObject params) throws Exception {
 
-            @Override
-            protected String doInBackground(Restaurant_Promotion... params) {
-                try {
-                    JSONObject paras = new JSONObject();
-                    paras.put(Restaurant_Promotion.Column.resid, params[0].getResid());
-                    paras.put(Restaurant_Promotion.Column.promotionid, params[0].getPromotionid());
+            StringBuilder result = new StringBuilder();
+            boolean first = true;
 
-                    URL url = new URL("https://faff-1489402013619.appspot.com/restaurant_promotion/create");
-                    //URL url = new URL("http://localhost:8080/promotion_list/new_promotion");
+            Iterator<String> itr = params.keys();
 
-                    connection = (HttpURLConnection) url.openConnection();
-                    connection.setRequestMethod("POST");
-                    connection.setDoOutput(true);
+            while (itr.hasNext()) {
 
-                    OutputStream out = new BufferedOutputStream(connection.getOutputStream());
+                String key = itr.next();
+                Object value = params.get(key);
 
-                    BufferedWriter bufferedWriter = new BufferedWriter(new OutputStreamWriter(out, "UTF-8"));
-                    bufferedWriter.write(getPostDataString(paras));
-                    bufferedWriter.flush();
-                    bufferedWriter.close();
-                    out.close();
+                if (first)
+                    first = false;
+                else
+                    result.append("&");
 
-                    responseCode = connection.getResponseCode();
+                result.append(URLEncoder.encode(key, "UTF-8"));
+                result.append("=");
+                result.append(URLEncoder.encode(value.toString(), "UTF-8"));
 
-                } catch (Exception ex) {
-                    ex.printStackTrace();
-                }
-
-                if (responseCode == 200) {
-                    Log.i("TEST:", " res_promo This is success response status from server: " + responseCode);
-
-                    return String.valueOf(responseCode);
-                } else {
-                    Log.i("Request Status", "Tsis is failure response status from server: " + responseCode);
-                    return null;
-                }
             }
-
-            @Override
-            protected void onPostExecute(String result) {
-                if (result != "") {
-                    finish();
-                    //Toast.makeText(mContext, result, Toast.LENGTH_LONG).show();
-                } else {
-                    //Toast.makeText(mContext, "Fail", Toast.LENGTH_SHORT).show();
-                }
-            }
-
-            public String getPostDataString(JSONObject params) throws Exception {
-
-                StringBuilder result = new StringBuilder();
-                boolean first = true;
-
-                Iterator<String> itr = params.keys();
-
-                while (itr.hasNext()) {
-
-                    String key = itr.next();
-                    Object value = params.get(key);
-
-                    if (first)
-                        first = false;
-                    else
-                        result.append("&");
-
-                    result.append(URLEncoder.encode(key, "UTF-8"));
-                    result.append("=");
-                    result.append(URLEncoder.encode(value.toString(), "UTF-8"));
-
-                }
-                return result.toString();
-            }
+            return result.toString();
         }
     }
 
+//    private class getCount extends AsyncTask<String, String, String> {
+//
+//        private String result;
+//
+//        @Override
+//        protected String doInBackground(String... params) {
+//            try {
+//                URL url = new URL("https://faff-1489402013619.appspot.com/promotion_list/get_count");
+//
+//                Helper hp = new Helper();
+//                hp.setRequest_method("GET");
+//                result = hp.getRequest(url.toString());
+//            } catch (Exception ex) {
+//                ex.printStackTrace();
+//            }
+//            return result;
+//        }
+//
+//        @Override
+//        protected void onPostExecute(String result) {
+//            if (result != "") {
+//                //Toast.makeText(mContext, result, Toast.LENGTH_LONG).show();
+//                try {
+//                    JSONArray item = new JSONArray(result);
+//                    String n = item.getJSONObject(0).getString("n");
+//                } catch (JSONException e) {
+//                    e.printStackTrace();
+//                }
+//            } else {
+//                //Toast.makeText(mContext, "Fail", Toast.LENGTH_SHORT).show();
+//            }
+//        }
+//
+//
+//    }
+//
 
 }

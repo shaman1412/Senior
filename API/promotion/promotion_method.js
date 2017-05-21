@@ -137,7 +137,7 @@ function createSchema (config) {
       DEFAULT COLLATE 'utf8_general_ci';
     USE \`faff\`;
     CREATE TABLE IF NOT EXISTS \`faff\`.\``+table_name+`\`(
-      \`promotionid\` INT UNSIGNED NOT NULL AUTO_INCREMENT,
+      \`promotionid\` VARCHAR(255) NOT NULL,
       \`promotionname\` VARCHAR(255) NULL,
 	  \`promotionpictureurl\` TEXT NULL,
       \`promotionstartdate\`TEXT NULL,

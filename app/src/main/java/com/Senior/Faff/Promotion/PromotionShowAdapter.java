@@ -45,7 +45,7 @@ public class PromotionShowAdapter extends BaseAdapter{
 
     @Override
     public long getItemId(int position) {
-        return promotions.get(position).getId();
+        return position;
     }
 
     @Override
