@@ -453,8 +453,8 @@ public class PromotionActivity extends AppCompatActivity implements OnMapReadyCa
                 PromotionActivity.Linking lk = new PromotionActivity.Linking();
                 lk.execute(new Restaurant_Promotion(resid, promotionid));
 
-                getCount gc = new getCount();
-                gc.execute("");
+//                getCount gc = new getCount();
+//                gc.execute("");
 
                 //Toast.makeText(mContext, result, Toast.LENGTH_LONG).show();
             } else {
@@ -541,41 +541,41 @@ public class PromotionActivity extends AppCompatActivity implements OnMapReadyCa
         }
     }
 
-    private class getCount extends AsyncTask<String, String, String> {
-
-        private String result;
-
-        @Override
-        protected String doInBackground(String... params) {
-            try {
-                URL url = new URL("https://faff-1489402013619.appspot.com/promotion_list/get_count");
-
-                Helper hp = new Helper();
-                hp.setRequest_method("GET");
-                result = hp.getRequest(url.toString());
-            } catch (Exception ex) {
-                ex.printStackTrace();
-            }
-            return result;
-        }
-
-        @Override
-        protected void onPostExecute(String result) {
-            if (result != "") {
-                //Toast.makeText(mContext, result, Toast.LENGTH_LONG).show();
-                try {
-                    JSONArray item = new JSONArray(result);
-                    String n = item.getJSONObject(0).getString("n");
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-            } else {
-                //Toast.makeText(mContext, "Fail", Toast.LENGTH_SHORT).show();
-            }
-        }
-
-
-    }
-
+//    private class getCount extends AsyncTask<String, String, String> {
+//
+//        private String result;
+//
+//        @Override
+//        protected String doInBackground(String... params) {
+//            try {
+//                URL url = new URL("https://faff-1489402013619.appspot.com/promotion_list/get_count");
+//
+//                Helper hp = new Helper();
+//                hp.setRequest_method("GET");
+//                result = hp.getRequest(url.toString());
+//            } catch (Exception ex) {
+//                ex.printStackTrace();
+//            }
+//            return result;
+//        }
+//
+//        @Override
+//        protected void onPostExecute(String result) {
+//            if (result != "") {
+//                //Toast.makeText(mContext, result, Toast.LENGTH_LONG).show();
+//                try {
+//                    JSONArray item = new JSONArray(result);
+//                    String n = item.getJSONObject(0).getString("n");
+//                } catch (JSONException e) {
+//                    e.printStackTrace();
+//                }
+//            } else {
+//                //Toast.makeText(mContext, "Fail", Toast.LENGTH_SHORT).show();
+//            }
+//        }
+//
+//
+//    }
+//
 
 }
