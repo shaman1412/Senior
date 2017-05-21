@@ -33,6 +33,7 @@ import com.Senior.Faff.RestaurantProfile.Edit_RestaurantProfile;
 import com.Senior.Faff.RestaurantProfile.Show_RestaurantProfile;
 import com.Senior.Faff.model.Party;
 import com.Senior.Faff.model.Promotion;
+import com.Senior.Faff.model.Restaurant;
 import com.Senior.Faff.model.Restaurant_Promotion;
 import com.Senior.Faff.utils.Helper;
 import com.Senior.Faff.utils.PermissionUtils;

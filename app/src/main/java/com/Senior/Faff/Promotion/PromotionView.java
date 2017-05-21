@@ -61,6 +61,7 @@ public class PromotionView extends AppCompatActivity implements OnMapReadyCallba
     private String userid;
     private GoogleMap mMap;
     private Promotion data;
+    private TextView goTores;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -130,6 +131,17 @@ public class PromotionView extends AppCompatActivity implements OnMapReadyCallba
                     @Override
                     public void onClick(View v) {
                         new delete().execute(id);
+                    }
+                });
+
+                goTores = (TextView)findViewById(R.id.goTores);
+                goTores.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Intent intent = new Intent(mContext,Show_RestaurantProfile.class);
+                        intent.putExtra(Restaurant.Column.UserID,userid);
+                        intent.putExtra(Restaurant.Column.ResID,data.getId());
+                        startActivity(intent);
                     }
                 });
 
