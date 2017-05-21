@@ -31,21 +31,36 @@
 
                 android:layout_marginBottom="5dp"/>
             <android.support.v7.widget.LinearLayoutCompat
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="start"
-                >
-                <View
-                    android:layout_width="100dp"
-                    android:layout_height="100dp"
-                    android:layout_marginRight="10dp"
-                    android:background="@drawable/examplepicture"
-                    ></View>
+                android:layout_gravity="start">
+
                 <Button
                     android:layout_width="100dp"
                     android:layout_height="100dp"
-                    android:id="@+id/picture"
+                    android:id="@+id/upload_button"
+                    android:layout_marginBottom="10dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginRight="10dp"
+                    android:padding="2dip"
                     android:background="@drawable/adduserphoto"/>
+                <LinearLayout
+                    android:layout_width="fill_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center">
+
+                    <android.support.v7.widget.RecyclerView
+                        android:id="@+id/rlist1"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentTop="true"
+                        android:foregroundGravity="center"
+                        android:orientation="horizontal"
+                        android:scrollbars="vertical"
+                        app:layoutManager="android.support.v7.widget.LinearLayoutManager" />
+
+
+                </LinearLayout>
 
             </android.support.v7.widget.LinearLayoutCompat>
 

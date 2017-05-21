@@ -30,6 +30,7 @@
                 android:orientation="vertical"
                 android:padding="10dp">
                 <TextView
+                    android:visibility="gone"
                     android:paddingLeft="10dp"
                     android:paddingRight="10dp"
                     android:paddingBottom="5dp"
@@ -299,50 +300,40 @@
 
         </android.support.v7.widget.CardView>
 
-
+    <LinearLayout
+        android:visibility="gone"
+        android:id="@+id/promotion_res_list"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_marginTop="10dp">
         <TextView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
+            android:layout_height="match_parent"
             android:textColor="#7e7e7e"
             android:textSize="20sp"
             android:text="Promotion"/>
 
-
-<!--       <LinearLayout
-           android:layout_width="150dp"
-           android:orientation="vertical"
-           android:padding="10dp"
-           android:layout_height="210dp"
-           android:gravity="center"
-           android:layout_marginRight="10dp"
-           android:background="@drawable/listview_card">
-           <ImageView
-               android:layout_width="80dp"
-               android:layout_height="80dp"
-               android:src="@drawable/add_promotion"
-               android:layout_marginBottom="5dp"
-               android:adjustViewBounds="true"
-               android:scaleType="centerCrop"/>
-           <TextView
-               android:layout_marginTop="10dp"
-               android:layout_width="wrap_content"
-               android:layout_height="wrap_content"
-               android:text="Add promotion"
-               android:textColor="#939393"/>
-
-       </LinearLayout>-->
+        <TextView
+            android:layout_gravity="center"
+            android:layout_width="wrap_content"
+            android:layout_marginTop="10dp"
+            android:layout_height="110dp"
+            android:text="No Promotion Added"
+            android:gravity="center"
+            android:textSize="15sp"
+            android:id="@+id/no_pro"
+            android:visibility="gone"/>
 
         <android.support.v7.widget.RecyclerView
             android:layout_marginTop="10dp"
             android:layout_width="match_parent"
             android:layout_height="210dp"
             android:id="@+id/promotion_list"
-
-            >
-
+            android:visibility="gone">
         </android.support.v7.widget.RecyclerView>
 
+    </LinearLayout>
         <Button
             android:layout_marginTop="10dp"
             android:layout_width="match_parent"
@@ -352,6 +343,7 @@
             android:text="Add Promotion"
             android:textColor="#ffffff"
             android:background="@color/black_tab"
+            android:visibility="gone"
            />
 
         <android.support.v7.widget.CardView

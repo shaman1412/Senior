@@ -122,20 +122,30 @@
                         android:inputType="text"
                         android:padding="16dp" />
 
-                    <EditText
+                    <TextView
+                        android:layout_marginTop="10dp"
                         android:id="@+id/location"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:text="Location"
+                        android:textSize="16sp"
                         android:layout_below="@id/promotionDetail"
-                        android:hint="googleMapLink"
-                        android:inputType="text"
-                        android:padding="16dp" />
+                       />
+                    <fragment
+                        android:layout_marginTop="10dp"
+                        android:layout_width="350dp"
+                        android:layout_height="200dp"
+                        android:layout_below="@id/location"
+                        android:id="@+id/map"
+                        android:name="com.google.android.gms.maps.SupportMapFragment"
+                        tools:context="com.Senior.Faff.Promotion.PromotionActivity"
+                        android:layout_marginBottom="5dp"/>
 
                     <Button
                         android:id="@+id/addPromotion"
                         android:layout_width="fill_parent"
                         android:layout_height="wrap_content"
-                        android:layout_below="@id/location"
+                        android:layout_below="@id/map"
                         android:layout_marginTop="16dp"
                         android:background="@color/ButtonUserProfile"
                         android:text="addPromotion"
