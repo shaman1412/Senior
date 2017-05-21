@@ -160,7 +160,6 @@ public class PromotionActivity extends AppCompatActivity implements OnMapReadyCa
         StartDate = (EditText) findViewById(R.id.startDate);
         EndDate = (EditText) findViewById(R.id.endDate);
         PromotionDetail = (EditText) findViewById(R.id.promotionDetail);
-        Location = (EditText) findViewById(R.id.location);
 
         //Need edition for more folder gallery to select
         uploadPicture.setOnClickListener(new View.OnClickListener() {

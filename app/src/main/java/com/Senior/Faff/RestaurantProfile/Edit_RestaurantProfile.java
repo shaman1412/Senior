@@ -32,10 +32,12 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import com.Senior.Faff.Add_map;
 import com.Senior.Faff.Main2Activity;
 import com.Senior.Faff.R;
 import com.Senior.Faff.UserProfile.List_type;
 import com.Senior.Faff.UserProfile.List_typeNodel;
+import com.Senior.Faff.model.Party;
 import com.Senior.Faff.model.Restaurant;
 import com.Senior.Faff.model.UserProfile;
 import com.Senior.Faff.utils.Helper;
@@ -78,10 +80,9 @@ import java.util.Map;
 
 public class Edit_RestaurantProfile extends AppCompatActivity implements OnMapReadyCallback,
         GoogleMap.OnMyLocationButtonClickListener,
-        GoogleApiClient.OnConnectionFailedListener,
-        GoogleApiClient.ConnectionCallbacks,LocationListener,
         ActivityCompat.OnRequestPermissionsResultCallback{
 
+    private final int MAP_REQUEST_CODE = 20;
     private com.google.android.gms.maps.model.Marker mCurrLocationMarker;
     private GoogleApiClient googleApiClient;
     private LatLng myLocation;
@@ -101,6 +102,7 @@ public class Edit_RestaurantProfile extends AppCompatActivity implements OnMapRe
     private boolean first = true;
     private GoogleMap mMap;
     private Location location;
+    private String send_location;
     private ArrayList<String> favourite_type;
     private static final int LOCATION_PERMISSION_REQUEST_CODE = 99;
 
@@ -128,11 +130,7 @@ public class Edit_RestaurantProfile extends AppCompatActivity implements OnMapRe
         adapter_type.setDropDownViewResource(android.R.layout.simple_dropdown_item_1line);
         type.setAdapter(adapter_type);
         mcontext = this;
-        googleApiClient = new GoogleApiClient.Builder(this)
-                .addApi(LocationServices.API)
-                .addConnectionCallbacks(this)
-                .addOnConnectionFailedListener(this)
-                .build();
+
         Bundle arg = getIntent().getExtras();
         if(arg != null) {
             user_id = arg.getString(Restaurant.Column.UserID);
@@ -269,13 +267,34 @@ public class Edit_RestaurantProfile extends AppCompatActivity implements OnMapRe
                 RecyclerView lv = (RecyclerView) findViewById(R.id.rlist1);
                 lv.setNestedScrollingEnabled(false);
                 lv.setAdapter(adapter);
-            }
+              }else if(requestCode == MAP_REQUEST_CODE) {
+                  getlocation = data.getStringExtra(Restaurant.Column.Location);
+                  send_location = getlocation;
+                  String[] split = getlocation.split(",");
+                  LatLng lola =  new LatLng(Double.parseDouble(split[0]),Double.parseDouble(split[1]));
+                  mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(lola,11));
+                  mMap.clear();
+                  MarkerOptions markerOptions = new MarkerOptions();
+                  markerOptions.position(lola);
+                  markerOptions.title("Current Position");
+                  markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN));
+                  mCurrLocationMarker = mMap.addMarker(markerOptions);
+                  Toast.makeText(Edit_RestaurantProfile.this,getlocation,Toast.LENGTH_SHORT).show();
+        }
         }
     }
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
         mMap.setOnMyLocationButtonClickListener(this);
+        mMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
+            @Override
+            public void onMapClick(LatLng latLng) {
+                Intent intent = new Intent(Edit_RestaurantProfile.this, Add_map.class);
+                intent.putExtra(Party.Column.Location, getlocation);
+                startActivityForResult(intent, MAP_REQUEST_CODE);
+            }
+        });
     }
     private void enableMyLocation(String lola,String res_name) {
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
@@ -307,116 +326,10 @@ public class Edit_RestaurantProfile extends AppCompatActivity implements OnMapRe
             }
         }
     }
-    private void enableMyLocation() {
-
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
-                != PackageManager.PERMISSION_GRANTED) {
-            // Permission to access the location is missing.
-            ActivityCompat.requestPermissions(this,
-                    new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION}, LOCATION_PERMISSION_REQUEST_CODE);
-        } else if (mMap != null) {
-            // Access to the location has been granted to the app.
-            mMap.setMyLocationEnabled(true);
-
-            LocationAvailability locationAvailability = LocationServices.FusedLocationApi.getLocationAvailability(googleApiClient);
-            if (locationAvailability != null) {
-
-
-                LocationRequest locationRequest = new LocationRequest()  // ใช้สำหรับ onlicationchange ทำเรื่อยๆ
-                        .setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY)
-                        .setInterval(2000)
-                        .setFastestInterval(2000);
-                if (ContextCompat.checkSelfPermission(this,
-                        Manifest.permission.ACCESS_FINE_LOCATION)
-                        == PackageManager.PERMISSION_GRANTED) {
-                    LocationServices.FusedLocationApi.requestLocationUpdates(googleApiClient, locationRequest, this);
-                }
-                location = LocationServices.FusedLocationApi.getLastLocation(googleApiClient);
-                if (location != null) {
-                    myLocation = new LatLng(location.getLatitude(),
-                            location.getLongitude());
-                    mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(myLocation,
-                            11));
-                    MarkerOptions markerOptions = new MarkerOptions();
-                    markerOptions.position(myLocation);
-                    markerOptions.title("Current Position");
-                    markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN));
-                    mCurrLocationMarker = mMap.addMarker(markerOptions);
-                    getlocation = location.getLatitude() + "," + location.getLongitude();
-                }
-
-            }
-
-        }
-    }
 
     @Override
     public boolean onMyLocationButtonClick() {
-
-        LocationManager locationManager = (LocationManager)
-                getSystemService(Context.LOCATION_SERVICE);
-        Criteria criteria = new Criteria();
-
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
-                != PackageManager.PERMISSION_GRANTED) {
-
-            location = locationManager.getLastKnownLocation(locationManager
-                    .getBestProvider(criteria, false));
-            if (location != null) {
-                myLocation = new LatLng(location.getLatitude(),
-                        location.getLongitude());
-                mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(myLocation,
-                        11));
-                MarkerOptions markerOptions = new MarkerOptions();
-                markerOptions.position(myLocation);
-                markerOptions.title("Current Position");
-                markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN));
-                mCurrLocationMarker = mMap.addMarker(markerOptions);
-                getlocation = location.getLatitude() + "," + location.getLongitude();
-
-            }
-
-
-        }
         return false;
-    }
-    @Override
-    public void onStart() {
-        super.onStart();
-
-        // Connect to Google API Client
-        googleApiClient.connect();
-    }
-
-    @Override
-    public void onStop() {
-        image_count = 0;
-        bmap = new ArrayList<>();
-        imgPath = new ArrayList<>();
-        super.onStop();
-        if (googleApiClient != null && googleApiClient.isConnected()) {
-            // Disconnect Google API Client if available and connected
-            googleApiClient.disconnect();
-        }
-    }
-    @Override
-    public void onConnected(@Nullable Bundle bundle) {
-        enableMyLocation();
-    }
-
-    @Override
-    public void onConnectionSuspended(int i) {
-
-    }
-
-    @Override
-    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
-
-    }
-
-    @Override
-    public void onLocationChanged(Location location) {
-
     }
 
 
@@ -477,71 +390,6 @@ public class Edit_RestaurantProfile extends AppCompatActivity implements OnMapRe
         }
     }
 
-
-//    private class updaterestaurant extends AsyncTask<Restaurant ,String , Restaurant > {
-//
-//        int responseCode;
-//        HttpURLConnection connection;
-//        @Override
-//        protected Restaurant doInBackground(Restaurant... params) {
-//
-//            try{
-//
-//                JSONObject para = new JSONObject();
-//                para.put(Restaurant.Column.RestaurantName, params[0].getRestaurantName());
-//                para.put(Restaurant.Column.Address, params[0].getAddress());
-//                para.put(Restaurant.Column.TypeFood, params[0].getTypefood());
-//                para.put(Restaurant.Column.Description, params[0].getDescription());
-//                para.put(Restaurant.Column.Telephone, params[0].getTelephone());
-//                para.put(Restaurant.Column.Period, params[0].getPeriod());
-//                para.put(Restaurant.Column.Location, params[0].getLocation());
-//
-//
-//                String url_api = "https://faff-1489402013619.appspot.com/res_profile/update/" + params[0].getresId();
-//                URL url = new URL(url_api);
-//                connection = (HttpURLConnection)url.openConnection();
-//                connection.setRequestMethod("PUT");
-//                connection.setDoOutput(true);
-//                connection.setDoInput(true);
-//
-//                OutputStream out = new BufferedOutputStream(connection.getOutputStream());
-//                BufferedWriter buffer = new BufferedWriter(new OutputStreamWriter(out, "UTF-8"));
-//                buffer.write(getPostDataString(para));
-//                buffer.flush();
-//                buffer.close();
-//                out.close();
-//
-//                responseCode = connection.getResponseCode();
-//
-//            }catch (Exception e){
-//                e.printStackTrace();
-//            }
-//            if (responseCode == 200) {
-//                Log.i("Request Status", "This is success response status from server: " + responseCode);
-//
-//                return params[0];
-//            } else {
-//                Log.i("Request Status", "This is failure response status from server: " + responseCode);
-//                return null;
-//
-//            }
-//        }
-//
-//        @Override
-//        protected void onPostExecute(Restaurant restaurant) {
-//            if(restaurant != null){
-//
-//                Intent intent = new Intent(Edit_RestaurantProfile.this, Main2Activity.class);
-//                intent.putExtra(Restaurant.Column.UserID,restaurant.getUserID());
-//                intent.putExtra(Restaurant.Column.ResID,restaurant.getresId());
-//                startActivity(intent);
-//                //Toast.makeText(mcontext,type_check,Toast.LENGTH_LONG).show();
-//            }
-//            else{
-//                Toast.makeText(mcontext,"Fail",Toast.LENGTH_SHORT).show();
-//            }
-//        }
-//    }
 
     public String getPostDataString(JSONObject params) throws Exception {
 
