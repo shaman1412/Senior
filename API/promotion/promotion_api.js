@@ -85,7 +85,8 @@ router.post('/new_promotion',images.multer.array('image'),images.sendUploadToGCS
 		promotionstartdate: json.promotionstartdate,
 		promotionenddate: json.promotionenddate,
 		promotiondetail: json.promotiondetail,
-		promotionlocation: json.promotionlocation
+		promotionlocation: json.promotionlocation,
+		promotionuserid : json.promotionuserid
 	}
 	console.log("\n\n");
 	console.log(promotion.promotionpictureurl);

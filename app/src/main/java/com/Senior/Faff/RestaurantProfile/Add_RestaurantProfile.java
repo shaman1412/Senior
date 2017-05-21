@@ -251,24 +251,6 @@ public class Add_RestaurantProfile extends AppCompatActivity implements OnMapRea
 
             }
         });
-/*        Button addre = (Button) findViewById(R.id.add);
-        addre.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Restaurant restaurant = new Restaurant(name.getText().toString(), picture.getText().toString(), getlocation, detail.getText().toString(), 0, user_id, type_food);
-                Restaurant_manager manager = new Restaurant_manager(mcontext);
-                long result = manager.AddRestaurant(restaurant);
-                if (result == -1) {
-                    Toast.makeText(mcontext, "Fail", Toast.LENGTH_SHORT).show();
-                } else {
-                    Toast.makeText(mcontext, "Success", Toast.LENGTH_SHORT).show();
-                    Intent intent = new Intent(mcontext, Main2Activity.class);
-                    intent.putExtra("userid",user_id);
-                    startActivity(intent);
-
-                }
-            }
-        });*/
 
     }
 

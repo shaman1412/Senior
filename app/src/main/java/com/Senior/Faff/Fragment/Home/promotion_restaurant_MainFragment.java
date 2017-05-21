@@ -22,6 +22,7 @@ import com.Senior.Faff.Promotion.PromotionShowAdapter;
 import com.Senior.Faff.Promotion.PromotionView;
 import com.Senior.Faff.R;
 import com.Senior.Faff.model.Promotion;
+import com.Senior.Faff.model.UserProfile;
 import com.Senior.Faff.utils.Helper;
 import com.Senior.Faff.utils.LoadingFragment;
 import com.google.gson.Gson;
@@ -39,7 +40,7 @@ public class promotion_restaurant_MainFragment extends Fragment {
     private static FrameLayout loading;
     private static LoadingFragment loadingFragment;
     private static Context mContext;
-
+    private String userid;
     public promotion_restaurant_MainFragment() {
         // Required empty public constructor
     }
@@ -50,7 +51,7 @@ public class promotion_restaurant_MainFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         final View rootView =  inflater.inflate(R.layout.fragment_promotion_restaurant__main, container, false);
-
+        userid = getArguments().getString(UserProfile.Column.UserID);
         loading = (FrameLayout)rootView.findViewById(R.id.loading);
         showLoading();
         mContext = getActivity();
@@ -94,6 +95,7 @@ public class promotion_restaurant_MainFragment extends Fragment {
                         int proid = pro.getId();
 
                         Intent i = new Intent(mContext, PromotionView.class);
+                        i.putExtra(UserProfile.Column.UserID,userid);
                         i.putExtra("id", proid);
                         startActivity(i);
                     }

@@ -21,6 +21,7 @@ public class Promotion {
         public static final String EndDate = "promotionenddate";
         public static final String PromotionDetail = "promotiondetail";
         public static final String Location = "promotionlocation";
+        public static final String Userid = "promotionuserid";
     }
 
     private int promotionid;
@@ -31,20 +32,26 @@ public class Promotion {
     private String promotionlocation;
 //    private String promotiontype;
     private String promotionpictureurl;
+    private String promotionuserid;
 
     // Constructor
 
-    public Promotion(String promotionname, String promotionpictureurl, String promotionstartdate, String promotionenddate, String promotiondetail, String promotionlocation) {
+    public Promotion(String promotionname, String promotionpictureurl, String promotionstartdate, String promotionenddate, String promotiondetail ,String promotionlocation) {
         this.promotionname = promotionname;
         this.promotionstartdate = promotionstartdate;
         this.promotionenddate = promotionenddate;
         this.promotiondetail = promotiondetail;
-        this.promotionlocation = promotionlocation;
 //        this.promotiontype = promotiontype;
         this.promotionpictureurl = promotionpictureurl;
+        this.promotionlocation = promotionlocation;
     }
 
     //region getter setter
+
+    public String getUserid(){ return  promotionuserid;}
+
+    public void setUserid(String promotionuserid){ this.promotionuserid = promotionuserid; }
+
     public int getId() {
         return promotionid;
     }
