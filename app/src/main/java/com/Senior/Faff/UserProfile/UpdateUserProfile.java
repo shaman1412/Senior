@@ -38,6 +38,7 @@ import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
@@ -250,7 +251,13 @@ public class UpdateUserProfile extends AppCompatActivity {
                     cur.close();
                 }
 
-                bmap.add(BitmapFactory.decodeFile(imgPath.get(image_count)));
+                Bitmap bm = BitmapFactory.decodeFile(imgPath.get(image_count));
+                try {
+                    bm = new Helper().modifyOrientation(bm, imgPath.get(image_count));
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                bmap.add(bm);
                 //convert to byte
                 ByteArrayOutputStream stream = new ByteArrayOutputStream();
                 bmap.get(image_count).compress(Bitmap.CompressFormat.PNG, 100, stream);

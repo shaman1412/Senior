@@ -267,7 +267,8 @@ public class Edit_RestaurantProfile extends AppCompatActivity implements OnMapRe
                 RecyclerView lv = (RecyclerView) findViewById(R.id.rlist1);
                 lv.setNestedScrollingEnabled(false);
                 lv.setAdapter(adapter);
-              }else if(requestCode == MAP_REQUEST_CODE) {
+              }
+              else if(requestCode == MAP_REQUEST_CODE) {
                   getlocation = data.getStringExtra(Restaurant.Column.Location);
                   send_location = getlocation;
                   String[] split = getlocation.split(",");
@@ -332,7 +333,6 @@ public class Edit_RestaurantProfile extends AppCompatActivity implements OnMapRe
         return false;
     }
 
-
     private class EditRestProfile extends AsyncTask<Restaurant, String, String> {
 
         private ArrayList<String> imgPath = new ArrayList<>();
@@ -389,7 +389,6 @@ public class Edit_RestaurantProfile extends AppCompatActivity implements OnMapRe
             }
         }
     }
-
 
     public String getPostDataString(JSONObject params) throws Exception {
 

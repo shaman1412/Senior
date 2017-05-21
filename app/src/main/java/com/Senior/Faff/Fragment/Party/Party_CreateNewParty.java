@@ -59,6 +59,7 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.StringTokenizer;
 
@@ -196,6 +197,11 @@ public class Party_CreateNewParty extends AppCompatActivity {
                     cur.close();
                 }
                 Bitmap b = BitmapFactory.decodeFile(imgPath.get(image_count));
+                try {
+                    b = new Helper().modifyOrientation(b, imgPath.get(image_count));
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
                 bmap.add(b);
                 //convert to byte
                 party_pic.setVisibility(View.VISIBLE);
