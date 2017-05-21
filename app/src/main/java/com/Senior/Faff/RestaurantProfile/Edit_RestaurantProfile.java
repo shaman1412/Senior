@@ -233,8 +233,8 @@ public class Edit_RestaurantProfile extends AppCompatActivity implements OnMapRe
                 startActivityForResult(sdintent, request_code);
             }
         });
-
     }
+
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -250,7 +250,8 @@ public class Edit_RestaurantProfile extends AppCompatActivity implements OnMapRe
                     imgPath.add(cur.getString(column_index));
                     cur.close();
                 }
-                bmap.add(BitmapFactory.decodeFile(imgPath.get(image_count)));
+                Bitmap bm = BitmapFactory.decodeFile(imgPath.get(image_count));
+                bmap.add(bm);
                 Log.i("TEST:", "img_path from activity result : "+imgPath.get(image_count));
                 //convert to byte
                 ByteArrayOutputStream stream = new ByteArrayOutputStream();
