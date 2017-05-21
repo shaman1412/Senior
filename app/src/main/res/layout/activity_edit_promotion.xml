@@ -18,7 +18,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:gravity="center"
-            android:text="Create Promotion"
+            android:text="Edit Promotion"
             android:textSize="30sp" />
 
     </android.support.v7.widget.Toolbar>
@@ -78,9 +78,9 @@
 
 
                     <Button
-                        android:layout_width="100dp"
-                        android:layout_height="100dp"
-                        android:id="@+id/titlePicture"
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        android:id="@+id/upload_button"
                         android:layout_marginBottom="5dp"
                         android:padding="2dip"
                         android:background="@drawable/adduserphoto"/>

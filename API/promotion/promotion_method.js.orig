@@ -144,7 +144,11 @@ function createSchema (config) {
       \`promotionenddate\` VARCHAR(255) NULL,
       \`promotiondetail\` VARCHAR(255) NULL,
       \`promotionlocation\` VARCHAR(255) NULL,
+<<<<<<< HEAD
        \`promotionuserid\` VARCHAR(255) NULL,
+=======
+	  \`promotionuserid\` VARCHAR(255) NULL
+>>>>>>> c5d552ff9268bf85426595f79c773b99e234e739
     PRIMARY KEY (\`promotionid\`));`,
     (err) => {
       if (err) {

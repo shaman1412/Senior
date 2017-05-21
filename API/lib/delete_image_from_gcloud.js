@@ -73,7 +73,7 @@ function deleteImageFromRestProfile (filename, res, next) {
 		file.delete(function(err, data) {
 			if (err) {
 				// console.log(err);
-				next(err);
+				// next(err);
 				return;
 			}
 			else {
@@ -97,7 +97,7 @@ function deleteImageFromPromotion (filename, res, next) {
 		file.delete(function(err, data) {
 			if (err) {
 				// console.log(err);
-				next(err);
+				// next(err);
 				return;
 			}
 			else {

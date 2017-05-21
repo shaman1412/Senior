@@ -123,7 +123,6 @@ public class Show_RestaurantProfile extends AppCompatActivity implements OnMapRe
         width = size.x;
         height = size.y;
 
-
         mcontext = getApplicationContext();
         promotion_res_list = (LinearLayout) findViewById(R.id.promotion_res_list);
         add_promotion = (Button) findViewById(R.id.add_promotion);
@@ -288,8 +287,6 @@ public class Show_RestaurantProfile extends AppCompatActivity implements OnMapRe
         }
 
     }
-
-
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;

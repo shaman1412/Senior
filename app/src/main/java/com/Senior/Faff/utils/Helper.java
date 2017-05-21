@@ -287,7 +287,77 @@ public class Helper {
                 throw new Exception(e);
             }
         } else {
-            return "Wrong Size";
+            try {
+                URL url = new URL(urlTo);
+                connection = (HttpURLConnection) url.openConnection();
+
+                connection.setDoInput(true);
+                connection.setDoOutput(true);
+                connection.setUseCaches(false);
+
+                connection.setRequestMethod(request_method);
+                connection.setRequestProperty("Connection", "Keep-Alive");
+                connection.setRequestProperty("User-Agent", "Android Multipart HTTP Client 1.0");
+                connection.setRequestProperty("Content-Type", "multipart/form-data; boundary=" + boundary);
+
+                outputStream = new DataOutputStream(connection.getOutputStream());
+
+                OutputStreamWriter ow = new OutputStreamWriter(outputStream, "UTF-8");
+                BufferedWriter bf = new BufferedWriter(ow);
+
+                // Upload POST Data
+                Iterator<String> keys = parmas.keySet().iterator();
+                String value = "";
+                while (keys.hasNext()) {
+                    String key = keys.next();
+                    if(!key.equals("old_filename")){
+                        value = parmas.get(key);
+                        if (value != null) {
+                            outputStream.writeBytes(twoHyphens + boundary + lineEnd);
+                            outputStream.writeBytes("Content-Disposition: form-data; name=\"" + key + "\"" + lineEnd);
+                            outputStream.writeBytes("Content-Type: text/plain" + lineEnd);
+                            outputStream.writeBytes(lineEnd);
+                            bf.write(value);
+                            Log.i("TEST:", key + " : " + value);
+                            bf.flush();
+                            //outputStream.writeBytes(value);
+                            outputStream.writeBytes(lineEnd);
+                        }
+                        else {
+                            outputStream.writeBytes(twoHyphens + boundary + lineEnd);
+                            outputStream.writeBytes("Content-Disposition: form-data; name=\"" + key + "\"" + lineEnd);
+                            outputStream.writeBytes("Content-Type: text/plain" + lineEnd);
+                            outputStream.writeBytes(lineEnd);
+                            //outputStream.writeBytes(value);
+                            outputStream.writeBytes(lineEnd);
+                        }
+                    }
+                }
+
+                outputStream.writeBytes(twoHyphens + boundary + twoHyphens + lineEnd);
+
+                if (200 != connection.getResponseCode()) {
+                    if (connection.getResponseCode() == 404 && !isLocal) {
+                        return parmas.get(UserProfile.Column.UserID).toString();
+                    } else {
+                        throw new Exception("Failed to upload code:" + connection.getResponseCode() + " " + connection.getResponseMessage());
+                    }
+                }
+
+                inputStream = connection.getInputStream();
+                result = this.convertStreamToString(inputStream);
+                inputStream.close();
+                bf.close();
+                ow.close();
+                outputStream.flush();
+                outputStream.close();
+
+                return result;
+            }
+            catch (Exception e) {
+                throw new Exception(e);
+            }
+//            return "Wrong Size";
         }
     }
 
