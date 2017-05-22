@@ -73,6 +73,7 @@ public class PromotionView extends AppCompatActivity implements OnMapReadyCallba
         setContentView(R.layout.promotion_view);
 
         loading = (FrameLayout) findViewById(R.id.loading);
+        loading.bringToFront();
 
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
