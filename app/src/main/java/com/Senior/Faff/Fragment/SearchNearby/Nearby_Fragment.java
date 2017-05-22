@@ -167,7 +167,7 @@ public class Nearby_Fragment extends Fragment implements GoogleApiClient.OnConne
                         == PackageManager.PERMISSION_GRANTED) {
                     LocationServices.FusedLocationApi.requestLocationUpdates(googleApiClient, locationRequest, this);
                 }
-                //new getData().execute(filter.getDistance(),filter.getType(),"13.6531361","100.4864236");
+                new getData().execute(filter.getDistance(),filter.getType(),"13.6531361","100.4864236");
                 mLastLocation = LocationServices.FusedLocationApi.getLastLocation(googleApiClient);  // ใช้สำหรัรับตำแหน่งแรกเลย ครั้งเดียว
                 if (mLastLocation != null) {
                      lalo =  locationStringFromLocation(mLastLocation);

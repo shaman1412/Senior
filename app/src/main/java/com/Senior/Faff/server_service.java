@@ -267,9 +267,9 @@ public class server_service extends Service implements GoogleApiClient.Connectio
         int distance;
 
         float latitude, longtitude;
-        mLastLocation  = new Location("Target");
+/*        mLastLocation  = new Location("Target");
         mLastLocation.setLatitude(13.6529);
-        mLastLocation.setLongitude(100.486);
+        mLastLocation.setLongitude(100.486);*/
         ArrayList<Party> res = new ArrayList<>();
         for (int i = 0; i < listRes.size(); i++) {
             String[] position = listRes.get(i).getLocation().split(",");
