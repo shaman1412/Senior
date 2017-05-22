@@ -9,6 +9,7 @@ import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationManager;
 import android.os.AsyncTask;
+import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.content.ContextCompat;
@@ -23,6 +24,7 @@ import android.view.Display;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RatingBar;
@@ -44,6 +46,7 @@ import com.Senior.Faff.model.Promotion;
 import com.Senior.Faff.model.Restaurant;
 import com.Senior.Faff.model.UserProfile;
 import com.Senior.Faff.utils.Helper;
+import com.Senior.Faff.utils.LoadingFragment;
 import com.Senior.Faff.utils.PermissionUtils;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -107,6 +110,11 @@ public class Show_RestaurantProfile extends AppCompatActivity implements OnMapRe
     private Button add_promotion;
     private TextView delete_res;
     private LinearLayout promotion_res_list;
+
+    private static FrameLayout loading;
+    private LoadingFragment loadingFragment;
+    private CoordinatorLayout inc;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -137,6 +145,10 @@ public class Show_RestaurantProfile extends AppCompatActivity implements OnMapRe
         fav_click = (Button)findViewById(R.id.fav_click);
         fav_unclick = (Button)findViewById(R.id.fav_unclick);
         delete_res  = (TextView)findViewById(R.id.delete_res);
+
+        inc = (CoordinatorLayout) findViewById(R.id.inc);
+        loading = (FrameLayout) inc.findViewById(R.id.loading);
+        inc.bringChildToFront(loading);
 
         rate = (RatingBar)findViewById(R.id.rate);
         fab = (FloatingActionButton)findViewById(R.id.fab);
@@ -203,6 +215,12 @@ public class Show_RestaurantProfile extends AppCompatActivity implements OnMapRe
                 catch (Exception ex)
                 {
                     ex.printStackTrace();
+                }
+
+                if(loadingFragment!=null)
+                {
+                    loadingFragment.onStop();
+                    hideLoading();
                 }
             }
         });
@@ -348,6 +366,13 @@ public class Show_RestaurantProfile extends AppCompatActivity implements OnMapRe
         String resultjson;
         @Override
         protected Restaurant doInBackground(String... args) {
+            showLoading();
+            try {
+                loadingFragment = new LoadingFragment();
+                getSupportFragmentManager().beginTransaction().replace(R.id.loading, loadingFragment).commit();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
             StringBuilder result = new StringBuilder();
             String url_api = "https://faff-1489402013619.appspot.com/res_profile/" + args[0];
             try {
@@ -545,6 +570,7 @@ public class Show_RestaurantProfile extends AppCompatActivity implements OnMapRe
                 a.setVisibility(View.VISIBLE);
 
             }
+
         }
     }
 
@@ -637,4 +663,23 @@ public class Show_RestaurantProfile extends AppCompatActivity implements OnMapRe
         }
     }
 
+    public static void showLoading(){
+        if(loading!=null)
+        {
+            if(loading.getVisibility()==View.GONE)
+            {
+                loading.setVisibility(View.VISIBLE);
+            }
+        }
+    }
+
+    public static void hideLoading(){
+        if(loading!=null)
+        {
+            if(loading.getVisibility()==View.VISIBLE)
+            {
+                loading.setVisibility(View.GONE);
+            }
+        }
+    }
 }

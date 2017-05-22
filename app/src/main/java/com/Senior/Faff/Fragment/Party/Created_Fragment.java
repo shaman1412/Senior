@@ -15,6 +15,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.FrameLayout;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -22,6 +23,7 @@ import com.Senior.Faff.R;
 import com.Senior.Faff.model.Party;
 import com.Senior.Faff.model.Restaurant;
 import com.Senior.Faff.model.UserProfile;
+import com.Senior.Faff.utils.LoadingFragment;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.firebase.database.DataSnapshot;
@@ -51,6 +53,9 @@ public class Created_Fragment extends Fragment {
     private EditText roomName;
     int[] resId = {R.drawable.restaurant1, R.drawable.restaurant2, R.drawable.restaurant3};
 
+    private static FrameLayout loading;
+    private LoadingFragment loadingFragment;
+
     //    private Customlistview_nearparty_adapter cus;
     private Created_Recycler cus;
 
@@ -75,9 +80,27 @@ public class Created_Fragment extends Fragment {
         mcontext = getContext();
         re_list = new ArrayList<>();
         listview = (RecyclerView) root.findViewById(R.id.listView12);
+        loading = (FrameLayout) root.findViewById(R.id.loading);
+
         new getData_c().execute();
         return root;
     }
+
+//    @Override
+//    public void onStart() {
+//        super.onStart();
+//        if (listview.getChildCount() > 0) {
+//            showLoading();
+//            try {
+//                loadingFragment = new LoadingFragment();
+//                getFragmentManager().beginTransaction().replace(R.id.loading, loadingFragment).commit();
+//            } catch (Exception e) {
+//                e.printStackTrace();
+//            }
+//        } else {
+//            hideLoading();
+//        }
+//    }
 
     public void showlist_c(RecyclerView listview, ArrayList<Party> Pary_list, int[] resId, int gender, int age) {
 
@@ -98,11 +121,14 @@ public class Created_Fragment extends Fragment {
                 debug("In Created : ");
 
                 cus = new Created_Recycler(mcontext, re_list, userid);
-                LinearLayoutManager mLayoutManager  = new LinearLayoutManager(mcontext);
+                LinearLayoutManager mLayoutManager = new LinearLayoutManager(mcontext);
                 mLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
                 listview.setLayoutManager(mLayoutManager);
                 listview.setAdapter(cus);
-
+                if (loadingFragment != null) {
+                    loadingFragment.onStop();
+                    hideLoading();
+                }
 
                 //listview.setAdapter(new Customlistview_nearparty_adapter(mcontext, re_list));
 //                listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -121,7 +147,17 @@ public class Created_Fragment extends Fragment {
     }
 
     private class getData_c extends AsyncTask<Void, Integer, Void> {
+
         protected Void doInBackground(Void... params) {
+
+            showLoading();
+            try {
+                loadingFragment = new LoadingFragment();
+                getFragmentManager().beginTransaction().replace(R.id.loading, loadingFragment).commit();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
             DatabaseReference mRootRef = FirebaseDatabase.getInstance().getReference();
             mRootRef.addValueEventListener(new ValueEventListener() {
                 @Override
@@ -131,7 +167,6 @@ public class Created_Fragment extends Fragment {
                     for (DataSnapshot postSnapshot : dataSnapshot.child("All_Room").getChildren()) {
                         Party post = postSnapshot.getValue(Party.class);
                         party_list.add(post);
-
                     }
                     showlist_c(listview, party_list, resId, gender, age);
                     //Toast.makeText(getActivity(),"hi",Toast.LENGTH_SHORT).show();
@@ -171,4 +206,19 @@ public class Created_Fragment extends Fragment {
         Log.i("TEST:", " debug : " + d);
     }
 
+    public static void showLoading() {
+        if (loading != null) {
+            if (loading.getVisibility() == View.GONE) {
+                loading.setVisibility(View.VISIBLE);
+            }
+        }
+    }
+
+    public static void hideLoading() {
+        if (loading != null) {
+            if (loading.getVisibility() == View.VISIBLE) {
+                loading.setVisibility(View.GONE);
+            }
+        }
+    }
 }

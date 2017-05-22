@@ -12,6 +12,7 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.FrameLayout;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -25,6 +26,7 @@ import com.Senior.Faff.model.BookmarkList;
 import com.Senior.Faff.model.Party;
 import com.Senior.Faff.model.Restaurant;
 import com.Senior.Faff.model.UserProfile;
+import com.Senior.Faff.utils.LoadingFragment;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -50,6 +52,10 @@ public class favorite_restaurant extends AppCompatActivity {
     private String key;
     private BookmarkList book;
     private Toolbar toolbar;
+
+    private static FrameLayout loading;
+    private LoadingFragment loadingFragment;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -63,14 +69,17 @@ public class favorite_restaurant extends AppCompatActivity {
         getSupportActionBar().setDisplayShowTitleEnabled(true);
         getSupportActionBar().setTitle("Favourite restaurant");
 
+
         BookmarkList bookmark = new BookmarkList();
         Bundle args = getIntent().getExtras();
         mcontext = this;
-        if(args != null) {
-        userid   = args.getString(UserProfile.Column.UserID);
+        if (args != null) {
+            userid = args.getString(UserProfile.Column.UserID);
         }
-        mRecyclerView = (RecyclerView)findViewById(R.id.mRecyclerView1);
-         new getBookmark().execute();
+        mRecyclerView = (RecyclerView) findViewById(R.id.mRecyclerView1);
+        mRecyclerView.bringToFront();
+        loading = (FrameLayout) findViewById(R.id.loading);
+        hideLoading();
     }
 
     private class getBookmark extends AsyncTask<String, String, Void> {
@@ -86,8 +95,16 @@ public class favorite_restaurant extends AppCompatActivity {
             mRootRef.orderByChild("userID")
                     .equalTo(userid).addValueEventListener(new ValueEventListener() {
                 @Override
-                public void onDataChange (DataSnapshot dataSnapshot){
-                    for (DataSnapshot postSnapshot: dataSnapshot.getChildren()) {
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    showLoading();
+                    try {
+                        loadingFragment = new LoadingFragment();
+                        ((AppCompatActivity)mcontext).getSupportFragmentManager().beginTransaction().replace(R.id.loading, loadingFragment).commit();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+
+                    for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
                         key = postSnapshot.getKey();
                         book = postSnapshot.getValue(BookmarkList.class);
                         new getData().execute(book.getBookmarkID());
@@ -109,12 +126,13 @@ public class favorite_restaurant extends AppCompatActivity {
 
     }
 
-    private class getData extends AsyncTask<String, String, ArrayList<Restaurant> > {
+    private class getData extends AsyncTask<String, String, ArrayList<Restaurant>> {
 
         String pass;
         int responseCode;
         HttpURLConnection connection;
         String resultjson;
+
         @Override
         protected ArrayList<Restaurant> doInBackground(String... args) {
             StringBuilder result = new StringBuilder();
@@ -140,40 +158,53 @@ public class favorite_restaurant extends AppCompatActivity {
             if (responseCode == 200) {
                 Log.i("Request Status", "This is success response status from server: " + responseCode);
                 Gson gson = new Gson();
-                Restaurant[] userPro  =  gson.fromJson(result.toString(),  Restaurant[].class);
-                ArrayList<Restaurant> getuserpro= new ArrayList<>();
-                for(int i = 0; i< userPro.length; i++){
+                Restaurant[] userPro = gson.fromJson(result.toString(), Restaurant[].class);
+                ArrayList<Restaurant> getuserpro = new ArrayList<>();
+                for (int i = 0; i < userPro.length; i++) {
                     getuserpro.add(userPro[i]);
                 }
                 return getuserpro;
             } else {
                 Log.i("Request Status", "This is failure response status from server: " + responseCode);
-                return null ;
+                return null;
 
             }
 
         }
+
         @Override
         protected void onPostExecute(ArrayList<Restaurant> userpro) {
             super.onPostExecute(userpro);
             if (userpro != null) {
 
-                list_adapter = new list_bookmark(userpro, mcontext,userid);
-                LinearLayoutManager mLayoutManager  = new LinearLayoutManager(mcontext);
+                list_adapter = new list_bookmark(userpro, mcontext, userid);
+                LinearLayoutManager mLayoutManager = new LinearLayoutManager(mcontext);
                 mLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
                 mRecyclerView.setLayoutManager(mLayoutManager);
                 mRecyclerView.setAdapter(list_adapter);
 
 
-
-            } else{
+            } else {
                 String message = getString(R.string.login_error_message);
                 Toast.makeText(mcontext, message, Toast.LENGTH_SHORT).show();
             }
 
+
+            if(loadingFragment!=null)
+            {
+                loadingFragment.onStop();
+                hideLoading();
+            }
         }
 
     }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        new getBookmark().execute();
+    }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
@@ -184,6 +215,26 @@ public class favorite_restaurant extends AppCompatActivity {
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
+        }
+    }
+
+    public static void showLoading(){
+        if(loading!=null)
+        {
+            if(loading.getVisibility()==View.GONE)
+            {
+                loading.setVisibility(View.VISIBLE);
+            }
+        }
+    }
+
+    public static void hideLoading(){
+        if(loading!=null)
+        {
+            if(loading.getVisibility()==View.VISIBLE)
+            {
+                loading.setVisibility(View.GONE);
+            }
         }
     }
 

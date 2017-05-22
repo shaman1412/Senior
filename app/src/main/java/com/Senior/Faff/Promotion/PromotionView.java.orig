@@ -63,10 +63,14 @@ public class PromotionView extends AppCompatActivity implements OnMapReadyCallba
     private String userid;
     private GoogleMap mMap;
     private Promotion data;
+<<<<<<< HEAD
     private TextView goTores;
+=======
+
     private static FrameLayout loading;
     private static LoadingFragment loadingFragment;
 
+>>>>>>> 63d15fbc86c4f7f7ef9a6e6042cee5e68707fef3
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

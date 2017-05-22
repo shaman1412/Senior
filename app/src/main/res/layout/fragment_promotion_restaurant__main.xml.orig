@@ -27,12 +27,22 @@
 
     </FrameLayout>
 
+<<<<<<< HEAD
+        <ListView
+            android:id="@+id/listView1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:divider="@android:color/transparent"
+            android:dividerHeight="10dp"/>
+
+
+=======
     <ListView
         android:id="@+id/listView1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-            android:divider="@android:color/transparent"
         android:dividerHeight="10dp" />
+>>>>>>> 63d15fbc86c4f7f7ef9a6e6042cee5e68707fef3
 
 
 </LinearLayout>

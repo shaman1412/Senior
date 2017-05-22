@@ -7,12 +7,14 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -24,6 +26,7 @@ import com.Senior.Faff.R;
 import com.Senior.Faff.UserProfile.ShowUserprofile;
 import com.Senior.Faff.model.Restaurant;
 import com.Senior.Faff.model.UserProfile;
+import com.Senior.Faff.utils.LoadingFragment;
 import com.google.gson.Gson;
 
 import java.io.BufferedInputStream;
@@ -51,6 +54,9 @@ public class Option_RestaurantFragment extends Fragment {
     View root;
     private LinearLayout object_set;
 
+    private static FrameLayout loading;
+    private LoadingFragment loadingFragment;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -61,6 +67,8 @@ public class Option_RestaurantFragment extends Fragment {
         userid = getArguments().getString("userid");
         mcontext =  getContext();
         listview = (ListView)root.findViewById(R.id.listView1);
+        loading = (FrameLayout) root.findViewById(R.id.loading);
+        listview.bringToFront();
 
         new getData().execute(userid);
 
@@ -96,6 +104,15 @@ public class Option_RestaurantFragment extends Fragment {
 
         @Override
         protected Restaurant[] doInBackground(String... args) {
+
+            showLoading();
+            try {
+                loadingFragment = new LoadingFragment();
+                getFragmentManager().beginTransaction().replace(R.id.loading, loadingFragment).commit();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
             StringBuilder result = new StringBuilder();
             String url_api = "https://faff-1489402013619.appspot.com/res_list/own_restaurant/" + args[0] ;
             try {
@@ -163,8 +180,33 @@ public class Option_RestaurantFragment extends Fragment {
                 Toast.makeText(mcontext, message, Toast.LENGTH_SHORT).show();
             }
 
+            if(loadingFragment!=null)
+            {
+                loadingFragment.onStop();
+                hideLoading();
+            }
         }
 
+    }
+
+    public static void showLoading(){
+        if(loading!=null)
+        {
+            if(loading.getVisibility()==View.GONE)
+            {
+                loading.setVisibility(View.VISIBLE);
+            }
+        }
+    }
+
+    public static void hideLoading(){
+        if(loading!=null)
+        {
+            if(loading.getVisibility()==View.VISIBLE)
+            {
+                loading.setVisibility(View.GONE);
+            }
+        }
     }
 
 }

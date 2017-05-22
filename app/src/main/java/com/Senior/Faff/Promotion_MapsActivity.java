@@ -251,23 +251,26 @@ public class Promotion_MapsActivity extends AppCompatActivity implements GoogleM
         Toast.makeText(Promotion_MapsActivity.this, "Location was changed", Toast.LENGTH_SHORT).show();
 
         mLastLocation = location;
-        if (mCurrLocationMarker != null) {
-            mCurrLocationMarker.remove();
-        }
-        //Toast.makeText(this,"On changed",Toast.LENGTH_SHORT);
-        //Place current location marker
-        LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
-        MarkerOptions markerOptions = new MarkerOptions();
-        markerOptions.position(latLng);
-        markerOptions.title("Your Current Position");
+        if(mLastLocation!=null)
+        {
+            if (mCurrLocationMarker != null) {
+                mCurrLocationMarker.remove();
+            }
+            //Toast.makeText(this,"On changed",Toast.LENGTH_SHORT);
+            //Place current location marker
+            LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
+            MarkerOptions markerOptions = new MarkerOptions();
+            markerOptions.position(latLng);
+            markerOptions.title("Your Current Position");
 
-        lo.setText(String.valueOf(mLastLocation.getLongitude()));
-        la.setText(String.valueOf(mLastLocation.getLatitude()));
-        mCurrLocationMarker = mMap.addMarker(markerOptions);
+            lo.setText(String.valueOf(mLastLocation.getLongitude()));
+            la.setText(String.valueOf(mLastLocation.getLatitude()));
+            mCurrLocationMarker = mMap.addMarker(markerOptions);
 
-        //move map camera
+            //move map camera
 /*        mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));*/
-        mMap.animateCamera(CameraUpdateFactory.zoomTo(11));
+            mMap.animateCamera(CameraUpdateFactory.zoomTo(11));
+        }
     }
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,

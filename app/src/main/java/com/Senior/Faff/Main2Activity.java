@@ -118,10 +118,12 @@ public class Main2Activity extends AppCompatActivity {
     private EditText serach_box;
     private ArrayList<String> type_food;
     private float distance = 10;
+    Bundle saveStage;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        saveStage = savedInstanceState;
         firebase a = new firebase();
 
         setContentView(R.layout.activity_main2);
@@ -311,10 +313,10 @@ public class Main2Activity extends AppCompatActivity {
         //String User_id = String.valueOf(id);        // ??? for what ??? ไม่บอก 5555
 
         switch (menuItem.getItemId()) {
-            case R.id.Home:
-                Intent Home_intent = new Intent(context, test_callservice.class);
-                startActivity(Home_intent);
-                break;
+//            case R.id.Home:
+//                Intent Home_intent = new Intent(context, test_callservice.class);
+//                startActivity(Home_intent);
+//                break;
       /*      case R.id.NotificationUser:
                 Intent Home_intenta = new Intent(context, test_callservice.class);
                 startActivity(Home_intenta);
@@ -579,6 +581,16 @@ public class Main2Activity extends AppCompatActivity {
                     fragmentManager_home.beginTransaction().replace(R.id.flContent, fragment_home).commit();
                 } catch (Exception e) {
                     e.printStackTrace();
+                    if (mAuthListener != null) {
+                        mAuth.removeAuthStateListener(mAuthListener);
+                    }
+                    SharedPreferences sp = getSharedPreferences("CHECK_LOGIN", Context.MODE_PRIVATE);
+                    SharedPreferences.Editor editor = sp.edit();
+                    editor.putString(UserProfile.Column.UserID, "nothing");
+                    editor.commit();
+                    Intent logout = new Intent(context, LoginActivity.class);
+                    startActivity(logout);
+                    finish();
                 }
             } else {
                 /*String message = getString(R.string.login_error_message);

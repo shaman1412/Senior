@@ -19,11 +19,24 @@
               android:layout_width="match_parent"
               android:layout_height="wrap_content" />-->
 
+        <!--<FrameLayout-->
+            <!--android:id="@+id/loading"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="match_parent"-->
+            <!--android:background="@android:color/transparent"-->
+            <!--android:visibility="visible"-->
+            <!--android:layout_gravity="center">-->
+
+        <!--</FrameLayout>-->
+
         <include
             layout="@layout/party_profile"
+            android:id="@+id/inc"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
 
         <!-- The main content view where fragments are loaded -->
     </LinearLayout>
+
+
 </LinearLayout>

@@ -40,12 +40,29 @@
         />
 
 </FrameLayout>
-    <ListView
-        android:layout_marginTop="20dp"
-        android:id="@+id/listView1"
+
+    <FrameLayout
+        android:id="@+id/loading"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        />
+        android:layout_height="match_parent"
+        android:background="@android:color/transparent"
+        android:visibility="visible"
+        android:layout_gravity="center">
+
+    </FrameLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <ListView
+            android:layout_marginTop="20dp"
+            android:id="@+id/listView1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            />
+
+    </LinearLayout>
 
 
 

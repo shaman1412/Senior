@@ -13,8 +13,10 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -22,6 +24,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.FrameLayout;
 import android.widget.ListView;
 import android.widget.Toast;
 import android.widget.TextView;
@@ -34,6 +37,7 @@ import com.Senior.Faff.chat.ChatMainActivity;
 import com.Senior.Faff.model.Party;
 import com.Senior.Faff.model.Restaurant;
 import com.Senior.Faff.model.UserProfile;
+import com.Senior.Faff.utils.LoadingFragment;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationAvailability;
@@ -63,6 +67,7 @@ public class Room_fragment extends Fragment implements GoogleApiClient.OnConnect
     private ArrayList<String> list_of_rooms = new ArrayList<>();
     private Context context;
     private String name = "testuser";
+    private FragmentActivity mContext;
 
 
     public Room_fragment() {
@@ -84,6 +89,9 @@ public class Room_fragment extends Fragment implements GoogleApiClient.OnConnect
     RecyclerView listview;
     Room_Recycler cus;
 
+    private static FrameLayout loading;
+    private LoadingFragment loadingFragment;
+
     int[] resId = {R.drawable.restaurant1, R.drawable.restaurant2, R.drawable.restaurant3};
 
     @Override
@@ -95,7 +103,6 @@ public class Room_fragment extends Fragment implements GoogleApiClient.OnConnect
             userid = getArguments().getString(UserProfile.Column.UserID);
             gender = getArguments().getInt(UserProfile.Column.Gender);
             age = getArguments().getInt(UserProfile.Column.Age);
-
         }
         mcontext = getContext();
 
@@ -103,8 +110,7 @@ public class Room_fragment extends Fragment implements GoogleApiClient.OnConnect
 
 //        listview = (ListView) root.findViewById(R.id.listView12);
         listview = (RecyclerView) root.findViewById(R.id.listView12);
-
-
+        loading = (FrameLayout) root.findViewById(R.id.loading);
 
         googleApiClient = new GoogleApiClient.Builder(getContext())
                 .addApi(LocationServices.API)
@@ -136,13 +142,25 @@ public class Room_fragment extends Fragment implements GoogleApiClient.OnConnect
         return root;
     }
 
-    @Override
-    public void onStart() {
-        super.onStart();
-
-        // Connect to Google API Client
-        googleApiClient.connect();
-    }
+//    @Override
+//    public void onStart() {
+//        super.onStart();
+//        if(listview.getChildCount()>0)
+//        {
+//            showLoading();
+//            try {
+//                loadingFragment = new LoadingFragment();
+//                getFragmentManager().beginTransaction().replace(R.id.loading, loadingFragment).commit();
+//            } catch (Exception e) {
+//                e.printStackTrace();
+//            }
+//        }
+//        else {
+//            hideLoading();
+//        }
+//        // Connect to Google API Client
+//        googleApiClient.connect();
+//    }
 
     @Override
     public void onStop() {
@@ -305,6 +323,11 @@ public class Room_fragment extends Fragment implements GoogleApiClient.OnConnect
                 mLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
                 listview.setLayoutManager(mLayoutManager);
                 listview.setAdapter(cus);
+                if(loadingFragment!=null)
+                {
+                    loadingFragment.onStop();
+                    hideLoading();
+                }
 //
 //                listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 //                    public void onItemClick(AdapterView<?> arg0, View view, int position, long id) {
@@ -328,6 +351,15 @@ public class Room_fragment extends Fragment implements GoogleApiClient.OnConnect
         }
 
         protected Void doInBackground(Void... params) {
+
+            showLoading();
+            try {
+                loadingFragment = new LoadingFragment();
+                getFragmentManager().beginTransaction().replace(R.id.loading, loadingFragment).commit();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
             DatabaseReference mRootRef = FirebaseDatabase.getInstance().getReference();
             mRootRef.addValueEventListener(new ValueEventListener() {
                 @Override
@@ -358,7 +390,26 @@ public class Room_fragment extends Fragment implements GoogleApiClient.OnConnect
         protected void onPostExecute(Void result) {
             // Toast.makeText(getActivity(),"GEt dataaaa",Toast.LENGTH_SHORT).show();
 
+        }
+    }
 
+    public static void showLoading(){
+        if(loading!=null)
+        {
+            if(loading.getVisibility()==View.GONE)
+            {
+                loading.setVisibility(View.VISIBLE);
+            }
+        }
+    }
+
+    public static void hideLoading(){
+        if(loading!=null)
+        {
+            if(loading.getVisibility()==View.VISIBLE)
+            {
+                loading.setVisibility(View.GONE);
+            }
         }
     }
 }

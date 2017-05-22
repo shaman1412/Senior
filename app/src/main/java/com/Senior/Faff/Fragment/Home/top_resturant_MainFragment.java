@@ -6,11 +6,13 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.FrameLayout;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -20,6 +22,7 @@ import com.Senior.Faff.RestaurantProfile.Restaurant_manager;
 import com.Senior.Faff.RestaurantProfile.Show_RestaurantProfile;
 import com.Senior.Faff.model.Restaurant;
 import com.Senior.Faff.model.UserProfile;
+import com.Senior.Faff.utils.LoadingFragment;
 import com.google.gson.Gson;
 
 import java.io.BufferedInputStream;
@@ -43,6 +46,8 @@ public class top_resturant_MainFragment extends Fragment {
     private ListView listview;
     private int[] resId =  {R.drawable.restaurant1,R.drawable.restaurant2,R.drawable.restaurant3};
     private String userid;
+    private static FrameLayout loading;
+    private LoadingFragment loadingFragment;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -51,9 +56,26 @@ public class top_resturant_MainFragment extends Fragment {
         View root = inflater.inflate(R.layout.fragment_top_resturant__main, container, false);
         userid = getArguments().getString("userid");
         listview = (ListView)root.findViewById(R.id.listView1);
-        new getData().execute();
+        loading = (FrameLayout) root.findViewById(R.id.loading);
         return  root;
     }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        new getData().execute();
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        if(loadingFragment!=null)
+        {
+            loadingFragment.onStop();
+            hideLoading();
+        }
+    }
+
     private class getData extends AsyncTask<String, String, Restaurant[] > {
 
         String pass;
@@ -62,6 +84,14 @@ public class top_resturant_MainFragment extends Fragment {
         String resultjson;
         @Override
         protected Restaurant[] doInBackground(String... args) {
+            try {
+                showLoading();
+                loadingFragment = new LoadingFragment();
+                ((AppCompatActivity)mcontext).getSupportFragmentManager().beginTransaction().replace(R.id.loading, loadingFragment).commit();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
             StringBuilder result = new StringBuilder();
             String url_api = "https://faff-1489402013619.appspot.com/res_list/top" ;
             try {
@@ -115,8 +145,34 @@ public class top_resturant_MainFragment extends Fragment {
                 String message = getString(R.string.login_error_message);
                 Toast.makeText(mcontext, message, Toast.LENGTH_SHORT).show();
             }
-
+            if(loadingFragment!=null)
+            {
+                loadingFragment.onStop();
+                hideLoading();
+            }
         }
 
     }
+
+    public static void showLoading(){
+        if(loading!=null)
+        {
+            if(loading.getVisibility()==View.GONE)
+            {
+                loading.setVisibility(View.VISIBLE);
+            }
+        }
+    }
+
+    public static void hideLoading(){
+        if(loading!=null)
+        {
+            if(loading.getVisibility()==View.VISIBLE)
+            {
+                loading.setVisibility(View.GONE);
+            }
+        }
+    }
+
+
 }

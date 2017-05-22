@@ -41,6 +41,9 @@ public class promotion_restaurant_MainFragment extends Fragment {
     private static LoadingFragment loadingFragment;
     private static Context mContext;
     private String userid;
+    private View rootView;
+    private ListView list;
+
     public promotion_restaurant_MainFragment() {
         // Required empty public constructor
     }
@@ -50,62 +53,14 @@ public class promotion_restaurant_MainFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        final View rootView =  inflater.inflate(R.layout.fragment_promotion_restaurant__main, container, false);
+        rootView =  inflater.inflate(R.layout.fragment_promotion_restaurant__main, container, false);
         userid = getArguments().getString(UserProfile.Column.UserID);
+
+        list = (ListView) rootView.findViewById(R.id.listView1) ;
         loading = (FrameLayout)rootView.findViewById(R.id.loading);
-        showLoading();
-        mContext = getActivity();
-        try {
-            loadingFragment = new LoadingFragment();
-            ((AppCompatActivity)mContext).getSupportFragmentManager().beginTransaction().replace(R.id.loading, loadingFragment).commit();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        list.bringToFront();
 
-        promotion_restaurant_MainFragment.ListPromotion lsp = new promotion_restaurant_MainFragment.ListPromotion(new promotion_restaurant_MainFragment.ListPromotion.AsyncResponse() {
-            @Override
-            public void processFinish(String output) throws JSONException {
-                JSONObject item = new JSONObject(output);
-                JSONArray jsarr = item.getJSONArray("items");
-
-                ArrayList<String[]> bitmap_url_list = new ArrayList<>();
-                final ArrayList<Promotion> pro_list = new ArrayList<>();
-
-                for(int i=0; i<jsarr.length(); i++)
-                {
-                    String[] arr_url = jsarr.getJSONObject(i).getString("promotionpictureurl").split(",");
-                    bitmap_url_list.add(arr_url);
-                    Promotion pro = new Gson().fromJson(jsarr.getJSONObject(i).toString(), Promotion.class);
-                    Log.i("TEST:", "   interface data from GET is : " + pro.toString());
-                    pro_list.add(pro);
-                }
-
-                ListView list = (ListView) rootView.findViewById(R.id.listView1) ;
-                PromotionShowAdapter adapter = new PromotionShowAdapter(mContext, pro_list);
-                list.setAdapter(adapter);
-                if(loadingFragment!=null)
-                {
-                    loadingFragment.onStop();
-                    hideLoading();
-                }
-                list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                    @Override
-                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                        Promotion pro = pro_list.get(position);
-                        String proid = pro.getId();
-
-                        Intent i = new Intent(mContext, PromotionView.class);
-                        i.putExtra(UserProfile.Column.UserID,userid);
-                        i.putExtra("id", proid);
-                        startActivity(i);
-                    }
-                });
-
-                //finish();
-            }
-        });
-        lsp.execute("");
-
+        mContext = getContext();
 
        /* Button close = (Button)rootView.findViewById(R.id.close);
         View.OnClickListener a = new View.OnClickListener() {
@@ -136,6 +91,14 @@ public class promotion_restaurant_MainFragment extends Fragment {
         @Override
         protected String doInBackground(String... params) {
             try {
+                try {
+                    showLoading();
+                    loadingFragment = new LoadingFragment();
+                    ((AppCompatActivity)mContext).getSupportFragmentManager().beginTransaction().replace(R.id.loading, loadingFragment).commit();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
                 URL url = new URL("https://faff-1489402013619.appspot.com/promotion_list");
                 //URL url = new URL("http://localhost:8080/promotion_list");
 
@@ -167,11 +130,66 @@ public class promotion_restaurant_MainFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
+
+        promotion_restaurant_MainFragment.ListPromotion lsp = new promotion_restaurant_MainFragment.ListPromotion(new promotion_restaurant_MainFragment.ListPromotion.AsyncResponse() {
+            @Override
+            public void processFinish(String output) throws JSONException {
+                JSONObject item = new JSONObject(output);
+                JSONArray jsarr = item.getJSONArray("items");
+
+                ArrayList<String[]> bitmap_url_list = new ArrayList<>();
+                final ArrayList<Promotion> pro_list = new ArrayList<>();
+
+                for(int i=0; i<jsarr.length(); i++)
+                {
+                    String[] arr_url = jsarr.getJSONObject(i).getString("promotionpictureurl").split(",");
+                    bitmap_url_list.add(arr_url);
+                    Promotion pro = new Gson().fromJson(jsarr.getJSONObject(i).toString(), Promotion.class);
+                    Log.i("TEST:", "   interface data from GET is : " + pro.toString());
+                    pro_list.add(pro);
+                }
+
+                PromotionShowAdapter adapter = new PromotionShowAdapter(mContext, pro_list);
+                list.setAdapter(adapter);
+                if(loadingFragment!=null)
+                {
+                    loadingFragment.onStop();
+                    hideLoading();
+                }
+                list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                        Promotion pro = pro_list.get(position);
+                        String proid = pro.getId();
+
+                        Intent i = new Intent(mContext, PromotionView.class);
+                        i.putExtra(UserProfile.Column.UserID,userid);
+                        i.putExtra("id", proid);
+                        startActivity(i);
+                    }
+                });
+
+                if(loadingFragment!=null)
+                {
+                    loadingFragment.onStop();
+                    hideLoading();
+                }
+
+                //finish();
+            }
+        });
+        lsp.execute("");
+
     }
 
     @Override
     public void onStop() {
         super.onStop();
+        if(loadingFragment!=null)
+        {
+            loadingFragment.onStop();
+            hideLoading();
+        }
     }
 
     public static void showLoading(){

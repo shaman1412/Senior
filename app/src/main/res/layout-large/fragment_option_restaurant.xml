@@ -20,32 +20,51 @@
             android:textColor="@color/backgroundpro"
             android:textSize="30sp"/>
     </android.support.v7.widget.Toolbar>
-<FrameLayout
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:shadowColor="#000000"
-    android:shadowDy="10"
-    android:shadowRadius="10"
-    android:shadowDx="10"
-    >
-    <Button
-        android:layout_margin="20dp"
-        android:padding="10dp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Add restaurant"
-        android:layout_gravity="center"
-        android:id="@+id/add_restaurant"
-        android:background="@color/backgroundpro"
-        />
-
-</FrameLayout>
-    <ListView
-        android:layout_marginTop="20dp"
-        android:id="@+id/listView1"
+    <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        />
+        android:shadowColor="#000000"
+        android:shadowDy="10"
+        android:shadowRadius="10"
+        android:shadowDx="10"
+        >
+        <Button
+            android:layout_margin="20dp"
+            android:padding="10dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Add restaurant"
+            android:layout_gravity="center"
+            android:id="@+id/add_restaurant"
+            android:background="@color/backgroundpro"
+            />
+
+    </FrameLayout>
+
+    <FrameLayout
+        android:id="@+id/loading"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@android:color/transparent"
+        android:visibility="visible"
+        android:layout_gravity="center">
+
+    </FrameLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <ListView
+            android:layout_marginTop="20dp"
+            android:id="@+id/listView1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            />
+
+    </LinearLayout>
+
+
 
 
 

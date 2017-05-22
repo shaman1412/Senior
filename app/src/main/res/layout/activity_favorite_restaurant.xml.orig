@@ -4,6 +4,35 @@
     android:id="@+id/mix"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+<<<<<<< HEAD
+    android:orientation="vertical"
+
+    android:id="@+id/mix">
+<android.support.v7.widget.Toolbar
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:titleTextColor="#ffffff"
+    android:id="@+id/toolbar"
+    android:minHeight="?attr/actionBarSize"
+    app:theme="@style/ToolBarStyle"
+    android:background="?attr/colorPrimary">
+
+</android.support.v7.widget.Toolbar>
+
+   <LinearLayout
+       android:layout_width="match_parent"
+       android:layout_height="match_parent"
+       android:background="#ededed"
+       android:padding="10dp">
+   <android.support.v7.widget.RecyclerView
+       android:layout_width="match_parent"
+       android:layout_height="wrap_content"
+       android:id="@+id/mRecyclerView1">
+
+   </android.support.v7.widget.RecyclerView>
+
+   </LinearLayout>
+=======
     android:orientation="vertical">
 
     <android.support.v7.widget.Toolbar
@@ -33,6 +62,5 @@
         android:layout_height="wrap_content">
 
     </android.support.v7.widget.RecyclerView>
-
-   </LinearLayout>
+>>>>>>> 63d15fbc86c4f7f7ef9a6e6042cee5e68707fef3
 </LinearLayout>
