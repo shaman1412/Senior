@@ -80,6 +80,8 @@ public class Add_Comment extends Fragment {
                     JSONObject item = new JSONObject(output);
                     UserProfile user = new Gson().fromJson(item.toString(), UserProfile.class);
 
+                    Log.i("TEST:", "user in add comment : "+user.toString());
+
                     Picasso.with(mcontext).load(user.getPicture().toString()).fit().into(comment_photo);
                     setusername.setText(user.getName());
 
@@ -88,6 +90,7 @@ public class Add_Comment extends Fragment {
                 }
             }
         });
+        getuser.execute(id);
 
         rating_star.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
             @Override
