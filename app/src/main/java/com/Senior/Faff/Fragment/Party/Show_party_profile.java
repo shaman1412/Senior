@@ -11,6 +11,7 @@ import android.location.LocationManager;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.support.annotation.NonNull;
+import android.support.design.widget.CoordinatorLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -38,6 +39,7 @@ import com.Senior.Faff.model.Party;
 import com.Senior.Faff.model.Restaurant;
 import com.Senior.Faff.model.UserProfile;
 import com.Senior.Faff.utils.Helper;
+import com.Senior.Faff.utils.LoadingFragment;
 import com.Senior.Faff.utils.PermissionUtils;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -102,6 +104,9 @@ public class Show_party_profile extends AppCompatActivity implements OnMapReadyC
     private String room_image_path;
     private String viewer_image;
 
+    private static FrameLayout loading;
+    private LoadingFragment loadingFragment;
+
     @Override
     protected void onResume() {
         super.onResume();
@@ -136,6 +141,15 @@ public class Show_party_profile extends AppCompatActivity implements OnMapReadyC
         showcreate = (LinearLayout) findViewById(R.id.showcreate);
         cmember = (TextView) findViewById(R.id.people);
         maxmember = (TextView) findViewById(R.id.max);
+        CoordinatorLayout inc = (CoordinatorLayout) findViewById(R.id.inc);
+        loading = (FrameLayout) inc.findViewById(R.id.loading);
+
+        if(loading==null)
+        {
+            Log.i("TEST:", "loading null");
+        }else {
+            Log.i("TEST:", "loading not null");
+        }
 
         bundle = new Bundle();
         Bundle args = getIntent().getExtras();
@@ -146,6 +160,14 @@ public class Show_party_profile extends AppCompatActivity implements OnMapReadyC
             Userid = own_userid;
         }
 
+        inc.bringChildToFront(loading);
+        showLoading();
+        try {
+            loadingFragment = new LoadingFragment();
+            getSupportFragmentManager().beginTransaction().replace(R.id.loading, loadingFragment).commit();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
     }
 
@@ -330,26 +352,34 @@ public class Show_party_profile extends AppCompatActivity implements OnMapReadyC
                         e.printStackTrace();
                     }
                 }
+
+                ShowParty sh2 = new ShowParty(new ShowParty.AsyncResponse() {
+                    @Override
+                    public void processFinish(String output) throws JSONException {
+                        JSONObject item = new JSONObject(output);
+
+                        viewer_name = item.get("name").toString();
+
+                        ArrayList<String[]> bitmap_url_list2 = new ArrayList<>();
+                        String[] arr_url2 = item.getString("picture").split(",");
+                        if (arr_url2 != null) {
+                            viewer_image = arr_url2[0];
+                        }
+
+                        if(loadingFragment!=null)
+                        {
+                            loadingFragment.onStop();
+                            hideLoading();
+                        }
+                    }
+                });
+                sh2.execute(own_userid);
+
             }
         });
-
         sh.execute(host_id);
 
-        ShowParty sh2 = new ShowParty(new ShowParty.AsyncResponse() {
-            @Override
-            public void processFinish(String output) throws JSONException {
-                JSONObject item = new JSONObject(output);
 
-                viewer_name = item.get("name").toString();
-
-                ArrayList<String[]> bitmap_url_list2 = new ArrayList<>();
-                String[] arr_url2 = item.getString("picture").split(",");
-                if (arr_url2 != null) {
-                    viewer_image = arr_url2[0];
-                }
-            }
-        });
-        sh2.execute(own_userid);
         boolean check_request = false;
         boolean check_accept = false;
 
@@ -395,6 +425,7 @@ public class Show_party_profile extends AppCompatActivity implements OnMapReadyC
             View ec3 = findViewById(R.id.send_request);
             ec3.setVisibility(View.VISIBLE);
         }
+
         showcreate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -575,9 +606,30 @@ public class Show_party_profile extends AppCompatActivity implements OnMapReadyC
         });
 
     }
+
     public  void  remove_group(View v){
         DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference().child("All_Room");
         mDatabase.child(key).setValue(null);
         finish();
+    }
+
+    public static void showLoading(){
+        if(loading!=null)
+        {
+            if(loading.getVisibility()==View.GONE)
+            {
+                loading.setVisibility(View.VISIBLE);
+            }
+        }
+    }
+
+    public static void hideLoading(){
+        if(loading!=null)
+        {
+            if(loading.getVisibility()==View.VISIBLE)
+            {
+                loading.setVisibility(View.GONE);
+            }
+        }
     }
 }

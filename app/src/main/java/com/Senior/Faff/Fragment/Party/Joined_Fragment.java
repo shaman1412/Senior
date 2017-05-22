@@ -173,7 +173,11 @@ public class Joined_Fragment extends Fragment {
                         party_list.add(post);
 
                     }
-                    showlist_j(listview, party_list, resId, gender, age);
+                    try {
+                        showlist_j(listview, party_list, resId, gender, age);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
                     //Toast.makeText(getActivity(),"hi",Toast.LENGTH_SHORT).show();
                 }
 
