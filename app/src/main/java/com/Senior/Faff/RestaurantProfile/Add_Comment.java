@@ -45,6 +45,7 @@ public class Add_Comment extends Fragment {
     private String resid;
     private String id;
     private String username;
+    private String picture;
     private RatingBar rating_star;
     private DatabaseReference rate;
     private ImageView comment_photo;
@@ -82,7 +83,8 @@ public class Add_Comment extends Fragment {
 
                     Log.i("TEST:", "user in add comment : "+user.toString());
 
-                    Picasso.with(mcontext).load(user.getPicture().toString()).fit().into(comment_photo);
+                    picture = user.getPicture().toString();
+                    Picasso.with(mcontext).load(picture).fit().into(comment_photo);
                     setusername.setText(user.getName());
 
                 } catch (Exception e) {
@@ -108,6 +110,8 @@ public class Add_Comment extends Fragment {
                 Map<String, Object> map1 = new HashMap<String, Object>();
                 Map<String, Object> map2 = new HashMap<String, Object>();
                 Map<String, Object> map3 = new HashMap<String, Object>();
+                Map<String, Object> map4 = new HashMap<String, Object>();
+
 
                 String tmp = comment.push().getKey();
 
@@ -122,10 +126,13 @@ public class Add_Comment extends Fragment {
                 Date date = new Date();
                 map3.put("date", dateformat.format(date));
 
+                map4.put("picture", picture);
+
                 comment.child(tmp).updateChildren(map);
                 comment.child(tmp).updateChildren(map1);
                 comment.child(tmp).updateChildren(map2);
                 comment.child(tmp).updateChildren(map3);
+                comment.child(tmp).updateChildren(map4);
 
                 float tmpRating = rating_star.getRating();
 

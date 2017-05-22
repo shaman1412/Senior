@@ -23,12 +23,14 @@ public class Comment {
     private String comment;
     private String dateTime;
     private String name;
+    private String picture;
 
-    public Comment(String userID, String name, String comment, String dateTime){
+    public Comment(String userID, String name, String comment, String dateTime, String picture){
         this.userID = userID;
         this.name = name;
         this.comment = comment;
         this.dateTime = dateTime;
+        this.picture = picture;
     }
 
     public Comment(){
@@ -73,5 +75,25 @@ public class Comment {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getPicture() {
+        return picture;
+    }
+
+    public void setPicture(String picture) {
+        this.picture = picture;
+    }
+
+    @Override
+    public String toString() {
+        return "Comment{" +
+                "id=" + id +
+                ", userID='" + userID + '\'' +
+                ", comment='" + comment + '\'' +
+                ", dateTime='" + dateTime + '\'' +
+                ", name='" + name + '\'' +
+                ", picture='" + picture + '\'' +
+                '}';
     }
 }

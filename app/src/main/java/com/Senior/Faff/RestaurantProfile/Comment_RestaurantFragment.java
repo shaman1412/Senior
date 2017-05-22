@@ -167,6 +167,7 @@ public class Comment_RestaurantFragment extends Fragment {
                 ArrayList<String> setName = new ArrayList<String>();
                 ArrayList<String> setComment = new ArrayList<String>();
                 ArrayList<String> setDate = new ArrayList<String>();
+                ArrayList<String> setImage = new ArrayList<String>();
 
                 Iterator i = dataSnapshot.getChildren().iterator();
 
@@ -178,14 +179,16 @@ public class Comment_RestaurantFragment extends Fragment {
 
                     while (j.hasNext())
                     {
-                        if(x%4==0)
+                        if(x%5==0)
                             setComment.add(((DataSnapshot) j.next()).getValue().toString());
-                        else if(x%4==1)
+                        else if(x%5==1)
                             setDate.add(((DataSnapshot) j.next()).getValue().toString());
-                        else if(x%4==2)
+                        else if(x%5==2)
                             setId.add(((DataSnapshot) j.next()).getValue().toString());
-                        else if(x%4==3)
+                        else if(x%5==3)
                             setName.add(((DataSnapshot) j.next()).getValue().toString());
+                        else if(x%5==4)
+                            setImage.add(((DataSnapshot) j.next()).getValue().toString());
                         x++;
                     }
                 }
@@ -193,12 +196,12 @@ public class Comment_RestaurantFragment extends Fragment {
 //                list_of_comment.clear();
 //                list_of_comment.addAll(setComment);
 
-                if(setId.size() == setComment.size() && setId.size() == setDate.size() && setId.size() == setName.size())
+                if(setId.size() == setComment.size() && setId.size() == setDate.size() && setId.size() == setName.size() && setId.size() == setImage.size())
                 {
                     list.clear();
                     for(int q=0; q<setComment.size();q++)
                     {
-                        Comment com = new Comment(setId.get(q),setName.get(q),setComment.get(q),setDate.get(q));
+                        Comment com = new Comment(setId.get(q),setName.get(q),setComment.get(q),setDate.get(q), setImage.get(q));
                         list.add(com);
                     }
 
