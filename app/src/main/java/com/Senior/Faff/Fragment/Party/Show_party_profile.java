@@ -106,6 +106,7 @@ public class Show_party_profile extends AppCompatActivity implements OnMapReadyC
 
     private static FrameLayout loading;
     private LoadingFragment loadingFragment;
+    private CoordinatorLayout inc;
 
     @Override
     protected void onResume() {
@@ -141,7 +142,7 @@ public class Show_party_profile extends AppCompatActivity implements OnMapReadyC
         showcreate = (LinearLayout) findViewById(R.id.showcreate);
         cmember = (TextView) findViewById(R.id.people);
         maxmember = (TextView) findViewById(R.id.max);
-        CoordinatorLayout inc = (CoordinatorLayout) findViewById(R.id.inc);
+        inc = (CoordinatorLayout) findViewById(R.id.inc);
         loading = (FrameLayout) inc.findViewById(R.id.loading);
 
         if(loading==null)
@@ -158,15 +159,6 @@ public class Show_party_profile extends AppCompatActivity implements OnMapReadyC
             own_userid = args.getString(UserProfile.Column.UserID, null);
             partyid = args.getString(Party.Column.RoomID, null);
             Userid = own_userid;
-        }
-
-        inc.bringChildToFront(loading);
-        showLoading();
-        try {
-            loadingFragment = new LoadingFragment();
-            getSupportFragmentManager().beginTransaction().replace(R.id.loading, loadingFragment).commit();
-        } catch (Exception e) {
-            e.printStackTrace();
         }
 
     }
@@ -269,6 +261,14 @@ public class Show_party_profile extends AppCompatActivity implements OnMapReadyC
     }
 
     public void setvalue(final Party partypro) {
+        inc.bringChildToFront(loading);
+        showLoading();
+        try {
+            loadingFragment = new LoadingFragment();
+            getSupportFragmentManager().beginTransaction().replace(R.id.loading, loadingFragment).commit();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         room_name = partypro.getName();
         name.setText(partypro.getName());
         description.setText("       " + partypro.getDescription());

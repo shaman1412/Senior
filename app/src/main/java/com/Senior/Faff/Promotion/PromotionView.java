@@ -17,6 +17,7 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.FrameLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -30,6 +31,7 @@ import com.Senior.Faff.model.Promotion;
 import com.Senior.Faff.model.Restaurant;
 import com.Senior.Faff.model.UserProfile;
 import com.Senior.Faff.utils.Helper;
+import com.Senior.Faff.utils.LoadingFragment;
 import com.Senior.Faff.utils.PermissionUtils;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -61,10 +63,16 @@ public class PromotionView extends AppCompatActivity implements OnMapReadyCallba
     private String userid;
     private GoogleMap mMap;
     private Promotion data;
+
+    private static FrameLayout loading;
+    private static LoadingFragment loadingFragment;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.promotion_view);
+
+        loading = (FrameLayout) findViewById(R.id.loading);
 
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
@@ -134,6 +142,11 @@ public class PromotionView extends AppCompatActivity implements OnMapReadyCallba
                 if(userid.equals(data.getUserid())){
                     delete_pro.setVisibility(View.VISIBLE);
                     edit_pro.setVisibility(View.VISIBLE);
+                }
+                if(loadingFragment!=null)
+                {
+                    loadingFragment.onStop();
+                    hideLoading();
                 }
 
             }
@@ -213,6 +226,13 @@ public class PromotionView extends AppCompatActivity implements OnMapReadyCallba
 
         @Override
         protected String doInBackground(String... params) {
+            showLoading();
+            try {
+                loadingFragment = new LoadingFragment();
+                ((AppCompatActivity)mContext).getSupportFragmentManager().beginTransaction().replace(R.id.loading, loadingFragment).commit();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
             try {
                 URL url = new URL("https://faff-1489402013619.appspot.com/promotion_list/"+params[0]);
                 //URL url = new URL("http://localhost:8080/promotion_list");
@@ -294,6 +314,26 @@ public class PromotionView extends AppCompatActivity implements OnMapReadyCallba
                 startActivity(intent);
             }else{
                 Toast.makeText(mContext,"Cant Delete",Toast.LENGTH_SHORT);
+            }
+        }
+    }
+
+    public static void showLoading(){
+        if(loading!=null)
+        {
+            if(loading.getVisibility()==View.GONE)
+            {
+                loading.setVisibility(View.VISIBLE);
+            }
+        }
+    }
+
+    public static void hideLoading(){
+        if(loading!=null)
+        {
+            if(loading.getVisibility()==View.VISIBLE)
+            {
+                loading.setVisibility(View.GONE);
             }
         }
     }

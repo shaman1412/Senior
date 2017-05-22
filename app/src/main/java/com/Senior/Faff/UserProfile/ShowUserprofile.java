@@ -7,6 +7,7 @@ import android.os.AsyncTask;
 import android.os.Build;
 import android.support.annotation.RequiresApi;
 import android.support.design.widget.CollapsingToolbarLayout;
+import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 
@@ -23,6 +24,7 @@ import android.util.Log;
 import android.view.Display;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -34,6 +36,7 @@ import com.Senior.Faff.model.UserAuthen;
 import com.Senior.Faff.model.UserProfile;
 import com.Senior.Faff.utils.BitmapImageManager;
 import com.Senior.Faff.utils.Helper;
+import com.Senior.Faff.utils.LoadingFragment;
 import com.google.gson.Gson;
 import com.squareup.picasso.Picasso;
 
@@ -69,6 +72,10 @@ public class ShowUserprofile extends AppCompatActivity {
     private String ownerid;
     private static ImageView image;
 
+    private static FrameLayout loading;
+    private static LoadingFragment loadingFragment;
+    private CoordinatorLayout inc;
+
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -103,6 +110,11 @@ public class ShowUserprofile extends AppCompatActivity {
         gender = (TextView) findViewById(R.id.ggender);
         mRecyclerView = (RecyclerView) findViewById(R.id.mRecyclerView);
         fab = (FloatingActionButton) findViewById(R.id.fab);
+
+        inc = (CoordinatorLayout) findViewById(R.id.inc);
+        loading = (FrameLayout) inc.findViewById(R.id.loading);
+        inc.bringChildToFront(loading);
+
 /*        CollapsingToolbarLayout collapsingToolbar =
                 (CollapsingToolbarLayout) findViewById(R.id.toolbar_layout);
         collapsingToolbar.setTitle("Title");*/
@@ -182,12 +194,15 @@ public class ShowUserprofile extends AppCompatActivity {
                     });
 
                 }
+
+                if(loadingFragment!=null)
+                {
+                    loadingFragment.onStop();
+                    hideLoading();
+                }
             }
         });
         sh.execute(userid);
-
-
-
 
     }
 
@@ -208,6 +223,13 @@ public class ShowUserprofile extends AppCompatActivity {
 
         @Override
         protected String doInBackground(String... params) {
+            showLoading();
+            try {
+                loadingFragment = new LoadingFragment();
+                ((AppCompatActivity)mcontext).getSupportFragmentManager().beginTransaction().replace(R.id.loading, loadingFragment).commit();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
             try {
 
                 URL url = new URL("https://faff-1489402013619.appspot.com/user/" + params[0].toString());
@@ -411,6 +433,26 @@ public class ShowUserprofile extends AppCompatActivity {
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
+        }
+    }
+
+    public static void showLoading(){
+        if(loading!=null)
+        {
+            if(loading.getVisibility()==View.GONE)
+            {
+                loading.setVisibility(View.VISIBLE);
+            }
+        }
+    }
+
+    public static void hideLoading(){
+        if(loading!=null)
+        {
+            if(loading.getVisibility()==View.VISIBLE)
+            {
+                loading.setVisibility(View.GONE);
+            }
         }
     }
 
