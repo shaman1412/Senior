@@ -14,6 +14,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.FrameLayout;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -21,6 +22,7 @@ import com.Senior.Faff.R;
 import com.Senior.Faff.model.Party;
 import com.Senior.Faff.model.Restaurant;
 import com.Senior.Faff.model.UserProfile;
+import com.Senior.Faff.utils.LoadingFragment;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -57,6 +59,9 @@ public class Requested_Fragment extends Fragment {
     private EditText roomName;
     int[] resId = {R.drawable.restaurant1, R.drawable.restaurant2, R.drawable.restaurant3};
 
+    private static FrameLayout loading;
+    private LoadingFragment loadingFragment;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -72,9 +77,28 @@ public class Requested_Fragment extends Fragment {
         mcontext = getContext();
         re_list = new ArrayList<>();
         listview = (RecyclerView) root.findViewById(R.id.listView12);
+        loading = (FrameLayout) root.findViewById(R.id.loading);
         new getData_r().execute();
         return root;
     }
+
+//    @Override
+//    public void onStart() {
+//        super.onStart();
+//        if(listview.getChildCount()>0)
+//        {
+//            showLoading();
+//            try {
+//                loadingFragment = new LoadingFragment();
+//                getFragmentManager().beginTransaction().replace(R.id.loading, loadingFragment).commit();
+//            } catch (Exception e) {
+//                e.printStackTrace();
+//            }
+//        }
+//        else {
+//            hideLoading();
+//        }
+//    }
 
     public void showlist_re(RecyclerView listview, ArrayList<Party> Pary_list, int[] resId, int gender, int age) {
 
@@ -100,7 +124,11 @@ public class Requested_Fragment extends Fragment {
                 mLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
                 listview.setLayoutManager(mLayoutManager);
                 listview.setAdapter(cus);
-
+                if(loadingFragment!=null)
+                {
+                    loadingFragment.onStop();
+                    hideLoading();
+                }
 
 //                listview.setAdapter(new Customlistview_nearparty_adapter(mcontext, re_list));
 //                listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -120,10 +148,20 @@ public class Requested_Fragment extends Fragment {
 
     private class getData_r extends AsyncTask<Void, Integer, Void> {
         protected Void doInBackground(Void... params) {
+
+            showLoading();
+            try {
+                loadingFragment = new LoadingFragment();
+                getFragmentManager().beginTransaction().replace(R.id.loading, loadingFragment).commit();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
             DatabaseReference mRootRef = FirebaseDatabase.getInstance().getReference();
             mRootRef.addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
+
                     long count = dataSnapshot.child("All_Room").getChildrenCount();
                     party_list = new ArrayList<>();
                     for (DataSnapshot postSnapshot : dataSnapshot.child("All_Room").getChildren()) {
@@ -175,5 +213,23 @@ public class Requested_Fragment extends Fragment {
         Log.i("TEST:", " debug : " + d);
     }
 
+    public static void showLoading(){
+        if(loading!=null)
+        {
+            if(loading.getVisibility()==View.GONE)
+            {
+                loading.setVisibility(View.VISIBLE);
+            }
+        }
+    }
 
+    public static void hideLoading(){
+        if(loading!=null)
+        {
+            if(loading.getVisibility()==View.VISIBLE)
+            {
+                loading.setVisibility(View.GONE);
+            }
+        }
+    }
 }

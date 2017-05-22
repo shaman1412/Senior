@@ -45,8 +45,12 @@ public class LoadingFragment extends Fragment {
         super.onStop();
         if(runnable!=null)
         {
-            handler.removeCallbacks(runnable);
-            time = delay_time - (System.currentTimeMillis() - time);
+            try {
+                handler.removeCallbacks(runnable);
+                time = delay_time - (System.currentTimeMillis() - time);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
     }
 }

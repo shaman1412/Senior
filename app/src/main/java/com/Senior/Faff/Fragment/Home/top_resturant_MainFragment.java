@@ -11,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.FrameLayout;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -20,6 +21,7 @@ import com.Senior.Faff.RestaurantProfile.Restaurant_manager;
 import com.Senior.Faff.RestaurantProfile.Show_RestaurantProfile;
 import com.Senior.Faff.model.Restaurant;
 import com.Senior.Faff.model.UserProfile;
+import com.Senior.Faff.utils.LoadingFragment;
 import com.google.gson.Gson;
 
 import java.io.BufferedInputStream;
@@ -43,6 +45,8 @@ public class top_resturant_MainFragment extends Fragment {
     private ListView listview;
     private int[] resId =  {R.drawable.restaurant1,R.drawable.restaurant2,R.drawable.restaurant3};
     private String userid;
+    private static FrameLayout loading;
+    private LoadingFragment loadingFragment;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -51,9 +55,23 @@ public class top_resturant_MainFragment extends Fragment {
         View root = inflater.inflate(R.layout.fragment_top_resturant__main, container, false);
         userid = getArguments().getString("userid");
         listview = (ListView)root.findViewById(R.id.listView1);
+        loading = (FrameLayout) root.findViewById(R.id.loading);
         new getData().execute();
         return  root;
     }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        showLoading();
+        try {
+            loadingFragment = new LoadingFragment();
+            getFragmentManager().beginTransaction().replace(R.id.loading, loadingFragment).commit();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
     private class getData extends AsyncTask<String, String, Restaurant[] > {
 
         String pass;
@@ -99,6 +117,11 @@ public class top_resturant_MainFragment extends Fragment {
             super.onPostExecute(respro);
             if (respro != null) {
                 listview.setAdapter( new Customlistview_addvice_adapter(mcontext,0,respro,resId));
+                if(loadingFragment!=null)
+                {
+                    loadingFragment.onStop();
+                    hideLoading();
+                }
                 listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                     public void onItemClick(AdapterView<?> arg0, View view, int position, long id) {
                         Intent intent = new Intent(mcontext, Show_RestaurantProfile.class);
@@ -119,4 +142,26 @@ public class top_resturant_MainFragment extends Fragment {
         }
 
     }
+
+    public static void showLoading(){
+        if(loading!=null)
+        {
+            if(loading.getVisibility()==View.GONE)
+            {
+                loading.setVisibility(View.VISIBLE);
+            }
+        }
+    }
+
+    public static void hideLoading(){
+        if(loading!=null)
+        {
+            if(loading.getVisibility()==View.VISIBLE)
+            {
+                loading.setVisibility(View.GONE);
+            }
+        }
+    }
+
+
 }
