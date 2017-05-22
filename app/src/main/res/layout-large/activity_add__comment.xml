@@ -47,7 +47,7 @@
             android:lines="4"
             android:maxLines="6"
             android:padding="10sp"
-            android:textSize="10sp" />
+            android:textSize="14sp" />
 
         <Button
             android:id="@+id/comment_send"
