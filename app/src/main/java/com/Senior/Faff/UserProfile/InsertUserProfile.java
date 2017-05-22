@@ -222,6 +222,15 @@ public class InsertUserProfile extends AppCompatActivity {
         });
     }
 
+
+    @Override
+    protected void onDestroy() {
+        image_count = 0;
+        bmap = new ArrayList<>();
+        imgPath = new ArrayList<>();
+        super.onDestroy();
+    }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {

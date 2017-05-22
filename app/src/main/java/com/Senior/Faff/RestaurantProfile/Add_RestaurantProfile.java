@@ -286,6 +286,14 @@ public class Add_RestaurantProfile extends AppCompatActivity implements OnMapRea
     }
 
     @Override
+    protected void onDestroy() {
+        image_count = 0;
+        bmap = new ArrayList<>();
+        imgPath = new ArrayList<>();
+        super.onDestroy();
+    }
+
+    @Override
     public void onConnected(@Nullable Bundle bundle) {
         enableMyLocation();
 
@@ -419,7 +427,6 @@ public class Add_RestaurantProfile extends AppCompatActivity implements OnMapRea
             mPermissionDenied = true;
         }
     }
-
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);

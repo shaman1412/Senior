@@ -5,11 +5,15 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:gravity="center"
-    android:orientation="vertical"
-    tools:context="com.Senior.Faff.Fragment.Party.Party_CreateNewParty">
+    android:orientation="vertical">
 
     <include
         layout="@layout/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <include
+        layout="@layout/loading_frag"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 

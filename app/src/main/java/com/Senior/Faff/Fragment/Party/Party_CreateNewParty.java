@@ -28,6 +28,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -41,6 +42,7 @@ import com.Senior.Faff.model.UserProfile;
 import com.Senior.Faff.utils.CreatePartyManager;
 
 import com.Senior.Faff.R;
+import com.Senior.Faff.utils.LoadingFragment;
 import com.Senior.Faff.utils.PermissionUtils;
 import com.google.android.gms.common.ConnectionResult;
 import com.Senior.Faff.utils.Helper;
@@ -93,8 +95,15 @@ public class Party_CreateNewParty extends AppCompatActivity {
     private String createby;
     private String getrule;
     private Toolbar toolbar;
+
+    private static FrameLayout loading;
+    private LoadingFragment loadingFragment;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        image_count = 0;
+        bmap = new ArrayList<>();
+        imgPath = new ArrayList<>();
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_party__create_new_party);
         name = (EditText)findViewById(R.id.name);
@@ -112,9 +121,11 @@ public class Party_CreateNewParty extends AppCompatActivity {
         if(args != null){
           userid  = args.getString(UserProfile.Column.UserID);
             createby = args.getString(UserProfile.Column.Name);
-
         }
         toolbar = (Toolbar) findViewById(R.id.toolbar);
+        loading = (FrameLayout) findViewById(R.id.loading);
+        hideLoading();
+
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
@@ -131,8 +142,6 @@ public class Party_CreateNewParty extends AppCompatActivity {
                     Intent sdintent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
                     //sdintent.setType("image/*");
                     startActivityForResult(sdintent, request_code);
-
-
                 }
             }
         });
@@ -160,10 +169,15 @@ public class Party_CreateNewParty extends AppCompatActivity {
                         }
                     }
                 }
+
                 intent.putExtra(Party.Column.RoomID, roomid );
                 intent.putExtra(Party.Column.Create_by_name, name.getText().toString());
                 intent.putExtra(Party.Column.Description,description.getText().toString());
-                intent.putExtra(Party.Column.People, Integer.parseInt(people.getText().toString()));
+                try {
+                    intent.putExtra(Party.Column.People, Integer.parseInt(people.getText().toString()));
+                } catch (NumberFormatException e) {
+                    e.printStackTrace();
+                }
                 intent.putExtra(Party.Column.Address,address.getText().toString());
                 intent.putExtra(Party.Column.Appointment,appointment.getText().toString());
                 intent.putExtra(Party.Column.Telephone,telephone.getText().toString());
@@ -182,10 +196,19 @@ public class Party_CreateNewParty extends AppCompatActivity {
     }
 
     @Override
+    protected void onDestroy() {
+        image_count = 0;
+        bmap = new ArrayList<>();
+        imgPath = new ArrayList<>();
+        super.onDestroy();
+    }
+
+    @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == RESULT_OK) {
             if (requestCode == request_code && data != null) {
+
                 Uri selectedImg = data.getData();
                 String[] filePathColumn = {MediaStore.Images.Media.DATA};
                 Cursor cur = getContentResolver().query(selectedImg, filePathColumn, null, null, null);
@@ -195,6 +218,13 @@ public class Party_CreateNewParty extends AppCompatActivity {
                     cur.moveToFirst();
                     imgPath.add(cur.getString(column_index));
                     cur.close();
+                }
+                showLoading();
+                try {
+                    loadingFragment = new LoadingFragment();
+                    getSupportFragmentManager().beginTransaction().replace(R.id.loading, loadingFragment).commit();
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
                 Bitmap b = BitmapFactory.decodeFile(imgPath.get(image_count));
                 try {
@@ -213,7 +243,8 @@ public class Party_CreateNewParty extends AppCompatActivity {
                 cancle_pic.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        party_pic.setVisibility(View.GONE);
+                        party_pic.setImageBitmap(null);
+//                        party_pic.setVisibility(View.GONE);
                         image_count--;
                         bmap.clear();
                         imgPath.clear();
@@ -222,7 +253,7 @@ public class Party_CreateNewParty extends AppCompatActivity {
                 });
 //                imgByte.add(stream.toByteArray());
                 image_count++;
-
+                hideLoading();
             }
         }
     }
@@ -300,6 +331,26 @@ public class Party_CreateNewParty extends AppCompatActivity {
 
         alert.show();
 
+    }
+
+    public static void showLoading(){
+        if(loading!=null)
+        {
+            if(loading.getVisibility()==View.GONE)
+            {
+                loading.setVisibility(View.VISIBLE);
+            }
+        }
+    }
+
+    public static void hideLoading(){
+        if(loading!=null)
+        {
+            if(loading.getVisibility()==View.VISIBLE)
+            {
+                loading.setVisibility(View.GONE);
+            }
+        }
     }
 
 }

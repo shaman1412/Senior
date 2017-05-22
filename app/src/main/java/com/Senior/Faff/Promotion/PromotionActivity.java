@@ -244,6 +244,14 @@ public class PromotionActivity extends AppCompatActivity implements OnMapReadyCa
     }
 
     @Override
+    protected void onDestroy() {
+        image_count = 0;
+        bmap = new ArrayList<>();
+        imgPath = new ArrayList<>();
+        super.onDestroy();
+    }
+
+    @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == RESULT_OK) {
