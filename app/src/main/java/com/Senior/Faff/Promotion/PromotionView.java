@@ -138,7 +138,7 @@ public class PromotionView extends AppCompatActivity implements OnMapReadyCallba
                     public void onClick(View v) {
                         Intent intent = new Intent(mContext,Show_RestaurantProfile.class);
                         intent.putExtra(Restaurant.Column.UserID,userid);
-                        intent.putExtra(Restaurant.Column.ResID,data.getId());
+                        intent.putExtra(Restaurant.Column.ResID,data.getResid());
                         startActivity(intent);
                     }
                 });

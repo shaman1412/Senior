@@ -13,20 +13,26 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RatingBar;
 import android.widget.TextView;
 
 import com.Senior.Faff.Fragment.Party.list_party_member;
 import com.Senior.Faff.R;
+import com.Senior.Faff.RestaurantProfile.Customlistview_addvice_adapter;
 import com.Senior.Faff.RestaurantProfile.Show_RestaurantProfile;
 import com.Senior.Faff.model.Bookmark;
 import com.Senior.Faff.model.BookmarkList;
 import com.Senior.Faff.model.Restaurant;
 import com.Senior.Faff.model.UserProfile;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 
 public class list_bookmark extends RecyclerView.Adapter<list_bookmark.ViewHolder>{
     private ArrayList<Restaurant> list ;
@@ -42,6 +48,7 @@ public class list_bookmark extends RecyclerView.Adapter<list_bookmark.ViewHolder
         public ImageView image;
         public Button kick;
         public LinearLayout mix;
+        public RatingBar rate;
         public ViewHolder(View v) {
             super(v);
             list_name = (TextView)v.findViewById(R.id.textView1);
@@ -49,6 +56,8 @@ public class list_bookmark extends RecyclerView.Adapter<list_bookmark.ViewHolder
             detail = (TextView) v.findViewById(R.id.detail);
             open_text = (TextView)v.findViewById(R.id.open_text);
             mix = (LinearLayout)v.findViewById(R.id.mix);
+            rate = (RatingBar)v.findViewById(R.id.ratingBar);
+
         }
     }
 
@@ -72,7 +81,7 @@ public class list_bookmark extends RecyclerView.Adapter<list_bookmark.ViewHolder
         holder.list_name.setText(list.get(position).getRestaurantName());
         holder.detail.setText(list.get(position).getDescription());
         holder.open_text.setText(list.get(position).getPeriod());
-
+        getRate(list.get(position).getresId(),holder);
         String url = list.get(position).getPicture();
         String[] tmp = url.split(",");
         if(tmp[0].contains(" "))
@@ -80,7 +89,7 @@ public class list_bookmark extends RecyclerView.Adapter<list_bookmark.ViewHolder
             url = tmp[0].replaceAll(" ", "%20");
             Log.i("TEST:", " bookmark url is : "+url);
             try {
-                Picasso.with(this.context).load(url).resize(200, 200).into(holder.image);
+                Picasso.with(this.context).load(url).fit().into(holder.image);
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -89,7 +98,7 @@ public class list_bookmark extends RecyclerView.Adapter<list_bookmark.ViewHolder
         {
             Log.i("TEST:", " bookmark url is : "+tmp[0]);
             try {
-                Picasso.with(this.context).load(tmp[0]).resize(200, 200).into(holder.image);
+                Picasso.with(this.context).load(tmp[0]).fit().into(holder.image);
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -124,7 +133,39 @@ public class list_bookmark extends RecyclerView.Adapter<list_bookmark.ViewHolder
 
     }
 
+    public void getRate(String res_id, final ViewHolder holder){
+        DatabaseReference rate;
+        FirebaseDatabase storage = FirebaseDatabase.getInstance();
+        rate = storage.getReference("Restaurant").child("score").child(res_id);
+        rate.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if(dataSnapshot.getValue()!=null)
+                {
+                    Iterator i = dataSnapshot.getChildren().iterator();
+                    float sum = 0;
+                    long n = dataSnapshot.getChildrenCount();
 
+                    while (i.hasNext())
+                    {
+                        String t = ((DataSnapshot) i.next()).getValue().toString();
+                        float tmp = Float.parseFloat(t);
+                        sum+=tmp;
+                    }
+
+                    float scor = sum/n;
+                    holder.rate.setRating(scor);
+                    // score.setText(String.valueOf(new DecimalFormat("#.##").format(sum/n)));
+
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+    }
     public ArrayList<Restaurant> getlist(){
         return  list;
     }

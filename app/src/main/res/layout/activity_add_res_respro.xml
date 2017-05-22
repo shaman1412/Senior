@@ -94,11 +94,13 @@
             android:inputType="textMultiLine"
             android:lines="4"
             android:maxLines="6"
+            android:padding="10sp"
+            android:gravity="top"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/address"
             android:layout_marginBottom="5dp"
-            android:padding="2dip"
+
             android:background="@drawable/edittextbox"
             android:scrollbars="vertical"
             />

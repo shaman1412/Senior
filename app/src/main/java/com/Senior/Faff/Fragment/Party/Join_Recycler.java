@@ -94,7 +94,7 @@ public class Join_Recycler extends RecyclerView.Adapter<Join_Recycler.ViewHolder
                     try
                     {
                         Picasso.with(mContext).cancelRequest(holder.imageView);
-                        Picasso.with(mContext).load(uri.toString()).resize(300, 200).into(holder.imageView);
+                        Picasso.with(mContext).load(uri.toString()).fit().into(holder.imageView);
                     }
                     catch (Exception ex)
                     {

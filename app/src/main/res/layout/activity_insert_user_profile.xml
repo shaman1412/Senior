@@ -164,8 +164,12 @@
             android:layout_width="500dp"
             android:layout_height="30dp"
             android:id="@+id/address"
+            android:padding="10sp"
+            android:gravity="top"
+            android:lines="4"
+            android:maxLines="6"
+            android:inputType="textMultiLine"
             android:layout_marginBottom="5dp"
-            android:padding="2dip"
             android:layout_below="@+id/address_txt"
             android:background="@drawable/edittextbox"/>
         <TextView
