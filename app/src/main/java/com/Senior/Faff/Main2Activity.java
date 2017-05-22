@@ -118,10 +118,12 @@ public class Main2Activity extends AppCompatActivity {
     private EditText serach_box;
     private ArrayList<String> type_food;
     private float distance = 10;
+    Bundle saveStage;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        saveStage = savedInstanceState;
         firebase a = new firebase();
 
         setContentView(R.layout.activity_main2);
@@ -579,6 +581,13 @@ public class Main2Activity extends AppCompatActivity {
                     fragmentManager_home.beginTransaction().replace(R.id.flContent, fragment_home).commit();
                 } catch (Exception e) {
                     e.printStackTrace();
+                    try {
+                        onCreate(saveStage);
+                    }
+                    catch (Exception ee)
+                    {
+                        ee.printStackTrace();
+                    }
                 }
             } else {
                 /*String message = getString(R.string.login_error_message);
