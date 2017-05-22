@@ -2,38 +2,36 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     android:background="#ededed"
+    android:orientation="vertical"
     android:padding="10dp"
     tools:context="com.Senior.Faff.Fragment.Home.promotion_restaurant_MainFragment">
 
     <!-- TODO: Update blank fragment layout -->
 
     <!--<TextView-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:layout_centerHorizontal="true"-->
-        <!--android:text="Search restaurant"-->
-        <!--android:layout_centerVertical="true"/>-->
+    <!--android:layout_width="wrap_content"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:layout_centerHorizontal="true"-->
+    <!--android:text="Search restaurant"-->
+    <!--android:layout_centerVertical="true"/>-->
 
     <FrameLayout
         android:id="@+id/loading"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@android:color/transparent"
-        android:visibility="visible"
+        android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
-        android:layout_alignParentStart="true">
+        android:background="@android:color/transparent"
+        android:visibility="visible">
 
     </FrameLayout>
 
-        <ListView
-            android:id="@+id/listView1"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:dividerHeight="10dp"/>
-
-
+    <ListView
+        android:id="@+id/listView1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:dividerHeight="10dp" />
 
 
 </LinearLayout>

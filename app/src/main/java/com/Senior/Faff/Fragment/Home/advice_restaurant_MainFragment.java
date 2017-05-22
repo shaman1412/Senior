@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -64,17 +65,6 @@ public class advice_restaurant_MainFragment extends Fragment {
 
         loading = (FrameLayout)rootView.findViewById(R.id.loading);
 
-        showLoading();
-        try {
-            loadingFragment = new LoadingFragment();
-            Bundle b = new Bundle();
-            b.putString("to", this.getClass().getCanonicalName());
-            loadingFragment.setArguments(b);
-            getFragmentManager().beginTransaction().replace(R.id.loading, loadingFragment).commit();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        new getData().execute();
         return  rootView;
     }
 
@@ -88,6 +78,15 @@ public class advice_restaurant_MainFragment extends Fragment {
 
         @Override
         protected Restaurant[] doInBackground(String... args) {
+
+            showLoading();
+            try {
+                loadingFragment = new LoadingFragment();
+                ((AppCompatActivity)mcontext).getSupportFragmentManager().beginTransaction().replace(R.id.loading, loadingFragment).commit();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
             StringBuilder result = new StringBuilder();
             String url_api = "https://faff-1489402013619.appspot.com/res_list/all" ;
             try {
@@ -138,11 +137,6 @@ public class advice_restaurant_MainFragment extends Fragment {
         protected void onPostExecute(final Restaurant[] respro) {
             super.onPostExecute(respro);
             if (respro != null) {
-                if(loadingFragment!=null)
-                {
-                    loadingFragment.onStop();
-                }
-                hideLoading();
                 listview.setAdapter( new Customlistview_addvice_adapter(mcontext,0,respro,resId));
                 listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                     public void onItemClick(AdapterView<?> arg0, View view, int position, long id) {
@@ -161,28 +155,28 @@ public class advice_restaurant_MainFragment extends Fragment {
                 Toast.makeText(mcontext, message, Toast.LENGTH_SHORT).show();
             }
 
+            if(loadingFragment!=null)
+            {
+                loadingFragment.onStop();
+                hideLoading();
+            }
         }
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        showLoading();
-        try {
-            loadingFragment = new LoadingFragment();
-            Bundle b = new Bundle();
-            b.putString("to", this.getClass().getCanonicalName());
-            loadingFragment.setArguments(b);
-            getFragmentManager().beginTransaction().replace(R.id.loading, loadingFragment).commit();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        new getData().execute();
     }
 
     @Override
     public void onStop() {
         super.onStop();
-        hideLoading();
+        if(loadingFragment!=null)
+        {
+            loadingFragment.onStop();
+            hideLoading();
+        }
     }
 
     public static void showLoading(){

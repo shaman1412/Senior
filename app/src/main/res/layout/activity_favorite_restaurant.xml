@@ -1,24 +1,36 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/mix"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:orientation="vertical"
-    android:id="@+id/mix">
-<android.support.v7.widget.Toolbar
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:titleTextColor="#ffffff"
-    android:id="@+id/toolbar"
-    android:minHeight="?attr/actionBarSize"
-    app:theme="@style/ToolBarStyle"
-    android:background="?attr/colorPrimary">
+    android:layout_height="match_parent"
+    android:orientation="vertical">
 
-</android.support.v7.widget.Toolbar>
-   <android.support.v7.widget.RecyclerView
-       android:layout_width="match_parent"
-       android:layout_height="wrap_content"
-       android:id="@+id/mRecyclerView1">
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="?attr/colorPrimary"
+        android:minHeight="?attr/actionBarSize"
+        android:titleTextColor="#ffffff"
+        app:theme="@style/ToolBarStyle">
 
-   </android.support.v7.widget.RecyclerView>
+    </android.support.v7.widget.Toolbar>
+
+    <FrameLayout
+        android:id="@+id/loading"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@android:color/transparent"
+        android:visibility="visible"
+        android:layout_gravity="center">
+
+    </FrameLayout>
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/mRecyclerView1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+    </android.support.v7.widget.RecyclerView>
 </LinearLayout>

@@ -311,10 +311,10 @@ public class Main2Activity extends AppCompatActivity {
         //String User_id = String.valueOf(id);        // ??? for what ??? ไม่บอก 5555
 
         switch (menuItem.getItemId()) {
-            case R.id.Home:
-                Intent Home_intent = new Intent(context, test_callservice.class);
-                startActivity(Home_intent);
-                break;
+//            case R.id.Home:
+//                Intent Home_intent = new Intent(context, test_callservice.class);
+//                startActivity(Home_intent);
+//                break;
       /*      case R.id.NotificationUser:
                 Intent Home_intenta = new Intent(context, test_callservice.class);
                 startActivity(Home_intenta);

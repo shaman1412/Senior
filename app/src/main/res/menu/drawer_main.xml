@@ -3,10 +3,10 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <group android:checkableBehavior="single">
-        <item
-            android:id="@+id/Home"
-            android:icon="@drawable/home_drawer_home"
-            android:title="Home" />
+        <!--<item-->
+            <!--android:id="@+id/Home"-->
+            <!--android:icon="@drawable/home_drawer_home"-->
+            <!--android:title="Home" />-->
 <!--       <item
             android:id="@+id/NotificationUser"
             android:icon="@drawable/notification_drawer_home"

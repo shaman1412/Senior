@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -56,19 +57,22 @@ public class top_resturant_MainFragment extends Fragment {
         userid = getArguments().getString("userid");
         listview = (ListView)root.findViewById(R.id.listView1);
         loading = (FrameLayout) root.findViewById(R.id.loading);
-        new getData().execute();
         return  root;
     }
 
     @Override
-    public void onStart() {
-        super.onStart();
-        showLoading();
-        try {
-            loadingFragment = new LoadingFragment();
-            getFragmentManager().beginTransaction().replace(R.id.loading, loadingFragment).commit();
-        } catch (Exception e) {
-            e.printStackTrace();
+    public void onResume() {
+        super.onResume();
+        new getData().execute();
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        if(loadingFragment!=null)
+        {
+            loadingFragment.onStop();
+            hideLoading();
         }
     }
 
@@ -80,6 +84,15 @@ public class top_resturant_MainFragment extends Fragment {
         String resultjson;
         @Override
         protected Restaurant[] doInBackground(String... args) {
+
+            showLoading();
+            try {
+                loadingFragment = new LoadingFragment();
+                ((AppCompatActivity)mcontext).getSupportFragmentManager().beginTransaction().replace(R.id.loading, loadingFragment).commit();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
             StringBuilder result = new StringBuilder();
             String url_api = "https://faff-1489402013619.appspot.com/res_list/top" ;
             try {
@@ -117,11 +130,6 @@ public class top_resturant_MainFragment extends Fragment {
             super.onPostExecute(respro);
             if (respro != null) {
                 listview.setAdapter( new Customlistview_addvice_adapter(mcontext,0,respro,resId));
-                if(loadingFragment!=null)
-                {
-                    loadingFragment.onStop();
-                    hideLoading();
-                }
                 listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                     public void onItemClick(AdapterView<?> arg0, View view, int position, long id) {
                         Intent intent = new Intent(mcontext, Show_RestaurantProfile.class);
@@ -138,7 +146,11 @@ public class top_resturant_MainFragment extends Fragment {
                 String message = getString(R.string.login_error_message);
                 Toast.makeText(mcontext, message, Toast.LENGTH_SHORT).show();
             }
-
+            if(loadingFragment!=null)
+            {
+                loadingFragment.onStop();
+                hideLoading();
+            }
         }
 
     }
