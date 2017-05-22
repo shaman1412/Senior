@@ -95,6 +95,9 @@ public class Party_CreateNewParty extends AppCompatActivity {
     private Toolbar toolbar;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        image_count = 0;
+        bmap = new ArrayList<>();
+        imgPath = new ArrayList<>();
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_party__create_new_party);
         name = (EditText)findViewById(R.id.name);
@@ -160,10 +163,15 @@ public class Party_CreateNewParty extends AppCompatActivity {
                         }
                     }
                 }
+
                 intent.putExtra(Party.Column.RoomID, roomid );
                 intent.putExtra(Party.Column.Create_by_name, name.getText().toString());
                 intent.putExtra(Party.Column.Description,description.getText().toString());
-                intent.putExtra(Party.Column.People, Integer.parseInt(people.getText().toString()));
+                try {
+                    intent.putExtra(Party.Column.People, Integer.parseInt(people.getText().toString()));
+                } catch (NumberFormatException e) {
+                    e.printStackTrace();
+                }
                 intent.putExtra(Party.Column.Address,address.getText().toString());
                 intent.putExtra(Party.Column.Appointment,appointment.getText().toString());
                 intent.putExtra(Party.Column.Telephone,telephone.getText().toString());

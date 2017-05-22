@@ -173,8 +173,29 @@ public class LoginActivity extends ActionBarActivity {
                                                                 String key_pass = "fb"+obj.getString("id")+String.valueOf(rand);
                                                                 String key_user_id = "fb"+obj.getString("id");
                                                                 UserAuthen user = new UserAuthen(key_user, key_pass, key_user_id);
-                                                                int gender = obj.getString("gender").equals("male")?1:0;
-                                                                int age = Integer.parseInt(getAge(obj.getString("birthday")));
+                                                                int gender, age;
+                                                                if(obj1.has("url")){
+                                                                    obj.put("picture", obj1.getString("url"));
+                                                                }
+                                                                else
+                                                                {
+                                                                    obj.put("picture", "");
+                                                                }
+                                                                if(obj.has("gender")){
+                                                                    gender = obj.getString("gender").equals("male")?1:0;
+                                                                }
+                                                                else
+                                                                {
+                                                                    gender = 1;
+                                                                }
+                                                                if(obj.has("birthday")){
+                                                                    age = Integer.parseInt(getAge(obj.getString("birthday")));
+                                                                }
+                                                                else
+                                                                {
+                                                                    age = 0;
+                                                                }
+                                                                Log.i("TEST:", obj.toString());
                                                                 UserProfile profile = new UserProfile(
                                                                         key_user_id,
                                                                         obj.getString("name"),
@@ -201,7 +222,13 @@ public class LoginActivity extends ActionBarActivity {
                                             obj.put("location", "");
                                             try {
                                                 JSONObject obj1 = obj.getJSONObject("picture").getJSONObject("data");
-                                                obj.put("picture", obj1.getString("url"));
+                                                if(obj1.has("url")){
+                                                    obj.put("picture", obj1.getString("url"));
+                                                }
+                                                else
+                                                {
+                                                    obj.put("picture", "");
+                                                }
                                                 Log.i("TEST:", obj.toString());
 
                                                 int rand = (int)(Math.random()*999);
@@ -210,8 +237,21 @@ public class LoginActivity extends ActionBarActivity {
                                                 String key_pass = "fb"+obj.getString("id")+String.valueOf(rand);
                                                 String key_user_id = "fb"+obj.getString("id");
                                                 UserAuthen user = new UserAuthen(key_user, key_pass, key_user_id);
-                                                int gender = obj.getString("gender").equals("male")?1:0;
-                                                int age = Integer.parseInt(getAge(obj.getString("birthday")));
+                                                int gender, age;
+                                                if(obj.has("gender")){
+                                                    gender = obj.getString("gender").equals("male")?1:0;
+                                                }
+                                                else
+                                                {
+                                                    gender = 1;
+                                                }
+                                                if(obj.has("birthday")){
+                                                    age = Integer.parseInt(getAge(obj.getString("birthday")));
+                                                }
+                                                else
+                                                {
+                                                    age = 0;
+                                                }
                                                 UserProfile profile = new UserProfile(
                                                         key_user_id,
                                                         obj.getString("name"),
