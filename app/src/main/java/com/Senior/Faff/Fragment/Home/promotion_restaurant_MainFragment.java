@@ -91,9 +91,8 @@ public class promotion_restaurant_MainFragment extends Fragment {
         @Override
         protected String doInBackground(String... params) {
             try {
-
-                showLoading();
                 try {
+                    showLoading();
                     loadingFragment = new LoadingFragment();
                     ((AppCompatActivity)mContext).getSupportFragmentManager().beginTransaction().replace(R.id.loading, loadingFragment).commit();
                 } catch (Exception e) {

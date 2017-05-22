@@ -581,13 +581,16 @@ public class Main2Activity extends AppCompatActivity {
                     fragmentManager_home.beginTransaction().replace(R.id.flContent, fragment_home).commit();
                 } catch (Exception e) {
                     e.printStackTrace();
-                    try {
-                        onCreate(saveStage);
+                    if (mAuthListener != null) {
+                        mAuth.removeAuthStateListener(mAuthListener);
                     }
-                    catch (Exception ee)
-                    {
-                        ee.printStackTrace();
-                    }
+                    SharedPreferences sp = getSharedPreferences("CHECK_LOGIN", Context.MODE_PRIVATE);
+                    SharedPreferences.Editor editor = sp.edit();
+                    editor.putString(UserProfile.Column.UserID, "nothing");
+                    editor.commit();
+                    Intent logout = new Intent(context, LoginActivity.class);
+                    startActivity(logout);
+                    finish();
                 }
             } else {
                 /*String message = getString(R.string.login_error_message);

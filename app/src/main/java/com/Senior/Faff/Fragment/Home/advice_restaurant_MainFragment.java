@@ -78,9 +78,8 @@ public class advice_restaurant_MainFragment extends Fragment {
 
         @Override
         protected Restaurant[] doInBackground(String... args) {
-
-            showLoading();
             try {
+                showLoading();
                 loadingFragment = new LoadingFragment();
                 ((AppCompatActivity)mcontext).getSupportFragmentManager().beginTransaction().replace(R.id.loading, loadingFragment).commit();
             } catch (Exception e) {
