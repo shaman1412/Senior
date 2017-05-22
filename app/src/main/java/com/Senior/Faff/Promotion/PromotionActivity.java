@@ -236,14 +236,19 @@ public class PromotionActivity extends AppCompatActivity implements OnMapReadyCa
 
     @Override
     public void onStop() {
-        image_count = 0;
-        bmap = new ArrayList<>();
-        imgPath = new ArrayList<>();
         super.onStop();
         if (googleApiClient != null && googleApiClient.isConnected()) {
             // Disconnect Google API Client if available and connected
             googleApiClient.disconnect();
         }
+    }
+
+    @Override
+    protected void onDestroy() {
+        image_count = 0;
+        bmap = new ArrayList<>();
+        imgPath = new ArrayList<>();
+        super.onDestroy();
     }
 
     @Override

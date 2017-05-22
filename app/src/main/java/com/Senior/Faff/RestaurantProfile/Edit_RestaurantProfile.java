@@ -235,11 +235,11 @@ public class Edit_RestaurantProfile extends AppCompatActivity implements OnMapRe
     }
 
     @Override
-    protected void onStop() {
+    protected void onDestroy() {
         image_count = 0;
         bmap = new ArrayList<>();
         imgPath = new ArrayList<>();
-        super.onStop();
+        super.onDestroy();
     }
 
     @Override

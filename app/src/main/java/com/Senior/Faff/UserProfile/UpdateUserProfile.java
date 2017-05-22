@@ -228,11 +228,11 @@ public class UpdateUserProfile extends AppCompatActivity {
     }
 
     @Override
-    protected void onStop() {
+    protected void onDestroy() {
         image_count = 0;
         bmap = new ArrayList<>();
         imgPath = new ArrayList<>();
-        super.onStop();
+        super.onDestroy();
     }
 
     @Override
