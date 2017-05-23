@@ -223,8 +223,9 @@ public class ShowUserprofile extends AppCompatActivity {
 
         @Override
         protected String doInBackground(String... params) {
-            showLoading();
+
             try {
+                showLoading();
                 loadingFragment = new LoadingFragment();
                 ((AppCompatActivity)mcontext).getSupportFragmentManager().beginTransaction().replace(R.id.loading, loadingFragment).commit();
             } catch (Exception e) {
@@ -263,6 +264,7 @@ public class ShowUserprofile extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
+//        hideLoading();
         ShowUserPro sh = new ShowUserPro(new ShowUserPro.AsyncResponse() {
             @Override
             public void processFinish(final String output) throws JSONException {
@@ -325,6 +327,11 @@ public class ShowUserprofile extends AppCompatActivity {
                         }
                     });
 
+                }
+                if(loadingFragment!=null)
+                {
+                    loadingFragment.onStop();
+                    hideLoading();
                 }
             }
         });

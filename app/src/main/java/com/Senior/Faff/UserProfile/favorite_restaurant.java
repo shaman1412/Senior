@@ -96,8 +96,8 @@ public class favorite_restaurant extends AppCompatActivity {
                     .equalTo(userid).addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
-                    showLoading();
                     try {
+                        showLoading();
                         loadingFragment = new LoadingFragment();
                         ((AppCompatActivity)mcontext).getSupportFragmentManager().beginTransaction().replace(R.id.loading, loadingFragment).commit();
                     } catch (Exception e) {

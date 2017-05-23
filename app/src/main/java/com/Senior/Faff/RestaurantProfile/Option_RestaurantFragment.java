@@ -105,8 +105,8 @@ public class Option_RestaurantFragment extends Fragment {
         @Override
         protected Restaurant[] doInBackground(String... args) {
 
-            showLoading();
             try {
+                showLoading();
                 loadingFragment = new LoadingFragment();
                 getFragmentManager().beginTransaction().replace(R.id.loading, loadingFragment).commit();
             } catch (Exception e) {

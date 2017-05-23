@@ -366,8 +366,8 @@ public class Show_RestaurantProfile extends AppCompatActivity implements OnMapRe
         String resultjson;
         @Override
         protected Restaurant doInBackground(String... args) {
-            showLoading();
             try {
+                showLoading();
                 loadingFragment = new LoadingFragment();
                 getSupportFragmentManager().beginTransaction().replace(R.id.loading, loadingFragment).commit();
             } catch (Exception e) {

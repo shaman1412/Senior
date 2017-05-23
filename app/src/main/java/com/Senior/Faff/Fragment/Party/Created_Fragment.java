@@ -150,8 +150,8 @@ public class Created_Fragment extends Fragment {
 
         protected Void doInBackground(Void... params) {
 
-            showLoading();
             try {
+                showLoading();
                 loadingFragment = new LoadingFragment();
                 getFragmentManager().beginTransaction().replace(R.id.loading, loadingFragment).commit();
             } catch (Exception e) {

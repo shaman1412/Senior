@@ -149,8 +149,8 @@ public class Requested_Fragment extends Fragment {
     private class getData_r extends AsyncTask<Void, Integer, Void> {
         protected Void doInBackground(Void... params) {
 
-            showLoading();
             try {
+                showLoading();
                 loadingFragment = new LoadingFragment();
                 getFragmentManager().beginTransaction().replace(R.id.loading, loadingFragment).commit();
             } catch (Exception e) {

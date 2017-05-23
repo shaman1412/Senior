@@ -262,8 +262,8 @@ public class Show_party_profile extends AppCompatActivity implements OnMapReadyC
 
     public void setvalue(final Party partypro) {
         inc.bringChildToFront(loading);
-        showLoading();
         try {
+            showLoading();
             loadingFragment = new LoadingFragment();
             getSupportFragmentManager().beginTransaction().replace(R.id.loading, loadingFragment).commit();
         } catch (Exception e) {

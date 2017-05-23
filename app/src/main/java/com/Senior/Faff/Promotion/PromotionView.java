@@ -227,8 +227,8 @@ public class PromotionView extends AppCompatActivity implements OnMapReadyCallba
 
         @Override
         protected String doInBackground(String... params) {
-            showLoading();
             try {
+                showLoading();
                 loadingFragment = new LoadingFragment();
                 ((AppCompatActivity)mContext).getSupportFragmentManager().beginTransaction().replace(R.id.loading, loadingFragment).commit();
             } catch (Exception e) {

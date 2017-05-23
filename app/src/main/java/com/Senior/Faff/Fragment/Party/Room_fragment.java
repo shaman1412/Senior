@@ -352,8 +352,8 @@ public class Room_fragment extends Fragment implements GoogleApiClient.OnConnect
 
         protected Void doInBackground(Void... params) {
 
-            showLoading();
             try {
+                showLoading();
                 loadingFragment = new LoadingFragment();
                 getFragmentManager().beginTransaction().replace(R.id.loading, loadingFragment).commit();
             } catch (Exception e) {

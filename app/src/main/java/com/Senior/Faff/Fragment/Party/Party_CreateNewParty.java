@@ -219,8 +219,8 @@ public class Party_CreateNewParty extends AppCompatActivity {
                     imgPath.add(cur.getString(column_index));
                     cur.close();
                 }
-                showLoading();
                 try {
+                    showLoading();
                     loadingFragment = new LoadingFragment();
                     getSupportFragmentManager().beginTransaction().replace(R.id.loading, loadingFragment).commit();
                 } catch (Exception e) {
