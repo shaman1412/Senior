@@ -267,7 +267,7 @@ public class server_service extends Service implements GoogleApiClient.Connectio
         int distance;
 
         float latitude, longtitude;
-  /*     mLastLocation  = new Location("Target");
+/*        mLastLocation  = new Location("Target");
         mLastLocation.setLatitude(13.6529);
         mLastLocation.setLongitude(100.486);*/
         ArrayList<Party> res = new ArrayList<>();
@@ -330,13 +330,13 @@ public class server_service extends Service implements GoogleApiClient.Connectio
         // Restaurant_manager res_manager = new Restaurant_manager(mcontext);
         if (Pary_list != null) {
             if(check_first){
-                re_list = calculatedistance(900, rule_gender, rule_age, Pary_list); // 900 meter
+                re_list = calculatedistance(2000, rule_gender, rule_age, Pary_list); // 900 meter
                 count_room_old = re_list.size();
                 check_first = false;
             }else{
                 int count_now = 0;
                  Party new_room = new Party();
-                re_list_new = calculatedistance(900, rule_gender, rule_age, Pary_list);
+                re_list_new = calculatedistance(2000, rule_gender, rule_age, Pary_list);
                 count_room_new = re_list_new.size();
                 for(int i =0;i<re_list_new.size(); i++){
                     boolean check_same = false;

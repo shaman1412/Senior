@@ -22,6 +22,7 @@ public class Promotion {
         public static final String PromotionDetail = "promotiondetail";
         public static final String Location = "promotionlocation";
         public static final String Userid = "promotionuserid";
+        public static final String Resid = "promotionresid";
     }
 
     private String promotionid;
@@ -33,7 +34,7 @@ public class Promotion {
 //    private String promotiontype;
     private String promotionpictureurl;
     private String promotionuserid;
-
+    private String resid;
     // Constructor
 
     public Promotion(String promotionname, String promotionpictureurl, String promotionstartdate, String promotionenddate, String promotiondetail ,String promotionlocation) {
@@ -47,6 +48,10 @@ public class Promotion {
     }
 
     //region getter setter
+
+    public String getResid(){ return  resid;}
+
+    public void setResid(String resid){ this.resid = resid; }
 
     public String getUserid(){ return  promotionuserid;}
 

@@ -65,7 +65,7 @@ function create (data, cb) {
 function read (id, cb) {
   const connection = getConnection();
   connection.query(
-    'SELECT * FROM `'+table_name+'` WHERE `promotionid` = ?', id, (err, results) => {
+    'SELECT * FROM promotion_list pro INNER JOIN restaurant_promotion res on pro.promotionid = res.promotionid  WHERE pro.promotionid = ?', id, (err, results) => {
       if (err) {
         cb(err);
         return;

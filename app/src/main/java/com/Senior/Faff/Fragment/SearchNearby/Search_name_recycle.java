@@ -10,19 +10,25 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RatingBar;
 import android.widget.TextView;
 
 import com.Senior.Faff.Fragment.Party.list_party_member;
 import com.Senior.Faff.R;
 import com.Senior.Faff.RestaurantProfile.Show_RestaurantProfile;
 import com.Senior.Faff.UserProfile.ShowUserprofile;
+import com.Senior.Faff.UserProfile.list_bookmark;
 import com.Senior.Faff.model.Restaurant;
 import com.Senior.Faff.model.UserProfile;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 
 /**
  * Created by InFiNity on 01-May-17.
@@ -40,6 +46,7 @@ public class Search_name_recycle extends RecyclerView.Adapter<Search_name_recycl
         public LinearLayout item;
         public TextView list_name,open,detail;
         public ImageView image;
+        public RatingBar rate;
         public ViewHolder(View v) {
             super(v);
             item = (LinearLayout) v.findViewById(R.id.item);
@@ -47,6 +54,7 @@ public class Search_name_recycle extends RecyclerView.Adapter<Search_name_recycl
             image =  (ImageView)v.findViewById(R.id.image);
             open = (TextView) v.findViewById(R.id.open_text);
             detail = (TextView) v.findViewById(R.id.detail);
+            rate = (RatingBar)v.findViewById(R.id.ratingBar);
         }
     }
 
@@ -66,6 +74,7 @@ public class Search_name_recycle extends RecyclerView.Adapter<Search_name_recycl
     public void onBindViewHolder(final ViewHolder holder, final int position) {
         holder.list_name.setText(list.get(position).getRestaurantName());
         holder.open.setText(list.get(position).getPeriod());
+        getRate(list.get(position).getresId(),holder);
         holder.detail.setText(list.get(position).getDescription());
         String url = list.get(position).getPicture();
         String[] tmp = url.split(",");
@@ -75,7 +84,7 @@ public class Search_name_recycle extends RecyclerView.Adapter<Search_name_recycl
             url = tmp[0].replaceAll(" ", "%20");
             Log.i("TEST:", " url in search nearby : " +url);
             try {
-                Picasso.with(mcontext).load(url).resize(250, 250).into(holder.image);
+                Picasso.with(mcontext).load(url).fit().into(holder.image);
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -84,7 +93,7 @@ public class Search_name_recycle extends RecyclerView.Adapter<Search_name_recycl
         {
             Log.i("TEST:", " url in search nearby : " +tmp[0]);
             try {
-                Picasso.with(mcontext).load(tmp[0]).resize(250, 250).into(holder.image);
+                Picasso.with(mcontext).load(tmp[0]).fit().into(holder.image);
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -112,7 +121,39 @@ public class Search_name_recycle extends RecyclerView.Adapter<Search_name_recycl
     }
 
 
+    public void getRate(String res_id, final ViewHolder holder){
+        DatabaseReference rate;
+        FirebaseDatabase storage = FirebaseDatabase.getInstance();
+        rate = storage.getReference("Restaurant").child("score").child(res_id);
+        rate.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if(dataSnapshot.getValue()!=null)
+                {
+                    Iterator i = dataSnapshot.getChildren().iterator();
+                    float sum = 0;
+                    long n = dataSnapshot.getChildrenCount();
 
+                    while (i.hasNext())
+                    {
+                        String t = ((DataSnapshot) i.next()).getValue().toString();
+                        float tmp = Float.parseFloat(t);
+                        sum+=tmp;
+                    }
+
+                    float scor = sum/n;
+                    holder.rate.setRating(scor);
+                    // score.setText(String.valueOf(new DecimalFormat("#.##").format(sum/n)));
+
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+    }
     public ArrayList<Restaurant> getlist(){
         return  list;
     }

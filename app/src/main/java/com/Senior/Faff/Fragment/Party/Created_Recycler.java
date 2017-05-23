@@ -94,7 +94,7 @@ public class Created_Recycler extends RecyclerView.Adapter<Created_Recycler.View
                     try
                     {
                         Picasso.with(mContext).cancelRequest(holder.imageView);
-                        Picasso.with(mContext).load(uri.toString()).resize(300, 200).into(holder.imageView);
+                        Picasso.with(mContext).load(uri.toString()).fit().into(holder.imageView);
                     }
                     catch (Exception ex)
                     {

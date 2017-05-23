@@ -106,7 +106,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="5dp"
-                android:padding="2dip"
+                android:padding="10sp"
+                android:gravity="top"
+                android:maxLines="3"
                 android:background="@drawable/edittextbox"
                 android:inputType="textMultiLine"
                 android:lines="2"/>
@@ -126,10 +128,11 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="5dp"
                 android:background="@drawable/edittextbox"
-                android:inputType="textMultiLine"
+                android:padding="10sp"
+                android:gravity="top"
                 android:lines="4"
                 android:maxLines="6"
-                android:padding="2dip"
+                android:inputType="textMultiLine"
                 android:scrollbars="vertical" />
 
             <TextView
