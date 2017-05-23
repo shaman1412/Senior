@@ -194,8 +194,8 @@ public class promotion_restaurant_MainFragment extends Fragment implements Fragm
     }
 
     @Override
-    public void onStop() {
-        super.onStop();
+    public void onDestroy() {
+        super.onDestroy();
         if(loadingFragment!=null)
         {
             loadingFragment.onStop();

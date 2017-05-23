@@ -67,8 +67,8 @@ public class top_resturant_MainFragment extends Fragment {
     }
 
     @Override
-    public void onStop() {
-        super.onStop();
+    public void onDestroy() {
+        super.onDestroy();
         if(loadingFragment!=null)
         {
             loadingFragment.onStop();
