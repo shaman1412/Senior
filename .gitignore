@@ -25,4 +25,6 @@ Thumbs.db
 .idea
 .idea/workspace.xml
 .gradle
+*.idea
+*.iml
 build/
