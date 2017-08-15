@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:padding="10dp"
-    tools:context="com.Senior.Faff.Fragment.Party.Requested_Fragment">
+    tools:context="com.Senior.Faff.Fragment.Party.RequestedFragment">
 
     <FrameLayout
         android:id="@+id/loading"

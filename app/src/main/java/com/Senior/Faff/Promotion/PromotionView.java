@@ -22,11 +22,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.Senior.Faff.Main2Activity;
-import com.Senior.Faff.MapsActivity;
-import com.Senior.Faff.Promotion_MapsActivity;
+import com.Senior.Faff.PromotionMapsActivity;
 import com.Senior.Faff.R;
-import com.Senior.Faff.RestaurantProfile.Show_RestaurantProfile;
-import com.Senior.Faff.model.Party;
+import com.Senior.Faff.RestaurantProfile.ShowRestaurantProfile;
 import com.Senior.Faff.model.Promotion;
 import com.Senior.Faff.model.Restaurant;
 import com.Senior.Faff.model.UserProfile;
@@ -126,7 +124,7 @@ public class PromotionView extends AppCompatActivity implements OnMapReadyCallba
                 edit_pro.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        Intent intent = new Intent(mContext,Edit_promotion.class);
+                        Intent intent = new Intent(mContext,EditPromotion.class);
                         intent.putExtra("id",id);
                         startActivity(intent);
                     }
@@ -144,7 +142,7 @@ public class PromotionView extends AppCompatActivity implements OnMapReadyCallba
                 goTores.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        Intent intent = new Intent(mContext,Show_RestaurantProfile.class);
+                        Intent intent = new Intent(mContext,ShowRestaurantProfile.class);
                         intent.putExtra(Restaurant.Column.UserID,userid);
                         intent.putExtra(Restaurant.Column.ResID,data.getResid());
                         startActivity(intent);
@@ -178,7 +176,7 @@ public class PromotionView extends AppCompatActivity implements OnMapReadyCallba
         mMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
             @Override
             public void onMapClick(LatLng latLng) {
-                Intent intent = new Intent(PromotionView.this, Promotion_MapsActivity.class);
+                Intent intent = new Intent(PromotionView.this, PromotionMapsActivity.class);
                 intent.putExtra(Promotion.Column.Location,data.getGoogleMapLink());
                 intent.putExtra(Promotion.Column.Title, data.getTitle());
                 startActivity(intent);

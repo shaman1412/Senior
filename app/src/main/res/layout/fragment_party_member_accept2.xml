@@ -2,7 +2,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.Senior.Faff.Fragment.Party.party_member_accept">
+    tools:context="com.Senior.Faff.Fragment.Party.PartyMemberAccept">
 
     <!-- TODO: Update blank fragment layout -->
     <LinearLayout

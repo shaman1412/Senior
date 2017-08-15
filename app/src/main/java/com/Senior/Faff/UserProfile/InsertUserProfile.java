@@ -11,7 +11,6 @@ import android.provider.MediaStore;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.ContentFrameLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -22,34 +21,18 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ListView;
 import android.widget.Spinner;
-import android.widget.Toast;
 
-import com.Senior.Faff.Main2Activity;
-import com.Senior.Faff.Promotion.PromotionActivity;
-import com.Senior.Faff.Promotion.PromotionRecyclerViewAdapter;
 import com.Senior.Faff.R;
-import com.Senior.Faff.model.Promotion;
-import com.Senior.Faff.model.UserAuthen;
 import com.Senior.Faff.model.UserProfile;
 import com.Senior.Faff.utils.Helper;
 import com.google.gson.Gson;
 
-import org.json.JSONObject;
-
-import java.io.BufferedOutputStream;
-import java.io.BufferedWriter;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.io.OutputStream;
-import java.io.OutputStreamWriter;
-import java.net.HttpURLConnection;
 import java.net.URL;
-import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Map;
 
 public class InsertUserProfile extends AppCompatActivity {
@@ -65,7 +48,7 @@ public class InsertUserProfile extends AppCompatActivity {
     private RecyclerView.Adapter mAdapter;
     private ArrayList<String> type_list;
     private String type_check;
-    private List_type list_adapter;
+    private ListType list_adapter;
     private boolean first = true;
 
     private static final int request_code = 1;                          //request code for OnClick result
@@ -139,7 +122,7 @@ public class InsertUserProfile extends AppCompatActivity {
                 }
                 if (same == false && first == false) {
                     type_list.add(text);
-                    list_adapter = new List_type(type_list, mcontext);
+                    list_adapter = new ListType(type_list, mcontext);
                     LinearLayoutManager mLayoutManager = new LinearLayoutManager(mcontext);
                     mLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
                     mRecyclerView = (RecyclerView) findViewById(R.id.list_show);

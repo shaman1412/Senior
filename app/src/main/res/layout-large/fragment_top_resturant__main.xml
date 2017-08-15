@@ -4,7 +4,7 @@
     android:layout_height="match_parent"
     android:background="#ededed"
     android:padding="10dp"
-    tools:context="com.Senior.Faff.Fragment.Home.top_resturant_MainFragment">
+    tools:context="com.Senior.Faff.Fragment.Home.TopResturantMainFragment">
 
     <!-- TODO: Update blank fragment layout -->
 

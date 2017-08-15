@@ -1,4 +1,4 @@
-package com.Senior.Faff.chat;
+package com.Senior.Faff.Chat;
 
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -26,10 +26,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
-import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.StorageReference;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -192,7 +189,7 @@ public class ChatMainActivity extends AppCompatActivity {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                Intent intent = new Intent(getApplicationContext(), Chat_Room.class);
+                Intent intent = new Intent(getApplicationContext(), ChatRoom.class);
                 intent.putExtra("room_name", ((TextView) view).getText().toString());
                 intent.putExtra("user_name", name);
                 startActivity(intent);

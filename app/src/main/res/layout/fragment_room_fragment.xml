@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:padding="10dp"
     android:layout_height="match_parent"
-    tools:context="com.Senior.Faff.Fragment.Party.Room_fragment">
+    tools:context="com.Senior.Faff.Fragment.Party.RoomFragment">
 
     <!-- TODO: Update blank fragment layout -->
     <!--<ListView-->

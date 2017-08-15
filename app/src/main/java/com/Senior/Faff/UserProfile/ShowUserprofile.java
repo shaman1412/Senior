@@ -6,7 +6,6 @@ import android.graphics.Point;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.support.annotation.RequiresApi;
-import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
@@ -19,35 +18,25 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.util.DisplayMetrics;
-import android.util.Log;
 import android.view.Display;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.Senior.Faff.Main2Activity;
-import com.Senior.Faff.Promotion.PromotionActivity;
 import com.Senior.Faff.R;
-import com.Senior.Faff.model.UserAuthen;
 import com.Senior.Faff.model.UserProfile;
 import com.Senior.Faff.utils.BitmapImageManager;
 import com.Senior.Faff.utils.Helper;
 import com.Senior.Faff.utils.LoadingFragment;
+import com.Senior.Faff.utils.ProfileManager;
 import com.google.gson.Gson;
 import com.squareup.picasso.Picasso;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.BufferedInputStream;
-import java.io.BufferedReader;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
 
@@ -65,7 +54,7 @@ public class ShowUserprofile extends AppCompatActivity {
     private TextView name, age, address, email, telephone, gender;
     private ArrayList<String> favourite_type;
     private RecyclerView mRecyclerView;
-    private List_typeNodel list_adapter;
+    private ListTypeNodel list_adapter;
     private FloatingActionButton fab;
     private int width;
     private int height;
@@ -174,7 +163,7 @@ public class ShowUserprofile extends AppCompatActivity {
                         for (int i = 0; i < list.length; i++) {
                             favourite_type.add(list[i]);
                         }
-                        list_adapter = new List_typeNodel(favourite_type, mcontext);
+                        list_adapter = new ListTypeNodel(favourite_type, mcontext);
                         LinearLayoutManager mLayoutManager = new LinearLayoutManager(mcontext);
                         mLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
                         mRecyclerView = (RecyclerView) findViewById(R.id.mRecyclerView);
@@ -308,7 +297,7 @@ public class ShowUserprofile extends AppCompatActivity {
                         for (int i = 0; i < list.length; i++) {
                             favourite_type.add(list[i]);
                         }
-                        list_adapter = new List_typeNodel(favourite_type, mcontext);
+                        list_adapter = new ListTypeNodel(favourite_type, mcontext);
                         LinearLayoutManager mLayoutManager = new LinearLayoutManager(mcontext);
                         mLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
                         mRecyclerView = (RecyclerView) findViewById(R.id.mRecyclerView);
@@ -410,7 +399,7 @@ public class ShowUserprofile extends AppCompatActivity {
 //                    for(int i = 0; i < list.length; i++){
 //                        favourite_type.add(list[i]);
 //                    }
-//                    list_adapter = new List_typeNodel(favourite_type, mcontext);
+//                    list_adapter = new ListTypeNodel(favourite_type, mcontext);
 //                    LinearLayoutManager mLayoutManager  = new LinearLayoutManager(mcontext);
 //                    mLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
 //                    mRecyclerView = (RecyclerView) findViewById(R.id.mRecyclerView);

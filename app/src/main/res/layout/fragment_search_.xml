@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="com.Senior.Faff.Fragment.SearchNearby.Search_Fragment">
+    tools:context="com.Senior.Faff.Fragment.SearchNearby.SearchFragment">
 
     <!-- TODO: Update blank fragment layout -->
     <FrameLayout

@@ -19,7 +19,6 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -27,24 +26,17 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.Senior.Faff.Add_map;
-import com.Senior.Faff.Main2Activity;
-import com.Senior.Faff.Main3Activity;
+import com.Senior.Faff.AddMap;
 import com.Senior.Faff.R;
-import com.Senior.Faff.RestaurantProfile.Add_RestaurantProfile;
-import com.Senior.Faff.UserProfile.List_type;
 import com.Senior.Faff.model.Party;
 import com.Senior.Faff.model.Promotion;
 import com.Senior.Faff.model.Restaurant;
-import com.Senior.Faff.model.Restaurant_Promotion;
+import com.Senior.Faff.model.RestaurantPromotion;
 import com.Senior.Faff.model.UserProfile;
 import com.Senior.Faff.utils.Helper;
 import com.Senior.Faff.utils.PermissionUtils;
@@ -64,8 +56,6 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.gson.Gson;
 
 
-import org.json.JSONArray;
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.BufferedOutputStream;
@@ -77,7 +67,6 @@ import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
-import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -100,7 +89,7 @@ public class PromotionActivity extends AppCompatActivity implements OnMapReadyCa
     private EditText Location;
     private Context mContext;
     private RecyclerView mRecyclerView;
-    //    private List_type list_adapter;
+    //    private ListType list_adapter;
     private boolean first = true;
 //    private String type_check;
 
@@ -360,7 +349,7 @@ public class PromotionActivity extends AppCompatActivity implements OnMapReadyCa
         mMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
             @Override
             public void onMapClick(LatLng latLng) {
-                Intent intent = new Intent(mContext, Add_map.class);
+                Intent intent = new Intent(mContext, AddMap.class);
                 intent.putExtra(Party.Column.Location, send_location);
                 startActivityForResult(intent, MAP_REQUEST_CODE);
             }
@@ -459,7 +448,7 @@ public class PromotionActivity extends AppCompatActivity implements OnMapReadyCa
             if (result != "") {
 
                 PromotionActivity.Linking lk = new PromotionActivity.Linking();
-                lk.execute(new Restaurant_Promotion(resid, promotionid));
+                lk.execute(new RestaurantPromotion(resid, promotionid));
 
 //                getCount gc = new getCount();
 //                gc.execute("");
@@ -471,16 +460,16 @@ public class PromotionActivity extends AppCompatActivity implements OnMapReadyCa
         }
     }
 
-    private class Linking extends AsyncTask<Restaurant_Promotion, String, String> {
+    private class Linking extends AsyncTask<RestaurantPromotion, String, String> {
         private HttpURLConnection connection;
         private int responseCode;
 
         @Override
-        protected String doInBackground(Restaurant_Promotion... params) {
+        protected String doInBackground(RestaurantPromotion... params) {
             try {
                 JSONObject paras = new JSONObject();
-                paras.put(Restaurant_Promotion.Column.resid, params[0].getResid());
-                paras.put(Restaurant_Promotion.Column.promotionid, params[0].getPromotionid());
+                paras.put(RestaurantPromotion.Column.resid, params[0].getResid());
+                paras.put(RestaurantPromotion.Column.promotionid, params[0].getPromotionid());
 
                 URL url = new URL("https://faff-1489402013619.appspot.com/restaurant_promotion/create");
                 //URL url = new URL("http://localhost:8080/promotion_list/new_promotion");

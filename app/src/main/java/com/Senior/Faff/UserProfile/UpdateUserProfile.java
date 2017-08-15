@@ -24,32 +24,22 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
 
-import com.Senior.Faff.Main2Activity;
 import com.Senior.Faff.R;
 import com.Senior.Faff.model.UserProfile;
 import com.Senior.Faff.utils.Helper;
 import com.google.gson.Gson;
-import com.squareup.picasso.Picasso;
-
-import org.json.JSONObject;
 
 import java.io.BufferedInputStream;
-import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
-import java.io.BufferedWriter;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.OutputStream;
-import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Map;
 
 public class UpdateUserProfile extends AppCompatActivity {
@@ -63,7 +53,7 @@ public class UpdateUserProfile extends AppCompatActivity {
     private RecyclerView.Adapter mAdapter;
     private ArrayList<String> type_list;
     private String type_check;
-    private List_type list_adapter;
+    private ListType list_adapter;
     private boolean first = true;
     private String user_profile;
     private Button upload_picture;
@@ -142,7 +132,7 @@ public class UpdateUserProfile extends AppCompatActivity {
                 }
                 if (same == false && first == false) {
                     type_list.add(text);
-                    list_adapter = new List_type(type_list, mcontext);
+                    list_adapter = new ListType(type_list, mcontext);
                     LinearLayoutManager mLayoutManager = new LinearLayoutManager(mcontext);
                     mLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
                     mRecyclerView = (RecyclerView) findViewById(R.id.list_show);
@@ -192,7 +182,7 @@ public class UpdateUserProfile extends AppCompatActivity {
 
         //for ????
 //        type_list = new ArrayList<>();
-//        list_adapter = new List_type();
+//        list_adapter = new ListType();
 
 
         new getData().execute(userid);
@@ -500,7 +490,7 @@ public class UpdateUserProfile extends AppCompatActivity {
                         for (int i = 0; i < list.length; i++) {
                             type_list.add(list[i]);
                         }
-                        list_adapter = new List_type(type_list, mcontext);
+                        list_adapter = new ListType(type_list, mcontext);
                         LinearLayoutManager mLayoutManager = new LinearLayoutManager(mcontext);
                         mLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
                         mRecyclerView = (RecyclerView) findViewById(R.id.list_show);

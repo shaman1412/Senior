@@ -7,7 +7,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
 
-    tools:context="com.Senior.Faff.Fragment.MainMenu.MainParty_fragment">
+    tools:context="com.Senior.Faff.Fragment.MainMenu.MainPartyFragment">
 
     <!-- TODO: Update blank fragment layout -->
 

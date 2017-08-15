@@ -14,7 +14,7 @@ import java.util.Map;
  * Created by InFiNity on 14-Mar-17.
  */
 
-public class firebase {
+public class Firebase {
    public DatabaseReference mRootRef = FirebaseDatabase.getInstance().getReference();
    public DatabaseReference mMessagesRef = mRootRef.child("messages");
    public DatabaseReference mUsersRef = mRootRef.child("users");

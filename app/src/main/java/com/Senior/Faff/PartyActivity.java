@@ -5,10 +5,9 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 
 
-import com.Senior.Faff.Fragment.Adapter.Party_adapter;
+import com.Senior.Faff.Fragment.Adapter.PartyAdapter;
 
 public class PartyActivity extends AppCompatActivity {
     private static final String Tag = PartyActivity.class.getSimpleName();
@@ -22,7 +21,7 @@ public class PartyActivity extends AppCompatActivity {
         setContentView(R.layout.activity_party);
         context = this;
 
-        Party_adapter adapter = new Party_adapter(getSupportFragmentManager(),context , bundle);
+        PartyAdapter adapter = new PartyAdapter(getSupportFragmentManager(),context , bundle);
         pager = (ViewPager)findViewById(R.id.pager);
         pager.setAdapter(adapter);
         pager.setCurrentItem(1);

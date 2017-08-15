@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:gravity="center"
     android:orientation="vertical"
-    tools:context="com.Senior.Faff.Fragment.Party.Party_CreateNewParty">
+    tools:context="com.Senior.Faff.Fragment.Party.PartyCreateNewParty">
 
     <include
         layout="@layout/toolbar"

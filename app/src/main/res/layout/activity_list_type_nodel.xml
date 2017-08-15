@@ -8,7 +8,7 @@
     android:padding="10dp"
     android:layout_marginRight="10dp"
     android:background="@drawable/tag_type_food"
-    tools:context="com.Senior.Faff.UserProfile.List_typeNodel">
+    tools:context="com.Senior.Faff.UserProfile.ListTypeNodel">
 
 
     <TextView

@@ -88,7 +88,7 @@ public class RestaurantMapsActivity extends AppCompatActivity implements OnMapRe
             @Override
             public void onClick(View v) {
                 if(position != null) {
-                    Intent intent = new Intent(getApplicationContext(), Add_RestaurantProfile.class);
+                    Intent intent = new Intent(getApplicationContext(), AddRestaurantProfile.class);
                     intent.putExtra("Position",position);
                     intent.putExtra("userid",user_id);
                     startActivity(intent);

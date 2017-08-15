@@ -1,7 +1,6 @@
 package com.Senior.Faff.Promotion;
 
 import android.content.Context;
-import android.graphics.Bitmap;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,8 +11,6 @@ import android.widget.TextView;
 
 import com.Senior.Faff.R;
 import com.Senior.Faff.model.Promotion;
-import com.Senior.Faff.model.PromotionPicture;
-import com.Senior.Faff.model.promotion_view_list;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;

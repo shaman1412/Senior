@@ -79,6 +79,11 @@ public class LoginActivity extends ActionBarActivity {
     private JSONObject obj;
 
     @Override
+    public void onBackPressed() {
+        finish();
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         SharedPreferences sp = getSharedPreferences("CHECK_LOGIN", Context.MODE_PRIVATE);
@@ -649,4 +654,5 @@ public class LoginActivity extends ActionBarActivity {
             }
         }
     }
+
 }

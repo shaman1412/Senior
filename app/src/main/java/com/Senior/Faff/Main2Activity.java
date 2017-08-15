@@ -6,7 +6,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
-import android.net.Uri;
 import android.os.AsyncTask;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
@@ -17,20 +16,15 @@ import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AlertDialog;
-import android.support.v7.widget.ButtonBarLayout;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
 import android.util.Log;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.SeekBar;
@@ -38,57 +32,33 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 
-import com.Senior.Faff.Fragment.Adapter.Home_adpater;
-import com.Senior.Faff.Fragment.Adapter.Party_adapter;
-import com.Senior.Faff.Fragment.MainMenu.MainHome_Fragment;
-import com.Senior.Faff.Fragment.MainMenu.MainNearby_Fragment;
-import com.Senior.Faff.Fragment.MainMenu.MainParty_fragment;
-import com.Senior.Faff.Promotion.PromotionActivity;
-import com.Senior.Faff.Promotion.PromotionShow;
-import com.Senior.Faff.RestaurantProfile.Option_RestaurantFragment;
-import com.Senior.Faff.UserProfile.Change_password;
+import com.Senior.Faff.Fragment.MainMenu.MainHomeFragment;
+import com.Senior.Faff.Fragment.MainMenu.MainNearbyFragment;
+import com.Senior.Faff.Fragment.MainMenu.MainPartyFragment;
+import com.Senior.Faff.RestaurantProfile.OptionRestaurantFragment;
+import com.Senior.Faff.UserProfile.ChangePassword;
 import com.Senior.Faff.UserProfile.InsertUserProfile;
-import com.Senior.Faff.UserProfile.List_typeNodel;
-//import com.Senior.Faff.UserProfile.ProfileManager;
+//import com.Senior.Faff.utils.ProfileManager;
 import com.Senior.Faff.UserProfile.ShowUserprofile;
-import com.Senior.Faff.UserProfile.favorite_restaurant;
-import com.Senior.Faff.chat.ChatMainActivity;
-import com.Senior.Faff.model.Party;
+import com.Senior.Faff.UserProfile.FavoriteRestaurant;
 import com.Senior.Faff.model.Restaurant;
-import com.Senior.Faff.model.UserAuthen;
 import com.Senior.Faff.model.UserProfile;
-import com.Senior.Faff.model.filter_nearby_restaurant;
-import com.Senior.Faff.utils.firebase;
+import com.Senior.Faff.model.FilterNearbyRestaurant;
+import com.Senior.Faff.utils.Firebase;
 import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.ChildEventListener;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
-import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.StorageReference;
-import com.google.firebase.storage.UploadTask;
 import com.google.gson.Gson;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedReader;
-import java.io.File;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.Set;
 
 public class Main2Activity extends AppCompatActivity {
 
@@ -124,7 +94,7 @@ public class Main2Activity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         saveStage = savedInstanceState;
-        firebase a = new firebase();
+        Firebase a = new Firebase();
 
         setContentView(R.layout.activity_main2);
         setTitle("");
@@ -231,7 +201,7 @@ public class Main2Activity extends AppCompatActivity {
 
                         switch (item.getItemId()) {
                             case R.id.Party:
-                                MainParty_fragment fragment_party = new MainParty_fragment();
+                                MainPartyFragment fragment_party = new MainPartyFragment();
                                 fragment_party.setArguments(bundle);
                                 FragmentManager fragmentManager_party = getSupportFragmentManager();
                                 fragmentManager_party.beginTransaction()
@@ -243,7 +213,7 @@ public class Main2Activity extends AppCompatActivity {
                             case R.id.Home:
                                 Bundle b = new Bundle();
 
-                                MainHome_Fragment fragment_home = new MainHome_Fragment();
+                                MainHomeFragment fragment_home = new MainHomeFragment();
                                 fragment_home.setArguments(bundle);
                                 FragmentManager fragmentManager_home = getSupportFragmentManager();
                                 fragmentManager_home.beginTransaction()
@@ -252,7 +222,7 @@ public class Main2Activity extends AppCompatActivity {
                                         .commit();
                                 break;
                             case R.id.Nearby:
-                                MainNearby_Fragment fragment_nearby = new MainNearby_Fragment();
+                                MainNearbyFragment fragment_nearby = new MainNearbyFragment();
                                 FragmentManager fragmentManager_nearby = getSupportFragmentManager();
                                 fragmentManager_nearby.beginTransaction()
                                         .setCustomAnimations(R.anim.fade_in, R.anim.fade_out)
@@ -314,11 +284,11 @@ public class Main2Activity extends AppCompatActivity {
 
         switch (menuItem.getItemId()) {
 //            case R.id.Home:
-//                Intent Home_intent = new Intent(context, test_callservice.class);
+//                Intent Home_intent = new Intent(context, TestCallservice.class);
 //                startActivity(Home_intent);
 //                break;
       /*      case R.id.NotificationUser:
-                Intent Home_intenta = new Intent(context, test_callservice.class);
+                Intent Home_intenta = new Intent(context, TestCallservice.class);
                 startActivity(Home_intenta);
                 break;*/
             case R.id.UserProfile:
@@ -328,7 +298,7 @@ public class Main2Activity extends AppCompatActivity {
                 startActivity(intent);
                 break;
             case R.id.Favourite:
-                Intent b = new Intent(context, favorite_restaurant.class);
+                Intent b = new Intent(context, FavoriteRestaurant.class);
                 b.putExtra(UserProfile.Column.UserID, userid);
                 startActivity(b);
                 break;
@@ -342,13 +312,13 @@ public class Main2Activity extends AppCompatActivity {
                 //set Fragmentclass Arguments
 
                 Log.i(Tag, "  in Main2 userid is : " + userid);
-                Option_RestaurantFragment option = new Option_RestaurantFragment();
+                OptionRestaurantFragment option = new OptionRestaurantFragment();
                 option.setArguments(bundle);
                 FragmentManager manager = getSupportFragmentManager();
                 manager.beginTransaction().replace(R.id.flContent, option).commit();
                 break;
             case R.id.change_pass:
-                Intent ii = new Intent(context, Change_password.class);
+                Intent ii = new Intent(context, ChangePassword.class);
                 ii.putExtra(UserProfile.Column.UserID,id);
                startActivity(ii);
                 break;
@@ -477,14 +447,14 @@ public class Main2Activity extends AppCompatActivity {
         btn_2.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 Toast.makeText(Main2Activity.this, "MyLocation button clicked", Toast.LENGTH_SHORT).show();
-                filter_nearby_restaurant filter = new filter_nearby_restaurant();
+                FilterNearbyRestaurant filter = new FilterNearbyRestaurant();
                 if(type_food != null){
                     filter.setType(type_food);
                 }
                 if(distance != 0){
                     filter.setDistnace(distance);
                 }
-                MainNearby_Fragment fragment_nearby = new MainNearby_Fragment();
+                MainNearbyFragment fragment_nearby = new MainNearbyFragment();
                 Bundle bundle = new Bundle();
                 bundle.putSerializable(Restaurant.Column.TypeFood,filter);
                 bundle.putInt("Postition",1);
@@ -574,7 +544,7 @@ public class Main2Activity extends AppCompatActivity {
                 bundle.putString(UserProfile.Column.Name, userProfile.getName());
                 bundle.putInt(UserProfile.Column.Age, userProfile.getAge());
                 bundle.putInt(UserProfile.Column.Gender, userProfile.getGender());
-                MainHome_Fragment fragment_home = new MainHome_Fragment();
+                MainHomeFragment fragment_home = new MainHomeFragment();
                 fragment_home.setArguments(bundle);
                 FragmentManager fragmentManager_home = getSupportFragmentManager();
                 try {

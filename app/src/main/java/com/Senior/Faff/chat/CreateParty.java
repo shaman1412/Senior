@@ -1,23 +1,17 @@
-package com.Senior.Faff.chat;
+package com.Senior.Faff.Chat;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ListView;
 
 import com.Senior.Faff.R;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
-import java.util.Objects;
-
-import static com.Senior.Faff.R.id.map;
 
 public class CreateParty extends AppCompatActivity {
 

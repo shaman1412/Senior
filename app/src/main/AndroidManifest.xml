@@ -29,11 +29,11 @@
             </intent-filter>
         </activity>
         <activity android:name=".RegisterActivity" />
-        <activity android:name=".MainActivity" />
+        <activity android:name=".Test.MainActivity" />
         <activity android:name=".Promotion.PromotionActivity" />
         <activity android:name=".Promotion.PromotionView" />
 
-        <receiver android:name=".broadcast_to_start">
+        <receiver android:name=".BroadcastToStart">
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
             </intent-filter>
@@ -67,8 +67,8 @@
         <activity
             android:name=".MapsActivity"
             android:label="@string/title_activity_maps" />
-        <activity android:name=".LocationProvider" />
-        <activity android:name=".TestActivity" />
+        <activity android:name=".Test.LocationProvider" />
+        <activity android:name=".Test.TestActivity" />
         <activity android:name=".Main2Activity" />
         <activity android:name=".PartyActivity" />
         <activity android:name=".UserProfile.InsertUserProfile" />
@@ -84,55 +84,55 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".Main2Activity" />
         </activity>
-        <activity android:name=".ServerSocketActivity" />
-        <activity android:name=".ClientSocketActivity" />
+        <activity android:name=".Test.ServerSocketActivity" />
+        <activity android:name=".Test.ClientSocketActivity" />
         <activity android:name=".FilterActivity" />
         <activity android:name=".ImagerActivity" />
         <activity android:name=".utils.PlacePicker" />
-        <activity android:name=".chat.ChatMainActivity" />
-        <activity android:name=".chat.Chat_Room" />
+        <activity android:name=".Chat.ChatMainActivity" />
+        <activity android:name=".Chat.ChatRoom" />
         <activity
             android:name=".RestaurantProfile.RestaurantMapsActivity"
             android:label="@string/title_activity_restaurant_maps" />
-        <activity android:name=".RestaurantProfile.Add_RestaurantProfile" />
+        <activity android:name=".RestaurantProfile.AddRestaurantProfile" />
         <activity
-            android:name=".TestMapsActivity"
+            android:name=".Test.TestMapsActivity"
             android:label="@string/title_activity_test_maps" />
-        <activity android:name=".firebasetestActivity" />
-        <activity android:name=".Fragment.Party.Party_CreateNewParty" />
+        <activity android:name=".Test.FirebasetestActivity" />
+        <activity android:name=".Fragment.Party.PartyCreateNewParty" />
         <activity
-            android:name=".Fragment.Party.Party_CreateNewParty_map"
+            android:name=".Fragment.Party.PartyCreateNewPartyMap"
             android:label="@string/title_activity_party__create_new_party_map" />
         <activity android:name=".Promotion.PromotionShow" />
-        <activity android:name=".chat.TestFirebaseStorageActivity" />
-        <activity android:name=".chat.CreateParty" />
-        <activity android:name=".chat.ParttyDetail" />
-        <activity android:name=".RestaurantProfile.Show_RestaurantProfile" />
+        <activity android:name=".Test.TestFirebaseStorageActivity" />
+        <activity android:name=".Chat.CreateParty" />
+        <activity android:name=".Test.ParttyDetail" />
+        <activity android:name=".RestaurantProfile.ShowRestaurantProfile" />
         <activity
-            android:name=".testlife"
+            android:name=".Test.TestLife"
             android:configChanges="orientation|screenSize|keyboardHidden" />
-        <activity android:name=".Main3Activity" />
-        <activity android:name=".TestAPI" />
+        <activity android:name=".Test.Main3Activity" />
+        <activity android:name=".Test.TestAPI" />
         <activity android:name=".UserProfile.UpdateUserProfile" />
-        <activity android:name=".RestaurantProfile.Edit_RestaurantProfile" />
-        <activity android:name=".Fragment.Party.Show_party_profile" />
-        <activity android:name=".UserProfile.favorite_restaurant" />
+        <activity android:name=".RestaurantProfile.EditRestaurantProfile" />
+        <activity android:name=".Fragment.Party.ShowPartyProfile" />
+        <activity android:name=".UserProfile.FavoriteRestaurant" />
         <activity
-            android:name=".Add_map"
+            android:name=".AddMap"
             android:label="@string/title_activity_add_map" />
-        <activity android:name=".UserProfile.Change_password" />
-        <activity android:name=".testnoti" />
-        <activity android:name=".chat.Chat_Party" />
-        <activity android:name=".test_callservice" />
+        <activity android:name=".UserProfile.ChangePassword" />
+        <activity android:name=".Test.TestNoti" />
+        <activity android:name=".Chat.ChatParty" />
+        <activity android:name=".Test.TestCallservice" />
 
-        <service android:name=".server_service" />
+        <service android:name=".ServerService" />
 
         <activity android:name=".TestLoginFacebook.TestLoginFacebook" />
         <activity android:name=".utils.LoadingFragment" />
-        <activity android:name=".Promotion.Promotion_recycleview" />
-        <activity android:name=".Promotion.Edit_promotion" />
+        <activity android:name=".Promotion.PromotionRecycleview" />
+        <activity android:name=".Promotion.EditPromotion" />
         <activity
-            android:name=".Promotion_MapsActivity"
+            android:name=".PromotionMapsActivity"
             android:label="@string/title_activity_promotion__maps"></activity>
     </application>
 
