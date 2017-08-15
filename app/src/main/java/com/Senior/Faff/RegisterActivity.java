@@ -1,6 +1,5 @@
 package com.Senior.Faff;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
@@ -14,7 +13,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.Senior.Faff.UserProfile.InsertUserProfile;
-import com.Senior.Faff.model.UserAuthen;
+import com.Senior.Faff.Model.UserAuthen;
 import com.Senior.Faff.utils.DatabaseManager;
 
 import org.json.JSONObject;

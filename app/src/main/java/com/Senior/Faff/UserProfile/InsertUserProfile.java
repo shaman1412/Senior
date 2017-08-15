@@ -24,7 +24,7 @@ import android.widget.EditText;
 import android.widget.Spinner;
 
 import com.Senior.Faff.R;
-import com.Senior.Faff.model.UserProfile;
+import com.Senior.Faff.Model.UserProfile;
 import com.Senior.Faff.utils.Helper;
 import com.google.gson.Gson;
 

@@ -16,7 +16,7 @@ import android.view.ViewGroup;
 import com.Senior.Faff.Fragment.Adapter.PartyAdapter;
 import com.Senior.Faff.Fragment.Party.PartyCreateNewParty;
 import com.Senior.Faff.R;
-import com.Senior.Faff.model.UserProfile;
+import com.Senior.Faff.Model.UserProfile;
 import com.Senior.Faff.utils.CustomTabLayout;
 
 /**

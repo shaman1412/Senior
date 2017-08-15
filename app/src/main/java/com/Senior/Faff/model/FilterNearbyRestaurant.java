@@ -1,7 +1,4 @@
-package com.Senior.Faff.model;
-
-import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
-import com.google.gson.Gson;
+package com.Senior.Faff.Model;
 
 import java.io.Serializable;
 import java.util.ArrayList;

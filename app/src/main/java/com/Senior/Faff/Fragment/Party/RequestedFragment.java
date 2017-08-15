@@ -16,8 +16,8 @@ import android.widget.FrameLayout;
 import android.widget.Toast;
 
 import com.Senior.Faff.R;
-import com.Senior.Faff.model.Party;
-import com.Senior.Faff.model.UserProfile;
+import com.Senior.Faff.Model.Party;
+import com.Senior.Faff.Model.UserProfile;
 import com.Senior.Faff.utils.LoadingFragment;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;

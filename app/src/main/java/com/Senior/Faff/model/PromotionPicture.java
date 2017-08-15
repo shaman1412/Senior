@@ -1,4 +1,4 @@
-package com.Senior.Faff.model;
+package com.Senior.Faff.Model;
 
 /**
  * Created by Not_Today on 2/11/2017.

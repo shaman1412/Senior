@@ -1,12 +1,8 @@
-package com.Senior.Faff.model;
+package com.Senior.Faff.Model;
 
 /**
  * Created by Not_Today on 12/15/2016.
  */
-
-import android.provider.BaseColumns;
-
-import java.util.ArrayList;
 
 public class Promotion {
 

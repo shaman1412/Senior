@@ -13,7 +13,7 @@ import com.Senior.Faff.Fragment.Home.PromotionRestaurantMainFragment;
 import com.Senior.Faff.Fragment.Home.TopResturantMainFragment;
 import com.Senior.Faff.Fragment.Home.AdviceRestaurantMainFragment;
 import com.Senior.Faff.R;
-import com.Senior.Faff.model.UserProfile;
+import com.Senior.Faff.Model.UserProfile;
 
 public class HomeAdpater extends FragmentPagerAdapter   {
     private final int PAGE_NUM = 3;

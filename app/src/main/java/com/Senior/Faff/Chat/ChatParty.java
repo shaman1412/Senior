@@ -12,8 +12,8 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.Senior.Faff.R;
-import com.Senior.Faff.model.PartyChat;
-import com.Senior.Faff.model.UserProfile;
+import com.Senior.Faff.Model.PartyChat;
+import com.Senior.Faff.Model.UserProfile;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;

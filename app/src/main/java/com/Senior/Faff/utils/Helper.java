@@ -8,7 +8,7 @@ import android.graphics.Matrix;
 import android.media.ExifInterface;
 import android.util.Log;
 
-import com.Senior.Faff.model.UserProfile;
+import com.Senior.Faff.Model.UserProfile;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;

@@ -9,7 +9,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.Senior.Faff.R;
-import com.Senior.Faff.model.PartyChat;
+import com.Senior.Faff.Model.PartyChat;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;

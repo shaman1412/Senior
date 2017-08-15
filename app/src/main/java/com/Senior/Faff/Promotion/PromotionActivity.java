@@ -33,11 +33,11 @@ import android.widget.Toast;
 
 import com.Senior.Faff.AddMap;
 import com.Senior.Faff.R;
-import com.Senior.Faff.model.Party;
-import com.Senior.Faff.model.Promotion;
-import com.Senior.Faff.model.Restaurant;
-import com.Senior.Faff.model.RestaurantPromotion;
-import com.Senior.Faff.model.UserProfile;
+import com.Senior.Faff.Model.Party;
+import com.Senior.Faff.Model.Promotion;
+import com.Senior.Faff.Model.Restaurant;
+import com.Senior.Faff.Model.RestaurantPromotion;
+import com.Senior.Faff.Model.UserProfile;
 import com.Senior.Faff.utils.Helper;
 import com.Senior.Faff.utils.PermissionUtils;
 import com.google.android.gms.common.ConnectionResult;

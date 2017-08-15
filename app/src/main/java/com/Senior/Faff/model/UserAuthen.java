@@ -1,6 +1,4 @@
-package com.Senior.Faff.model;
-
-import android.provider.BaseColumns;
+package com.Senior.Faff.Model;
 
 public class UserAuthen {
 

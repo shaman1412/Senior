@@ -26,8 +26,8 @@ import android.widget.Toast;
 import android.os.Process;
 
 import com.Senior.Faff.Fragment.Party.ShowPartyProfile;
-import com.Senior.Faff.model.Party;
-import com.Senior.Faff.model.UserProfile;
+import com.Senior.Faff.Model.Party;
+import com.Senior.Faff.Model.UserProfile;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationAvailability;

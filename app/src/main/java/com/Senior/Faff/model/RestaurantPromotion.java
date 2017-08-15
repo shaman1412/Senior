@@ -1,4 +1,4 @@
-package com.Senior.Faff.model;
+package com.Senior.Faff.Model;
 
 import android.provider.BaseColumns;
 

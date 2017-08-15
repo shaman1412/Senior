@@ -15,7 +15,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.Senior.Faff.R;
-import com.Senior.Faff.model.Restaurant;
+import com.Senior.Faff.Model.Restaurant;
 import com.google.gson.Gson;
 
 import java.io.BufferedInputStream;

@@ -26,7 +26,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.Senior.Faff.R;
-import com.Senior.Faff.model.UserProfile;
+import com.Senior.Faff.Model.UserProfile;
 import com.Senior.Faff.utils.BitmapImageManager;
 import com.Senior.Faff.utils.Helper;
 import com.Senior.Faff.utils.LoadingFragment;

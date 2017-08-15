@@ -15,8 +15,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.Senior.Faff.TestLoginFacebook.TestFacebookFragment;
-import com.Senior.Faff.model.UserAuthen;
-import com.Senior.Faff.model.UserProfile;
+import com.Senior.Faff.Model.UserAuthen;
+import com.Senior.Faff.Model.UserProfile;
 import com.Senior.Faff.utils.DatabaseManager;
 import com.Senior.Faff.utils.Helper;
 import com.Senior.Faff.utils.LoadingFragment;
@@ -51,7 +51,6 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Iterator;

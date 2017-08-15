@@ -1,6 +1,6 @@
 package com.Senior.Faff.utils;
 
-import com.Senior.Faff.model.UserAuthen;
+import com.Senior.Faff.Model.UserAuthen;
 
 public interface DatabaseManagerHelper {
 

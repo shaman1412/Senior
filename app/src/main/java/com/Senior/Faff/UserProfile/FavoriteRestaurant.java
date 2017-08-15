@@ -15,9 +15,9 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import com.Senior.Faff.R;
-import com.Senior.Faff.model.BookmarkList;
-import com.Senior.Faff.model.Restaurant;
-import com.Senior.Faff.model.UserProfile;
+import com.Senior.Faff.Model.BookmarkList;
+import com.Senior.Faff.Model.Restaurant;
+import com.Senior.Faff.Model.UserProfile;
 import com.Senior.Faff.utils.LoadingFragment;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;

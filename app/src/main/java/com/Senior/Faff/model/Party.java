@@ -1,10 +1,8 @@
-package com.Senior.Faff.model;
+package com.Senior.Faff.Model;
 
 /**
  * Created by Not_Today on 12/23/2016.
  */
-
-import android.provider.BaseColumns;
 
 import java.util.HashMap;
 import java.util.Map;

@@ -13,8 +13,8 @@ import android.widget.Toast;
 
 import com.Senior.Faff.LoginActivity;
 import com.Senior.Faff.R;
-import com.Senior.Faff.model.UserAuthen;
-import com.Senior.Faff.model.UserProfile;
+import com.Senior.Faff.Model.UserAuthen;
+import com.Senior.Faff.Model.UserProfile;
 import com.google.gson.Gson;
 
 import org.json.JSONObject;

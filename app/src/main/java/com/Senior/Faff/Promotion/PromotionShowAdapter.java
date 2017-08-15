@@ -10,7 +10,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.Senior.Faff.R;
-import com.Senior.Faff.model.Promotion;
+import com.Senior.Faff.Model.Promotion;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;

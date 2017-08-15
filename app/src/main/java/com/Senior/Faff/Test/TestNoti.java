@@ -12,7 +12,7 @@ import android.support.v7.app.NotificationCompat;
 import com.Senior.Faff.Main2Activity;
 import com.Senior.Faff.R;
 import com.Senior.Faff.UserProfile.ShowUserprofile;
-import com.Senior.Faff.model.UserProfile;
+import com.Senior.Faff.Model.UserProfile;
 
 public class TestNoti extends AppCompatActivity {
 

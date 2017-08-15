@@ -21,8 +21,8 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.Spinner;
 
-import com.Senior.Faff.model.Party;
-import com.Senior.Faff.model.UserProfile;
+import com.Senior.Faff.Model.Party;
+import com.Senior.Faff.Model.UserProfile;
 import com.Senior.Faff.utils.CreatePartyManager;
 
 import com.Senior.Faff.R;

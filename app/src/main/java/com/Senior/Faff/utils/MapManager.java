@@ -10,7 +10,7 @@ import android.database.sqlite.SQLiteOpenHelper;
  * Created by InFiNity on 21-Jan-17.
  */
 
-import com.Senior.Faff.model.Marker;
+import com.Senior.Faff.Model.Marker;
 
 import java.util.ArrayList;
 

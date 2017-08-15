@@ -12,8 +12,8 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.Senior.Faff.R;
-import com.Senior.Faff.model.Promotion;
-import com.Senior.Faff.model.UserProfile;
+import com.Senior.Faff.Model.Promotion;
+import com.Senior.Faff.Model.UserProfile;
 import com.squareup.picasso.Picasso;
 
 public class PromotionRecycleview extends RecyclerView.Adapter<PromotionRecycleview.ViewHolder> {

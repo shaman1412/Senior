@@ -6,8 +6,8 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
-import com.Senior.Faff.model.UserAuthen;
-import com.Senior.Faff.model.UserProfile;
+import com.Senior.Faff.Model.UserAuthen;
+import com.Senior.Faff.Model.UserProfile;
 import com.google.gson.Gson;
 
 import java.util.List;

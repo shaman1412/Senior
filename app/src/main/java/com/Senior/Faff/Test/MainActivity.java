@@ -18,7 +18,7 @@ import com.Senior.Faff.LoginActivity;
 import com.Senior.Faff.MapsActivity;
 import com.Senior.Faff.Promotion.PromotionActivity;
 import com.Senior.Faff.R;
-import com.Senior.Faff.model.UserAuthen;
+import com.Senior.Faff.Model.UserAuthen;
 import com.Senior.Faff.utils.DatabaseManager;
 
 public class MainActivity extends ActionBarActivity {

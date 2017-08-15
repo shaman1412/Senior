@@ -16,9 +16,9 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.Senior.Faff.model.Marker;
-import com.Senior.Faff.model.Party;
-import com.Senior.Faff.model.Restaurant;
+import com.Senior.Faff.Model.Marker;
+import com.Senior.Faff.Model.Party;
+import com.Senior.Faff.Model.Restaurant;
 import com.Senior.Faff.utils.MapManager;
 import com.Senior.Faff.utils.PermissionUtils;
 import com.google.android.gms.common.ConnectionResult;

@@ -24,9 +24,9 @@ import android.widget.FrameLayout;
 import android.widget.Toast;
 
 import com.Senior.Faff.R;
-import com.Senior.Faff.model.Party;
-import com.Senior.Faff.model.Restaurant;
-import com.Senior.Faff.model.UserProfile;
+import com.Senior.Faff.Model.Party;
+import com.Senior.Faff.Model.Restaurant;
+import com.Senior.Faff.Model.UserProfile;
 import com.Senior.Faff.utils.LoadingFragment;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;

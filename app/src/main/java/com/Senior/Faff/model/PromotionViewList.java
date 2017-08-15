@@ -1,16 +1,7 @@
-package com.Senior.Faff.model;
+package com.Senior.Faff.Model;
 
 import android.graphics.Bitmap;
-import android.os.Parcel;
-import android.os.Parcelable;
 
-import com.google.gson.JsonDeserializationContext;
-import com.google.gson.JsonDeserializer;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonParseException;
-
-import java.io.Serializable;
-import java.lang.reflect.Type;
 import java.util.ArrayList;
 
 /**

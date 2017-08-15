@@ -1,7 +1,6 @@
 package com.Senior.Faff.RestaurantProfile;
 
 import android.content.Context;
-import android.media.Image;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,7 +9,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.Senior.Faff.R;
-import com.Senior.Faff.model.Comment;
+import com.Senior.Faff.Model.Comment;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
