@@ -14,7 +14,6 @@ import android.widget.AdapterView;
 import android.widget.FrameLayout;
 import android.widget.ListView;
 
-import com.Senior.Faff.Interface.FragmentPagerAdapterInterface;
 import com.Senior.Faff.Promotion.PromotionShowAdapter;
 import com.Senior.Faff.Promotion.PromotionView;
 import com.Senior.Faff.R;
@@ -32,7 +31,7 @@ import java.net.URL;
 import java.util.ArrayList;
 
 
-public class PromotionRestaurantMainFragment extends Fragment implements FragmentPagerAdapterInterface {
+public class PromotionRestaurantMainFragment extends Fragment {
 
     private static FrameLayout loading;
     private static LoadingFragment loadingFragment;
@@ -69,16 +68,6 @@ public class PromotionRestaurantMainFragment extends Fragment implements Fragmen
         close.setOnClickListener(a);*/
 
     return rootView;
-    }
-
-    @Override
-    public void onPauseFragment() {
-
-    }
-
-    @Override
-    public void onResumeFragment() {
-
     }
 
     private static class ListPromotion extends AsyncTask<String, String, String> {

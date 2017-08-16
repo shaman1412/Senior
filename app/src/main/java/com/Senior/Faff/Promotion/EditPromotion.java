@@ -207,7 +207,7 @@ public class EditPromotion extends AppCompatActivity implements OnMapReadyCallba
         }
     }
 
-    private class EditPromotion extends AsyncTask<Promotion, String, String> {
+    private class EditPromotionAsyn extends AsyncTask<Promotion, String, String> {
 
         private ArrayList<String> imgPath = new ArrayList<>();
         String result = "";
