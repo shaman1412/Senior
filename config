@@ -8,3 +8,4 @@
 	sharedrepository = 2
 [receive]
 	denyNonFastforwards = true
+ 

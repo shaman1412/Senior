@@ -86,8 +86,6 @@
         </activity>
         <activity android:name=".Test.ServerSocketActivity" />
         <activity android:name=".Test.ClientSocketActivity" />
-        <activity android:name=".FilterActivity" />
-        <activity android:name=".ImagerActivity" />
         <activity android:name=".utils.PlacePicker" />
         <activity android:name=".Chat.ChatMainActivity" />
         <activity android:name=".Chat.ChatRoom" />
