@@ -137,26 +137,6 @@ public class Main2Activity extends AppCompatActivity {
         });
 
 
-        // serach_box = (EditText)findViewById(R.id.serach_box);
-/*        serach_box.setOnKeyListener(new View.OnKeyListener() {
-            @Override
-            public boolean onKey(View v, int keyCode, KeyEvent event) {
-                if (event.getAction() == KeyEvent.ACTION_DOWN)
-                {
-                    switch (keyCode)
-                    {
-                        case KeyEvent.KEYCODE_ENTER:
-                            search_name    =  serach_box.getText().toString();
-                            search_name();
-                            return true;
-                        default:
-                            break;
-                    }
-                }
-                return false;
-            }
-        });*/
-
         // Set a Toolbar to replace the ActionBar.
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -278,19 +258,8 @@ public class Main2Activity extends AppCompatActivity {
     }
 
     public void selectDrawerItem(MenuItem menuItem) {
-        // Create a new fragment and specify the fragment to show based on nav item clicked
-
-        //String User_id = String.valueOf(id);        // ??? for what ??? ไม่บอก 5555
 
         switch (menuItem.getItemId()) {
-//            case R.id.Home:
-//                Intent Home_intent = new Intent(context, TestCallservice.class);
-//                startActivity(Home_intent);
-//                break;
-      /*      case R.id.NotificationUser:
-                Intent Home_intenta = new Intent(context, TestCallservice.class);
-                startActivity(Home_intenta);
-                break;*/
             case R.id.UserProfile:
                 Intent intent = new Intent(context, ShowUserprofile.class);
                 intent.putExtra(UserProfile.Column.UserID, userid);
@@ -302,10 +271,6 @@ public class Main2Activity extends AppCompatActivity {
                 b.putExtra(UserProfile.Column.UserID, userid);
                 startActivity(b);
                 break;
-  /*          case R.id.ShowPromotion:
-                Intent i = new Intent(context, ChatMainActivity.class);
-                startActivity(i);
-                break;*/
             case R.id.RestaurantProfile:
                 Bundle bundle = new Bundle();
                 bundle.putString("userid", userid);
@@ -348,8 +313,7 @@ public class Main2Activity extends AppCompatActivity {
     }
 
     private ActionBarDrawerToggle setupDrawerToggle() {
-        // NOTE: Make sure you pass in a valid toolbar reference.  ActionBarDrawToggle() does not require it
-        // and will not render the hamburger icon without it.
+
         return new ActionBarDrawerToggle(this, mDrawer, toolbar, R.string.drawer_open, R.string.drawer_close);
     }
 
@@ -394,20 +358,7 @@ public class Main2Activity extends AppCompatActivity {
         alertDialogBuilder.setView(promptView);
         final AlertDialog alert = alertDialogBuilder.create();
         type_food = new ArrayList<>();
-        // final EditText editText = (EditText) promptView.findViewById(R.id.edittext);
-        // setup a dialog window
-      /*  alertDialogBuilder.setCancelable(false)
-                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        Toast.makeText(Main2Activity.this, "MyLocation button clicked", Toast.LENGTH_SHORT).show();
-                    }
-                })
-                .setNegativeButton("Cancel",
-                        new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int id) {
-                                dialog.cancel();
-                            }
-                        });*/
+
       final TextView getseek = (TextView)promptView.findViewById(R.id.getseek);
          SeekBar seek = (SeekBar)promptView.findViewById(R.id.seek);
         seek.setProgress(Math.round(distance));
@@ -458,8 +409,7 @@ public class Main2Activity extends AppCompatActivity {
                 Bundle bundle = new Bundle();
                 bundle.putSerializable(Restaurant.Column.TypeFood,filter);
                 bundle.putInt("Postition",1);
-/*                bundle.putStringArrayList(Restaurant.Column.TypeFood,type_food);
-                bundle.putFloat("distance", distance);*/
+
                 FragmentManager fragmentManager_nearby = getSupportFragmentManager();
                 fragment_nearby.setArguments(bundle);
                 fragmentManager_nearby.beginTransaction()
@@ -563,8 +513,7 @@ public class Main2Activity extends AppCompatActivity {
                     finish();
                 }
             } else {
-                /*String message = getString(R.string.login_error_message);
-                Toast.makeText(Main2Activity.this, message, Toast.LENGTH_SHORT).show();*/
+                
                 Intent intent = new Intent(context, InsertUserProfile.class);
                 intent.putExtra(UserProfile.Column.UserID, id);
                 startActivity(intent);
